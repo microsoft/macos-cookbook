@@ -18,3 +18,6 @@ chef_version '>= 12.1' if respond_to?(:chef_version)
 # a Supermarket.
 #
 # source_url 'https://github.com/<insert_org_here>/macos-cookbook'
+
+
+depends 'mac_os_x'

@@ -24,3 +24,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+
+file "create a hidden file" do
+  path "/Users/#{node['admin_user']}/Desktop/.file"
+  action :create
+end
+
+execute 'hide files' do
+  not_if 'defaults read com.apple.finder AppleShowAllFiles'
+  user 'admin'
+  command 'defaults write com.apple.finder AppleShowAllFiles -bool TRUE'
+  command 'killall Finder'
+end
