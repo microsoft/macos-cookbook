@@ -30,9 +30,13 @@ file "create a hidden file" do
   action :create
 end
 
-execute 'hide files' do
+execute 'show hidden files' do
   not_if 'defaults read com.apple.finder AppleShowAllFiles'
   user 'admin'
   command 'defaults write com.apple.finder AppleShowAllFiles -bool TRUE'
+end
+
+execute 'restart Finder' do
+  user 'admin'
   command 'killall Finder'
 end

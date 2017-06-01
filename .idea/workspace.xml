@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b8c9e35a-19d0-49b6-9bc8-ea0684d92e65" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/macos-cookbook.iml" afterPath="$PROJECT_DIR$/.idea/macos-cookbook.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.kitchen.yml" afterPath="$PROJECT_DIR$/.kitchen.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/metadata.rb" afterPath="$PROJECT_DIR$/metadata.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/recipes/default.rb" afterPath="$PROJECT_DIR$/recipes/default.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/smoke/default/default_test.rb" afterPath="$PROJECT_DIR$/test/smoke/default/default_test.rb" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -19,41 +15,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="default.rb" pinned="false" current-in-tab="false">
+      <file leaf-file-name="default.rb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/recipes/default.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="555">
-              <caret line="37" column="3" lean-forward="false" selection-start-line="37" selection-start-column="3" selection-end-line="37" selection-end-column="3" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="default_test.rb" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/smoke/default/default_test.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="17" column="3" lean-forward="false" selection-start-line="17" selection-start-column="3" selection-end-line="17" selection-end-column="3" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="default.rb" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/attributes/default.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="1" column="21" lean-forward="true" selection-start-line="1" selection-start-column="21" selection-end-line="1" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name=".kitchen.yml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.kitchen.yml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="32" column="0" lean-forward="false" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+            <state relative-caret-position="615">
+              <caret line="41" column="3" lean-forward="false" selection-start-line="41" selection-start-column="3" selection-end-line="41" selection-end-column="3" />
               <folding />
             </state>
           </provider>
@@ -69,9 +35,9 @@
       <list>
         <option value="$PROJECT_DIR$/metadata.rb" />
         <option value="$PROJECT_DIR$/attributes/default.rb" />
-        <option value="$PROJECT_DIR$/recipes/default.rb" />
         <option value="$PROJECT_DIR$/test/smoke/default/default_test.rb" />
         <option value="$PROJECT_DIR$/.kitchen.yml" />
+        <option value="$PROJECT_DIR$/recipes/default.rb" />
       </list>
     </option>
   </component>
@@ -198,12 +164,12 @@
       <option name="presentableId" value="Default" />
       <updated>1496266321331</updated>
       <workItem from="1496266322683" duration="1812000" />
-      <workItem from="1496337429240" duration="1887000" />
+      <workItem from="1496337429240" duration="2442000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3699000" />
+    <option name="totallyTimeSpent" value="4254000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="2560" height="1440" extended-state="0" />
@@ -270,22 +236,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/recipes/default.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="555">
-          <caret line="37" column="3" lean-forward="false" selection-start-line="37" selection-start-column="3" selection-end-line="37" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/smoke/default/default_test.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="3" lean-forward="false" selection-start-line="17" selection-start-column="3" selection-end-line="17" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.kitchen.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="480">
@@ -298,6 +248,22 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
           <caret line="1" column="21" lean-forward="true" selection-start-line="1" selection-start-column="21" selection-end-line="1" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/smoke/default/default_test.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="3" lean-forward="false" selection-start-line="17" selection-start-column="3" selection-end-line="17" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/recipes/default.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="615">
+          <caret line="41" column="3" lean-forward="false" selection-start-line="41" selection-start-column="3" selection-end-line="41" selection-end-column="3" />
           <folding />
         </state>
       </provider>
