@@ -25,7 +25,7 @@
 # THE SOFTWARE.
 
 
-file "create a hidden file" do
+file 'create a hidden file' do
   path "/Users/#{node['admin_user']}/Desktop/.file"
   action :create
 end

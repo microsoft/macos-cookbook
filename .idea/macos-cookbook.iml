@@ -13,5 +13,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="chef (v12.19.36, Chef DK: /opt/chefdk) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="chefspec (v6.2.0, Chef DK: /opt/chefdk) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rspec (v3.5.0, Chef DK: /opt/chefdk) [gem]" level="application" />
   </component>
 </module>

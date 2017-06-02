@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../changeos_setup/.idea/changeos_setup.iml" filepath="$PROJECT_DIR$/../changeos_setup/.idea/changeos_setup.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../custom_web/.idea/custom_web.iml" filepath="$PROJECT_DIR$/../custom_web/.idea/custom_web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../macos/.idea/macos.iml" filepath="$PROJECT_DIR$/../macos/.idea/macos.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/macos-cookbook.iml" filepath="$PROJECT_DIR$/.idea/macos-cookbook.iml" />
     </modules>
   </component>
