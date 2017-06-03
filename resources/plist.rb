@@ -22,7 +22,7 @@ resource_name :plist
 
 property :plist, String, name_property: true
 property :preference, String, required: true
-property :enabled, [true, false], required: true
+property :enabled, [true, false], default: true
 
 default_action :set_preference
 
