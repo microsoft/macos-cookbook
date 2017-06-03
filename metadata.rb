@@ -21,3 +21,5 @@ chef_version '>= 12.1' if respond_to?(:chef_version)
 
 
 depends 'homebrew'
+depends 'poise-python'
+depends 'chef-client'

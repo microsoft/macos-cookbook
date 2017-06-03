@@ -1,3 +1,5 @@
+require 'pry'
+
 #
 # Author:: Eric Hanko (<v-erhank@microsoft.com>)
 # Cookbook:: macos-cookbook
@@ -25,10 +27,10 @@ systemsetup = '/usr/sbin/systemsetup'
 defaults = '/usr/bin/defaults'
 pmset = '/usr/bin/pmset'
 
-property :bin, String, equal_to: [systemsetup, defaults, pmset], default: pmset
+property :bin, String, equal_to: [systemsetup, defaults, pmset]
 property :preference, String, name_property: true
 property :set, [Integer, String, true, false]
-property :key, String
+property :key, [String, Hash]
 property :value, [Integer]
 property :read_only, [true, false], default: false
 property :option, String, default: 'write'
@@ -43,12 +45,11 @@ load_current_value do |new_resource|
   end
 end
 
-
 action :set do
   case new_resource.bin
     when systemsetup
       execute 'set or get preference using systemsetup' do
-        command "#{systemsetup} -#{new_resource.preference} #{new_resource.set} #{new_resource.value}"
+        command "#{systemsetup} -#{new_resource.preference} #{new_resource.key} #{new_resource.set}"
       end
 
     when defaults
@@ -56,6 +57,7 @@ action :set do
         user node['admin_user']
         command "#{defaults} #{new_resource.option} #{new_resource.preference} #{new_resource.key} #{new_resource.set} #{new_resource.value}"
       end
+
     when pmset
       execute 'set or get preference using pmset' do
         command "#{pmset} -a #{new_resource.preference} #{new_resource.set}"
@@ -63,10 +65,5 @@ action :set do
     else
       puts nil
   end
-
-  # execute 'restart Finder' do
-  #   only_if {new_resource.preference == 'com.apple.finder'}
-  #   command '/usr/bin/killall Finder'
-  # end
 end
 
