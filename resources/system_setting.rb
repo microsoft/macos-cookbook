@@ -23,65 +23,50 @@ default_action :set
 
 systemsetup = '/usr/sbin/systemsetup'
 defaults = '/usr/bin/defaults'
+pmset = '/usr/bin/pmset'
 
-property :bin, String, equal_to: [systemsetup, defaults]
+property :bin, String, equal_to: [systemsetup, defaults, pmset], default: pmset
 property :preference, String, name_property: true
-property :set, [Hash, String, true, false]
+property :set, [Integer, String, true, false]
 property :key, String
-property :value, [String, Integer]
+property :value, [Integer]
 property :read_only, [true, false], default: false
-property :defaults_option, String, default: 'write'
-property :systemsetup_option, String, default: 'set'
+property :option, String, default: 'write'
 
 load_current_value do |new_resource|
-  if shell_out("#{systemsetup} -printCommands | grep #{new_resource.preference}").exitstatus == 0
-    new_resource.bin systemsetup
-    puts "\n\n++++++++++++++++++++++++++++++++++++"
-    puts "====> binary: #{new_resource.bin}"
-    puts "====> Preference: #{new_resource.preference}"
-    puts "====> Set to: #{new_resource.set}"
-    puts "====> Value: #{new_resource.value}"
-    puts "++++++++++++++++++++++++++++++++++++\n"
-  else
+  if new_resource.preference.match(/com\.apple.*/)
     new_resource.bin defaults
-    puts "\n\n++++++++++++++++++++++++++++++++++++"
-    puts "====> binary: #{new_resource.bin}"
-    puts "====> Preference: #{new_resource.preference}"
-    puts "====> Set to: #{new_resource.set}"
-    puts "====> Key: #{new_resource.key}"
-    puts "====> Value: #{new_resource.value}"
-    puts "++++++++++++++++++++++++++++++++++++\n"
-  end
-
-
-  if new_resource.read_only
-    new_resource.defaults_option 'read'
-    new_resource.systemsetup_option 'get'
+  elsif new_resource.preference.match(/(get.*|set.*)/)
+    new_resource.bin systemsetup
   else
-    new_resource.defaults_option 'write'
-    new_resource.systemsetup_option 'set'
+    new_resource.bin pmset
   end
 end
+
 
 action :set do
   case new_resource.bin
     when systemsetup
       execute 'set or get preference using systemsetup' do
-        command "#{systemsetup} -#{new_resource.systemsetup_option}#{new_resource.preference} #{new_resource.set} #{new_resource.value}"
+        command "#{systemsetup} -#{new_resource.preference} #{new_resource.set} #{new_resource.value}"
       end
 
     when defaults
       execute 'set or get preference using defaults' do
         user node['admin_user']
-        command "#{defaults} #{new_resource.defaults_option} #{new_resource.preference} #{new_resource.key} #{new_resource.set} #{new_resource.value}"
+        command "#{defaults} #{new_resource.option} #{new_resource.preference} #{new_resource.key} #{new_resource.set} #{new_resource.value}"
+      end
+    when pmset
+      execute 'set or get preference using pmset' do
+        command "#{pmset} -a #{new_resource.preference} #{new_resource.set}"
       end
     else
-      puts 'Unknown binary'
+      puts nil
   end
 
-  execute 'restart Finder' do
-    only_if {new_resource.preference == 'com.apple.finder'}
-    command '/usr/bin/killall Finder'
-  end
+  # execute 'restart Finder' do
+  #   only_if {new_resource.preference == 'com.apple.finder'}
+  #   command '/usr/bin/killall Finder'
+  # end
 end
 
