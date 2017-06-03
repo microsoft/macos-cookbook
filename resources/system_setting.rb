@@ -24,19 +24,25 @@ default_action :set
 systemsetup = '/usr/sbin/systemsetup'
 defaults = '/usr/bin/defaults'
 
-property :set_to, String
-property :domain, String
-property :preference, String, name_property: true
-property :value, [String, Integer]
 property :bin, String, equal_to: [systemsetup, defaults]
-
+property :preference, String, name_property: true
+property :set_to, [Hash, String, true, false]
+property :key, String
+property :value, [String, Integer]
 
 load_current_value do |new_resource|
-  if shell_out("#{systemsetup} -listCommands | grep #{new_resource.setting}").exitstatus == 0
-    utility systemsetup
+  if shell_out("#{systemsetup} -printCommands | grep #{new_resource.preference}").exitstatus == 0
+    new_resource.bin systemsetup
   else
-    utility defaults
+    new_resource.bin defaults
   end
+  puts "\n\n++++++++++++++++++++++++++++++++++++"
+  puts "====> binary: #{new_resource.bin}"
+  puts "====> Preference: #{new_resource.preference}"
+  puts "====> Set to: #{new_resource.set_to}"
+  puts "====> Key: #{new_resource.key}"
+  puts "====> Value: #{new_resource.value}"
+  puts "++++++++++++++++++++++++++++++++++++\n"
 end
 
 action :set do
@@ -49,10 +55,10 @@ action :set do
     when defaults
       execute 'set preference using defaults' do
         user node['admin_user']
-        command "#{defaults} write #{new_resource.domain} #{new_resource.preference} #{set_to} #{new_resource.value}"
+        command "#{defaults} write #{new_resource.preference} #{new_resource.key} #{set_to} #{new_resource.value}"
       end
     else
-      pass
+      puts 'Unknown binary'
   end
 
   execute 'restart Finder' do

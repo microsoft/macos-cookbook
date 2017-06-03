@@ -29,40 +29,66 @@ file 'create hidden file' do
 end
 
 system_setting 'com.apple.bluetooth' do
-  preference 'ControllerPowerState'
-  enabled false
+  key 'ControllerPowerState'
+  set_to false
 end
 
-
 system_setting 'com.apple.finder' do
-  preference 'AppleShowAllFiles'
+  key 'AppleShowAllFiles'
+  set_to true
 end
 
 system_setting 'com.apple.TimeMachine' do
-  preference 'DoNotOfferNewDisksForBackup'
-  enabled false
+  key 'DoNotOfferNewDisksForBackup'
+  set_to false
 end
 
 system_setting 'com.apple.loginwindow' do
-  preference 'LoginwindowLaunchesRelaunchApps'
-  enabled false
+  key 'LoginwindowLaunchesRelaunchApps'
+  set_to false
 end
 
 system_setting 'com.apple.loginwindow' do
-  preference 'TALLogoutSavesState'
-  enabled false
+  key 'TALLogoutSavesState'
+  set_to false
 end
 
 system_setting 'com.apple.screensaver' do
-  preference 'idleTime'
-  enabled false
+  key 'idleTime'
+  set_to false
 end
 
 system_setting 'com.apple.driver.AppleHIDMouse' do
-  preference 'Button2'
+  key 'Button2'
+  set_to true
 end
 
-system_setting 'com.apple.bluetooth' do
-  preference 'ControllerPowerState'
-  enabled false
+system_setting 'com.apple.Bluetooth' do
+  key 'ControllerPowerState'
+  set_to '0'
 end
+
+system_setting 'com.apple.Bluetooth' do
+  key 'BluetoothAutoSeekKeyboard'
+  set_to '0'
+end
+
+system_setting 'com.apple.Bluetooth' do
+  key 'BluetoothAutoSeekPointingDevice'
+  set_to '0'
+end
+
+system_setting 'sleep' do
+  set_to '0'
+end
+
+system_setting 'computersleep' do
+  set_to '0'
+end
+
+system_setting 'displaysleep' do
+  set_to '0'
+end
+
+
+
