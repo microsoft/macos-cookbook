@@ -28,35 +28,41 @@ file 'create hidden file' do
   path "/Users/#{node['admin_user']}/Desktop/.file"
 end
 
-plist 'com.apple.finder' do
+system_setting 'com.apple.bluetooth' do
+  preference 'ControllerPowerState'
+  enabled false
+end
+
+
+system_setting 'com.apple.finder' do
   preference 'AppleShowAllFiles'
 end
 
-plist 'com.apple.TimeMachine' do
+system_setting 'com.apple.TimeMachine' do
   preference 'DoNotOfferNewDisksForBackup'
   enabled false
 end
 
-plist 'com.apple.loginwindow' do
+system_setting 'com.apple.loginwindow' do
   preference 'LoginwindowLaunchesRelaunchApps'
   enabled false
 end
 
-plist 'com.apple.loginwindow' do
+system_setting 'com.apple.loginwindow' do
   preference 'TALLogoutSavesState'
   enabled false
 end
 
-plist 'com.apple.screensaver' do
+system_setting 'com.apple.screensaver' do
   preference 'idleTime'
   enabled false
 end
 
-plist 'com.apple.driver.AppleHIDMouse' do
+system_setting 'com.apple.driver.AppleHIDMouse' do
   preference 'Button2'
 end
 
-plist 'com.apple.bluetooth' do
+system_setting 'com.apple.bluetooth' do
   preference 'ControllerPowerState'
   enabled false
 end

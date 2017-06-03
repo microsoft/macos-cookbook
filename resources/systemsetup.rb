@@ -1,7 +1,7 @@
 #
 # Author:: Eric Hanko (<v-erhank@microsoft.com>)
 # Cookbook:: macos-cookbook
-# Resource:: plist
+# Resource:: systemsetup
 #
 # Copyright:: 2017, Microsoft, Inc.
 #
@@ -18,18 +18,16 @@
 # limitations under the License.
 #
 
-resource_name :plist
+resource_name :system_setup
 
-property :plist, String, name_property: true
-property :preference, [String, Array], required: true
-property :enabled, [true, false], default: true
+property :setting, String, name_property: true
+property :enabled, %w['on', 'off']
 
 default_action :set_preference
 
 action :set_preference do
   execute 'set preference' do
-    user node['admin_user']
-    command "/usr/bin/defaults write #{plist} #{preference} #{enabled}"
+    command "/usr/sbin/systemsetup -#{setting} #{enabled}"
   end
 
   execute 'restart Finder' do
