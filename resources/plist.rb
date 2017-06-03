@@ -21,7 +21,7 @@
 resource_name :plist
 
 property :plist, String, name_property: true
-property :preference, String, required: true
+property :preference, [String, Array], required: true
 property :enabled, [true, false], default: true
 
 default_action :set_preference
@@ -33,11 +33,12 @@ action :set_preference do
   end
 
   execute 'restart Finder' do
-    only_if { plist == 'com.apple.finder' }
+    only_if {plist == 'com.apple.finder'}
     user node['admin_user']
     command '/usr/bin/killall Finder'
   end
 end
+
 
 
 

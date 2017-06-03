@@ -30,12 +30,33 @@ end
 
 plist 'com.apple.finder' do
   preference 'AppleShowAllFiles'
-  enabled true
 end
 
-plist 'com.apple.finder' do
-  preference 'AppleShowAllFiles'
+plist 'com.apple.TimeMachine' do
+  preference 'DoNotOfferNewDisksForBackup'
   enabled false
 end
 
+plist 'com.apple.loginwindow' do
+  preference 'LoginwindowLaunchesRelaunchApps'
+  enabled false
+end
 
+plist 'com.apple.loginwindow' do
+  preference 'TALLogoutSavesState'
+  enabled false
+end
+
+plist 'com.apple.screensaver' do
+  preference 'idleTime'
+  enabled false
+end
+
+plist 'com.apple.driver.AppleHIDMouse' do
+  preference 'Button2'
+end
+
+plist 'com.apple.bluetooth' do
+  preference 'ControllerPowerState'
+  enabled false
+end

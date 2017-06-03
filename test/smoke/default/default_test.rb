@@ -5,14 +5,18 @@
 # The Inspec reference, with examples and extensive documentation, can be
 # found at http://inspec.io/docs/reference/resources/
 
-unless os.windows?
-  # This is an example test, replace with your own test.
-  describe user('root'), :skip do
-    it { should exist }
+describe user('admin') do
+  it {should exist}
+end
+
+describe command("defaults read com.apple.loginwindow") do
+  its(:stdout) do
+    is_expected.to match(/TALLogoutSavesState = 0;/)
   end
 end
 
-# This is an example test, replace it with your own test.
-describe port(80), :skip do
-  it { should_not be_listening }
+describe command("defaults read com.apple.screensaver") do
+  its(:stdout) do
+    is_expected.to match(/idleTime = 0;/)
+  end
 end
