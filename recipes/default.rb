@@ -30,64 +30,64 @@ end
 
 system_setting 'com.apple.bluetooth' do
   key 'ControllerPowerState'
-  set_to false
+  set false
 end
 
 system_setting 'com.apple.finder' do
   key 'AppleShowAllFiles'
-  set_to true
+  set true
 end
 
 system_setting 'com.apple.TimeMachine' do
   key 'DoNotOfferNewDisksForBackup'
-  set_to false
+  set false
 end
 
 system_setting 'com.apple.loginwindow' do
   key 'LoginwindowLaunchesRelaunchApps'
-  set_to false
+  set false
 end
 
 system_setting 'com.apple.loginwindow' do
   key 'TALLogoutSavesState'
-  set_to false
+  set false
 end
 
 system_setting 'com.apple.screensaver' do
   key 'idleTime'
-  set_to false
+  set false
 end
 
 system_setting 'com.apple.driver.AppleHIDMouse' do
   key 'Button2'
-  set_to true
+  set true
 end
 
 system_setting 'com.apple.Bluetooth' do
   key 'ControllerPowerState'
-  set_to '0'
+  set '0'
 end
 
 system_setting 'com.apple.Bluetooth' do
   key 'BluetoothAutoSeekKeyboard'
-  set_to '0'
+  set '0'
 end
 
 system_setting 'com.apple.Bluetooth' do
   key 'BluetoothAutoSeekPointingDevice'
-  set_to '0'
+  set '0'
 end
 
 system_setting 'sleep' do
-  set_to '0'
+  set '0'
 end
 
 system_setting 'computersleep' do
-  set_to '0'
+  set '0'
 end
 
 system_setting 'displaysleep' do
-  set_to '0'
+  set '0'
 end
 
 
