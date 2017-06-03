@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/../custom_web/.idea/custom_web.iml" filepath="$PROJECT_DIR$/../custom_web/.idea/custom_web.iml" />
       <module fileurl="file://$PROJECT_DIR$/../macos/.idea/macos.iml" filepath="$PROJECT_DIR$/../macos/.idea/macos.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/macos-cookbook.iml" filepath="$PROJECT_DIR$/.idea/macos-cookbook.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../vsts-agent-cookbook/.idea/vsts-agent-cookbook.iml" filepath="$PROJECT_DIR$/../vsts-agent-cookbook/.idea/vsts-agent-cookbook.iml" />
     </modules>
   </component>
 </project>

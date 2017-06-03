@@ -25,18 +25,11 @@
 # THE SOFTWARE.
 
 
-file 'create a hidden file' do
+plist 'com.apple.finder' do
+  preference 'AppleShowAllFiles'
+end
+
+file 'create hidden file' do
   path "/Users/#{node['admin_user']}/Desktop/.file"
-  action :create
 end
 
-execute 'show hidden files' do
-  not_if 'defaults read com.apple.finder AppleShowAllFiles'
-  user 'admin'
-  command 'defaults write com.apple.finder AppleShowAllFiles -bool TRUE'
-end
-
-execute 'restart Finder' do
-  user 'admin'
-  command 'killall Finder'
-end
