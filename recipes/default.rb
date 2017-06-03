@@ -24,12 +24,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-
-plist 'com.apple.finder' do
-  preference 'AppleShowAllFiles'
-end
-
 file 'create hidden file' do
   path "/Users/#{node['admin_user']}/Desktop/.file"
 end
+
+plist 'com.apple.finder' do
+  preference 'AppleShowAllFiles'
+  enabled true
+end
+
+plist 'com.apple.finder' do
+  preference 'AppleShowAllFiles'
+  enabled false
+end
+
 
