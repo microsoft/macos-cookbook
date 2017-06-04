@@ -1,4 +1,4 @@
-name 'macos-cookbook-cookbook'
+name 'macos'
 maintainer 'Copyright 2017 Microsoft. All rights reserved.'
 maintainer_email 'apxlab@microsoft.com'
 license 'MIT'
