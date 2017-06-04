@@ -31,7 +31,7 @@ property :bin, String, equal_to: [systemsetup, defaults, pmset]
 property :preference, String, name_property: true
 property :set, [Integer, String, true, false]
 property :key, [String, Hash]
-property :value, [Integer]
+property :value, Integer
 property :read_only, [true, false], default: false
 property :option, String, default: 'write'
 
@@ -49,8 +49,8 @@ action :set do
   case new_resource.bin
   when systemsetup
     execute 'set or get preference using systemsetup' do
-      command "#{systemsetup} -#{new_resource.preference} #{new_resource.key}
-              \ #{new_resource.set}"
+      command "#{systemsetup} -#{new_resource.preference} #{new_resource.set} \
+              #{new_resource.value}"
     end
 
   when defaults
