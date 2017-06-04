@@ -1,9 +1,9 @@
-name 'macos-cookbook'
+name 'macos-cookbook-cookbook'
 maintainer 'Copyright 2017 Microsoft. All rights reserved.'
 maintainer_email 'apxlab@microsoft.com'
 license 'MIT'
-description 'Installs/Configures macos-cookbook'
-long_description 'Installs/Configures macos-cookbook'
+description 'Installs/Configures macos-cookbook-cookbook'
+long_description 'Installs/Configures macos-cookbook-cookbook'
 version '0.2.0'
 chef_version '>= 12.1' if respond_to?(:chef_version)
 source_url 'https://office.visualstudio.com'
@@ -14,14 +14,11 @@ supports 'mac_os_x'
 # tracked.  A `View Issues` link will be displayed on this cookbook's page when
 # uploaded to a Supermarket.
 #
-# issues_url 'https://github.com/<insert_org_here>/macos-cookbook/issues'
+# issues_url 'https://github.com/<insert_org_here>/macos-cookbook-cookbook/issues'
 
 # The `source_url` points to the development reposiory for this cookbook.  A
 # `View Source` link will be displayed on this cookbook's page when uploaded to
 # a Supermarket.
 #
-# source_url 'https://github.com/<insert_org_here>/macos-cookbook'
+# source_url 'https://github.com/<insert_org_here>/macos-cookbook-cookbook'
 
-depends 'homebrew'
-depends 'poise-python'
-depends 'chef-client'

@@ -2,7 +2,7 @@ require 'pry'
 
 #
 # Author:: Eric Hanko (<v-erhank@microsoft.com>)
-# Cookbook:: macos-cookbook
+# Cookbook:: macos-new-cookbook
 # Resource:: system_setting
 #
 # Copyright:: 2017, Microsoft, Inc.
