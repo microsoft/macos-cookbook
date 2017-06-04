@@ -24,8 +24,8 @@ resource_name :system_setting
 default_action :set
 
 systemsetup = '/usr/sbin/systemsetup'
-defaults = '/usr/bin/defaults'
-pmset = '/usr/bin/pmset'
+defaults    = '/usr/bin/defaults'
+pmset       = '/usr/bin/pmset'
 
 property :bin, String, equal_to: [systemsetup, defaults, pmset]
 property :preference, String, name_property: true
@@ -36,9 +36,9 @@ property :read_only, [true, false], default: false
 property :option, String, default: 'write'
 
 load_current_value do |new_resource|
-  if new_resource.preference.match(/com\.apple.*/)
+  if new_resource.preference =~ /com\.apple.*/
     new_resource.bin defaults
-  elsif new_resource.preference.match(/(get.*|set.*)/)
+  elsif new_resource.preference =~ /(get.*|set.*)/
     new_resource.bin systemsetup
   else
     new_resource.bin pmset
@@ -47,23 +47,24 @@ end
 
 action :set do
   case new_resource.bin
-    when systemsetup
-      execute 'set or get preference using systemsetup' do
-        command "#{systemsetup} -#{new_resource.preference} #{new_resource.key} #{new_resource.set}"
-      end
+  when systemsetup
+    execute 'set or get preference using systemsetup' do
+      command "#{systemsetup} -#{new_resource.preference} #{new_resource.key}
+              \ #{new_resource.set}"
+    end
 
-    when defaults
-      execute 'set or get preference using defaults' do
-        user node['admin_user']
-        command "#{defaults} #{new_resource.option} #{new_resource.preference} #{new_resource.key} #{new_resource.set} #{new_resource.value}"
-      end
+  when defaults
+    execute 'set or get preference using defaults' do
+      user node['admin_user']
+      command "#{defaults} #{new_resource.option} #{new_resource.preference} \
+              #{new_resource.key} #{new_resource.set} #{new_resource.value}"
+    end
 
-    when pmset
-      execute 'set or get preference using pmset' do
-        command "#{pmset} -a #{new_resource.preference} #{new_resource.set}"
-      end
-    else
-      puts nil
+  when pmset
+    execute 'set or get preference using pmset' do
+      command "#{pmset} -a #{new_resource.preference} #{new_resource.set}"
+    end
+  else
+    puts nil
   end
 end
-

@@ -4,7 +4,7 @@
 #
 # The MIT License (MIT)
 #
-# Copyright:: 2017, Copyright © 2017 Microsoft. All rights reserved.
+# Copyright:: 2017, Copyright 2017 Microsoft. All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-
 
 require 'spec_helper'
 

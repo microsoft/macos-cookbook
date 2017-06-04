@@ -1,4 +1,4 @@
 package 'python3'
-#
-# homebrew_cask 'osxfuse'
-# package 'ifuse'
+
+homebrew_cask 'osxfuse'
+package 'ifuse'

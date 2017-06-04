@@ -1,11 +1,12 @@
 name 'macos-cookbook'
-maintainer 'Copyright © 2017 Microsoft. All rights reserved.'
+maintainer 'Copyright 2017 Microsoft. All rights reserved.'
 maintainer_email 'apxlab@microsoft.com'
 license 'MIT'
 description 'Installs/Configures macos-cookbook'
 long_description 'Installs/Configures macos-cookbook'
-version '0.1.0'
+version '0.2.0'
 chef_version '>= 12.1' if respond_to?(:chef_version)
+platform 'mac_os_x'
 
 # The `issues_url` points to the location where issues for this cookbook are
 # tracked.  A `View Issues` link will be displayed on this cookbook's page when
@@ -18,7 +19,6 @@ chef_version '>= 12.1' if respond_to?(:chef_version)
 # a Supermarket.
 #
 # source_url 'https://github.com/<insert_org_here>/macos-cookbook'
-
 
 depends 'homebrew'
 depends 'poise-python'
