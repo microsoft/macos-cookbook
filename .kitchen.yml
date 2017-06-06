@@ -22,7 +22,7 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[macos-cookbook-cookbook::default]
+      - recipe[macos::default]
     verifier:
       inspec_tests:
         - test/smoke/default
