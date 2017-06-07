@@ -27,9 +27,17 @@ property :settings, Hash
 property :system_setting, [true, false], default: false
 
 action :run do
-  new_resource.settings.each do |flag, setting|
+  settings.each do |flag, setting|
     execute BASE_COMMAND do
       command "#{BASE_COMMAND} -set#{flag} #{setting}"
+    end
+  end
+end
+
+action :verify do
+  settings.each do |flag, _|
+    execute BASE_COMMAND do
+      command "#{BASE_COMMAND} -get#{flag}"
     end
   end
 end

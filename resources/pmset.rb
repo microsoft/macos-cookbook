@@ -25,7 +25,7 @@ BASE_COMMAND = '/usr/bin/pmset'.freeze
 property :settings, Hash
 
 action :run do
-  new_resource.settings.each do |setting, value|
+  settings.each do |setting, value|
     execute BASE_COMMAND do
       command "#{BASE_COMMAND} #{setting} #{value}"
     end

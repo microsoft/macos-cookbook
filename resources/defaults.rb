@@ -28,8 +28,8 @@ property :settings, Hash
 property :system, [true, false]
 
 action :run do
-  if new_resource.read_only
-    new_resource.option = 'read'
+  if read_only
+    option = 'read'
   end
   settings.each do |setting, value|
     execute BASE_COMMAND do
