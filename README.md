@@ -4,19 +4,22 @@
 
 ### systemsetup
 
-The systemsetup resource wraps the `/usr/sbin/systemsetup` tool and can be used in 
-almost exactly the same way as it is used on the command line.
+The systemsetup resource is a wrapper for `/usr/sbin/systemsetup`. Use the `get` and `set` properties with hashes or
+strings in order to get or set the desired setting.
  
  
-Example usage:
+Example "set" usage:
 
 ```ruby
-systemsetup 'keep machine awake indefinitely' do
-   settings remotelogin: 'On',
-            waitforstartupafterpowerfailure: 0,
-            displaysleep: 0
+systemsetup 'keep awake and get time information' do
+  set sleep: 0,
+      computersleep: 0,
+      displaysleep: 0,
+      harddisksleep: 0
+  get %w(networktimeserver timezone)
 end
 ```
+
 #### Available settings to use with the `systemsetup` resource:
 
     date <mm:dd:yy>
