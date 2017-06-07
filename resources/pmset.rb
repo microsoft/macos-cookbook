@@ -17,6 +17,20 @@
 # limitations under the License.
 #
 
+resource_name :pmset
+default_action :run
+
+BASE_COMMAND = '/usr/bin/pmset'.freeze
+
+property :settings, Hash
+
+action :run do
+  new_resource.settings.each do |setting, value|
+    execute BASE_COMMAND do
+      command "#{BASE_COMMAND} #{setting} #{value}"
+    end
+  end
+end
 
 # womp - wake on ethernet magic packet (value = 0/1). Same as "Wake for network access" in the Energy Saver preferences.
 # ring - wake on modem ring (value = 0/1)
@@ -39,18 +53,3 @@
 # By default File vault keys are retained even when system goes to standby.
 # If the keys are destroyed, user will be prompted to enter the password while coming out of standby mode.
 # (value: 1 - Destroy, 0 - Retain)
-
-resource_name :pmset
-default_action :run
-
-BASE_COMMAND = '/usr/bin/pmset'.freeze
-
-property :settings, Hash
-
-action :run do
-  new_resource.settings.each do |setting, value|
-    execute BASE_COMMAND do
-      command "#{BASE_COMMAND} #{setting} #{value}"
-    end
-  end
-end

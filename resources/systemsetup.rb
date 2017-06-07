@@ -17,6 +17,23 @@
 # limitations under the License.
 #
 
+resource_name :systemsetup
+default_action :run
+
+BASE_COMMAND = '/usr/sbin/systemsetup'.freeze
+
+property :read_only, [true, false], default: false
+property :settings, Hash
+property :system_setting, [true, false], default: false
+
+action :run do
+  new_resource.settings.each do |flag, setting|
+    execute BASE_COMMAND do
+      command "#{BASE_COMMAND} -set#{flag} #{setting}"
+    end
+  end
+end
+
 # Available key/value pairs to use with the systemsetup resource:
 
 # date <mm:dd:yy>
@@ -48,20 +65,3 @@
 #             waitforstartupafterpowerfailure: 0,
 #             displaysleep: 0}
 # end
-
-resource_name :systemsetup
-default_action :run
-
-BASE_COMMAND = '/usr/sbin/systemsetup'.freeze
-
-property :read_only, [true, false], default: false
-property :settings, Hash
-property :system_setting, [true, false], default: false
-
-action :run do
-  new_resource.settings.each do |flag, setting|
-    execute BASE_COMMAND do
-      command "#{BASE_COMMAND} -set#{flag} #{setting}"
-    end
-  end
-end
