@@ -11,5 +11,7 @@
     </content>
     <orderEntry type="jdk" jdkName="Chef DK: /opt/chefdk" jdkType="RUBY_SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="PROVIDED" name="chef (v12.19.36, Chef DK: /opt/chefdk) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="chefspec (v6.2.0, Chef DK: /opt/chefdk) [gem]" level="application" />
   </component>
 </module>

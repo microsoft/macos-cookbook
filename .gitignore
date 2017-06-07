@@ -39,3 +39,4 @@ Policyfile.lock.json
 .idea/**/libraries
 
 .DS_Store
+.idea/inspectionProfiles/
