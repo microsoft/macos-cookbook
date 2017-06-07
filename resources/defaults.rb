@@ -29,11 +29,11 @@ property :system, [true, false]
 
 action :run do
   if read_only
-    option = 'read'
+    new_resource.option = 'read'
   end
   settings.each do |setting, value|
     execute BASE_COMMAND do
-      command "#{BASE_COMMAND} #{option} #{new_resource.domain} #{setting} #{value}"
+      command "#{BASE_COMMAND} #{new_resource.option} #{new_resource.domain} #{setting} #{value}"
     end
   end
 end
