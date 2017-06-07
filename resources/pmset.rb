@@ -40,7 +40,8 @@ end
 # hibernatemode - change hibernation mode. Please use caution. (value = integer)
 
 # hibernatefile - change hibernation image file location.
-# Image may only be located on the root volume. Please use caution. (value = path)
+# Image may only be located on the root volume. Please use caution.
+# (value = path)
 
 # ttyskeepawake - prevent idle system sleep when any tty
 # (e.g. remote login session) is 'active'. A tty is 'inactive' only when its
