@@ -1,5 +1,3 @@
-require 'defaults'
-
 resource_name :name
 default_action :run
 
