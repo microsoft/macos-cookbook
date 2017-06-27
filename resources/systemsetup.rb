@@ -14,14 +14,14 @@ action :run do
         live_stream true
       end
     end
+  end
 
-    if new_resource.set
-      set.each do |flag, setting|
-        execute BASE_COMMAND do
-          command "#{BASE_COMMAND} -set#{flag} #{setting}"
-        end
+
+  if new_resource.set
+    set.each do |flag, setting|
+      execute BASE_COMMAND do
+        command "#{BASE_COMMAND} -set#{flag} #{setting}"
       end
     end
-
   end
 end
