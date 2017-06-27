@@ -1,2 +1,2 @@
-default['admin_user'] = 'admin'
-default['admin_password'] = 'password'
+default['macos']['admin_user'] = 'vagrant'
+default['macos']['admin_password'] = 'vagrant'
