@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../apex-windows-cookbook/.idea/apex-windows-cookbook.iml" filepath="$PROJECT_DIR$/../apex-windows-cookbook/.idea/apex-windows-cookbook.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../apex-automation-cookbook/.idea/apex_automation.iml" filepath="$PROJECT_DIR$/../apex-automation-cookbook/.idea/apex_automation.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/macos.iml" filepath="$PROJECT_DIR$/.idea/macos.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../ms17-010/.idea/ms17-010.iml" filepath="$PROJECT_DIR$/../ms17-010/.idea/ms17-010.iml" />
     </modules>
   </component>
 </project>
