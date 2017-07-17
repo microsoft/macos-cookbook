@@ -1,4 +1,4 @@
-bginfo_repo = 'http://apexlabgit.corp.microsoft.com/mike/BG-Info-Mac.git'
+bginfo_repo = 'http://apexlabgit.corp.microsoft.com/v-erhank/BG-Info-Mac.git'
 bginfo_src  = "/Users/#{node['macos']['admin_user']}/bginfo_src"
 
 package 'imagemagick' do
@@ -10,6 +10,7 @@ package 'ghostscript' do
 end
 
 git 'BGInfo Repo' do
+  checkout_branch 'develop'
   repository bginfo_repo
   destination bginfo_src
   user node['macos']['admin_user']
