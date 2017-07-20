@@ -14,9 +14,9 @@ verifier:
   name: inspec
 
 platforms:
-  - name: apex/macos-10.12.4
+  - name: apex/macos-10.12.5
     driver:
-      box: apex/macos-10.12.4
+      box: apex/macos-10.12.5
       username: admin
 
 suites:
