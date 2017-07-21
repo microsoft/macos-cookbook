@@ -12,15 +12,9 @@ property :user, String
 action :run do
   new_resource.option = 'read' if read_only
   settings.each do |setting, value|
-    if new_resource.user
       execute BASE_COMMAND do
         command "#{BASE_COMMAND} #{new_resource.option} #{new_resource.domain} #{setting} #{value}"
         user new_resource.user
       end
-    else
-      execute BASE_COMMAND do
-        command "#{BASE_COMMAND} #{new_resource.option} #{new_resource.domain} #{setting} #{value}"
-      end
-    end
   end
 end
