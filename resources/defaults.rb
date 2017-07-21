@@ -14,7 +14,8 @@ action :run do
   settings.each do |setting, value|
     if new_resource.user
       execute BASE_COMMAND do
-        command "sudo -u #{new_resource.user} #{BASE_COMMAND} #{new_resource.option} /Users/#{new_resource.user}/Library/Preferences/#{new_resource.domain} #{setting} #{value}"
+        command "#{BASE_COMMAND} #{new_resource.option} #{new_resource.domain} #{setting} #{value}"
+        user new_resource.user
       end
     else
       execute BASE_COMMAND do
