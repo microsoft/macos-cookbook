@@ -12,9 +12,17 @@ property :user, String
 action :run do
   new_resource.option = 'read' if read_only
   settings.each do |setting, value|
-      execute BASE_COMMAND do
-        command "#{BASE_COMMAND} #{new_resource.option} #{new_resource.domain} #{setting} #{value}"
-        user new_resource.user
-      end
+    cases = { Array.to_s => "-array #{value}",
+              Integer.to_s => "-int #{value}",
+              TrueClass.to_s => '-bool TRUE',
+              FalseClass.to_s => '-bool FALSE',
+              Hash.to_s => "-dict #{value}",
+              String.to_s => "-string #{value}",
+              Float.to_s => "-float #{value}" }
+    value = cases[value.class.to_s]
+    execute BASE_COMMAND do
+      command "#{BASE_COMMAND} #{new_resource.option} #{new_resource.domain} #{setting} #{value}"
+      user new_resource.user
+    end
   end
 end
