@@ -10,29 +10,33 @@ action :run do
   case new_resource.status
   when 'activate'
     execute BASE_COMMAND do
-      command "#{BASE_COMMAND} #{new_resource.status}"
+      command "#{BASE_COMMAND} #{new_resource.status} -configure -allowAccessFor -allUsers"
     end
 
   when 'deactivate'
     execute BASE_COMMAND do
-      command "#{BASE_COMMAND} #{new_resource.status}"
+      command "#{BASE_COMMAND} #{new_resource.status} -configure -access -off"
     end
 
   when 'restart'
     execute BASE_COMMAND do
-      command "#{BASE_COMMAND} #{new_resource.status}"
+      command "#{BASE_COMMAND} #{new_resource.status} -agent"
     end
 
   else
     execute BASE_COMMAND do
-      command "#{BASE_COMMAND}"
+      command "#{BASE_COMMAND} -configure"
 
     end
+  end
+end
 
+# activate
 sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart
 -activate -configure -allowAccessFor -allUsers -privs -all -clientopts -setmenuextra -menuextra yes
 
-# if not activate, deactivate, or restart, move to -configure
+# deactivate
+sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -deactivate -configure -access -off
 
-ard 'activate'
-ard 'restart'
+# restart
+sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -restart -agent
