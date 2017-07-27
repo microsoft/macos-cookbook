@@ -23,6 +23,8 @@ action :run do
       value = '-bool FALSE'
     when Hash
       value = "-dict #{value}"
+    when String
+      value = '-string value'
     else
       raise(Exception)
     end
