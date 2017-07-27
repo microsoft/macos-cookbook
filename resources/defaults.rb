@@ -24,7 +24,7 @@ action :run do
     when Hash
       value = "-dict #{value}"
     when String
-      value = '-string value'
+      value = "-string #{value}"
     else
       raise(Exception)
     end
