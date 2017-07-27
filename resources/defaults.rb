@@ -18,7 +18,7 @@ action :run do
               FalseClass.to_s => '-bool FALSE',
               Hash.to_s => "-dict #{value}",
               String.to_s => "-string #{value}",
-              Float.to_s => "-float #{vaue}" }
+              Float.to_s => "-float #{value}" }
     value = cases[value.class.to_s]
     execute BASE_COMMAND do
       command "#{BASE_COMMAND} #{new_resource.option} #{new_resource.domain} #{setting} #{value}"
