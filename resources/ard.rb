@@ -3,14 +3,14 @@ resource_name :ard
 BASE_COMMAND = '/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart'.freeze
 
 property :status, String, name_property: true
-property :options, Hash
-property :privileges, Hash
+property :options, String
+property :privileges, String
 
 action :run do
   case new_resource.status
   when 'activate'
     execute BASE_COMMAND do
-      command "#{BASE_COMMAND} -#{new_resource.status} -configure -allowAccessFor -allUsers"
+      command "#{BASE_COMMAND} -#{new_resource.status} -configure -allowAccessFor -allUsers -privs #{new_resource.privileges} -clientopts #{new_resource.options}"
     end
 
   when 'deactivate'
@@ -21,12 +21,6 @@ action :run do
   when 'restart'
     execute BASE_COMMAND do
       command "#{BASE_COMMAND} -#{new_resource.status} -agent"
-    end
-
-  else
-    execute BASE_COMMAND do
-      command "#{BASE_COMMAND} -configure"
-
     end
   end
 end
