@@ -2,33 +2,67 @@ resource_name :ard
 
 BASE_COMMAND = '/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart'.freeze
 
-property :status, String, name_property: true
+property :install_package, String
+property :uninstall_options, Array, default: ['-files', '-settings', '-prefs']
+property :restart_options, Array, default: ['-agent', '-console', '-menu']
 
-action :run do
-  case new_resource.status
-  when 'activate'
-    execute BASE_COMMAND do
-      command "#{BASE_COMMAND} -#{new_resource.status} -configure -allowAccessFor -allUsers -privs -all -clientopts -setmenuextra -menuextra yes"
-    end
+property :users, Array
 
-  when 'deactivate'
-    execute BASE_COMMAND do
-      command "#{BASE_COMMAND} -#{new_resource.status} -configure -access -off"
-    end
+property :privs, Array, default: ['-all']
+property :access, String, default: '-on'
+property :allow_access, String, default: '-allUsers'
+property :computerinfo, Array
+property :clientopts, Array
 
-  when 'restart'
-    execute BASE_COMMAND do
-      command "#{BASE_COMMAND} -#{new_resource.status} -agent"
-    end
+action :activate do
+  execute BASE_COMMAND do
+    command "#{BASE_COMMAND} -activate"
   end
 end
 
-# activate
-# sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart
-# -activate -configure -allowAccessFor -allUsers -privs -all -clientopts -setmenuextra -menuextra yes
+action :deactivate do
+  execute BASE_COMMAND do
+    command "#{BASE_COMMAND} -deactivate"
+  end
+end
 
-# deactivate
-# sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -deactivate -configure -access -off
+action :install do
+  execute BASE_COMMAND do
+    command "#{BASE_COMMAND} -install #{new_resource.install_package}"
+  end
+end
 
-# restart
-# sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -restart -agent
+action :uninstall do
+  execute BASE_COMMAND do
+    command "#{BASE_COMMAND} -uninstall #{new_resource.uninstall_options.join(' ')}"
+  end
+end
+
+action :stop do
+  execute BASE_COMMAND do
+    command "#{BASE_COMMAND} -stop"
+  end
+end
+
+action :restart do
+  execute BASE_COMMAND do
+    command "#{BASE_COMMAND} -restart #{new_resource.restart_options.join(' ')}"
+  end
+end
+
+action :configure do
+  configure_options = []
+  if new_resource.user
+    configure_options.insert(0, "-users #{new_resource.users.join(',')}")
+  if new_resource.privs
+    configure_options.insert(0, "-privs #{new_resource.privs.join(' ')}")
+  if new_resource.access
+    configure_options.insert(0, "-access #{new_resource.access}")
+  if new_resource.computerinfo
+    configure_options.insert(0, "-computerinfo #{new_resource.computerinfo.join(' ')}")
+  if new_resource.clientopts
+    configure_options.insert(0, "-clientopts #{new_resource.clientopts.join(' ')}")
+  execute BASE_COMMAND do
+    command "#{BASE_COMMAND} -configure #{configure_options.join(' ')}"
+  end
+end
