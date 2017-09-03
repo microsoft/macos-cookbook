@@ -1,14 +1,6 @@
 bginfo_repo = 'http://apexlabgit.corp.microsoft.com/mike/BG-Info-Mac.git'
 bginfo_src  = "/Users/#{node['macos']['admin_user']}/bginfo_src"
-
-package 'imagemagick' do
-  action :install
-end
-
-package 'ghostscript' do
-  action :install
-end
-
+include_recipe 'homebrew'
 git 'BGInfo Repo' do
   repository bginfo_repo
   destination bginfo_src
