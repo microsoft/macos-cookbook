@@ -2,7 +2,9 @@ auto_login_user = shell_out!('defaults read /Library/Preferences/com.apple.login
 bginfo_repo = 'http://apexlabgit.corp.microsoft.com/mike/BG-Info-Mac.git'
 bginfo_src  = "/Users/#{auto_login_user}/bginfo_src"
 bginfo_home = '/Users/Shared/BGInfo'
+
 include_recipe 'homebrew'
+
 git 'BGInfo Repo' do
   repository bginfo_repo
   destination bginfo_src
@@ -16,8 +18,6 @@ execute 'BGInfo Installer' do
   user auto_login_user
 end
 
-
-directory '/Users/Shared/BGInfo' do
 directory bginfo_home do
   owner auto_login_user
   recursive true
