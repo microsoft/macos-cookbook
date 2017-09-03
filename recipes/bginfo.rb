@@ -1,21 +1,21 @@
+auto_login_user = shell_out!('defaults read /Library/Preferences/com.apple.loginwindow autoLoginUser').stdout.strip
 bginfo_repo = 'http://apexlabgit.corp.microsoft.com/mike/BG-Info-Mac.git'
-bginfo_src  = "/Users/#{node['macos']['admin_user']}/bginfo_src"
+bginfo_src  = "/Users/#{auto_login_user}/bginfo_src"
 bginfo_home = '/Users/Shared/BGInfo'
 include_recipe 'homebrew'
 git 'BGInfo Repo' do
   repository bginfo_repo
   destination bginfo_src
-  user node['macos']['admin_user']
-  group node['macos']['admin_user']
+  user auto_login_user
+  group auto_login_user
   action :sync
 end
 
 execute 'BGInfo Installer' do
   command "#{bginfo_src}/setup.command #{node['macos']['admin_password']}"
-  user node['macos']['admin_user']
+  user auto_login_user
 end
 
-auto_login_user = shell_out!('defaults read /Library/Preferences/com.apple.loginwindow autoLoginUser').stdout.strip
 
 directory '/Users/Shared/BGInfo' do
 directory bginfo_home do
