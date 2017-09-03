@@ -23,10 +23,12 @@ directory bginfo_home do
   recursive true
 end
 
-bginfo_files = %w(bginfo.command final_bg.gif macstorage.sh storage.rb)
+bginfo_home_contents = %w(bginfo.command
+                          macstorage.sh
+                          final_bg.gif
+                          storage.rb)
 
-bginfo_files.each do |file|
-  file "/Users/Shared/BGInfo/#{file}" do
+bginfo_home_contents.each do |file|
   file "#{bginfo_home}/#{file}" do
     owner auto_login_user
   end
