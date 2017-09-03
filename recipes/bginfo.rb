@@ -9,7 +9,6 @@ git 'BGInfo Repo' do
   repository bginfo_repo
   destination bginfo_src
   user auto_login_user
-  group auto_login_user
   action :sync
 end
 
