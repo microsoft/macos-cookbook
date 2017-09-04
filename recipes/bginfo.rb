@@ -2,13 +2,6 @@ bginfo_repo = 'http://apexlabgit.corp.microsoft.com/mike/BG-Info-Mac.git'
 bginfo_src  = '/tmp/bginfo_src'
 bginfo_home = '/Users/Shared/BGInfo'
 
-ruby_block 'determine BGInfo owner' do
-  block do
-    node.default['bginfo']['owner'] =
-      shell_out!('defaults read /Library/Preferences/com.apple.loginwindow autoLoginUser').stdout.strip
-  end
-end
-
 package 'imagemagick'
 package 'ghostscript'
 
@@ -20,6 +13,14 @@ end
 
 execute 'BGInfo Installer' do
   command "#{bginfo_src}/setup.command"
+end
+
+ruby_block 'set BGInfo owner to autoLoginUser' do
+  block do
+    loginwindow_plist = '/Library/Preferences/com.apple.loginwindow'
+    auto_login_user = "defaults read #{loginwindow_plist} autoLoginUser"
+    node.default['bginfo']['owner'] = shell_out!(auto_login_user).stdout.strip
+  end
 end
 
 directory bginfo_home do
