@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'macos::insomnia' do
+describe 'macos::xcode' do
   context 'When all attributes are default, on macOS 10.12' do
     let(:chef_run) do
       runner = ChefSpec::ServerRunner.new(platform: 'mac_os_x', version: '10.12')

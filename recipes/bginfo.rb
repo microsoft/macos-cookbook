@@ -23,7 +23,7 @@ ruby_block 'set BGInfo owner to autoLoginUser' do
 end
 
 directory bginfo_home do
-  owner user lazy { node['bginfo']['owner'] }
+  owner user(lazy { node['bginfo']['owner'] })
   recursive true
 end
 
@@ -34,6 +34,6 @@ bginfo_home_contents = %w(bginfo.command
 
 bginfo_home_contents.each do |file|
   file "#{bginfo_home}/#{file}" do
-    owner user lazy { node['bginfo']['owner'] }
+    owner user(lazy { node['bginfo']['owner'] })
   end
 end
