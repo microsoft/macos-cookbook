@@ -2,14 +2,14 @@ bginfo_repo = 'http://apexlabgit.corp.microsoft.com/mike/BG-Info-Mac.git'
 bginfo_src  = '/tmp/bginfo_src'
 bginfo_home = '/Users/Shared/BGInfo'
 
-package 'imagemagick'
-package 'ghostscript'
-
 git 'BGInfo Repo' do
   repository bginfo_repo
   destination bginfo_src
   action :sync
 end
+
+package 'imagemagick'
+package 'ghostscript'
 
 execute 'BGInfo Installer' do
   command "#{bginfo_src}/setup.command"
