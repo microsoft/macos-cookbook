@@ -5,7 +5,6 @@ bginfo_home = '/Users/Shared/BGInfo'
 git 'BGInfo Repo' do
   repository bginfo_repo
   destination bginfo_src
-  action :sync
 end
 
 package 'imagemagick'
