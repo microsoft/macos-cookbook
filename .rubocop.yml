@@ -1,0 +1,145 @@
+AllCops:
+  TargetRubyVersion: 2.0
+  Exclude:
+    - vendor/**/*
+    - Guardfile
+
+AlignParameters:
+  Enabled: false
+Documentation:
+  Enabled: false
+Encoding:
+  Enabled: false
+Style/FileName:
+  Enabled: false
+Style/Alias:
+  Enabled: false
+Layout/SpaceBeforeFirstArg:
+  Enabled: false
+Style/ClassAndModuleChildren:
+  Enabled: false
+Style/DoubleNegation:
+  Enabled: false
+
+# disable all the length cops as they're not appropriate for cookbooks
+LineLength:
+  Enabled: false
+MethodLength:
+  Enabled: false
+BlockLength:
+  Enabled: false
+Metrics/AbcSize:
+  Enabled: false
+Metrics/ModuleLength:
+  Enabled: false
+Metrics/ClassLength:
+  Enabled: false
+Metrics/CyclomaticComplexity:
+  Enabled: false
+PerceivedComplexity:
+  Enabled: false
+
+# https://github.com/chef/cookstyle/pull/5
+Style/TrailingCommaInLiteral:
+  Enabled: true
+  EnforcedStyleForMultiline: comma
+
+# Underscores in numbers are unnecessary, especially for port numbers where they are unexpected
+Style/NumericLiterals:
+  Enabled: false
+
+# This often triggers no matter what you do with inspec/serverspec matchers
+Lint/AmbiguousRegexpLiteral:
+  Exclude:
+    - '**/test/**/*'
+
+# some names are not ascii and this prevents copyright comments
+Style/AsciiComments:
+  Enabled: false
+
+# avoid case statements where the 2nd 'when' would never fire
+Lint/DuplicateCaseCondition:
+  Enabled: true
+
+# empty expressions serve no purpose
+Lint/EmptyExpression:
+  Enabled: true
+
+# when in a case statement should always do something
+Lint/EmptyWhen:
+  Enabled: true
+
+# %w('something') is almost always a typo
+Lint/PercentStringArray:
+  Enabled: true
+
+# %w(:something) should be a string not a symbol
+Lint/PercentSymbolArray:
+  Enabled: true
+
+# if you rescue Exception, then rescue say StandardError you're gonna have a bad time
+Lint/ShadowedException:
+  Enabled: true
+
+# We're on modern ruby so let's assume Integer everywhere
+Lint/UnifiedInteger:
+  Enabled: true
+
+# consistent hash key/value checks
+Style/PreferredHashMethods:
+  Enabled: true
+
+# when iterating a fixed number of times this is much easier to read
+Style/EachForSimpleLoop:
+  Enabled: true
+
+# a case statement without a condition is just an if statement
+Style/EmptyCaseCondition:
+  Enabled: true
+
+# == 0 is more performant than .zero? and .zero? also introduced several regressions
+Style/NumericPredicate:
+  Enabled: true
+  EnforcedStyle: comparison
+
+# this is bad %w(something     another_thing   one_more)
+Layout/SpaceInsideArrayPercentLiteral:
+  Enabled: true
+
+# disable this until there's an autocorrect (0.47 has one)
+Bundler/OrderedGems:
+  Enabled: false
+
+# There's no reason to have a gem listed twice
+Bundler/DuplicatedGem:
+  Enabled: true
+
+# This results in very confusing code to read with little perf benefit
+Performance/Casecmp:
+  Enabled: false
+
+# maintain the previous array behavior in previous cookstyle releases
+Style/PercentLiteralDelimiters:
+   PreferredDelimiters:
+    '%':  ()
+    '%i': ()
+    '%I': ()
+    '%q': ()
+    '%Q': ()
+    '%r': '{}'
+    '%s': ()
+    '%w': ()
+    '%W': ()
+    '%x': ()
+
+# backwards conditions are hard to read
+Style/YodaCondition:
+  Enabled: true
+
+Layout/EmptyLinesAroundExceptionHandlingKeywords:
+  Enabled: true
+
+# enforce lf to avoid failures on Windows systems
+Layout/EndOfLine:
+  Enabled: true
+  EnforcedStyle: lf
