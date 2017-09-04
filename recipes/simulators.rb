@@ -1,4 +1,4 @@
-n = node['apex_automation']['simulator']['to_install']
+n = node['macos']['simulator']['to_install']
 
 ruby_block('set node simulator attributes') {
   block do
@@ -27,8 +27,8 @@ ruby_block('set node simulator attributes') {
 
     highest_eligible = highest_eligible_simulator(simulator_list, major_version_to_install)
 
-    node.default['apex_automation']['simulator']['to_install']        = highest_eligible
-    node.default['apex_automation']['simulator']['already_installed'] =
+    node.default['macos']['simulator']['to_install']        = highest_eligible
+    node.default['macos']['simulator']['already_installed'] =
         available_versions.include?("#{highest_eligible} Simulator (installed)")
   end
 }
@@ -37,5 +37,5 @@ simulators = '/usr/local/bin/xcversion simulators'
 
 execute 'Install additional iOS simulator' do
   command(lazy { "#{simulators} --install='#{n}'" })
-  not_if { node['apex_automation']['simulator']['already_installed'] }
+  not_if { node['macos']['simulator']['already_installed'] }
 end
