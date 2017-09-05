@@ -1,6 +1,4 @@
-n = node['macos']['simulator']['to_install']
-
-ruby_block('set node simulator attributes') {
+ruby_block('set node simulator attributes') do
   block do
     def available_versions
       shell_out!('/usr/local/bin/xcversion simulators').stdout
@@ -23,7 +21,8 @@ ruby_block('set node simulator attributes') {
           .max.join(' ')
     end
 
-    major_version_to_install = get_major_simulator_version.to_i - n.to_i
+    n = node['macos']['simulator']['to_install']
+    major_version_to_install = included_major_simulator_version.to_i - n.to_i
 
     highest_eligible = highest_eligible_simulator(simulator_list, major_version_to_install)
 
@@ -31,7 +30,7 @@ ruby_block('set node simulator attributes') {
     node.default['macos']['simulator']['already_installed'] =
         available_versions.include?("#{highest_eligible} Simulator (installed)")
   end
-}
+end
 
 simulators = '/usr/local/bin/xcversion simulators'
 
