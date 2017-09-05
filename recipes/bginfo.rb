@@ -7,6 +7,7 @@ git 'BGInfo Repo' do
   destination bginfo_src
 end
 
+include_recipe 'homebrew'
 package 'imagemagick'
 package 'ghostscript'
 
