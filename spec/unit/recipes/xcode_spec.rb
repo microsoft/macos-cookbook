@@ -1,9 +1,21 @@
 require 'spec_helper'
 
 describe 'macos::xcode' do
-  context 'When all attributes are default, on macOS 10.12' do
+
+
+  context 'Xcode recipe converges successfully' do
+
+    before do
+      stub_data_bag_item('credentials', 'apple_id').and_return(['apple_id'])
+      stub_data_bag_item('credentials', 'apple_id').and_return(['password'])
+    end
+
+    before do
+      allow_any_instance_of(Chef::Resource).to receive(:xcode_installed?).and_return(true)
+    end
+
     let(:chef_run) do
-      runner = ChefSpec::ServerRunner.new(platform: 'mac_os_x', version: '10.12')
+      runner = ChefSpec::SoloRunner.new(platform: 'mac_os_x', version: '10.12')
       runner.converge(described_recipe)
     end
 
