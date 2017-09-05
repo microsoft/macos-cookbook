@@ -8,7 +8,7 @@ ruby_block('set node simulator attributes') do
       available_versions.split(/\n/).map { |version| version.split[0...2] }
     end
 
-    def get_major_simulator_version
+    def included_major_simulator_version
       version_matcher    = /\d{1,2}\.\d{0,2}\.?\d{0,3}/
       show_sdks_output   = shell_out!('/usr/bin/xcodebuild -showsdks').stdout
       included_simulator = show_sdks_output.match(/Simulator - iOS (?<version>#{version_matcher})/)
@@ -18,7 +18,7 @@ ruby_block('set node simulator attributes') do
     def highest_eligible_simulator(simulators, sim_version)
       simulator_requirement = Gem::Dependency.new('iOS', "~> #{sim_version}")
       simulators.select { |name, version| simulator_requirement.match?(name, version) }
-          .max.join(' ')
+                .max.join(' ')
     end
 
     n = node['macos']['simulator']['to_install']
@@ -28,7 +28,7 @@ ruby_block('set node simulator attributes') do
 
     node.default['macos']['simulator']['to_install']        = highest_eligible
     node.default['macos']['simulator']['already_installed'] =
-        available_versions.include?("#{highest_eligible} Simulator (installed)")
+      available_versions.include?("#{highest_eligible} Simulator (installed)")
   end
 end
 
