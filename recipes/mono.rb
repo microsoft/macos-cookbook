@@ -8,6 +8,6 @@ remote_file "#{Chef::Config[:file_cache_path]}/#{package}" do
 end
 
 execute 'install-mono' do
-  command "installer -pkg #{Chef::Config[:file_cache_path]} -target /"
+  command "installer -pkg #{Chef::Config[:file_cache_path]}/#{package} -target /"
   not_if 'pkgutil --pkgs=com.xamarin.mono-MDK.pkg'
 end
