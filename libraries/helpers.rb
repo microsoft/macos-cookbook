@@ -15,7 +15,7 @@ module PspdfkitCiMacos
         shell_out!("DEVELOPER_DIR=#{path} xcodebuild -version").stdout.split.last
       end
 
-      installed_xcode_versions.include?(node['apex_automation']['xcode']['build_version'])
+      installed_xcode_versions.include?(node['macos']['xcode']['build_version'])
     end
   end
 end
