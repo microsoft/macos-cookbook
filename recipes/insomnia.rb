@@ -29,5 +29,5 @@ defaults '/Library/Preferences/com.apple.PowerManagement' do
 end
 
 execute 'defaults -currentHost write com.apple.screensaver idleTime 0' do
-  user node['apex_automation']['test_user']
+  user node['macos']['admin_user']
 end
