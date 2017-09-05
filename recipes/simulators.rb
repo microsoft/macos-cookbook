@@ -21,7 +21,7 @@ ruby_block('set node simulator attributes') do
                 .max.join(' ')
     end
 
-    n = node['macos']['simulator']['to_install']
+    n = node['macos']['simulator']['previous_versions_to_install']
     major_version_to_install = included_major_simulator_version.to_i - n.to_i
 
     highest_eligible = highest_eligible_simulator(simulator_list, major_version_to_install)
