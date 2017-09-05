@@ -2,6 +2,10 @@
 driver:
   name: vagrant
   provider: parallels
+  customize:
+    memory: 8192
+    cpus: 2
+
 
 provisioner:
   name: chef_zero
@@ -26,6 +30,3 @@ suites:
       inspec_tests:
         - test/smoke/default
     attributes:
-    customize:
-      memory: 8192
-      cpus: 4
