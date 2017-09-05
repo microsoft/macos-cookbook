@@ -10,8 +10,8 @@ ruby_block('set node simulator attributes') do
 
     def included_major_simulator_version
       version_matcher    = /\d{1,2}\.\d{0,2}\.?\d{0,3}/
-      show_sdks_output   = shell_out!('/usr/bin/xcodebuild -showsdks').stdout
-      included_simulator = show_sdks_output.match(/Simulator - iOS (?<version>#{version_matcher})/)
+      sdks               = shell_out!('/usr/bin/xcodebuild -showsdks').stdout
+      included_simulator = sdks.match(/Simulator - iOS (?<version>#{version_matcher})/)
       included_simulator[:version]
     end
 
