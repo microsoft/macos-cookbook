@@ -41,5 +41,5 @@ install = '/usr/local/bin/xcversion simulators --install='
 
 execute 'Install additional iOS simulator' do
   command lazy { "#{install}'#{node['macos']['simulator']['to_install']}'" }
-  not_if node['macos']['simulator']['already_installed?']
+  not_if { node['macos']['simulator']['already_installed?'] }
 end
