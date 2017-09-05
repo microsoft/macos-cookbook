@@ -16,8 +16,8 @@ ruby_block('set node simulator attributes') do
     end
 
     def major_version_to_install
-      index = node['macos']['simulator']['previous_versions_to_install']
-      included_major_simulator_version.to_i - index.to_i
+      offset = node['macos']['simulator']['previous_versions_to_install']
+      included_major_simulator_version.to_i - offset.to_i
     end
 
     def highest_eligible_simulator(simulators, major_version)
@@ -32,14 +32,14 @@ ruby_block('set node simulator attributes') do
     already_installed =
       available_versions.include?("#{highest_eligible} Simulator (installed)")
 
-    node.default['macos']['simulator']['to_install']        = highest_eligible
-    node.default['macos']['simulator']['already_installed'] = already_installed
+    node.default['macos']['simulator']['to_install']         = highest_eligible
+    node.default['macos']['simulator']['already_installed?'] = already_installed
   end
 end
 
-simulators = '/usr/local/bin/xcversion simulators'
+install = '/usr/local/bin/xcversion simulators --install='
 
 execute 'Install additional iOS simulator' do
-  command lazy { "#{simulators} --install='#{node['macos']['simulator']['to_install']}'" }
-  not_if { node['macos']['simulator']['already_installed'] }
+  command lazy "#{install}'#{node['macos']['simulator']['to_install']}'"
+  not_if node['macos']['simulator']['already_installed?']
 end
