@@ -4,8 +4,8 @@ temporary_xcode_path = "/Applications/Xcode-#{xcode_version.split(' ')[0]}.app"
 final_xcode_path = "/Applications/Xcode#{'-beta' if node['macos']['xcode']['beta']}.app"
 
 environment = {
-    'XCODE_INSTALL_USER' => data_bag_item('credentials', 'apple_id')[0],
-    'XCODE_INSTALL_PASSWORD' => data_bag_item('credentials', 'apple_id')[1],
+    'XCODE_INSTALL_USER' => data_bag_item('credentials', 'apple_id')['apple_id'],
+    'XCODE_INSTALL_PASSWORD' => data_bag_item('credentials', 'apple_id')['password'],
 }
 
 gem_package 'xcode-install'
