@@ -10,8 +10,8 @@ property :system, [true, false]
 property :user, String
 
 action :run do
-  new_resource.option = 'read' if read_only
-  settings.each do |setting, value|
+  new_resource.option = 'read' if new_resource.read_only
+  new_resource.settings.each do |setting, value|
     cases = { Array.to_s => "-array #{value}",
               Integer.to_s => "-int #{value}",
               TrueClass.to_s => '-bool TRUE',
