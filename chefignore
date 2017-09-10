@@ -105,3 +105,19 @@ Strainerfile
 ###########
 .vagrant
 Vagrantfile
+
+# JetBrains #
+#############
+.idea
+
+# Packer #
+##########
+template.json
+output-parallels-pvm
+
+# Other Chef Stuff #
+####################
+.delivery
+spec
+test
+data_bags
