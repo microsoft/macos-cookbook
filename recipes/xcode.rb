@@ -17,7 +17,7 @@ execute 'xcversion_update' do
 end
 
 execute 'xcversion_install' do
-  command "/usr/local/bin/xcversion install \"#{xcode_version}\" --no-switch --no-progress"
+  command "/usr/local/bin/xcversion install \"#{xcode_version}\" --no-switch"
   environment environment
   creates temporary_xcode_path
   not_if { xcode_installed? }
