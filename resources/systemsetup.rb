@@ -16,7 +16,6 @@ action :run do
     end
   end
 
-
   if new_resource.set
     new_resource.set.each do |flag, setting|
       execute BASE_COMMAND do
