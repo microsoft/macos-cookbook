@@ -22,15 +22,14 @@ ruby_block('set node simulator attributes') do
 
     def highest_eligible_simulator(simulators, major_version)
       simulator_requirement = Gem::Dependency.new('iOS', "~> #{major_version}")
-      simulators.select { |name, version| simulator_requirement.match?(name, version) }
-                .max.join(' ')
+      simulators.select { |name, version| simulator_requirement.match?(name, version) }.max.join(' ')
     end
 
     highest_eligible =
-      highest_eligible_simulator(simulator_list, major_version_to_install)
+        highest_eligible_simulator(simulator_list, major_version_to_install)
 
     already_installed =
-      available_versions.include?("#{highest_eligible} Simulator (installed)")
+        available_versions.include?("#{highest_eligible} Simulator (installed)")
 
     node.default['macos']['simulator']['to_install']         = highest_eligible
     node.default['macos']['simulator']['already_installed?'] = already_installed
