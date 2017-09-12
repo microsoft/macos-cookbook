@@ -25,11 +25,9 @@ ruby_block('set node simulator attributes') do
       simulators.select { |name, version| simulator_requirement.match?(name, version) }.max.join(' ')
     end
 
-    highest_eligible =
-        highest_eligible_simulator(simulator_list, major_version_to_install)
+    highest_eligible = highest_eligible_simulator(simulator_list, major_version_to_install)
 
-    already_installed =
-        available_versions.include?("#{highest_eligible} Simulator (installed)")
+    already_installed = available_versions.include?("#{highest_eligible} Simulator (installed)")
 
     node.default['macos']['simulator']['to_install']         = highest_eligible
     node.default['macos']['simulator']['already_installed?'] = already_installed
