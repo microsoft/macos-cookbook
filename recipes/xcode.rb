@@ -10,17 +10,25 @@ environment = {
 
 gem_package 'xcode-install'
 
+ruby_block do
+  block do
+    xcversion_output = shell_out!('/usr/local/bin/xcversion installed').stdout.split
+    installed_xcodes = xcversion_output.values_at(*versions.each_index.select(&:even?))
+    node.default['macos']['xcode']['already_installed?'] = installed_xcodes.include?(node['macos']['xcode']['version'])
+  end
+end
+
 execute 'xcversion_update' do
-  command '/usr/local/bin/xcversion update'
+  command lazy { '/usr/local/bin/xcversion update' }
   environment environment
-  not_if { xcode_installed? }
+  not_if { node['macos']['xcode']['already_installed?'] }
 end
 
 execute 'xcversion_install' do
-  command "/usr/local/bin/xcversion install \"#{xcode_version}\" --no-switch"
+  command lazy { "/usr/local/bin/xcversion install \"#{xcode_version}\" --no-switch" }
   environment environment
   creates temporary_xcode_path
-  not_if { xcode_installed? }
+  not_if { node['macos']['xcode']['already_installed?'] }
 end
 
 directory final_xcode_path do
