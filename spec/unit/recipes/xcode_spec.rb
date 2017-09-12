@@ -1,17 +1,10 @@
 require 'spec_helper'
 
 describe 'macos::xcode' do
-
-
   context 'Xcode recipe converges successfully' do
-
     before do
       stub_data_bag_item('credentials', 'apple_id').and_return(['apple_id'])
       stub_data_bag_item('credentials', 'apple_id').and_return(['password'])
-    end
-
-    before do
-      allow_any_instance_of(Chef::Resource).to receive(:xcode_installed?).and_return(true)
     end
 
     let(:chef_run) do
