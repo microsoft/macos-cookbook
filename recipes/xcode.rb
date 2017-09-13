@@ -36,7 +36,6 @@ execute 'xcode_select' do
   subscribes :run, 'execute[xcversion_install]', :immediately
 end
 
-# xcode-install accepts the license, but fails sometimes.
 execute 'license' do
   command 'xcodebuild -license accept'
   action :nothing
