@@ -33,8 +33,6 @@ end
 
 execute 'accept Xcode license' do
   command 'xcodebuild -license accept'
-  action :nothing
-  subscribes :run, 'execute[xcode_select]', :immediately
 end
 
 execute 'enable developer mode' do
