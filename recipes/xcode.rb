@@ -1,5 +1,5 @@
 xcode_version = node['macos']['xcode']['version']
-admin_user = node['macos']['admin_user']
+xcode_user = node['macos']['admin_user']
 xcode_path = '/Applications/Xcode.app'
 
 developer_creds = {
