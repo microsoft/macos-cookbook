@@ -1,8 +1,7 @@
 default['macos']['admin_user'] = 'vagrant'
 default['macos']['admin_password'] = 'vagrant'
 
-default['macos']['xcode']['version'] = '8.3.2'
-default['macos']['xcode']['build_version'] = '8E2002'
+default['macos']['xcode']['version'] = '9 GM seed'
 
 default['macos']['simulator']['previous_versions_to_install'] = '1'
 
