@@ -18,20 +18,20 @@ ruby_block 'determine if requested Xcode is already installed' do
   end
 end
 
-execute 'xcversion_update' do
+execute 'get Xcode versions currently available from Apple' do
   command lazy { '/usr/local/bin/xcversion update' }
   environment developer_creds
   not_if { node['macos']['xcode']['already_installed?'] }
 end
 
-execute 'xcversion_install' do
+execute 'installed requested Xcode' do
   command lazy { "/usr/local/bin/xcversion install '#{xcode_version}'" }
   environment developer_creds
   creates xcode_path
   not_if { node['macos']['xcode']['already_installed?'] }
 end
 
-execute 'license' do
+execute 'accept Xcode license' do
   command 'xcodebuild -license accept'
   action :nothing
   subscribes :run, 'execute[xcode_select]', :immediately
