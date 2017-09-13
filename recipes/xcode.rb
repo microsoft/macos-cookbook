@@ -25,16 +25,10 @@ execute 'xcversion_update' do
 end
 
 execute 'xcversion_install' do
-  command lazy { "/usr/local/bin/xcversion install \"#{xcode_version}\" --no-switch" }
+  command lazy { "/usr/local/bin/xcversion install '#{xcode_version}'" }
   environment developer_creds
   creates xcode_path
   not_if { node['macos']['xcode']['already_installed?'] }
-end
-
-execute 'xcode_select' do
-  command "xcode-select -s #{xcode_path}/Contents/Developer"
-  action :nothing
-  subscribes :run, 'execute[xcversion_install]', :immediately
 end
 
 execute 'license' do
