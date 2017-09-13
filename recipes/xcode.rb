@@ -12,7 +12,7 @@ gem_package 'xcode-install'
 ruby_block 'determine if requested Xcode is already installed' do
   block do
     xcversion_output = shell_out!('/usr/local/bin/xcversion installed').stdout.split
-    installed_xcodes = xcversion_output.values_at(*versions.each_index.select(&:even?))
+    installed_xcodes = xcversion_output.values_at(*xcversion_output.each_index.select(&:even?))
     node.default['macos']['xcode']['already_installed?'] =
       installed_xcodes.include?(node['macos']['xcode']['version'])
   end
