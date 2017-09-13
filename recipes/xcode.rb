@@ -9,7 +9,7 @@ developer_creds = {
 
 gem_package 'xcode-install'
 
-ruby_block do
+ruby_block 'determine if requested Xcode is already installed' do
   block do
     xcversion_output = shell_out!('/usr/local/bin/xcversion installed').stdout.split
     installed_xcodes = xcversion_output.values_at(*versions.each_index.select(&:even?))
