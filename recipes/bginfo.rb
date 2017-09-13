@@ -28,13 +28,8 @@ directory bginfo_home do
   recursive true
 end
 
-bginfo_home_contents = %w(bginfo.command
-                          macstorage.sh
-                          final_bg.gif
-                          storage.rb)
-
-bginfo_home_contents.each do |file|
-  file "#{bginfo_home}/#{file}" do
+Dir["#{bginfo_home}/*"].each do |path|
+  file path do
     owner lazy { node['bginfo']['owner'] }
   end
 end
