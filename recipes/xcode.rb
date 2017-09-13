@@ -1,59 +1,39 @@
 xcode_version = node['macos']['xcode']['version']
-admin_user = node['macos']['admin_user']
-temporary_xcode_path = "/Applications/Xcode-#{xcode_version.split(' ')[0]}.app"
-final_xcode_path = "/Applications/Xcode#{'-beta' if node['macos']['xcode']['beta']}.app"
+xcode_user = node['macos']['admin_user']
+xcode_path = '/Applications/Xcode.app'
+xcversion = '/usr/local/bin/xcversion'
 
-environment = {
-    'XCODE_INSTALL_USER' => data_bag_item('credentials', 'apple_id')['apple_id'],
-    'XCODE_INSTALL_PASSWORD' => data_bag_item('credentials', 'apple_id')['password'],
+developer_creds = {
+  'XCODE_INSTALL_USER' => data_bag_item('credentials', 'apple_id')['apple_id'],
+  'XCODE_INSTALL_PASSWORD' => data_bag_item('credentials', 'apple_id')['password'],
 }
 
 gem_package 'xcode-install'
 
-ruby_block do
+ruby_block 'determine if requested Xcode is already installed' do
   block do
-    xcversion_output = shell_out!('/usr/local/bin/xcversion installed').stdout.split
-    installed_xcodes = xcversion_output.values_at(*versions.each_index.select(&:even?))
-    node.default['macos']['xcode']['already_installed?'] = installed_xcodes.include?(node['macos']['xcode']['version'])
+    xcversion_output = shell_out!("#{xcversion} installed").stdout.split
+    installed_xcodes = xcversion_output.values_at(*xcversion_output.each_index.select(&:even?))
+    node.default['macos']['xcode']['already_installed?'] =
+      installed_xcodes.include?(node['macos']['xcode']['version'])
   end
 end
 
-execute 'xcversion_update' do
-  command lazy { '/usr/local/bin/xcversion update' }
-  environment environment
+execute 'get Xcode versions currently available from Apple' do
+  command lazy { "#{xcversion} update" }
+  environment developer_creds
   not_if { node['macos']['xcode']['already_installed?'] }
 end
 
-execute 'xcversion_install' do
-  command lazy { "/usr/local/bin/xcversion install \"#{xcode_version}\" --no-switch" }
-  environment environment
-  creates temporary_xcode_path
+execute 'installed requested Xcode' do
+  command lazy { "#{xcversion} install '#{xcode_version}'" }
+  environment developer_creds
+  creates xcode_path
   not_if { node['macos']['xcode']['already_installed?'] }
 end
 
-directory final_xcode_path do
-  recursive true
-  action :nothing
-  subscribes :delete, 'execute[xcversion_install]', :immediately
-end
-
-execute "mv #{temporary_xcode_path} #{final_xcode_path}" do
-  only_if "test -d #{temporary_xcode_path}"
-  action :nothing
-  subscribes :run, 'execute[xcversion_install]', :immediately
-end
-
-execute 'xcode_select' do
-  command "xcode-select -s #{final_xcode_path}/Contents/Developer"
-  action :nothing
-  subscribes :run, "execute[mv #{temporary_xcode_path} #{final_xcode_path}]", :immediately
-end
-
-# xcode-install accepts the license, but fails sometimes.
-execute 'license' do
+execute 'accept Xcode license' do
   command 'xcodebuild -license accept'
-  action :nothing
-  subscribes :run, 'execute[xcode_select]', :immediately
 end
 
 execute 'enable developer mode' do
@@ -61,5 +41,5 @@ execute 'enable developer mode' do
 end
 
 execute 'add admin user to Developer group' do
-  command "dscl . append /Groups/_developer GroupMembership #{admin_user}"
+  command "dscl . append /Groups/_developer GroupMembership #{xcode_user}"
 end
