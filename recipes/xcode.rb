@@ -2,7 +2,7 @@ xcode_version = node['macos']['xcode']['version']
 admin_user = node['macos']['admin_user']
 xcode_path = '/Applications/Xcode.app'
 
-environment = {
+developer_creds = {
     'XCODE_INSTALL_USER' => data_bag_item('credentials', 'apple_id')['apple_id'],
     'XCODE_INSTALL_PASSWORD' => data_bag_item('credentials', 'apple_id')['password'],
 }
@@ -19,13 +19,13 @@ end
 
 execute 'xcversion_update' do
   command lazy { '/usr/local/bin/xcversion update' }
-  environment environment
+  environment developer_creds
   not_if { node['macos']['xcode']['already_installed?'] }
 end
 
 execute 'xcversion_install' do
   command lazy { "/usr/local/bin/xcversion install \"#{xcode_version}\" --no-switch" }
-  environment environment
+  environment developer_creds
   creates xcode_path
   not_if { node['macos']['xcode']['already_installed?'] }
 end
