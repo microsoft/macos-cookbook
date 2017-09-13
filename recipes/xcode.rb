@@ -3,8 +3,8 @@ xcode_user = node['macos']['admin_user']
 xcode_path = '/Applications/Xcode.app'
 
 developer_creds = {
-    'XCODE_INSTALL_USER' => data_bag_item('credentials', 'apple_id')['apple_id'],
-    'XCODE_INSTALL_PASSWORD' => data_bag_item('credentials', 'apple_id')['password'],
+  'XCODE_INSTALL_USER' => data_bag_item('credentials', 'apple_id')['apple_id'],
+  'XCODE_INSTALL_PASSWORD' => data_bag_item('credentials', 'apple_id')['password'],
 }
 
 gem_package 'xcode-install'
@@ -13,7 +13,8 @@ ruby_block do
   block do
     xcversion_output = shell_out!('/usr/local/bin/xcversion installed').stdout.split
     installed_xcodes = xcversion_output.values_at(*versions.each_index.select(&:even?))
-    node.default['macos']['xcode']['already_installed?'] = installed_xcodes.include?(node['macos']['xcode']['version'])
+    node.default['macos']['xcode']['already_installed?'] =
+      installed_xcodes.include?(node['macos']['xcode']['version'])
   end
 end
 
@@ -47,5 +48,5 @@ execute 'enable developer mode' do
 end
 
 execute 'add admin user to Developer group' do
-  command "dscl . append /Groups/_developer GroupMembership #{admin_user}"
+  command "dscl . append /Groups/_developer GroupMembership #{xcode_user}"
 end
