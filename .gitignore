@@ -75,6 +75,8 @@ kitchen-tests/vendor
 .idea/**/tasks.xml
 .idea/dictionaries
 .rubocop.yml
+.idea/markdown-navigator.xml
+.idea/markdown-navigator
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/
