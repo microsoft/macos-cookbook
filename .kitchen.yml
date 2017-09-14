@@ -2,9 +2,13 @@
 driver:
   name: vagrant
   provider: parallels
+  customize:
+    memory: 8192
+    cpus: 2
+
 
 provisioner:
-  name: chef_solo
+  name: chef_zero
   # You may wish to disable always updating cookbooks in CI or other testing environments.
   # For example:
   #   always_update_cookbooks: <%= !ENV['CI'] %>
@@ -14,10 +18,9 @@ verifier:
   name: inspec
 
 platforms:
-  - name: apex/macos-10.12.5
+  - name: apex/macos-10.12.6
     driver:
-      box: apex/macos-10.12.5
-      username: admin
+      box: apex/macos-10.12.6
 
 suites:
   - name: default
@@ -27,6 +30,3 @@ suites:
       inspec_tests:
         - test/smoke/default
     attributes:
-    customize:
-      memory: 8192
-      cpus: 4
