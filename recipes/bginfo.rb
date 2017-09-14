@@ -2,9 +2,8 @@ bginfo_repo = 'http://apexlabgit.corp.microsoft.com/mike/BG-Info-Mac.git'
 bginfo_src  = '/tmp/bginfo_src'
 bginfo_home = '/Users/Shared/BGInfo'
 
-git 'BGInfo Repo' do
+git bginfo_src do
   repository bginfo_repo
-  destination bginfo_src
 end
 
 include_recipe 'homebrew'
