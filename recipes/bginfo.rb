@@ -15,10 +15,10 @@ package 'ghostscript'
 git bginfo_home do
   repository 'http://apexlabgit.corp.microsoft.com/mike/BG-Info-Mac.git'
 end
+
 directory bginfo_home do
   owner lazy { node['bginfo']['owner'] }
-  recursive true
-  mode 0754
+  group 'staff'
 end
 
 Dir["#{bginfo_src}/*"].each do |path|
