@@ -28,9 +28,8 @@ bginfo_home_contents = %w(bginfo.command
 
 bginfo_home_contents.each do |file|
   file "#{bginfo_home}/#{file}" do
-    content ::File.open(path).read
     owner lazy { node['bginfo']['owner'] }
-    mode 0777
+    group 'staff'
   end
 end
 
