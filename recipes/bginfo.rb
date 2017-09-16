@@ -33,8 +33,10 @@ bginfo_home_contents.each do |file|
   end
 end
 
-launchd 'com.microsoft.bginfo.plist' do
-  program '/Users/Shared/BGInfo/bginfo.command'
+launchd 'com.microsoft.bginfo' do
+  program "#{bginfo_home}/bginfo.command"
+  start_calendar_interval 'Hour' => 05, 'Minute' => 0
   run_at_load true
+  type 'agent'
   action :enable
 end
