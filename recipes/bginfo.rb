@@ -1,10 +1,5 @@
 bginfo_home = '/Users/Shared/BGInfo'
 
-
-include_recipe 'homebrew'
-package 'imagemagick'
-package 'ghostscript'
-
 ruby_block 'set BGInfo owner to autoLoginUser' do
   block do
     loginwindow_plist = '/Library/Preferences/com.apple.loginwindow'
@@ -12,6 +7,10 @@ ruby_block 'set BGInfo owner to autoLoginUser' do
     node.default['bginfo']['owner'] = shell_out!(auto_login_user).stdout.strip
   end
 end
+
+include_recipe 'homebrew'
+package 'imagemagick'
+package 'ghostscript'
 
 git bginfo_home do
   repository 'http://apexlabgit.corp.microsoft.com/mike/BG-Info-Mac.git'
