@@ -1,10 +1,5 @@
-bginfo_repo = 'http://apexlabgit.corp.microsoft.com/mike/BG-Info-Mac.git'
-bginfo_src  = '/tmp/bginfo_src'
 bginfo_home = '/Users/Shared/BGInfo'
 
-git bginfo_src do
-  repository bginfo_repo
-end
 
 include_recipe 'homebrew'
 package 'imagemagick'
@@ -18,6 +13,9 @@ ruby_block 'set BGInfo owner to autoLoginUser' do
   end
 end
 
+git bginfo_home do
+  repository 'http://apexlabgit.corp.microsoft.com/mike/BG-Info-Mac.git'
+end
 directory bginfo_home do
   owner lazy { node['bginfo']['owner'] }
   recursive true
