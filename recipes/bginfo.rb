@@ -10,10 +10,6 @@ include_recipe 'homebrew'
 package 'imagemagick'
 package 'ghostscript'
 
-execute 'BGInfo Installer' do
-  command "#{bginfo_src}/setup.command"
-end
-
 ruby_block 'set BGInfo owner to autoLoginUser' do
   block do
     loginwindow_plist = '/Library/Preferences/com.apple.loginwindow'
@@ -25,11 +21,15 @@ end
 directory bginfo_home do
   owner lazy { node['bginfo']['owner'] }
   recursive true
+  mode 0754
 end
 
-Dir["#{bginfo_home}/*"].each do |path|
-  file path do
+Dir["#{bginfo_src}/*"].each do |path|
+  file = path.split('/').last
+  file "#{bginfo_home}/#{file}" do
+    content ::File.open(path).read
     owner lazy { node['bginfo']['owner'] }
+    mode 0777
   end
 end
 
