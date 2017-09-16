@@ -21,8 +21,12 @@ directory bginfo_home do
   group 'staff'
 end
 
-Dir["#{bginfo_src}/*"].each do |path|
-  file = path.split('/').last
+bginfo_home_contents = %w(bginfo.command
+                          macstorage.sh
+                          final_bg.gif
+                          storage.rb)
+
+bginfo_home_contents.each do |file|
   file "#{bginfo_home}/#{file}" do
     content ::File.open(path).read
     owner lazy { node['bginfo']['owner'] }
