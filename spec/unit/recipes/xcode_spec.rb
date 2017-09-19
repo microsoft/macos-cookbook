@@ -2,9 +2,10 @@ require 'spec_helper'
 
 describe 'macos::xcode' do
   context 'Xcode recipe converges successfully' do
-    before do
-      stub_data_bag_item('credentials', 'apple_id').and_return(['apple_id'])
-      stub_data_bag_item('credentials', 'apple_id').and_return(['password'])
+    before(:each) do
+      stub_data_bag_item('credentials', 'apple_id').and_return(
+        apple_id: 'developer@apple.com',
+        password: 'apple_id_password')
     end
 
     let(:chef_run) do
