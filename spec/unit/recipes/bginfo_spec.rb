@@ -47,7 +47,7 @@ describe 'macos::bginfo' do
       ).with(
         run_at_load: true,
         type: 'agent',
-        start_calendar_interval: { 'Hour' => 0o5, 'Minute' => 0 }
+        start_calendar_interval: { 'Hour' => 05, 'Minute' => 0 }
       )
     end
   end
