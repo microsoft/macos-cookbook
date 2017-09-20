@@ -1,18 +1,4 @@
-bginfo_repo = 'http://apexlabgit.corp.microsoft.com/mike/BG-Info-Mac.git'
-bginfo_src  = '/tmp/bginfo_src'
 bginfo_home = '/Users/Shared/BGInfo'
-
-git bginfo_src do
-  repository bginfo_repo
-end
-
-include_recipe 'homebrew'
-package 'imagemagick'
-package 'ghostscript'
-
-execute 'BGInfo Installer' do
-  command "#{bginfo_src}/setup.command"
-end
 
 ruby_block 'set BGInfo owner to autoLoginUser' do
   block do
@@ -22,19 +8,35 @@ ruby_block 'set BGInfo owner to autoLoginUser' do
   end
 end
 
-directory bginfo_home do
-  owner lazy { node['bginfo']['owner'] }
-  recursive true
+include_recipe 'homebrew'
+package 'imagemagick'
+package 'ghostscript'
+
+git bginfo_home do
+  repository 'http://apexlabgit.corp.microsoft.com/mike/BG-Info-Mac.git'
 end
 
-Dir["#{bginfo_home}/*"].each do |path|
-  file path do
+directory bginfo_home do
+  owner lazy { node['bginfo']['owner'] }
+  group 'staff'
+end
+
+bginfo_home_contents = %w(bginfo.command
+                          macstorage.sh
+                          final_bg.gif
+                          storage.rb)
+
+bginfo_home_contents.each do |file|
+  file "#{bginfo_home}/#{file}" do
     owner lazy { node['bginfo']['owner'] }
+    group 'staff'
   end
 end
 
-launchd 'com.microsoft.bginfo.plist' do
-  program '/Users/Shared/BGInfo/bginfo.command'
+launchd 'com.microsoft.bginfo' do
+  program "#{bginfo_home}/bginfo.command"
+  start_calendar_interval 'Hour' => 05, 'Minute' => 0
   run_at_load true
+  type 'agent'
   action :enable
 end
