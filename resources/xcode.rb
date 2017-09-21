@@ -3,7 +3,7 @@ default_action :install
 
 property :version, String, name_property: true
 property :path, String, default: '/Applications/Xcode.app'
-property :simulators, Array
+property :ios_simulators, Array
 
 BASE_COMMAND = '/usr/local/bin/xcversion'.freeze
 
@@ -22,7 +22,7 @@ action :install do
   execute 'get Xcode versions currently available from Apple' do
     command "#{BASE_COMMAND} update"
     environment DEVELOPER_CREDENTIALS
-    not_if { already_installed?(new_resource.version) }
+    not_if { xcode_already_installed?(new_resource.version) }
   end
 
   Chef::Log.info("Installing requested Xcode version: #{new_resource.version} at #{new_resource.path}")
@@ -30,7 +30,7 @@ action :install do
     command "#{BASE_COMMAND} install '#{new_resource.version}'"
     environment DEVELOPER_CREDENTIALS
     creates new_resource.path
-    not_if { already_installed?(new_resource.version) }
+    not_if { xcode_already_installed?(new_resource.version) }
     live_stream true
   end
 
@@ -38,11 +38,41 @@ action :install do
   execute 'accept Xcode license' do
     command '/usr/bin/xcodebuild -license accept'
   end
+
+  Chef::Log.info("Installing requested simulator versions: #{new_resource.ios_simulators}")
+  new_resource.ios_simulators.each do |simulator|
+    version = highest_eligible_simulator(simulator_list, simulator)
+    execute "Install iOS #{simulator} simulator" do
+      command "#{BASE_COMMAND} simulators --install='#{version}'"
+      not_if { simulator == included_simulator_version }
+      not_if { available_simulator_versions.include?("#{version} Simulator (installed)") }
+    end
+  end
 end
 
-def already_installed?(version)
+def xcode_already_installed?(version)
   xcversion_output = shell_out!("#{BASE_COMMAND} installed").stdout.split
   installed_xcodes = xcversion_output.values_at(*xcversion_output.each_index.select(&:even?))
   installed_xcodes.include?(version)
   Chef::Log.warn("Xcode #{version} is already installed.")
+end
+
+def available_simulator_versions
+  shell_out!("#{BASE_COMMAND} simulators").stdout
+end
+
+def simulator_list
+  available_simulator_versions.split(/\n/).map { |version| version.split[0...2] }
+end
+
+def included_simulator_version
+  version_matcher    = /\d{1,2}\.\d{0,2}\.?\d{0,3}/
+  sdks               = shell_out!('/usr/bin/xcodebuild -showsdks').stdout
+  included_simulator = sdks.match(/Simulator - iOS (?<version>#{version_matcher})/)
+  included_simulator[:version]
+end
+
+def highest_eligible_simulator(simulators, major_version)
+  simulator_requirement = Gem::Dependency.new('iOS', "~> #{major_version}")
+  simulators.select { |name, version| simulator_requirement.match?(name, version) }.max.join(' ')
 end
