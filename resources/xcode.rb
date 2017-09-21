@@ -8,7 +8,7 @@ property :ios_simulators, Array
 begin
   require 'xcode-install'
 rescue LoadError
-  system 'gem install xcode-install --no-ri --no-doc', out: :close
+  system 'gem install xcode-install --no-ri --no-doc', out: Object::File::NULL
   Gem.clear_paths
 end
 
