@@ -5,6 +5,13 @@ property :version, String, name_property: true
 property :path, String, default: '/Applications/Xcode.app'
 property :ios_simulators, Array
 
+begin
+  require 'xcode-install'
+rescue LoadError
+  system 'gem install xcode-install'
+  Gem.clear_paths
+end
+
 BASE_COMMAND = '/usr/local/bin/xcversion'.freeze
 
 CREDENTIALS_DATA_BAG = Chef::DataBagItem.load(:credentials, :apple_id)
@@ -15,9 +22,6 @@ DEVELOPER_CREDENTIALS = {
 }.freeze
 
 action :install do
-  Chef::Log.info('Installing xcode-install gem')
-  gem_package 'xcode-install'
-
   Chef::Log.debug('Reading currently available versions from Apple')
   execute 'get Xcode versions currently available from Apple' do
     command "#{BASE_COMMAND} update"
@@ -40,7 +44,6 @@ action :install do
   end
 
   Chef::Log.info("Installing requested simulator versions: #{new_resource.ios_simulators}")
-
   new_resource.ios_simulators.each do |simulator|
     next if highest_eligible_simulator(simulator_list, simulator).nil?
     execute "Install iOS #{simulator} simulator" do
