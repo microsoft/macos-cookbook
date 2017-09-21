@@ -40,12 +40,13 @@ action :install do
   end
 
   Chef::Log.info("Installing requested simulator versions: #{new_resource.ios_simulators}")
+
   new_resource.ios_simulators.each do |simulator|
-    version = highest_eligible_simulator(simulator_list, simulator)
+    next if highest_eligible_simulator(simulator_list, simulator).nil?
     execute "Install iOS #{simulator} simulator" do
-      command "#{BASE_COMMAND} simulators --install='#{version}'"
-      not_if { simulator == included_simulator_version }
-      not_if { available_simulator_versions.include?("#{version} Simulator (installed)") }
+      semantic_version = highest_eligible_simulator(simulator_list, simulator).join(' ')
+      command "#{BASE_COMMAND} simulators --install='#{semantic_version}'"
+      not_if { available_simulator_versions.include?("#{semantic_version} Simulator (installed)") }
     end
   end
 end
@@ -57,12 +58,9 @@ def xcode_already_installed?(version)
   Chef::Log.warn("Xcode #{version} is already installed.")
 end
 
-def available_simulator_versions
-  shell_out!("#{BASE_COMMAND} simulators").stdout
-end
-
-def simulator_list
-  available_simulator_versions.split(/\n/).map { |version| version.split[0...2] }
+def highest_eligible_simulator(simulators, major_version)
+  simulator_requirement = Gem::Dependency.new('iOS', "~> #{major_version}")
+  simulators.select { |name, version| simulator_requirement.match?(name, version) }.max
 end
 
 def included_simulator_version
@@ -72,7 +70,10 @@ def included_simulator_version
   included_simulator[:version]
 end
 
-def highest_eligible_simulator(simulators, major_version)
-  simulator_requirement = Gem::Dependency.new('iOS', "~> #{major_version}")
-  simulators.select { |name, version| simulator_requirement.match?(name, version) }.max.join(' ')
+def available_simulator_versions
+  shell_out!("#{BASE_COMMAND} simulators").stdout
+end
+
+def simulator_list
+  available_simulator_versions.split(/\n/).map { |version| version.split[0...2] }
 end
