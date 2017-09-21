@@ -58,7 +58,6 @@ def xcode_already_installed?(version)
   xcversion_output = shell_out!("#{BASE_COMMAND} installed").stdout.split
   installed_xcodes = xcversion_output.values_at(*xcversion_output.each_index.select(&:even?))
   installed_xcodes.include?(version)
-  Chef::Log.warn("Xcode #{version} is already installed.")
 end
 
 def highest_eligible_simulator(simulators, major_version)
