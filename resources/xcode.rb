@@ -13,9 +13,7 @@ rescue LoadError
 end
 
 BASE_COMMAND = '/usr/local/bin/xcversion'.freeze
-
 CREDENTIALS_DATA_BAG = Chef::DataBagItem.load(:credentials, :apple_id)
-
 DEVELOPER_CREDENTIALS = {
   'XCODE_INSTALL_USER' => CREDENTIALS_DATA_BAG['apple_id'],
   'XCODE_INSTALL_PASSWORD' => CREDENTIALS_DATA_BAG['password'],
@@ -72,10 +70,10 @@ def included_simulator_version
   included_simulator[:version]
 end
 
-def available_simulator_versions
-  shell_out!("#{BASE_COMMAND} simulators").stdout
-end
-
 def simulator_list
   available_simulator_versions.split(/\n/).map { |version| version.split[0...2] }
+end
+
+def available_simulator_versions
+  shell_out!("#{BASE_COMMAND} simulators").stdout
 end
