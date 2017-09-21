@@ -36,12 +36,7 @@ action :install do
     live_stream true
   end
 
-  Chef::Log.debug('Accepting Xcode license')
-  execute 'accept Xcode license' do
-    command '/usr/bin/xcodebuild -license accept'
-  end
-
-  Chef::Log.info("Installing requested simulator versions: #{new_resource.ios_simulators}")
+  Chef::Log.warn("Installing requested simulator versions: #{new_resource.ios_simulators}")
   new_resource.ios_simulators.each do |simulator|
     next if highest_eligible_simulator(simulator_list, simulator).nil?
     execute "Install iOS #{simulator} simulator" do
@@ -49,6 +44,11 @@ action :install do
       command "#{BASE_COMMAND} simulators --install='#{semantic_version}'"
       not_if { available_simulator_versions.include?("#{semantic_version} Simulator (installed)") }
     end
+  end
+
+  Chef::Log.debug('Accepting Xcode license')
+  execute 'accept Xcode license' do
+    command '/usr/bin/xcodebuild -license accept'
   end
 end
 
