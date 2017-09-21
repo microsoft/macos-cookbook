@@ -37,8 +37,7 @@ action :install do
 
   Chef::Log.warn("Installing requested simulator versions: #{new_resource.ios_simulators}")
   new_resource.ios_simulators.each do |simulator|
-    next if highest_eligible_sim
-    qulator(simulator_list, simulator).nil?
+    next if highest_eligible_simulator(simulator_list, simulator).nil?
     execute "Install iOS #{simulator} simulator" do
       semantic_version = highest_eligible_simulator(simulator_list, simulator).join(' ')
       command "#{BASE_COMMAND} simulators --install='#{semantic_version}'"
