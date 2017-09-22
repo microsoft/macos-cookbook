@@ -121,4 +121,4 @@ crashlytics-build.properties
 fabric.properties
 
 # Chef Data Bags for local testing
-data_bags/
+data_bags
