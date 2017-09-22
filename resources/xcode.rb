@@ -39,7 +39,6 @@ action :install do
     execute "install simulator: #{simulator}" do
       semantic_version = highest_eligible_simulator(simulator_list, simulator).join(' ')
       command "#{BASE_COMMAND} simulators --install='#{semantic_version}'"
-      subscribes :run, execute["#{BASE_COMMAND} install '#{new_resource.version}'"], :immediately
       not_if { available_simulator_versions.include?("#{semantic_version} Simulator (installed)") }
     end
   end
