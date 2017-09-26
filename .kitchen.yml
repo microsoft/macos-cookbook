@@ -18,9 +18,11 @@ verifier:
   name: inspec
 
 platforms:
-  - name: apex/macos-10.12.6
+  - name: apex/macos-10.13
     driver:
-      box: apex/macos-10.12.6
+      box: apex/macos-10.13
+      box_url: http://imagr.corp.microsoft.com:8099/apex/macos-10.13
+      box_check_update: true
 
 suites:
   - name: default
