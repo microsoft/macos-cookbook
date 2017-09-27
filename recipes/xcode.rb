@@ -1,5 +1,4 @@
 xcode_version = node['macos']['xcode']['version']
-xcode_path = '/Applications/Xcode.app'
 xcversion = '/usr/local/bin/xcversion'
 
 developer_creds = {
@@ -25,28 +24,11 @@ execute 'get Xcode versions currently available from Apple' do
 end
 
 execute 'installed requested Xcode' do
-  command lazy { "#{xcversion} install '#{xcode_version}'" }
+  command lazy { "#{xcversion} install '#{xcode_version}' --no-show-release-notes" }
   environment developer_creds
-  creates xcode_path
   not_if { node['macos']['xcode']['already_installed?'] }
 end
 
 execute 'accept Xcode license' do
   command 'xcodebuild -license accept'
-end
-
-execute 'enable developer mode' do
-  command 'DevToolsSecurity'
-end
-
-ruby_block 'set xcode user to autoLoginUser' do
-  block do
-    loginwindow_plist = '/Library/Preferences/com.apple.loginwindow'
-    auto_login_user = "defaults read #{loginwindow_plist} autoLoginUser"
-    node.default['macos']['xcode']['user'] = shell_out!(auto_login_user).stdout.strip
-  end
-end
-
-execute 'add admin user to Developer group' do
-  command lazy { "dscl . append /Groups/_developer GroupMembership #{node['macos']['xcode']['user']}" }
 end
