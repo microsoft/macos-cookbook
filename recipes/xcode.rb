@@ -1,5 +1,4 @@
 xcode_version = node['macos']['xcode']['version']
-xcode_path = '/Applications/Xcode.app'
 xcversion = '/usr/local/bin/xcversion'
 
 developer_creds = {
@@ -27,7 +26,6 @@ end
 execute 'installed requested Xcode' do
   command lazy { "#{xcversion} install '#{xcode_version}'" }
   environment developer_creds
-  creates xcode_path
   not_if { node['macos']['xcode']['already_installed?'] }
 end
 
