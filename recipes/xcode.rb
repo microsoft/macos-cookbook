@@ -24,7 +24,7 @@ execute 'get Xcode versions currently available from Apple' do
 end
 
 execute 'installed requested Xcode' do
-  command lazy { "#{xcversion} install '#{xcode_version}'" }
+  command lazy { "#{xcversion} install '#{xcode_version}' --no-show-release-notes" }
   environment developer_creds
   not_if { node['macos']['xcode']['already_installed?'] }
 end
