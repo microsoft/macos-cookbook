@@ -29,10 +29,6 @@ execute 'installed requested Xcode' do
   not_if { node['macos']['xcode']['already_installed?'] }
 end
 
-execute 'rename Xcode' do
-  command "mv /Applications/Xcode-#{xcode_version}.app #{xcode_path}"
-end
-
 execute 'accept Xcode license' do
   command 'xcodebuild -license accept'
 end
