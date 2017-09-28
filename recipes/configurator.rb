@@ -1,4 +1,4 @@
-apex_lab_apple_id   = data_bag_item('credentials', 'apple_id')
+app_store_creds = data_bag_item('credentials', 'apple_id')
 configurator_app_id = '1037126344'
 mas_base_command    = '/usr/local/bin/mas'.freeze
 
@@ -6,7 +6,7 @@ include_recipe 'homebrew'
 package 'mas'
 
 execute 'Signin to App Store' do
-  command "#{mas_base_command} signin #{apex_lab_apple_id['apple_id']} #{apex_lab_apple_id['password']}"
+  command "#{mas_base_command} signin #{app_store_creds[:apple_id]} #{app_store_creds[:password]}"
   sensitive true
   not_if "#{mas_base_command} account"
 end
