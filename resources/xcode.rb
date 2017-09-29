@@ -24,7 +24,7 @@ action :install do
   execute 'update available Xcode versions' do
     command "#{BASE_COMMAND} update"
     environment DEVELOPER_CREDENTIALS
-    notifies :run, "install Xcode #{new_resource.version}", :immediately
+    notifies :run, "execute[install Xcode #{new_resource.version}]", :immediately
   end
 
   execute "install Xcode #{new_resource.version}" do
