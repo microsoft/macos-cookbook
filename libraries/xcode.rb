@@ -8,9 +8,13 @@ module Xcode
       installed_xcodes.include?(version)
     end
 
-    def highest_eligible_simulator(simulators, major_version)
+    def simulator_already_installed?(version)
+      available_simulator_versions.include?("#{version} Simulator (installed)")
+    end
+
+    def highest_semantic_simulator_version(simulators, major_version)
       simulator_requirement = Gem::Dependency.new('iOS', "~> #{major_version}")
-      simulators.select { |name, version| simulator_requirement.match?(name, version) }.max
+      simulators.select { |name, version| simulator_requirement.match?(name, version) }.max.join(' ')
     end
 
     def included_major_simulator_version
