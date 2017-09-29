@@ -4,7 +4,7 @@ driver:
   provider: parallels
   customize:
     memory: 8192
-    cpus: 2
+    cpus: 8
 
 
 provisioner:
@@ -18,16 +18,16 @@ verifier:
   name: inspec
 
 platforms:
-  - name: apex/macos-10.13
+  - name: apex/macos-10.12.6
     driver:
-      box: apex/macos-10.13
-      box_url: http://imagr.corp.microsoft.com:8099/apex/macos-10.13
+      box: apex/macos-10.12.6
+      box_url: http://imagr.corp.microsoft.com:8099/apex/macos-10.12.6
       box_check_update: true
 
 suites:
   - name: default
     run_list:
-      - recipe[macos::default]
+      - recipe[macos::xcode]
     verifier:
       inspec_tests:
         - test/smoke/default
