@@ -24,18 +24,20 @@ action :install do
   execute 'update available Xcode versions' do
     command "#{BASE_COMMAND} update"
     environment DEVELOPER_CREDENTIALS
-    not_if { xcode_already_installed?(new_resource.version) }
+    notifies :run, "install Xcode #{new_resource.version}", :immediately
   end
 
-  execute 'install Xcode' do
+  execute "install Xcode #{new_resource.version}" do
     command "#{BASE_COMMAND} install '#{new_resource.version}'"
     environment DEVELOPER_CREDENTIALS
-    creates new_resource.path
     not_if { xcode_already_installed?(new_resource.version) }
+    action :nothing
+    notifies :run, 'execute[accept license]', :immediately
   end
 
   execute 'accept license' do
     command '/usr/bin/xcodebuild -license accept'
+    action :nothing
   end
 
   if new_resource.ios_simulators
