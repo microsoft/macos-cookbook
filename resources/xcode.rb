@@ -45,6 +45,7 @@ action :install do
 
       execute "install #{semantic_version} Simulator" do
         command "#{BASE_COMMAND} simulators --install='#{semantic_version}'"
+        environment DEVELOPER_CREDENTIALS
         not_if { available_simulator_versions.include?("#{semantic_version} Simulator (installed)") }
       end
     end
