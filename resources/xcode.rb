@@ -22,14 +22,14 @@ action :install_xcode do
   }.freeze
 
   execute 'update available Xcode versions' do
-    command "#{BASE_COMMAND} update"
     environment DEVELOPER_CREDENTIALS
+    command "#{BASE_COMMAND} update"
     notifies :run, "execute[install Xcode #{new_resource.version}]", :immediately
   end
 
   execute "install Xcode #{new_resource.version}" do
-    command "#{BASE_COMMAND} install '#{new_resource.version}'"
     environment DEVELOPER_CREDENTIALS
+    command "#{BASE_COMMAND} install '#{new_resource.version}'"
     not_if { xcode_already_installed?(new_resource.version) }
     notifies :run, 'execute[accept license]', :immediately
     action :nothing
@@ -48,8 +48,8 @@ action :install_simulators do
       semantic_version = highest_eligible_simulator(simulator_list, simulator).join(' ')
 
       execute 'install Simulator' do
-        command "#{BASE_COMMAND} simulators --install='#{semantic_version}'"
         environment DEVELOPER_CREDENTIALS
+        command "#{BASE_COMMAND} simulators --install='#{semantic_version}'"
         not_if { available_simulator_versions.include?("#{semantic_version} Simulator (installed)") }
       end
     end
