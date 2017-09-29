@@ -34,7 +34,9 @@ action :install do
     not_if { xcode_already_installed?(new_resource.version) }
   end
 
-  new_resource.ios_simulators.each do |simulator|
+  simulators_to_install = new_resource.ios_simulators
+
+  simulators_to_install.each do |simulator|
     next if highest_eligible_simulator(simulator_list, simulator).nil?
     semantic_version = highest_eligible_simulator(simulator_list, simulator).join(' ')
     next if available_simulator_versions.include?("#{semantic_version} Simulator (installed)")
