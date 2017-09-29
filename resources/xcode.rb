@@ -45,7 +45,7 @@ action :install_simulators do
   if new_resource.ios_simulators
     new_resource.ios_simulators.each do |major_simulator_version|
       next if major_simulator_version.to_i >= included_major_simulator_version
-      version = highest_semantic_simulator_version(simulator_list, simulator)
+      version = highest_semantic_simulator_version(simulator_list, major_simulator_version)
 
       execute "install #{version} Simulator" do
         environment DEVELOPER_CREDENTIALS
