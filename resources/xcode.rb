@@ -36,11 +36,9 @@ action :install do
 
   new_resource.ios_simulators.each do |simulator|
     next if highest_eligible_simulator(simulator_list, simulator).nil?
-    execute "install simulator: #{simulator}" do
-      semantic_version = highest_eligible_simulator(simulator_list, simulator).join(' ')
-      command "#{BASE_COMMAND} simulators --install='#{semantic_version}'"
-      not_if { available_simulator_versions.include?("#{semantic_version} Simulator (installed)") }
-    end
+    semantic_version = highest_eligible_simulator(simulator_list, simulator).join(' ')
+    next if available_simulator_versions.include?("#{semantic_version} Simulator (installed)")
+    system("#{BASE_COMMAND} simulators --install='#{semantic_version}'")
   end
 
   execute 'accept license' do
