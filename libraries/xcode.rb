@@ -12,13 +12,13 @@ module Xcode
       available_simulator_versions.include?("#{version} Simulator (installed)")
     end
 
-    def max_semantic_simulator_version(major_version, simulators)
+    def highest_semantic_simulator_version(major_version, simulators)
       requirement = Gem::Dependency.new('iOS', "~> #{major_version}")
-      max = simulators.select { |name, vers| requirement.match?(name, vers) }.max
-      if max.nil?
+      highest = simulators.select { |name, vers| requirement.match?(name, vers) }.highest
+      if highest.nil?
         Chef::Application.fatal!("iOS #{major_version} Simulator no longer available from Apple!")
       else
-        max.join(' ')
+        highest.join(' ')
       end
     end
 
