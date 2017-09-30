@@ -1,6 +1,6 @@
 module Xcode
   module Helper
-    BASE_COMMAND = '/usr/local/bin/xcversion'.freeze
+    BASE_COMMAND ||= '/usr/local/bin/xcversion'.freeze
 
     def xcode_already_installed?(version)
       xcversion_output = shell_out!("#{BASE_COMMAND} installed").stdout.split
