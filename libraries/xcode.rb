@@ -12,12 +12,12 @@ module Xcode
       available_simulator_versions.include?("#{version} Simulator (installed)")
     end
 
-    def highest_semantic_simulator(simulators, major_version)
+    def highest_semantic_simulator(major_version, simulators)
       simulator_requirement = Gem::Dependency.new('iOS', "~> #{major_version}")
       simulators.select { |name, version| simulator_requirement.match?(name, version) }.max.join(' ')
     end
 
-    def included_major_simulator_version
+    def included_simulator_major_version
       version_matcher    = /\d{1,2}\.\d{0,2}\.?\d{0,3}/
       sdks               = shell_out!('/usr/bin/xcodebuild -showsdks').stdout
       included_simulator = sdks.match(/Simulator - iOS (?<version>#{version_matcher})/)
