@@ -31,12 +31,14 @@ action :install_xcode do
     command "#{BASE_COMMAND} install '#{new_resource.version}'"
     creates new_resource.path
     not_if { xcode_already_installed?(new_resource.version) }
-    notifies :run, 'execute[accept license]', :immediate
+  end
+
+  execute "switch Xcode to #{new_resource.path}" do
+    command "xcode-select --switch #{new_resource.path}"
   end
 
   execute 'accept license' do
     command '/usr/bin/xcodebuild -license accept'
-    action :nothing
   end
 end
 
