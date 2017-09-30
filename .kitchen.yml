@@ -4,7 +4,7 @@ driver:
   provider: parallels
   customize:
     memory: 8192
-    cpus: 8
+    cpus: 2
 
 provisioner:
   name: chef_zero
