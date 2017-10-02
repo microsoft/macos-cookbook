@@ -6,26 +6,23 @@ driver:
     memory: 8192
     cpus: 2
 
-
 provisioner:
   name: chef_zero
-  # You may wish to disable always updating cookbooks in CI or other testing environments.
-  # For example:
-  #   always_update_cookbooks: <%= !ENV['CI'] %>
-  always_update_cookbooks: true
 
 verifier:
   name: inspec
 
 platforms:
-  - name: apex/macos-10.12.6
+  - name: apex/macos-10.13
     driver:
-      box: apex/macos-10.12.6
+      box: apex/macos-10.13
+      box_url: http://imagr.corp.microsoft.com:8099/apex/macos-10.13
+      box_check_update: true
 
 suites:
   - name: default
     run_list:
-      - recipe[macos::default]
+      - recipe[macos::xcode]
     verifier:
       inspec_tests:
         - test/smoke/default
