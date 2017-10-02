@@ -1,45 +1,41 @@
-# macos-cookbook
+# macOS Cookbook
 
-## Resources
+This cookbook provides:
+- Resources for configuring and provisioning macOS.
+- Simple recipes for common uses of said recipes
 
-### systemsetup
+### Platforms
 
-The systemsetup resource is a wrapper for `/usr/sbin/systemsetup`. Use the `get` and `set` properties with hashes or
-strings in order to get or set the desired setting.
- 
- 
-Example "set" usage:
+- macOS
+
+### Chef
+
+- Chef 13+
+
+### Attributes
 
 ```ruby
-systemsetup 'keep awake and get time information' do
-  set sleep: 0,
-      computersleep: 0,
-      displaysleep: 0,
-      harddisksleep: 0
-  get %w(networktimeserver timezone)
-end
+node['macos']['admin_user'] = 'vagrant'
+node['macos']['admin_password'] = 'vagrant'
 ```
 
-#### Available settings to use with the `systemsetup` resource:
+Each of these attributes defaults to vagrant since our resources are developed
+with the Vagrant paradigm. In other words, the use and password declared here
+should be an admin user.
 
-    date <mm:dd:yy>
-    time <hh:mm:ss>
-    timezone <timezone>
-    usingnetworktime <on off>
-    networktimeserver <timeserver>
-    sleep <minutes>
-    computersleep <minutes>
-    displaysleep <minutes>
-    harddisksleep <minutes>
-    wakeonmodem <on off>
-    wakeonnetworkaccess <on off>
-    restartpowerfailure <on off>
-    restartfreeze <on off>
-    allowpowerbuttontosleepcomputer <on off>
-    remotelogin <on off>
-    remoteappleevents <on off>
-    computername <computername>
-    localsubnetname <name>
-    startupdisk <disk>
-    waitforstartupafterpowerfailure <seconds>
-    disablekeyboardwhenenclosurelockisengaged <yes no>
+### Resources
+
+- `ard`
+- `name`
+- `defaults`
+- `pmset`
+- `systemsetup`
+- `xcode`
+
+### Recipes
+
+- `disable_software_updates`
+- `keep_awake`
+- `mono`
+- `configurator`
+
