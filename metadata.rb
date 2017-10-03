@@ -1,6 +1,6 @@
 name 'macos'
 maintainer 'Microsoft'
-maintainer_email 'apxlab@microsoft.com'
+maintainer_email 'chef@microsoft.com'
 license 'MIT'
 description 'Resources for configuring and provisioning macOS'
 long_description 'Resources for configuring and provisioning macOS'
