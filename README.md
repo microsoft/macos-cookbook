@@ -2,7 +2,7 @@
 
 This cookbook provides:
 - Resources for configuring and provisioning macOS.
-- Recipes for common uses of the macos-cookbook recources.
+- Recipes that implement common use-cases of the macOS cookbook's recources.
 
 ## Platforms
 
@@ -27,7 +27,7 @@ should be an admin user.
 
 ### Mono
 
-_TBD_
+_TODO_
 
 ---
 
@@ -40,33 +40,7 @@ _TBD_
 - `systemsetup`
 - `xcode`
 
-### ard
-
-#### Syntax
-
-An *ard* resource block declares an `ard` command with specific options using Chef actions. For example:
-
-```ruby
-ard 'activate and configure ard' do
-  action [:activate, :configure]
-end
-```
-
-### defaults
-
-#### Syntax
-
-A *defaults* resource block declares a defaults domain and desired keys and values that wish to be changed. For example, to stop apps
-from relaunching at startup and login:
-
-```ruby
-defaults 'com.apple.loginwindow' do
-  settings 'LoginwindowLaunchesRelaunchApps' => false,
-           'TALLogoutReason' => 'Restart',
-           'TALLogoutSavesState' => false
-  user node['apex_automation']['test_user']
-end
-```
+Checkout the [Wiki](https://github.com/Microsoft/macos-cookbook/wiki) for details about the macOS Cookbook resources.
 
 ---
 
