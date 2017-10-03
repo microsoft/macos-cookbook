@@ -27,7 +27,9 @@ should be an admin user.
 
 ### Mono
 
+_TBD_
 
+---
 
 ## Resources
 
@@ -65,6 +67,8 @@ defaults 'com.apple.loginwindow' do
   user node['apex_automation']['test_user']
 end
 ```
+
+---
 
 ## Recipes
 
