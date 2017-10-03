@@ -4,17 +4,17 @@ This cookbook provides:
 - Resources for configuring and provisioning macOS.
 - Recipes for common uses of the macos-cookbook recources.
 
-### Platforms
+## Platforms
 
 - macOS
 
-### Chef
+## Chef
 
 - Chef 13+
 
-### Attributes
+## Attributes
 
-#### Admin User and Password
+### Admin User and Password
 
 ```ruby
 node['macos']['admin_user'] = 'vagrant'
@@ -25,11 +25,11 @@ Each of these attributes defaults to vagrant since our resources are developed
 with the Vagrant paradigm. In other words, the use and password declared here
 should be an admin user.
 
-#### Mono
+### Mono
 
 
 
-### Resources
+## Resources
 
 - `ard`
 - `name`
@@ -38,9 +38,9 @@ should be an admin user.
 - `systemsetup`
 - `xcode`
 
-#### ard
+### ard
 
-##### Syntax
+#### Syntax
 
 An *ard* resource block declares an `ard` command with specific options using Chef actions. For example:
 
@@ -50,9 +50,9 @@ ard 'activate and configure ard' do
 end
 ```
 
-#### defaults
+### defaults
 
-##### Syntax
+#### Syntax
 
 A *defaults* resource block declares a defaults domain and desired keys and values that wish to be changed. For example, to stop apps
 from relaunching at startup and login:
@@ -66,7 +66,7 @@ defaults 'com.apple.loginwindow' do
 end
 ```
 
-### Recipes
+## Recipes
 
 - `disable_software_updates`
 - `keep_awake`
