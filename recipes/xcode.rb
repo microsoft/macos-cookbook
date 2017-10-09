@@ -1,3 +1,3 @@
-xcode '9' do
-  ios_simulators %w(11 10)
+xcode node['macos']['xcode']['major_version'] do
+  ios_simulators node['macos']['xcode']['simulator']['major_version']
 end
