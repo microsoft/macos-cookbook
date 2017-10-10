@@ -24,7 +24,7 @@ deploy = "chef exec kitchen converge"
 smoke = "chef exec kitchen verify"
 # The functional phase is optional, you can define it by uncommenting
 # the line below and running the command: `delivery local functional`
-# functional = ""
+functional = "echo No functional tests found."
 cleanup = "chef exec kitchen destroy"
 
 # Remote project.toml file

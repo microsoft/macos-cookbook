@@ -6,6 +6,7 @@
 *.un~
 
 # Bundler
+Gemfile
 Gemfile.lock
 bin/*
 .bundle/*
