@@ -33,10 +33,6 @@ action :install_xcode do
     not_if { xcode_already_installed?(new_resource.version) }
   end
 
-  execute "switch Xcode to #{new_resource.path}" do
-    command "xcode-select --switch #{new_resource.path}"
-  end
-
   execute 'accept license' do
     command '/usr/bin/xcodebuild -license accept'
   end
