@@ -7,14 +7,6 @@ property :version, String, name_property: true
 property :path, String, default: '/Applications/Xcode.app'
 property :ios_simulators, Array
 
-semantic_version = new_resource.version.split('.')
-
-version = if semantic_version.length == 2 && semantic_version.last == '0'
-            semantic_version.first
-          else
-            new_resource.version
-          end
-
 action :setup do
   gem_package 'xcode-install' do
     options('--no-document')
@@ -28,6 +20,13 @@ action :install_xcode do
     XCODE_INSTALL_USER:     CREDENTIALS_DATA_BAG['apple_id'],
     XCODE_INSTALL_PASSWORD: CREDENTIALS_DATA_BAG['password'],
   }.freeze
+
+  semantic_version = new_resource.version.split('.')
+  version = if semantic_version.length == 2 && semantic_version.last == '0'
+              semantic_version.first
+            else
+              new_resource.version
+            end
 
   execute 'update available Xcode versions' do
     environment DEVELOPER_CREDENTIALS
