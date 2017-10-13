@@ -36,7 +36,7 @@ action :install_xcode do
   execute "install Xcode #{version}" do
     environment DEVELOPER_CREDENTIALS
     command "#{BASE_COMMAND} install '#{version}'"
-    not_if { xcode_already_installed?(version) }
+    not_if { xcode_already_installed?(new_resource.version) }
   end
 
   execute 'accept license' do
