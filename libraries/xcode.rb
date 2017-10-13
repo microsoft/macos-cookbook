@@ -2,10 +2,10 @@ module Xcode
   module Helper
     BASE_COMMAND ||= '/usr/local/bin/xcversion'.freeze
 
-    def xcode_already_installed?(version)
-      xcversion_output = shell_out!("#{BASE_COMMAND} installed").stdout.split
+    def xcode_already_installed?(semantic_version)
+      xcversion_output = shell_out("#{BASE_COMMAND} installed").stdout.split
       installed_xcodes = xcversion_output.values_at(*xcversion_output.each_index.select(&:even?))
-      installed_xcodes.include?(version)
+      installed_xcodes.include?(semantic_version)
     end
 
     def simulator_already_installed?(version)
