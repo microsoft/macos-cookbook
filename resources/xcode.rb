@@ -7,6 +7,14 @@ property :version, String, name_property: true
 property :path, String, default: '/Applications/Xcode.app'
 property :ios_simulators, Array
 
+semantic_version = new_resource.version.split('.')
+
+version = if semantic_version.length == 2 && semantic_version.last == '0'
+            semantic_version.first
+          else
+            new_resource.version
+          end
+
 action :setup do
   gem_package 'xcode-install' do
     options('--no-document')
@@ -26,10 +34,10 @@ action :install_xcode do
     command "#{BASE_COMMAND} update"
   end
 
-  execute "install Xcode #{new_resource.version}" do
+  execute "install Xcode #{version}" do
     environment DEVELOPER_CREDENTIALS
-    command "#{BASE_COMMAND} install '#{new_resource.version}'"
-    not_if { xcode_already_installed?(new_resource.version) }
+    command "#{BASE_COMMAND} install '#{version}'"
+    not_if { xcode_already_installed?(version) }
   end
 
   execute 'accept license' do
