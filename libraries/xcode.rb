@@ -17,6 +17,11 @@ module Xcode
       end
     end
 
+    def requested_xcode_not_at_path
+      xcode_version = '/Applications/Xcode.app/Contents/version.plist CFBundleShortVersionString'
+      node['macos']['xcode']['version'] != shell_out("defaults read #{xcode_version}").stdout.strip
+    end
+
     def simulator_already_installed?(version)
       available_simulator_versions.include?("#{version} Simulator (installed)")
     end
