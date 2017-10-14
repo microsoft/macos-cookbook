@@ -21,13 +21,6 @@ action :install_xcode do
     XCODE_INSTALL_PASSWORD: CREDENTIALS_DATA_BAG['password'],
   }.freeze
 
-  semantic_version = new_resource.version.split('.')
-  version = if semantic_version.length == 2 && semantic_version.last == '0'
-              semantic_version.first
-            else
-              new_resource.version
-            end
-
   execute 'update available Xcode versions' do
     environment DEVELOPER_CREDENTIALS
     command "#{BASE_COMMAND} update"
@@ -35,7 +28,7 @@ action :install_xcode do
 
   execute "install Xcode #{version}" do
     environment DEVELOPER_CREDENTIALS
-    command "#{BASE_COMMAND} install '#{version}'"
+    command "#{BASE_COMMAND} install '#{xcversion_version(new_resource.version)}'"
     not_if { xcode_already_installed?(new_resource.version) }
   end
 

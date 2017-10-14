@@ -8,6 +8,15 @@ module Xcode
       installed_xcodes.include?(semantic_version)
     end
 
+    def xcversion_version(version)
+      semantic_version = version.split('.')
+      if semantic_version.length == 2 && semantic_version.last == '0'
+        semantic_version.first
+      else
+        version
+      end
+    end
+
     def simulator_already_installed?(version)
       available_simulator_versions.include?("#{version} Simulator (installed)")
     end
