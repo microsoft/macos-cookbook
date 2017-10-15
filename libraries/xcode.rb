@@ -1,19 +1,21 @@
 module Xcode
   module Helper
-    BASE_COMMAND ||= '/usr/local/bin/xcversion'.freeze
+    def xcversion_command
+      '/usr/local/bin/xcversion'.freeze
+    end
 
     def xcode_already_installed?(semantic_version)
-      xcversion_output = shell_out("#{BASE_COMMAND} installed").stdout.split
+      xcversion_output = shell_out("#{xcversion_command} installed").stdout.split
       installed_xcodes = xcversion_output.values_at(*xcversion_output.each_index.select(&:even?))
       installed_xcodes.include?(semantic_version)
     end
 
-    def xcversion_version(version)
-      semantic_version = version.split('.')
-      if semantic_version.length == 2 && semantic_version.last == '0'
-        semantic_version.first
+    def xcversion_version(semantic_version)
+      split_version = semantic_version.split('.')
+      if split_version.length == 2 && split_version.last == '0'
+        split_version.first
       else
-        version
+        semantic_version
       end
     end
 
@@ -22,8 +24,8 @@ module Xcode
       node['macos']['xcode']['version'] != shell_out("defaults read #{xcode_version}").stdout.strip
     end
 
-    def simulator_already_installed?(version)
-      available_simulator_versions.include?("#{version} Simulator (installed)")
+    def simulator_already_installed?(semantic_version)
+      available_simulator_versions.include?("#{semantic_version} Simulator (installed)")
     end
 
     def highest_semantic_simulator_version(major_version, simulators)
@@ -48,7 +50,7 @@ module Xcode
     end
 
     def available_simulator_versions
-      shell_out!("#{BASE_COMMAND} simulators").stdout
+      shell_out!("#{xcversion_command} simulators").stdout
     end
   end
 end
