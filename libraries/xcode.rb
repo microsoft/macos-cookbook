@@ -8,12 +8,12 @@ module Xcode
       installed_xcodes.include?(semantic_version)
     end
 
-    def xcversion_version(version)
-      semantic_version = version.split('.')
-      if semantic_version.length == 2 && semantic_version.last == '0'
-        semantic_version.first
+    def xcversion_version(semantic_version)
+      split_version = semantic_version.split('.')
+      if split_version.length == 2 && split_version.last == '0'
+        split_version.first
       else
-        version
+        semantic_version
       end
     end
 
