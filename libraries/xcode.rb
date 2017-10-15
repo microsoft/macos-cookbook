@@ -2,10 +2,24 @@ module Xcode
   module Helper
     BASE_COMMAND ||= '/usr/local/bin/xcversion'.freeze
 
-    def xcode_already_installed?(version)
-      xcversion_output = shell_out!("#{BASE_COMMAND} installed").stdout.split
+    def xcode_already_installed?(semantic_version)
+      xcversion_output = shell_out("#{BASE_COMMAND} installed").stdout.split
       installed_xcodes = xcversion_output.values_at(*xcversion_output.each_index.select(&:even?))
-      installed_xcodes.include?(version)
+      installed_xcodes.include?(semantic_version)
+    end
+
+    def xcversion_version(version)
+      semantic_version = version.split('.')
+      if semantic_version.length == 2 && semantic_version.last == '0'
+        semantic_version.first
+      else
+        version
+      end
+    end
+
+    def requested_xcode_not_at_path
+      xcode_version = '/Applications/Xcode.app/Contents/version.plist CFBundleShortVersionString'
+      node['macos']['xcode']['version'] != shell_out("defaults read #{xcode_version}").stdout.strip
     end
 
     def simulator_already_installed?(version)
