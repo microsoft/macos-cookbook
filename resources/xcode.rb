@@ -23,12 +23,12 @@ action :install_xcode do
 
   execute 'update available Xcode versions' do
     environment DEVELOPER_CREDENTIALS
-    command "#{BASE_COMMAND} update"
+    command "#{xcversion_command} update"
   end
 
   execute "install Xcode #{new_resource.version}" do
     environment DEVELOPER_CREDENTIALS
-    command "#{BASE_COMMAND} install '#{xcversion_version(new_resource.version)}'"
+    command "#{xcversion_command} install '#{xcversion_version(new_resource.version)}'"
     not_if { xcode_already_installed?(new_resource.version) }
   end
 
@@ -45,7 +45,7 @@ action :install_simulators do
 
       execute "install #{version} Simulator" do
         environment DEVELOPER_CREDENTIALS
-        command "#{BASE_COMMAND} simulators --install='#{version}'"
+        command "#{xcversion_command} simulators --install='#{version}'"
         not_if { simulator_already_installed?(version) }
       end
     end
