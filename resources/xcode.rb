@@ -8,7 +8,7 @@ property :path, String, default: '/Applications/Xcode.app'
 property :ios_simulators, Array
 
 action :setup do
-  gem_package 'xcode-install' do
+  chef_gem 'xcode-install' do
     options('--no-document')
   end
 end

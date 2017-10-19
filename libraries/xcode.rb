@@ -1,7 +1,7 @@
 module Xcode
   module Helper
     def xcversion_command
-      '/usr/local/bin/xcversion'.freeze
+      '/opt/chef/embedded/bin/xcversion'.freeze
     end
 
     def xcode_already_installed?(semantic_version)
