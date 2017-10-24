@@ -43,7 +43,7 @@ action :install_simulators do
       next if major_version.to_i >= included_simulator_major_version
       version = highest_semantic_simulator_version(major_version, simulator_list)
 
-      execute "install #{version} Simulator" do
+      execute "install latest iOS #{major_version} Simulator" do
         environment DEVELOPER_CREDENTIALS
         command "#{xcversion_command} simulators --install='#{version}'"
         not_if { simulator_already_installed?(version) }
