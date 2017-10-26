@@ -1,0 +1,32 @@
+---
+driver:
+  name: vagrant
+  provider: parallels
+  customize:
+    memory: 8192
+    cpus: 2
+
+provisioner:
+  name: chef_zero
+
+verifier:
+  name: inspec
+
+transport:
+  name: ssh
+  elevated: true
+
+platforms:
+  - name: apex/macos-10.12.6
+    driver:
+      box: apex/macos-10.12.6
+      box_url: http://imagr.corp.microsoft.com:8099/apex/macos-10.12.6
+      box_check_update: true
+
+suites:
+  - name: plistbuddy
+    run_list:
+      - recipe[plistbuddy::default]
+    verifier:
+      inspec_tests:
+        - test/smoke/default

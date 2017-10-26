@@ -2,11 +2,6 @@ include Chef::Mixin::ShellOut
 
 module MacOS
   module PlistBuddyHelpers
-    def self.exist?
-      command = format_plistbuddy_command('print', entry, value)
-      shell_out(command).error?
-    end
-
     def convert_to_string_from_data_type(plist_entry)
       data_type_cases = { Array => "array #{plist_entry}",
                           Integer => "int #{plist_entry}",
