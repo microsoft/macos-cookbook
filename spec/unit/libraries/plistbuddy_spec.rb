@@ -5,7 +5,7 @@ include MacOS::PlistBuddyHelpers
 describe MacOS::PlistBuddyHelpers, '#format_plistbuddy_command' do
   context 'When given some commands' do
     it 'the command is formatted properly' do
-      expect(format_plistbuddy_command(:add, 'DidSeeSiriSetup', 0)).to eq "/usr/libexec/Plistbuddy -c ':Add DidSeeSiriSetup 0'"
+      expect(format_plistbuddy_command(:add, 'DidSeeSiriSetup', true)).to eq "/usr/libexec/Plistbuddy -c 'Add :DidSeeSiriSetup bool TRUE'"
     end
   end
 end
@@ -21,7 +21,7 @@ describe MacOS::PlistBuddyHelpers, '#convert_to_string_from_data_type' do
     end
 
     it 'returns the required PlistBuddy boolean entry' do
-      expect(convert_to_string_from_data_type({'baz' => 'qux'})).to eq "dict {'baz' => 'qux'}"
+      expect(convert_to_string_from_data_type('baz' => 'qux')).to eq "dict {'baz' => 'qux'}"
     end
 
     it 'returns the required PlistBuddy boolean entry' do
