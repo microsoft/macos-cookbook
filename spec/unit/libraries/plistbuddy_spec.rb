@@ -16,20 +16,24 @@ describe MacOS::PlistBuddyHelpers, '#convert_to_string_from_data_type' do
       expect(convert_to_string_from_data_type(true)).to eq 'bool TRUE'
     end
 
-    it 'returns the required PlistBuddy boolean entry' do
-      expect(convert_to_string_from_data_type(%w(foo bar))).to eq "array ['foo', 'bar']"
+    xit 'returns the required PlistBuddy array entry' do # TODO: Implement proper plist array syntax
+      expect(convert_to_string_from_data_type(%w(foo bar))).to eq 'array foo bar'
     end
 
-    it 'returns the required PlistBuddy boolean entry' do
-      expect(convert_to_string_from_data_type('baz' => 'qux')).to eq "dict {'baz' => 'qux'}"
+    xit 'returns the required PlistBuddy dictionary entry' do # TODO: Implement proper plist array syntax
+      expect(convert_to_string_from_data_type('baz' => 'qux')).to eq 'dict key value'
     end
 
-    it 'returns the required PlistBuddy boolean entry' do
+    it 'returns the required PlistBuddy string entry' do
       expect(convert_to_string_from_data_type('quux')).to eq 'string quux'
     end
 
-    it 'returns the required PlistBuddy boolean entry' do
+    it 'returns the required PlistBuddy int entry' do
       expect(convert_to_string_from_data_type(1)).to eq 'int 1'
+    end
+
+    it 'returns the required PlistBuddy float entry' do
+      expect(convert_to_string_from_data_type(1.0)).to eq 'float 1.0'
     end
   end
 end
