@@ -1,7 +1,7 @@
-module PlistBuddy
-  module Helper
-    include Chef::Mixin::ShellOut
+include Chef::Mixin::ShellOut
 
+module MacOS
+  module PlistBuddyHelpers
     def self.exist?
       command = format_plistbuddy_command('print', entry, value)
       shell_out(command).error?
@@ -27,5 +27,5 @@ module PlistBuddy
   end
 end
 
-Chef::Recipe.include(PlistBuddy::Helper)
-Chef::Resource.include(PlistBuddy::Helper)
+Chef::Recipe.include(MacOS::PlistBuddyHelpers)
+Chef::Resource.include(MacOS::PlistBuddyHelpers)
