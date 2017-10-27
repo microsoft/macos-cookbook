@@ -13,7 +13,7 @@ describe MacOS::PlistBuddyHelpers, '#format_plistbuddy_command' do
     end
 
     it 'the set command is formatted properly' do
-      expect(format_plistbuddy_command(:set, 'BazEntry', false)).to eq "/usr/libexec/Plistbuddy -c 'Set :BazEntry true'"
+      expect(format_plistbuddy_command(:set, 'BazEntry', false)).to eq "/usr/libexec/Plistbuddy -c 'Set :BazEntry false'"
     end
 
     it 'the print command is formatted properly' do
