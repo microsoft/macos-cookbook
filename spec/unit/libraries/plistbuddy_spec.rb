@@ -3,9 +3,13 @@ require 'spec_helper'
 include MacOS::PlistBuddyHelpers
 
 describe MacOS::PlistBuddyHelpers, '#format_plistbuddy_command' do
-  context 'When given some commands' do
-    it 'the add command is formatted properly' do
-      expect(format_plistbuddy_command(:add, 'FooEntry', true)).to eq "/usr/libexec/Plistbuddy -c 'Add :FooEntry true'"
+  context 'Adding a value to a plist' do
+    it 'the bool arguments contain the data type' do
+      expect(format_plistbuddy_command(:add, 'FooEntry', true)).to eq "/usr/libexec/Plistbuddy -c 'Add :FooEntry bool true'"
+    end
+
+    it 'the int arguments contain the data type' do
+      expect(format_plistbuddy_command(:add, 'QuuxEntry', 50)).to eq "/usr/libexec/Plistbuddy -c 'Add :QuuxEntry int 50'"
     end
 
     it 'the delete command is formatted properly' do
@@ -25,7 +29,7 @@ end
 describe MacOS::PlistBuddyHelpers, '#convert_to_string_from_data_type' do
   context 'When given a certain data type' do
     it 'returns the required PlistBuddy boolean entry' do
-      expect(convert_to_string_from_data_type(true)).to eq 'true'
+      expect(convert_to_string_from_data_type(true)).to eq 'bool true'
     end
 
     xit 'returns the required PlistBuddy array entry' do # TODO: Implement proper plist array syntax (i.e. containers)
