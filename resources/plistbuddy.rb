@@ -1,21 +1,39 @@
 resource_name :plistbuddy
 
-property :command, String, name_property: true
-
-property :path, String
+property :path, String, name_property: true
 property :entry, String, required: true
 property :value, [Hash, String, Array, TrueClass, FalseClass, Integer, Float]
 
+default_action :set
+
 action_class do
-  def entry_exist?
+  def entry_missing?
     command = format_plistbuddy_command(:print, new_resource.entry, new_resource.value)
-    shell_out(command).error?
+    full_command = command + ' ' + new_resource.path
+    shell_out(full_command).error?
+  end
+
+  def current_entry_value
+    command = format_plistbuddy_command(:print, new_resource.entry)
+    full_command = command + ' ' + new_resource.path
+    shell_out(full_command).stdout.chomp
   end
 end
 
-action :execute do
-  if new_resource.command.to_s == 'set' && !entry_exist?
-    p format_plistbuddy_command(:add, new_resource.entry)
+action :set do
+  puts "\n\n"
+  p "current_entry_value: #{current_entry_value}"
+  p "value: #{new_resource.value}"
+  puts "\n\n"
+
+  if entry_missing?
+    execute format_plistbuddy_command(:add, new_resource.entry, new_resource.value) + ' ' + new_resource.path
+    execute format_plistbuddy_command(:set, new_resource.entry, new_resource.value) + ' ' + new_resource.path
+  elsif current_entry_value != new_resource.value.to_s
+    execute format_plistbuddy_command(:set, new_resource.entry, new_resource.value) + ' ' + new_resource.path
   end
-  p format_plistbuddy_command(new_resource.command, new_resource.entry, new_resource.value)
+end
+
+action :delete do
+  execute format_plistbuddy_command(:delete, new_resource.entry, new_resource.value) + ' ' + new_resource.path
 end

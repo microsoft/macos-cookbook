@@ -5,7 +5,7 @@ include MacOS::PlistBuddyHelpers
 describe MacOS::PlistBuddyHelpers, '#format_plistbuddy_command' do
   context 'When given some commands' do
     it 'the add command is formatted properly' do
-      expect(format_plistbuddy_command(:add, 'FooEntry', true)).to eq "/usr/libexec/Plistbuddy -c 'Add :FooEntry bool TRUE'"
+      expect(format_plistbuddy_command(:add, 'FooEntry', true)).to eq "/usr/libexec/Plistbuddy -c 'Add :FooEntry true'"
     end
 
     it 'the delete command is formatted properly' do
@@ -13,11 +13,11 @@ describe MacOS::PlistBuddyHelpers, '#format_plistbuddy_command' do
     end
 
     it 'the set command is formatted properly' do
-      expect(format_plistbuddy_command(:set, 'BazEntry', false)).to eq "/usr/libexec/Plistbuddy -c 'Set :BazEntry bool FALSE'"
+      expect(format_plistbuddy_command(:set, 'BazEntry', false)).to eq "/usr/libexec/Plistbuddy -c 'Set :BazEntry true'"
     end
 
     it 'the print command is formatted properly' do
-      expect(format_plistbuddy_command(:print, 'QuxEntry')).to eq "/usr/libexec/Plistbuddy -c 'Print :QuxEntry'"
+      expect(format_plistbuddy_command(:print, 'QuxEntry')).to eq "/usr/libexec/Plistbuddy -c 'Print :QuxEntry '"
     end
   end
 end
@@ -25,7 +25,7 @@ end
 describe MacOS::PlistBuddyHelpers, '#convert_to_string_from_data_type' do
   context 'When given a certain data type' do
     it 'returns the required PlistBuddy boolean entry' do
-      expect(convert_to_string_from_data_type(true)).to eq 'bool TRUE'
+      expect(convert_to_string_from_data_type(true)).to eq 'true'
     end
 
     xit 'returns the required PlistBuddy array entry' do # TODO: Implement proper plist array syntax (i.e. containers)
