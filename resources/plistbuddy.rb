@@ -21,11 +21,6 @@ action_class do
 end
 
 action :set do
-  puts "\n\n"
-  p "current_entry_value: #{current_entry_value}"
-  p "value: #{new_resource.value}"
-  puts "\n\n"
-
   if entry_missing?
     execute format_plistbuddy_command(:add, new_resource.entry, new_resource.value) + ' ' + new_resource.path
     execute format_plistbuddy_command(:set, new_resource.entry, new_resource.value) + ' ' + new_resource.path

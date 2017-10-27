@@ -15,7 +15,7 @@ module MacOS
 
     def format_plistbuddy_command(action_property, plist_entry, plist_value = nil)
       plist_value = args_formatter(action_property, plist_value)
-      "/usr/libexec/Plistbuddy -c \'#{action_property.to_s.capitalize} :#{plist_entry} #{plist_value}\'" # Add a space here for the plist path
+      "/usr/libexec/Plistbuddy -c \'#{action_property.to_s.capitalize} :#{plist_entry} #{plist_value}\'"
     end
 
     def args_formatter(action_property, plist_value)
