@@ -1,5 +1,3 @@
-include Chef::Mixin::ShellOut
-
 module MacOS
   module PlistBuddyHelpers
     def convert_to_string_from_data_type(value)
@@ -17,6 +15,8 @@ module MacOS
       plist_value = args_formatter(action_property, plist_value)
       "/usr/libexec/Plistbuddy -c \'#{action_property.to_s.capitalize} :#{plist_entry} #{plist_value}\'"
     end
+
+    private
 
     def args_formatter(action_property, plist_value)
       if action_property == :add
