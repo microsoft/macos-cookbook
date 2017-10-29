@@ -7,7 +7,7 @@ describe 'macos::default' do
       runner.converge(described_recipe)
     end
 
-    xit 'converges successfully' do
+    it 'converges successfully' do
       expect { chef_run }.to_not raise_error
     end
   end
