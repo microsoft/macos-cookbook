@@ -31,10 +31,6 @@ action :install_xcode do
     command "#{xcversion_command} install '#{xcversion_version(new_resource.version)}'"
     not_if { xcode_already_installed?(new_resource.version) }
   end
-
-  execute 'accept license' do
-    command '/usr/bin/xcodebuild -license accept'
-  end
 end
 
 action :install_simulators do
