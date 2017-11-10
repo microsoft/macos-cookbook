@@ -11,6 +11,6 @@ control 'xcode' do
   end
 
   describe command('/usr/local/bin/xcversion simulators') do
-    its('stdout') { should match /iOS 10\.3\.1 Simulator \(installed\)/ }
+    its('stdout') { should match(/iOS 10\.3\.1 Simulator \(installed\)/) }
   end
 end
