@@ -1,7 +1,7 @@
 resource_name :macos_user
 default_action :create
 
-property :username, String
+property :username, String, name_property: true
 property :password, String, default: 'password'
 property :autologin, [TrueClass]
 property :admin, [TrueClass]
@@ -37,7 +37,7 @@ end
 action :create do
   execute "add user #{new_resource.username}" do
     command "#{sysadminctl} -addUser #{new_resource.username} -password #{new_resource.password} #{admin_user?}"
-    not_if { ::File.exist? build_user_home }
+    not_if { ::File.exist? user_home }
   end
 
   if property_is_set?(:autologin)
