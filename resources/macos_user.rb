@@ -8,11 +8,11 @@ property :admin, [TrueClass]
 
 action_class do
   def user_home
-    File.join('/Users', new_resource.username)
+    ::File.join('/Users', new_resource.username)
   end
 
   def setup_assistant_plist
-    File.join(user_home, '/Library/Preferences/com.apple.SetupAssistant.plist')
+    ::File.join(user_home, '/Library/Preferences/com.apple.SetupAssistant.plist')
   end
 
   def setup_assistant_keypair_values
@@ -37,7 +37,7 @@ end
 action :create do
   execute "add user #{new_resource.username}" do
     command "#{sysadminctl} -addUser #{new_resource.username} -password #{new_resource.password} #{admin_user?}"
-    not_if { File.exist? build_user_home }
+    not_if { ::File.exist? build_user_home }
   end
 
   if property_is_set?(:autologin)
