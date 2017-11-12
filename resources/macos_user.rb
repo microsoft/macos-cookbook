@@ -36,7 +36,7 @@ end
 
 action :create do
   execute "add user #{new_resource.username}" do
-    command "#{sysadminctl} -addUser #{new_resource.username} -password #{new_resource.password} #{admin?}"
+    command "#{sysadminctl} -addUser #{new_resource.username} -password #{new_resource.password} #{admin_user?}"
     not_if { File.exist? build_user_home }
   end
 
