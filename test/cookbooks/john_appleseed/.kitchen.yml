@@ -1,0 +1,34 @@
+---
+driver:
+  name: vagrant
+  provider: parallels
+
+provisioner:
+  name: chef_zero
+  always_update_cookbooks: true
+
+verifier:
+  name: inspec
+
+platforms:
+  - name: apex/macos-10.11.6
+  - name: apex/macos-10.12.6
+  - name: apex/macos-10.13
+
+suites:
+  - name: macos_user
+    run_list:
+      - recipe[john_appleseed::new_users]
+    verifier:
+      inspec_tests:
+        - test/smoke/macos_user
+    attributes:
+
+  - name: plistbuddy
+    run_list:
+      - recipe[john_appleseed::customize_dock]
+      - recipe[john_appleseed::show_hidden_files]
+    verifier:
+      inspec_tests:
+        - test/smoke/plistbuddy
+    attributes:
