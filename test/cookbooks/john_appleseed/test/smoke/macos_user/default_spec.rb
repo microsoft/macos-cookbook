@@ -11,7 +11,7 @@ control 'macos users' do
   describe user('john_jr') do
     it { should exist }
     its('uid') { should eq 504 }
-    its('gid') { should eq 0 }
+    its('gid') { should eq 20 }
     its('home') { should eq '/Users/john_jr' }
   end
 end

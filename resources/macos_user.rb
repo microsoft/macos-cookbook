@@ -53,7 +53,7 @@ action :create do
     end
 
     file '/etc/kcpassword' do
-      content Kcpassword.obfuscate(new_resource.password)
+      content obfuscate(new_resource.password)
       owner 'root'
       group 'wheel'
       mode '0600'
