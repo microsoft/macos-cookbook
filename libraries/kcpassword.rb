@@ -1,14 +1,12 @@
 module KcpasswordHelpers
-  class Kcpassword << self
-    def magic_bits
-      [125, 137, 82, 35, 210, 188, 221, 234, 163, 185, 31]
-    end
+  module Kcpassword
+    @magic_bits = [125, 137, 82, 35, 210, 188, 221, 234, 163, 185, 31]
 
     def obfuscate(password)
       obfuscated = []
       padded(password).each do |char|
         obfuscated.push(@magic_bits[0] ^ char)
-        @magic_bits.rotate
+        @magic_bits.rotate!
       end
       obfuscated.pack('C*')
     end
@@ -28,5 +26,5 @@ module KcpasswordHelpers
   end
 end unless defined?(KcpasswordHelpers)
 
-Chef::Recipe.include(KcpasswordHelpers)
-Chef::Resource.include(KcpasswordHelpers)
+Chef::Recipe.include(KcpasswordHelpers::Kcpassword)
+Chef::Resource.include(KcpasswordHelpers::Kcpassword)
