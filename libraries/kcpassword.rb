@@ -1,12 +1,14 @@
-module Macos
-  class Kcpassword
-    @magic_bits = [125, 137, 82, 35, 210, 188, 221, 234, 163, 185, 31]
+module KcpasswordHelpers
+  class Kcpassword << self
+    def magic_bits
+      [125, 137, 82, 35, 210, 188, 221, 234, 163, 185, 31]
+    end
 
     def obfuscate(password)
       obfuscated = []
       padded(password).each do |char|
         obfuscated.push(@magic_bits[0] ^ char)
-        @magic_bits.rotate!
+        @magic_bits.rotate
       end
       obfuscated.pack('C*')
     end
@@ -24,7 +26,7 @@ module Macos
       password.split('').map(&:ord)
     end
   end
-end
+end unless defined?(KcpasswordHelpers)
 
-Chef::Recipe.include(MacOS::Kcpassword)
-Chef::Resource.include(MacOS::Kcpassword)
+Chef::Recipe.include(KcpasswordHelpers)
+Chef::Resource.include(KcpasswordHelpers)
