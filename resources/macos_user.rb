@@ -52,8 +52,8 @@ action :create do
       settings 'autoLoginUser' => new_resource.username
     end
 
-    cookbook_file '/etc/kcpassword' do
-      source 'kcpassword'
+    file '/etc/kcpassword' do
+      content Kcpassword.obfuscate(new_resource.password)
       owner 'root'
       group 'wheel'
       mode '0600'
