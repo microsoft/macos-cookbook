@@ -19,13 +19,34 @@ pmset 'keep awake with /usr/bin/pmset' do
            ttyskeepawake: 1
 end
 
-defaults '/Library/Preferences/com.apple.PowerManagement' do
-  settings 'DarkWakeBackgroundTasks' => false, # power nap
-           '"Automatic Restart On Power Loss"' => true,
-           '"Display Sleep Timer"' => 0,
-           '"Disk Sleep Timer"' => 0,
-           '"Wake On LAN"' => true,
-           '"System Sleep Timer"' => 0
+plistbuddy 'disable Power Nap' do
+  path '/Library/Preferences/com.apple.PowerManagement.plist'
+  entry 'DarkWakeBackgroundTasks'
+  value false
+end
+
+plistbuddy 'enable automatic restart on power loss' do
+  path '/Library/Preferences/com.apple.PowerManagement.plist'
+  entry 'Automatic Restart On Power Loss'
+  value true
+end
+
+plistbuddy 'set display sleep timer to zero' do
+  path '/Library/Preferences/com.apple.PowerManagement.plist'
+  entry 'Display Sleep Timer'
+  value 0
+end
+
+plistbuddy 'enable wake from sleep via network' do
+  path '/Library/Preferences/com.apple.PowerManagement.plist'
+  entry 'Wake On LAN'
+  value true
+end
+
+plistbuddy 'set system sleep timer to zero' do
+  path '/Library/Preferences/com.apple.PowerManagement.plist'
+  entry 'System Sleep Timer'
+  value 0
 end
 
 ruby_block 'set power settings to autoLoginUser' do
