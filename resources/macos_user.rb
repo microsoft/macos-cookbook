@@ -42,14 +42,17 @@ action :create do
 
   if property_is_set?(:autologin)
     setup_assistant_keypair_values.each do |key, setting|
-      plistbuddy setup_assistant_plist do
+      plistbuddy "set #{setting} to #{key}" do
+        path setup_assistant_plist
         entry key
         value setting
       end
     end
 
-    defaults '/Library/Preferences/com.apple.loginwindow' do
-      settings 'autoLoginUser' => new_resource.username
+    plistbuddy "set #{new_resource.username} as autologin user" do
+      path '/Library/Preferences/com.apple.loginwindow'
+      entry 'autoLoginUser'
+      value new_resource.username
     end
 
     file '/etc/kcpassword' do

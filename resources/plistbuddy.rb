@@ -21,14 +21,20 @@ action_class do
 end
 
 action :set do
-  if entry_missing?
-    execute format_plistbuddy_command(:add, new_resource.entry, new_resource.value) + ' ' + new_resource.path
-    execute format_plistbuddy_command(:set, new_resource.entry, new_resource.value) + ' ' + new_resource.path
-  elsif current_entry_value != new_resource.value.to_s
-    execute format_plistbuddy_command(:set, new_resource.entry, new_resource.value) + ' ' + new_resource.path
+  execute "add #{new_resource.entry} to #{new_resource.path}" do
+    command [format_plistbuddy_command(:add, new_resource.entry, new_resource.value), new_resource.path].join(' ')
+    only_if { entry_missing? }
+  end
+
+  execute "set #{new_resource.value} at #{new_resource.entry}" do
+    command [format_plistbuddy_command(:set, new_resource.entry, new_resource.value), new_resource.path].join(' ')
+    only_if { current_entry_value != new_resource.value.to_s }
   end
 end
 
 action :delete do
-  execute format_plistbuddy_command(:delete, new_resource.entry, new_resource.value) + ' ' + new_resource.path
+  execute "delete #{new_resource.entry} from plist" do
+    command [format_plistbuddy_command(:delete, new_resource.entry, new_resource.value), new_resource.path].join(' ')
+    not_if { entry_missing? }
+  end
 end
