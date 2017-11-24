@@ -9,6 +9,7 @@ provisioner:
 
 verifier:
   name: inspec
+  sudo: true
 
 platforms:
   - name: apex/macos-10.11.6
@@ -16,19 +17,11 @@ platforms:
   - name: apex/macos-10.13
 
 suites:
-  - name: macos_user
+  - name: default
     run_list:
+      - recipe[macos::keep_awake]
       - recipe[john_appleseed::new_users]
+      - recipe[john_appleseed::preferences]
     verifier:
       inspec_tests:
-        - test/smoke/macos_user
-    attributes:
-
-  - name: plistbuddy
-    run_list:
-      - recipe[john_appleseed::customize_dock]
-      - recipe[john_appleseed::show_hidden_files]
-    verifier:
-      inspec_tests:
-        - test/smoke/plistbuddy
-    attributes:
+        - test/smoke/default

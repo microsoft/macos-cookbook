@@ -1,4 +1,4 @@
-control 'macos users' do
+control 'new macOS users' do
   desc 'they exist with the expected properties'
 
   describe user('john') do
