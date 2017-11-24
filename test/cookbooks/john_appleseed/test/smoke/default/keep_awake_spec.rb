@@ -29,7 +29,7 @@ control 'power' do
   end
 
   describe command("/usr/libexec/PlistBuddy -c 'Print :DarkWakeBackgroundTasks' '/Library/Preferences/com.apple.PowerManagement.plist'") do
-    its('stdout') { should match(/0/) }
+    its('stdout') { should match('false') }
   end
 
   describe command("/usr/libexec/PlistBuddy -c 'Print :idleTime' /Users/vagrant/Library/Preferences/com.apple.screensaver.plist") do

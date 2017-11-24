@@ -49,14 +49,9 @@ plistbuddy 'set system sleep timer to zero' do
   value 0
 end
 
-ruby_block 'set power settings to autoLoginUser' do
-  block do
-    loginwindow_plist = '/Library/Preferences/com.apple.loginwindow'
-    auto_login_user = "defaults read #{loginwindow_plist} autoLoginUser"
-    node.default['macos']['power']['owner'] = shell_out!(auto_login_user).stdout.strip
-  end
+plistbuddy 'disable screensaver' do
+  path "/Users/#{node['macos']['admin_user']}/Library/Preferences/com.apple.screensaver.plist"
+  entry 'idleTime'
+  value 0
 end
 
-execute 'disable screensaver' do
-  command lazy { "sudo -u #{node['macos']['power']['owner']} defaults -currentHost write com.apple.screensaver idleTime 0" }
-end
