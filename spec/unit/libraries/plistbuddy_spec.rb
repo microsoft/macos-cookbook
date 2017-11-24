@@ -9,7 +9,7 @@ describe MacOS::PlistBuddyHelpers, '#format_plistbuddy_command' do
     end
 
     it 'the int arguments contain the data type' do
-      expect(format_plistbuddy_command(:add, 'QuuxEntry', 50)).to eq "/usr/libexec/PlistBuddy -c 'Add :QuuxEntry int 50'"
+      expect(format_plistbuddy_command(:add, 'QuuxEntry', 50)).to eq "/usr/libexec/PlistBuddy -c 'Add :QuuxEntry integer 50'"
     end
 
     it 'the delete command is formatted properly' do
@@ -45,7 +45,7 @@ describe MacOS::PlistBuddyHelpers, '#convert_to_string_from_data_type' do
     end
 
     it 'returns the required PlistBuddy int entry' do
-      expect(convert_to_string_from_data_type(1)).to eq 'int 1'
+      expect(convert_to_string_from_data_type(1)).to eq 'integer 1'
     end
 
     it 'returns the required PlistBuddy float entry' do
