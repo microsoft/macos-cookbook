@@ -5,23 +5,23 @@ include MacOS::PlistBuddyHelpers
 describe MacOS::PlistBuddyHelpers, '#format_plistbuddy_command' do
   context 'Adding a value to a plist' do
     it 'the bool arguments contain the data type' do
-      expect(format_plistbuddy_command(:add, 'FooEntry', true)).to eq "/usr/libexec/Plistbuddy -c 'Add :FooEntry bool true'"
+      expect(format_plistbuddy_command(:add, 'FooEntry', true)).to eq "/usr/libexec/PlistBuddy -c 'Add :FooEntry bool true'"
     end
 
     it 'the int arguments contain the data type' do
-      expect(format_plistbuddy_command(:add, 'QuuxEntry', 50)).to eq "/usr/libexec/Plistbuddy -c 'Add :QuuxEntry int 50'"
+      expect(format_plistbuddy_command(:add, 'QuuxEntry', 50)).to eq "/usr/libexec/PlistBuddy -c 'Add :QuuxEntry int 50'"
     end
 
     it 'the delete command is formatted properly' do
-      expect(format_plistbuddy_command(:delete, 'BarEntry')).to eq "/usr/libexec/Plistbuddy -c 'Delete :BarEntry '"
+      expect(format_plistbuddy_command(:delete, 'BarEntry')).to eq "/usr/libexec/PlistBuddy -c 'Delete :BarEntry '"
     end
 
     it 'the set command is formatted properly' do
-      expect(format_plistbuddy_command(:set, 'BazEntry', false)).to eq "/usr/libexec/Plistbuddy -c 'Set :BazEntry false'"
+      expect(format_plistbuddy_command(:set, 'BazEntry', false)).to eq "/usr/libexec/PlistBuddy -c 'Set :BazEntry false'"
     end
 
     it 'the print command is formatted properly' do
-      expect(format_plistbuddy_command(:print, 'QuxEntry')).to eq "/usr/libexec/Plistbuddy -c 'Print :QuxEntry '"
+      expect(format_plistbuddy_command(:print, 'QuxEntry')).to eq "/usr/libexec/PlistBuddy -c 'Print :QuxEntry '"
     end
   end
 end
@@ -50,6 +50,12 @@ describe MacOS::PlistBuddyHelpers, '#convert_to_string_from_data_type' do
 
     it 'returns the required PlistBuddy float entry' do
       expect(convert_to_string_from_data_type(1.0)).to eq 'float 1.0'
+    end
+  end
+
+  context 'The value provided contains spaces' do
+    it 'returns the value properly formatted with double quotes' do
+      expect(format_plistbuddy_command(:print, 'Foo Bar Baz')).to eq "/usr/libexec/PlistBuddy -c 'Print :\"Foo Bar Baz\" '"
     end
   end
 end

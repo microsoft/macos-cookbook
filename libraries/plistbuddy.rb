@@ -12,8 +12,9 @@ module MacOS
     end
 
     def format_plistbuddy_command(action_property, plist_entry, plist_value = nil)
+      plist_entry = "\"#{plist_entry}\"" if plist_entry.include?(' ')
       plist_value = args_formatter(action_property, plist_value)
-      "/usr/libexec/Plistbuddy -c \'#{action_property.to_s.capitalize} :#{plist_entry} #{plist_value}\'"
+      "/usr/libexec/PlistBuddy -c \'#{action_property.to_s.capitalize} :#{plist_entry} #{plist_value}\'"
     end
 
     private
