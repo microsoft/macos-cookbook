@@ -1,16 +1,12 @@
 module KcpasswordHelpers
   module Kcpassword
-    def magic_bits
-      [125, 137, 82, 35, 210, 188, 221, 234, 163, 185, 31]
-    end
+    @magic_bits = [125, 137, 82, 35, 210, 188, 221, 234, 163, 185, 31]
 
     def obfuscate(password)
       obfuscated = []
-      bits = magic_bits
-
       padded(password).each do |char|
-        obfuscated.push(magic_bits[0] ^ char)
-        bits.rotate!
+        obfuscated.push(@magic_bits[0] ^ char)
+        @magic_bits.rotate!
       end
       obfuscated.pack('C*')
     end
@@ -18,7 +14,7 @@ module KcpasswordHelpers
     private
 
     def padded(password)
-      magic_len = magic_bits.length
+      magic_len = @magic_bits.length
       padding = magic_len - (password.length % magic_len)
       padding_size = padding > 0 ? padding : 0
       translated(password) + ([0] * padding_size)
@@ -28,7 +24,7 @@ module KcpasswordHelpers
       password.split('').map(&:ord)
     end
   end
-end
+end unless defined?(KcpasswordHelpers)
 
 Chef::Recipe.include(KcpasswordHelpers::Kcpassword)
 Chef::Resource.include(KcpasswordHelpers::Kcpassword)
