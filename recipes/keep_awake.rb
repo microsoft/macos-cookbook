@@ -33,4 +33,3 @@ plistbuddy 'disable screensaver' do
   entry 'idleTime'
   value 0
 end
-
