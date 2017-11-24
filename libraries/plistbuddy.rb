@@ -2,7 +2,7 @@ module MacOS
   module PlistBuddyHelpers
     def convert_to_string_from_data_type(value)
       data_type_cases = { Array => "array #{value}",
-                          Integer => "int #{value}",
+                          Integer => "integer #{value}",
                           TrueClass => "bool #{value}",
                           FalseClass => "bool #{value}",
                           Hash => "dict #{value}",
