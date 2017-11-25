@@ -9,55 +9,51 @@ property :is_binary, [TrueClass, FalseClass]
 default_action :set
 
 action_class do
+  extend MacOS::PlistBuddyHelpers
+
+  def plistbuddy(action)
+    [format_plistbuddy_command(action, new_resource.entry, new_resource.value), new_resource.path].join(' ')
+  end
+
   def entry_missing?
-    full_command = [format_plistbuddy_command(:print, new_resource.entry, new_resource.value), new_resource.path].join(' ')
-    shell_out(full_command).error?
+    return true if shell_out(plistbuddy(:print)).error?
   end
 
-  def current_entry_value
-    full_command = [format_plistbuddy_command(:print, new_resource.entry, new_resource.value), new_resource.path].join(' ')
-    shell_out(full_command).stdout.chomp
-  end
-
-  def binary_plist?
-    file_output = shell_out('/usr/bin/file', '--brief', '--mime', new_resource.path)
-    return true if file_output.stdout =~ /binary/
+  def needs_conversion?
+    return true if shell_out('/usr/bin/file', '--brief', '--mime', new_resource.path).stdout =~ /binary/i
   end
 end
 
-load_current_value do
-  if binary_plist?
-    is_binary true
-  else
-    is_binary false
-  end
+load_current_value do |desired|
+  full_command = [format_plistbuddy_command(:print, desired.entry), desired.path].join(' ')
+  value desired.value if shell_out(full_command).stdout.chomp != desired.value
+  entry desired.entry
 end
 
 action :set do
-  execute "add #{new_resource.entry} to #{new_resource.path}" do
-    command [format_plistbuddy_command(:add, new_resource.entry, new_resource.value), new_resource.path].join(' ')
-    only_if { entry_missing? }
+  converge_if_changed do
+    plistbuddy :set
   end
 
-  execute "set #{new_resource.entry} to #{new_resource.value}" do
-    command [format_plistbuddy_command(:set, new_resource.entry, new_resource.value), new_resource.path].join(' ')
-    only_if { current_entry_value != new_resource.value.to_s }
+  execute "add #{new_resource.entry} to #{new_resource.path}" do
+    command plistbuddy :add
+    only_if { entry_missing? }
   end
 
   execute 'convert back to binary' do
     command "/usr/bin/plutil -convert binary1 #{new_resource.path}"
-    only_if { new_resource.is_binary }
+    not_if { needs_conversion? }
   end
 end
 
 action :delete do
   execute "delete #{new_resource.entry} from plist" do
-    command [format_plistbuddy_command(:delete, new_resource.entry, new_resource.value), new_resource.path].join(' ')
+    command plistbuddy :delete
     not_if { entry_missing? }
   end
 
   execute 'convert back to binary' do
     command "/usr/bin/plutil -convert binary1 #{new_resource.path}"
-    only_if { new_resource.is_binary }
+    not_if { needs_conversion? }
   end
 end
