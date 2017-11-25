@@ -49,7 +49,7 @@ action :create do
       end
     end
 
-    plistbuddy "set #{new_resource.username} as autologin user" do
+    plistbuddy "set user \"#{new_resource.username}\" to login automatically" do
       path '/Library/Preferences/com.apple.loginwindow.plist'
       entry 'autoLoginUser'
       value new_resource.username
