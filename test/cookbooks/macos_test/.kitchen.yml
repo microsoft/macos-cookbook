@@ -19,7 +19,9 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[john_appleseed::preferences]
+      - recipe[macos::keep_awake]
+      - recipe[macos_test::new_users]
+      - recipe[macos_test::preferences]
     verifier:
       inspec_tests:
         - test/smoke/default
