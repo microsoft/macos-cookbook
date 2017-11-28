@@ -34,7 +34,7 @@ plistbuddy 'disable screensaver' do
   value 0
 end
 
-systemsetup 'Set amount of idle time until compputer sleeps to never' do
+systemsetup 'Set amount of idle time until computer sleeps to never' do
   setting 'computersleep'
   value 'never'
 end
