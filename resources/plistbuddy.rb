@@ -1,8 +1,8 @@
 resource_name :plistbuddy
 
 property :path, String, name_property: true
-property :entry, String, required: true
-property :value, [Hash, String, Array, TrueClass, FalseClass, Integer, Float]
+property :entry, String, required: true, desired_state: false
+property :value, [Hash, String, Array, TrueClass, FalseClass, Integer, Float], desired_state: true
 
 property :is_binary, [TrueClass, FalseClass]
 
@@ -24,11 +24,9 @@ action_class do
   end
 end
 
-load_current_value do |desired|
-  full_command = [format_plistbuddy_command(:print, desired.entry), desired.path].join(' ')
-  value desired.value if shell_out(full_command).stdout.chomp != desired.value
-  entry desired.entry
-end
+# load_current_value do
+#   value 
+# end
 
 action :set do
   converge_if_changed do

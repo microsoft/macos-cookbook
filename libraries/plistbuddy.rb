@@ -26,6 +26,10 @@ module MacOS
         plist_value
       end
     end
+
+    def plist_entry_type(plist_path, plist_value)
+      shell_out('/usr/bin/defaults', 'read-type', plist_path, plist_value).split.last
+    end
   end
 end
 
