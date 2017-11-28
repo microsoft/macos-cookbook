@@ -3,7 +3,7 @@ require 'colorize'
 resource_name :systemsetup
 
 property :setting, desired_state: false
-property :value, desired_state: true, coerce: proc { |m| m.to_s.capitalize }
+property :value, desired_state: true, coerce: proc { |m| m.to_s.capitalize unless m.to_s.include?('/') }
 
 default_action :set
 
