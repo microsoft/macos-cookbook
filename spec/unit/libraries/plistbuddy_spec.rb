@@ -2,26 +2,32 @@ require 'spec_helper'
 
 include MacOS::PlistBuddyHelpers
 
-describe MacOS::PlistBuddyHelpers, '#format_plistbuddy_command' do
+describe MacOS::PlistBuddyHelpers, '#plistbuddy_command' do
   context 'Adding a value to a plist' do
     it 'the bool arguments contain the data type' do
-      expect(format_plistbuddy_command(:add, 'FooEntry', true)).to eq "/usr/libexec/PlistBuddy -c 'Add :FooEntry bool true'"
+      expect(plistbuddy_command(:add, 'FooEntry', 'path/to/file.plist', true)).to eq "/usr/libexec/PlistBuddy -c 'Add :FooEntry bool true' path/to/file.plist"
     end
 
     it 'the int arguments contain the data type' do
-      expect(format_plistbuddy_command(:add, 'QuuxEntry', 50)).to eq "/usr/libexec/PlistBuddy -c 'Add :QuuxEntry integer 50'"
+      expect(plistbuddy_command(:add, 'QuuxEntry', 'path/to/file.plist', 50)).to eq "/usr/libexec/PlistBuddy -c 'Add :QuuxEntry integer 50' path/to/file.plist"
     end
 
     it 'the delete command is formatted properly' do
-      expect(format_plistbuddy_command(:delete, 'BarEntry')).to eq "/usr/libexec/PlistBuddy -c 'Delete :BarEntry '"
+      expect(plistbuddy_command(:delete, 'BarEntry', 'path/to/file.plist')).to eq "/usr/libexec/PlistBuddy -c 'Delete :BarEntry ' path/to/file.plist"
     end
 
     it 'the set command is formatted properly' do
-      expect(format_plistbuddy_command(:set, 'BazEntry', false)).to eq "/usr/libexec/PlistBuddy -c 'Set :BazEntry false'"
+      expect(plistbuddy_command(:set, 'BazEntry', 'path/to/file.plist', false)).to eq "/usr/libexec/PlistBuddy -c 'Set :BazEntry false' path/to/file.plist"
     end
 
     it 'the print command is formatted properly' do
-      expect(format_plistbuddy_command(:print, 'QuxEntry')).to eq "/usr/libexec/PlistBuddy -c 'Print :QuxEntry '"
+      expect(plistbuddy_command(:print, 'QuxEntry', 'path/to/file.plist')).to eq "/usr/libexec/PlistBuddy -c 'Print :QuxEntry ' path/to/file.plist"
+    end
+  end
+
+  context 'The value provided contains spaces' do
+    it 'returns the value properly formatted with double quotes' do
+      expect(plistbuddy_command(:print, 'Foo Bar Baz', 'path/to/file.plist')).to eq "/usr/libexec/PlistBuddy -c 'Print :\"Foo Bar Baz\" ' path/to/file.plist"
     end
   end
 end
@@ -94,12 +100,6 @@ describe MacOS::PlistBuddyHelpers, '#convert_to_string_from_data_type' do
 
     it 'returns the required PlistBuddy float entry' do
       expect(convert_to_string_from_data_type(1.0)).to eq 'float 1.0'
-    end
-  end
-
-  context 'The value provided contains spaces' do
-    it 'returns the value properly formatted with double quotes' do
-      expect(format_plistbuddy_command(:print, 'Foo Bar Baz')).to eq "/usr/libexec/PlistBuddy -c 'Print :\"Foo Bar Baz\" '"
     end
   end
 end
