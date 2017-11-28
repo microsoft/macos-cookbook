@@ -1,8 +1,8 @@
 resource_name :plistbuddy
 
-property :path, String, name_property: true
+property :path, String, name_property: true, desired_state: false
 property :entry, String, required: true, desired_state: false
-property :value, [Hash, String, Array, TrueClass, FalseClass, Integer, Float], desired_state: true
+property :value, [String, TrueClass, FalseClass, Integer, Float], desired_state: true
 
 property :is_binary, [TrueClass, FalseClass]
 
@@ -30,13 +30,14 @@ action_class do
   end
 end
 
-# load_current_value do
-#   value
-# end
+load_current_value do
+  value current_plist_entry_value
+end
 
 action :set do
-  converge_if_changed do
-    plistbuddy :set
+  converge_if_changed :value do
+    plistbuddy
+    converge_by "Update the #{new_resource.entry} to #{new_resource.value} at #{new_resource.path}"
   end
 
   execute "add #{new_resource.entry} to #{new_resource.path}" do

@@ -60,6 +60,12 @@ describe MacOS::PlistBuddyHelpers, '#convert_to_data_type_from_string' do
       expect(convert_to_data_type_from_string('string', 'corge')).to eq 'corge'
     end
   end
+
+  context 'When the type is float and the value is 3.14159265359' do
+    it 'returns the correct value as a float' do
+      expect(convert_to_data_type_from_string('float', '3.14159265359')).to eq 3.14159265359
+    end
+  end
 end
 
 describe MacOS::PlistBuddyHelpers, '#convert_to_string_from_data_type' do
@@ -68,11 +74,13 @@ describe MacOS::PlistBuddyHelpers, '#convert_to_string_from_data_type' do
       expect(convert_to_string_from_data_type(true)).to eq 'bool true'
     end
 
-    xit 'returns the required PlistBuddy array entry' do # TODO: Implement proper plist array syntax (i.e. containers)
+    # TODO: Skip until proper plist array syntax is implemented (i.e. containers)
+    xit 'returns the required PlistBuddy array entry' do
       expect(convert_to_string_from_data_type(%w(foo bar))).to eq 'array foo bar'
     end
 
-    xit 'returns the required PlistBuddy dictionary entry' do # TODO: Implement proper plist dict syntax (i.e. containers)
+    # TODO: Skip until proper plist dict syntax is implemented (i.e. containers)
+    xit 'returns the required PlistBuddy dictionary entry' do
       expect(convert_to_string_from_data_type('baz' => 'qux')).to eq 'dict key value'
     end
 

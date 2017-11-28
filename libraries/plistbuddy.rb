@@ -22,6 +22,8 @@ module MacOS
         value.to_i == 1
       elsif type == 'integer'
         value.to_i
+      elsif type == 'float'
+        value.to_f
       elsif type == 'string'
         value
       end
