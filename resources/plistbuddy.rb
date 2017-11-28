@@ -2,63 +2,53 @@ resource_name :plistbuddy
 
 property :path, String, name_property: true, desired_state: false
 property :entry, String, required: true, desired_state: false
-property :value, [String, TrueClass, FalseClass, Integer, Float], desired_state: true
-
-property :is_binary, [TrueClass, FalseClass]
+property :value, [String, TrueClass, FalseClass, Integer, Float, nil], desired_state: true
+property :binary, [TrueClass, FalseClass], desired_state: true
 
 default_action :set
 
 action_class do
-  extend MacOS::PlistBuddyHelpers
+  require 'colorize'
 
-  def plistbuddy(action)
-    [format_plistbuddy_command(action, new_resource.entry, new_resource.value), new_resource.path].join(' ')
-  end
-
-  def entry_exist?
-    return true unless shell_out(plistbuddy(:print)).error?
-  end
-
-  def current_plist_entry_value
-    type = shell_out('/usr/bin/defaults', 'read-type', new_resource.path, new_resource.entry).split.last
-    value = shell_out('/usr/bin/defaults', 'read', new_resource.path, new_resource.entry)
-    convert_to_data_type_from_string(type, value)
-  end
-
-  def needs_conversion?
+  def binary?
     return true if shell_out('/usr/bin/file', '--brief', '--mime', new_resource.path).stdout =~ /binary/i
   end
 end
 
-load_current_value do
-  value current_plist_entry_value
+load_current_value do |desired|
+  value_from_system = shell_out('/usr/bin/defaults', 'read', desired.path, desired.entry).stdout.strip
+  current_value_does_not_exist! if value_from_system.nil?
+  entry_type_from_system = shell_out('/usr/bin/defaults', 'read-type', desired.path, desired.entry).stdout.split.last
+  value convert_to_data_type_from_string(entry_type_from_system, value_from_system)
 end
 
 action :set do
   converge_if_changed :value do
-    plistbuddy
-    converge_by "Update the #{new_resource.entry} to #{new_resource.value} at #{new_resource.path}"
-  end
+    converge_by "add \"#{new_resource.entry}\" to #{new_resource.path.split('/').last}" do
+      execute plistbuddy_command('add', new_resource.entry, new_resource.path, new_resource.value) do
+        not_if plistbuddy_command('print', new_resource.entry, new_resource.path)
+      end
+    end
 
-  execute "add #{new_resource.entry} to #{new_resource.path}" do
-    command plistbuddy :add
-    not_if { entry_exist? }
-  end
-
-  execute 'convert back to binary' do
-    command "/usr/bin/plutil -convert binary1 #{new_resource.path}"
-    not_if { needs_conversion? }
+    converge_by "set \"#{new_resource.entry}\" to #{new_resource.value} at #{new_resource.path.split('/').last}" do
+      execute plistbuddy_command('set', new_resource.entry, new_resource.path, new_resource.value)
+    end
   end
 end
 
-action :delete do
-  execute "delete #{new_resource.entry} from plist" do
-    command plistbuddy :delete
-    only_if { entry_exist? }
-  end
+# execute 'convert back to binary' do
+#   command "/usr/bin/plutil -convert binary1 #{new_resource.path}"
+#   not_if { needs_conversion? }
+# end
 
-  execute 'convert back to binary' do
-    command "/usr/bin/plutil -convert binary1 #{new_resource.path}"
-    not_if { needs_conversion? }
-  end
-end
+# action :delete do
+# execute "delete #{new_resource.entry} from plist" do
+#   command plistbuddy :delete
+#   only_if { entry_exist? }
+# end
+
+# execute 'convert back to binary' do
+#   command "/usr/bin/plutil -convert binary1 #{new_resource.path}"
+#   not_if { needs_conversion? }
+# end
+# end
