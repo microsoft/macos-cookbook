@@ -26,6 +26,42 @@ describe MacOS::PlistBuddyHelpers, '#format_plistbuddy_command' do
   end
 end
 
+describe MacOS::PlistBuddyHelpers, '#convert_to_data_type_from_string' do
+  context 'When the type is boolean and given a 1 or 0' do
+    it 'returns true if entry is 1' do
+      expect(convert_to_data_type_from_string('boolean', '1')).to eq true
+    end
+
+    it 'returns false if entry is 0' do
+      expect(convert_to_data_type_from_string('boolean', '0')).to eq false
+    end
+  end
+
+  context 'When the type is integer and the value is 1' do
+    it 'returns the value as an integer' do
+      expect(convert_to_data_type_from_string('integer', '1')).to eq 1
+    end
+  end
+
+  context 'When the type is integer and the value is 0' do
+    it 'returns the value as an integer' do
+      expect(convert_to_data_type_from_string('integer', '0')).to eq 0
+    end
+  end
+
+  context 'When the type is integer and the value is 950224' do
+    it 'returns the correct value as an integer' do
+      expect(convert_to_data_type_from_string('integer', '950224')).to eq 950224
+    end
+  end
+
+  context 'When the type is string and the value is also a string' do
+    it 'returns the correct value still as a string' do
+      expect(convert_to_data_type_from_string('string', 'corge')).to eq 'corge'
+    end
+  end
+end
+
 describe MacOS::PlistBuddyHelpers, '#convert_to_string_from_data_type' do
   context 'When given a certain data type' do
     it 'returns the required PlistBuddy boolean entry' do

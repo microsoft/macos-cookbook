@@ -17,6 +17,16 @@ module MacOS
       "/usr/libexec/PlistBuddy -c \'#{action_property.to_s.capitalize} :#{plist_entry} #{plist_value}\'"
     end
 
+    def convert_to_data_type_from_string(type, value)
+      if type == 'boolean'
+        value.to_i == 1
+      elsif type == 'integer'
+        value.to_i
+      elsif type == 'string'
+        value
+      end
+    end
+
     private
 
     def args_formatter(action_property, plist_value)
@@ -25,10 +35,6 @@ module MacOS
       else
         plist_value
       end
-    end
-
-    def plist_entry_type(plist_path, plist_value)
-      shell_out('/usr/bin/defaults', 'read-type', plist_path, plist_value).split.last
     end
   end
 end

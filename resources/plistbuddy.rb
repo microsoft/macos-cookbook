@@ -15,8 +15,14 @@ action_class do
     [format_plistbuddy_command(action, new_resource.entry, new_resource.value), new_resource.path].join(' ')
   end
 
-  def entry_missing?
-    return true if shell_out(plistbuddy(:print)).error?
+  def entry_exist?
+    return true unless shell_out(plistbuddy(:print)).error?
+  end
+
+  def current_plist_entry_value
+    type = shell_out('/usr/bin/defaults', 'read-type', new_resource.path, new_resource.entry).split.last
+    value = shell_out('/usr/bin/defaults', 'read', new_resource.path, new_resource.entry)
+    convert_to_data_type_from_string(type, value)
   end
 
   def needs_conversion?
@@ -25,7 +31,7 @@ action_class do
 end
 
 # load_current_value do
-#   value 
+#   value
 # end
 
 action :set do
@@ -35,7 +41,7 @@ action :set do
 
   execute "add #{new_resource.entry} to #{new_resource.path}" do
     command plistbuddy :add
-    only_if { entry_missing? }
+    not_if { entry_exist? }
   end
 
   execute 'convert back to binary' do
@@ -47,7 +53,7 @@ end
 action :delete do
   execute "delete #{new_resource.entry} from plist" do
     command plistbuddy :delete
-    not_if { entry_missing? }
+    only_if { entry_exist? }
   end
 
   execute 'convert back to binary' do
