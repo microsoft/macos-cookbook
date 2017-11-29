@@ -1,4 +1,4 @@
-resource_name :plistbuddy
+resource_name :plist
 
 property :binary, [TrueClass, FalseClass], default: true, desired_state: true
 property :entry, String, required: true, desired_state: false
@@ -18,17 +18,17 @@ end
 action :set do
   converge_if_changed :value do
     converge_by "add \"#{new_resource.entry}\" to #{new_resource.path.split('/').last}" do
-      execute plistbuddy_command :add, new_resource.entry, new_resource.path, new_resource.value do
-        not_if plistbuddy_command :print, new_resource.entry, new_resource.path
+      execute plistbuddy_command(:add, new_resource.entry, new_resource.path, new_resource.value) do
+        not_if plistbuddy_command(:print, new_resource.entry, new_resource.path)
       end
     end
 
     converge_by "set \"#{new_resource.entry}\" to #{new_resource.value} at #{new_resource.path.split('/').last}" do
-      execute plistbuddy_command :set, new_resource.entry, new_resource.path, new_resource.value
+      execute plistbuddy_command(:set, new_resource.entry, new_resource.path, new_resource.value)
     end
   end
 
-  unless new_resource.binary == false
+  unless new_resource.binary
     converge_if_changed :binary do
       converge_by "convert \"#{new_resource.path.split('/').last}\" to binary plist" do
         execute "/usr/bin/plutil -convert binary1 #{new_resource.path}"

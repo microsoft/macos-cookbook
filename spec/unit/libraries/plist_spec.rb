@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-include MacOS::PlistBuddyHelpers
+include MacOS::PlistHelpers
 
-describe MacOS::PlistBuddyHelpers, '#plistbuddy_command' do
+describe MacOS::PlistHelpers, '#plist_command' do
   context 'Adding a value to a plist' do
     it 'the bool arguments contain the data type' do
       expect(plistbuddy_command(:add, 'FooEntry', 'path/to/file.plist', true)).to eq "/usr/libexec/PlistBuddy -c 'Add :FooEntry bool true' path/to/file.plist"
@@ -32,7 +32,7 @@ describe MacOS::PlistBuddyHelpers, '#plistbuddy_command' do
   end
 end
 
-describe MacOS::PlistBuddyHelpers, '#convert_to_data_type_from_string' do
+describe MacOS::PlistHelpers, '#convert_to_data_type_from_string' do
   context 'When the type is boolean and given a 1 or 0' do
     it 'returns true if entry is 1' do
       expect(convert_to_data_type_from_string('boolean', '1')).to eq true
@@ -74,31 +74,31 @@ describe MacOS::PlistBuddyHelpers, '#convert_to_data_type_from_string' do
   end
 end
 
-describe MacOS::PlistBuddyHelpers, '#convert_to_string_from_data_type' do
+describe MacOS::PlistHelpers, '#convert_to_string_from_data_type' do
   context 'When given a certain data type' do
-    it 'returns the required PlistBuddy boolean entry' do
+    it 'returns the required boolean entry' do
       expect(convert_to_string_from_data_type(true)).to eq 'bool true'
     end
 
     # TODO: Skip until proper plist array syntax is implemented (i.e. containers)
-    xit 'returns the required PlistBuddy array entry' do
+    xit 'returns the required array entry' do
       expect(convert_to_string_from_data_type(%w(foo bar))).to eq 'array foo bar'
     end
 
     # TODO: Skip until proper plist dict syntax is implemented (i.e. containers)
-    xit 'returns the required PlistBuddy dictionary entry' do
+    xit 'returns the required dictionary entry' do
       expect(convert_to_string_from_data_type('baz' => 'qux')).to eq 'dict key value'
     end
 
-    it 'returns the required PlistBuddy string entry' do
+    it 'returns the required string entry' do
       expect(convert_to_string_from_data_type('quux')).to eq 'string quux'
     end
 
-    it 'returns the required PlistBuddy int entry' do
+    it 'returns the required integer entry' do
       expect(convert_to_string_from_data_type(1)).to eq 'integer 1'
     end
 
-    it 'returns the required PlistBuddy float entry' do
+    it 'returns the required float entry' do
       expect(convert_to_string_from_data_type(1.0)).to eq 'float 1.0'
     end
   end

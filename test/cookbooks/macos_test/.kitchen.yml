@@ -20,6 +20,7 @@ suites:
   - name: default
     run_list:
       - recipe[macos::keep_awake]
+      - recipe[macos::disable_software_updates]
       - recipe[macos_test::new_users]
       - recipe[macos_test::preferences]
     verifier:

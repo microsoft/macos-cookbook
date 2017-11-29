@@ -1,5 +1,11 @@
 module MacOS
-  module PlistBuddyHelpers
+  module PlistHelpers
+    def hardware_uuid
+      system_profiler_hardware_output = shell_out('system_profiler', 'SPHardwareDataType').stdout
+      hardware_overview = Psych.load(system_profiler_hardware_output)['Hardware']['Hardware Overview']
+      hardware_overview['Hardware UUID']
+    end
+
     def convert_to_string_from_data_type(value)
       data_type_cases = { Array => "array #{value}",
                           Integer => "integer #{value}",
@@ -33,5 +39,5 @@ module MacOS
   end
 end
 
-Chef::Recipe.include(MacOS::PlistBuddyHelpers)
-Chef::Resource.include(MacOS::PlistBuddyHelpers)
+Chef::Recipe.include(MacOS::PlistHelpers)
+Chef::Resource.include(MacOS::PlistHelpers)

@@ -1,14 +1,6 @@
-module KcpasswordHelpers
-  module Kcpassword
-    def magic_bits
-      [125, 137, 82, 35, 210, 188, 221, 234, 163, 185, 31]
-    end
-
-    def magic_len
-      magic_bits.length
-    end
-
-    def obfuscate(password)
+module MacOS
+  module MacOSUserHelpers
+    def kcpassword_hash(password)
       bits = magic_bits
       obfuscated = []
       padded(password).each do |char|
@@ -19,6 +11,14 @@ module KcpasswordHelpers
     end
 
     private
+
+    def magic_bits
+      [125, 137, 82, 35, 210, 188, 221, 234, 163, 185, 31]
+    end
+
+    def magic_len
+      magic_bits.length
+    end
 
     def padded(password)
       padding = magic_len - (password.length % magic_len)
@@ -32,5 +32,5 @@ module KcpasswordHelpers
   end
 end
 
-Chef::Recipe.include(KcpasswordHelpers::Kcpassword)
-Chef::Resource.include(KcpasswordHelpers::Kcpassword)
+Chef::Recipe.include(MacOS::MacOSUserHelpers)
+Chef::Resource.include(MacOS::MacOSUserHelpers)
