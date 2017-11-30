@@ -5,15 +5,15 @@ include MacOS::PlistHelpers
 describe MacOS::PlistHelpers, '#plist_command' do
   context 'Adding a value to a plist' do
     it 'the bool arguments contain the data type' do
-      expect(plistbuddy_command(:add, 'FooEntry', 'path/to/file.plist', true)).to eq "/usr/libexec/PlistBuddy -c 'Add :FooEntry bool true' path/to/file.plist"
+      expect(plistbuddy_command(:add, 'FooEntry', 'path/to/file.plist', true)).to eq "/usr/libexec/PlistBuddy -c 'Add :FooEntry bool' path/to/file.plist"
     end
 
-    it 'the int arguments contain the data type' do
-      expect(plistbuddy_command(:add, 'QuuxEntry', 'path/to/file.plist', 50)).to eq "/usr/libexec/PlistBuddy -c 'Add :QuuxEntry integer 50' path/to/file.plist"
+    it 'the add command only adds the data type' do
+      expect(plistbuddy_command(:add, 'QuuxEntry', 'path/to/file.plist', 50)).to eq "/usr/libexec/PlistBuddy -c 'Add :QuuxEntry integer' path/to/file.plist"
     end
 
     it 'the delete command is formatted properly' do
-      expect(plistbuddy_command(:delete, 'BarEntry', 'path/to/file.plist')).to eq "/usr/libexec/PlistBuddy -c 'Delete :BarEntry ' path/to/file.plist"
+      expect(plistbuddy_command(:delete, 'BarEntry', 'path/to/file.plist')).to eq "/usr/libexec/PlistBuddy -c 'Delete :BarEntry' path/to/file.plist"
     end
 
     it 'the set command is formatted properly' do
@@ -21,13 +21,13 @@ describe MacOS::PlistHelpers, '#plist_command' do
     end
 
     it 'the print command is formatted properly' do
-      expect(plistbuddy_command(:print, 'QuxEntry', 'path/to/file.plist')).to eq "/usr/libexec/PlistBuddy -c 'Print :QuxEntry ' path/to/file.plist"
+      expect(plistbuddy_command(:print, 'QuxEntry', 'path/to/file.plist')).to eq "/usr/libexec/PlistBuddy -c 'Print :QuxEntry' path/to/file.plist"
     end
   end
 
   context 'The value provided contains spaces' do
     it 'returns the value properly formatted with double quotes' do
-      expect(plistbuddy_command(:print, 'Foo Bar Baz', 'path/to/file.plist')).to eq "/usr/libexec/PlistBuddy -c 'Print :\"Foo Bar Baz\" ' path/to/file.plist"
+      expect(plistbuddy_command(:print, 'Foo Bar Baz', 'path/to/file.plist')).to eq "/usr/libexec/PlistBuddy -c 'Print :\"Foo Bar Baz\"' path/to/file.plist"
     end
   end
 end
@@ -70,6 +70,40 @@ describe MacOS::PlistHelpers, '#convert_to_data_type_from_string' do
   context 'When the type is float and the value is 3.14159265359' do
     it 'returns the correct value as a float' do
       expect(convert_to_data_type_from_string('float', '3.14159265359')).to eq 3.14159265359
+    end
+  end
+
+  context 'When the type nor the value is given' do
+    it 'find the value from somewhere else' do
+      expect(convert_to_data_type_from_string(nil, '')).to eq String
+    end
+  end
+end
+
+describe MacOS::PlistHelpers, '#type_to_commandline_string' do
+  context 'When given a certain data type' do
+    it 'returns the required boolean entry type as a string' do
+      expect(type_to_commandline_string(true)).to eq 'bool'
+    end
+
+    it 'returns the required array entry type as a string' do
+      expect(type_to_commandline_string(%w(foo bar))).to eq 'array'
+    end
+
+    it 'returns the required dictionary entry type as a string' do
+      expect(type_to_commandline_string('baz' => 'qux')).to eq 'dict'
+    end
+
+    it 'returns the required string entry type as a string' do
+      expect(type_to_commandline_string('quux')).to eq 'string'
+    end
+
+    it 'returns the required integer entry type as a string' do
+      expect(type_to_commandline_string(1)).to eq 'integer'
+    end
+
+    it 'returns the required float entry type as a string' do
+      expect(type_to_commandline_string(1.0)).to eq 'float'
     end
   end
 end

@@ -35,13 +35,13 @@ end
 
 control 'screensaver' do
   desc 'screensaver is disabled'
-  
+
   def hardware_uuid
     system_profiler_hardware_output = `system_profiler SPHardwareDataType`
     hardware_overview = Psych.load(system_profiler_hardware_output)['Hardware']['Hardware Overview']
     hardware_overview['Hardware UUID']
   end
-  
+
   describe command("/usr/libexec/PlistBuddy -c 'Print :idleTime' /Users/vagrant/Library/Preferences/ByHost/com.apple.screensaver.#{hardware_uuid}.plist"), :skip do
     its('stdout') { should match(/0/) }
   end

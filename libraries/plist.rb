@@ -1,9 +1,18 @@
 module MacOS
   module PlistHelpers
-    def hardware_uuid
-      system_profiler_hardware_output = shell_out('system_profiler', 'SPHardwareDataType').stdout
-      hardware_overview = Psych.load(system_profiler_hardware_output)['Hardware']['Hardware Overview']
-      hardware_overview['Hardware UUID']
+    def convert_to_data_type_from_string(type, value)
+      case type
+      when 'boolean'
+        value.to_i == 1
+      when 'integer'
+        value.to_i
+      when 'float'
+        value.to_f
+      when 'string'
+        value
+      else
+        raise "Unknown or unsupported data type: #{type.class}"
+      end
     end
 
     def convert_to_string_from_data_type(value)
@@ -17,24 +26,62 @@ module MacOS
       data_type_cases[value.class]
     end
 
-    def convert_to_data_type_from_string(type, value)
-      case type
-      when 'boolean'
-        value.to_i == 1
-      when 'integer'
-        value.to_i
-      when 'float'
-        value.to_f
-      when 'string'
-        value
+    def type_to_commandline_string(value)
+      case value
+      when Array
+        'array'
+      when Integer
+        'integer'
+      when FalseClass
+        'bool'
+      when TrueClass
+        'bool'
+      when Hash
+        'dict'
+      when String
+        'string'
+      when Float
+        'float'
+      else
+        raise "Unknown or unsupported data type: #{value} of #{value.class}"
       end
     end
 
-    def plistbuddy_command(subcommand_action, plist_entry, plist_path, plist_value = nil)
-      plist_value = convert_to_string_from_data_type plist_value if subcommand_action.to_s == 'add'
-      plist_entry = "\"#{plist_entry}\"" if plist_entry.include?(' ')
-      full_subcommand = "#{subcommand_action.capitalize} :#{plist_entry} #{plist_value}"
-      ['/usr/libexec/PlistBuddy', '-c', "\'#{full_subcommand}\'", plist_path].join(' ')
+    def hardware_uuid
+      system_profiler_hardware = shell_out('system_profiler', 'SPHardwareDataType')
+      hardware_overview = Psych.load(system_profiler_hardware.stdout)['Hardware']['Hardware Overview']
+      hardware_overview['Hardware UUID']
+    end
+
+    def plistbuddy_command(subcommand, entry, path, value = nil)
+      arg = case subcommand.to_s
+            when 'add'
+              type_to_commandline_string(value)
+            when 'print'
+              ''
+            else
+              value
+            end
+      entry = "\"#{entry}\"" if entry.include?(' ')
+      entry_with_arg = [entry, arg].join(' ').strip
+      subcommand = "#{subcommand.capitalize} :#{entry_with_arg}"
+      [plistbuddy_executable, '-c', "\'#{subcommand}\'", path].join(' ')
+    end
+
+    def system_preference(path, entry)
+      defaults_read_type = shell_out(defaults_executable, 'read-type', path, entry)
+      defaults_read = shell_out(defaults_executable, 'read', path, entry)
+      { key_type: defaults_read_type.stdout.split.last, key_value: defaults_read.stdout.strip }
+    end
+
+    private
+
+    def defaults_executable
+      '/usr/bin/defaults'
+    end
+
+    def plistbuddy_executable
+      '/usr/libexec/PlistBuddy'
     end
   end
 end
