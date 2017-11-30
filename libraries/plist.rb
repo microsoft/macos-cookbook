@@ -48,8 +48,8 @@ module MacOS
     end
 
     def hardware_uuid
-      system_profiler_hardware = shell_out('system_profiler', 'SPHardwareDataType')
-      hardware_overview = Psych.load(system_profiler_hardware.stdout)['Hardware']['Hardware Overview']
+      system_profiler_hardware_output = shell_out('system_profiler', 'SPHardwareDataType').stdout
+      hardware_overview = Psych.load(system_profiler_hardware_output)['Hardware']['Hardware Overview']
       hardware_overview['Hardware UUID']
     end
 
@@ -69,9 +69,9 @@ module MacOS
     end
 
     def system_preference(path, entry)
-      defaults_read_type = shell_out(defaults_executable, 'read-type', path, entry)
-      defaults_read = shell_out(defaults_executable, 'read', path, entry)
-      { key_type: defaults_read_type.stdout.split.last, key_value: defaults_read.stdout.strip }
+      defaults_read_type_output = shell_out(defaults_executable, 'read-type', path, entry).stdout
+      defaults_read_output = shell_out(defaults_executable, 'read', path, entry).stdout
+      { key_type: defaults_read_type_output.split.last, key_value: defaults_read_output.strip }
     end
 
     private

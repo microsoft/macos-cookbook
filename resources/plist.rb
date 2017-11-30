@@ -6,8 +6,8 @@ property :value, [TrueClass, FalseClass, String, Integer, Float], desired_state:
 
 action_class do
   def binary?
-    file_type = shell_out('/usr/bin/file', '--brief', '--mime-encoding', new_resource.path)
-    file_type.stdout.strip == 'binary'
+    file_type_output = shell_out('/usr/bin/file', '--brief', '--mime-encoding', new_resource.path).stdout
+    file_type_output.strip == 'binary'
   end
 end
 
