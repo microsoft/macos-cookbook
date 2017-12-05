@@ -1,5 +1,5 @@
 module Xcode
-  module Helper
+  module Helpers
     def xcversion_command
       '/opt/chef/embedded/bin/xcversion'.freeze
     end
@@ -54,3 +54,6 @@ module Xcode
     end
   end
 end
+
+Chef::Recipe.include(Xcode::Helpers)
+Chef::Resource.include(Xcode::Helpers)
