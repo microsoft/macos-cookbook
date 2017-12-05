@@ -1,5 +1,3 @@
-include Xcode::Helper
-
 resource_name :xcode
 default_action %i(setup install_xcode install_simulators)
 
