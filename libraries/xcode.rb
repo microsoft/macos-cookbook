@@ -18,7 +18,7 @@ module MacOS
     module Simulator
       class << self
         def installed?(semantic_version)
-          available_simulator_versions.include?("#{semantic_version} Simulator (installed)")
+          available_versions.include?("#{semantic_version} Simulator (installed)")
         end
 
         def highest_semantic_version(major_version, simulators)
@@ -39,7 +39,7 @@ module MacOS
         end
 
         def list
-          available_simulator_versions.split(/\n/).map { |version| version.split[0...2] }
+          available_versions.split(/\n/).map { |version| version.split[0...2] }
         end
 
         def available_versions
