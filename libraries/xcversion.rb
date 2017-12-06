@@ -17,5 +17,5 @@ module MacOS
   end
 end
 
-Chef::Recipe.include(MacOS::XCVersion)
-Chef::Resource.include(MacOS::XCVersion)
+Chef::Recipe.include(MacOS)
+Chef::Resource.include(MacOS)
