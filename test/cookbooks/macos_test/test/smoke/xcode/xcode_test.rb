@@ -6,11 +6,22 @@ control 'xcode' do
     it { should be_symlink }
   end
 
-  describe directory('/Applications/Xcode-9.1.app') do
-    it { should exist }
-  end
+  if os[:release].match?(/10\.13/) || os[:release].match?(/10\.12/)
+    describe directory('/Applications/Xcode-9.2.app') do
+      it { should exist }
+    end
 
-  describe command('/opt/chef/embedded/bin/xcversion simulators') do
-    its('stdout') { should match(/iOS 10\.3\.1 Simulator \(installed\)/) }
+    describe command('/opt/chef/embedded/bin/xcversion simulators') do
+      its('stdout') { should match(/iOS 10\.3\.1 Simulator \(installed\)/) }
+    end
+
+  elsif os[:release].match?(/10\.11/)
+    describe directory('/Applications/Xcode-8.2.1.app') do
+      it { should exist }
+    end
+
+    describe command('/opt/chef/embedded/bin/xcversion simulators') do
+      its('stdout') { should match(/iOS 9\.3 Simulator \(installed\)/) }
+    end
   end
 end
