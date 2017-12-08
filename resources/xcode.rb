@@ -9,9 +9,7 @@ action :setup do
   chef_gem 'xcode-install' do
     options('--no-document')
   end
-end
 
-action :install_xcode do
   CREDENTIALS_DATA_BAG = data_bag_item(:credentials, :apple_id)
 
   DEVELOPER_CREDENTIALS = {
@@ -23,7 +21,9 @@ action :install_xcode do
     environment DEVELOPER_CREDENTIALS
     command "#{XCVersion.command} update"
   end
+end
 
+action :install_xcode do
   execute "install Xcode #{new_resource.version}" do
     environment DEVELOPER_CREDENTIALS
     command "#{XCVersion.command} install '#{XCVersion.version(new_resource.version)}'"
