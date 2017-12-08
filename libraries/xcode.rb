@@ -21,9 +21,9 @@ module MacOS
           available_versions.include?("#{semantic_version} Simulator (installed)")
         end
 
-        def highest_semantic_version(major_version, simulators)
+        def highest_semantic_version(major_version)
           requirement = Gem::Dependency.new('iOS', "~> #{major_version}")
-          highest = simulators.select { |name, vers| requirement.match?(name, vers) }.max
+          highest = available_list.select { |name, vers| requirement.match?(name, vers) }.max
           if highest.nil?
             Chef::Application.fatal!("iOS #{major_version} Simulator no longer available from Apple!")
           else
@@ -38,7 +38,7 @@ module MacOS
           included_simulator[:version].split('.').first.to_i
         end
 
-        def list
+        def available_list
           available_versions.split(/\n/).map { |version| version.split[0...2] }
         end
 
