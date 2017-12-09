@@ -23,11 +23,17 @@ module MacOS
 
         def highest_semantic_version(major_version)
           requirement = Gem::Dependency.new('iOS', "~> #{major_version}")
-          highest = available_list.select { |name, vers| requirement.match?(name, vers) }.max
-          if highest.nil?
-            Chef::Application.fatal!("iOS #{major_version} Simulator no longer available from Apple!")
+          if available_list.empty?
+            Chef::Log.error('iOS simulator list not populated yet, refreshing...')
+            shell_out('sleep 20')
+            highest_semantic_version(major_version)
           else
-            highest.join(' ')
+            highest = available_list.select { |name, vers| requirement.match?(name, vers) }.max
+            if highest.nil?
+              Chef::Application.fatal!("iOS #{major_version} Simulator no longer available from Apple!")
+            else
+              highest.join(' ')
+            end
           end
         end
 
