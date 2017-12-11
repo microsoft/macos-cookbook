@@ -30,17 +30,17 @@ module MacOS
         end
       end
 
-      def available_versions
-        shell_out!(XCVersion.list_simulators).stdout
+      def latest_semantic_version(major_version)
+        requirement = Gem::Dependency.new('iOS', "~> #{major_version}")
+        available_list.select { |platform, version| requirement.match?(platform, version) }.max
       end
 
       def available_list
         available_versions.split(/\n/).map { |version| version.split[0..1] }
       end
 
-      def latest_semantic_version(major_version)
-        requirement = Gem::Dependency.new('iOS', "~> #{major_version}")
-        available_list.select { |platform, version| requirement.match?(platform, version) }.max
+      def available_versions
+        shell_out!(XCVersion.list_simulators).stdout
       end
 
       class << self
