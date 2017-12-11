@@ -5,7 +5,19 @@ module MacOS
         '/opt/chef/embedded/bin/xcversion'.freeze
       end
 
-      def version(semantic_version)
+      def update
+        command + ' update'
+      end
+
+      def install_simulator(version)
+        command + " simulators --install='#{version}'"
+      end
+
+      def install_xcode(version)
+        command + " install '#{apple_pseudosemantic_version(version)}'"
+      end
+
+      def apple_pseudosemantic_version(semantic_version)
         split_version = semantic_version.split('.')
         if split_version.length == 2 && split_version.last == '0'
           split_version.first
