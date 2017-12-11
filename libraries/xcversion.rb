@@ -9,8 +9,16 @@ module MacOS
         command + ' update'
       end
 
+      def list_simulators
+        command + ' simulators'
+      end
+
       def install_simulator(version)
         command + " simulators --install='#{version}'"
+      end
+
+      def list_xcodes
+        command + ' list'
       end
 
       def install_xcode(version)
