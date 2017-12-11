@@ -23,6 +23,8 @@ module MacOS
 
       def install_xcode(version)
         command + " install '#{apple_pseudosemantic_version(version)}'"
+      def installed_xcodes
+        xcversion + ' installed'
       end
 
       def apple_pseudosemantic_version(semantic_version)
