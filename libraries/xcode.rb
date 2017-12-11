@@ -4,7 +4,7 @@ module MacOS
   module Xcode
     class << self
       def installed?(semantic_version)
-        xcversion_output = shell_out(XCVersion.installed).stdout.split
+        xcversion_output = shell_out(XCVersion.installed_xcodes).stdout.split
         installed_xcodes = xcversion_output.values_at(*xcversion_output.each_index.select(&:even?))
         installed_xcodes.include?(semantic_version)
       end
