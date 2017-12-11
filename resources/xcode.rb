@@ -19,14 +19,14 @@ action :setup do
 
   execute 'update available Xcode versions' do
     environment DEVELOPER_CREDENTIALS
-    command XCVersion.command.update
+    command XCVersion.update
   end
 end
 
 action :install_xcode do
   execute "install Xcode #{new_resource.version}" do
     environment DEVELOPER_CREDENTIALS
-    command XCVersion.command.install_xcode
+    command XCVersion.install_xcode
     not_if { Xcode.installed?(new_resource.version) }
   end
 end
