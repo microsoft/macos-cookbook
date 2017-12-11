@@ -1,28 +1,30 @@
 module MacOS
   module XCVersion
     class << self
-      def command
+      def xcversion
         '/opt/chef/embedded/bin/xcversion'.freeze
       end
 
       def update
-        command + ' update'
+        xcversion + ' update'
       end
 
       def list_simulators
-        command + ' simulators'
+        xcversion + ' simulators'
       end
 
       def install_simulator(version)
-        command + " simulators --install='#{version}'"
+        xcversion + " simulators --install='#{version}'"
       end
 
       def list_xcodes
-        command + ' list'
+        xcversion + ' list'
       end
 
       def install_xcode(version)
-        command + " install '#{apple_pseudosemantic_version(version)}'"
+        xcversion + " install '#{apple_pseudosemantic_version(version)}'"
+      end
+
       def installed_xcodes
         xcversion + ' installed'
       end
