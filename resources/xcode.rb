@@ -26,7 +26,7 @@ end
 action :install_xcode do
   execute "install Xcode #{new_resource.version}" do
     environment DEVELOPER_CREDENTIALS
-    command XCVersion.install_xcode
+    command XCVersion.install_xcode(new_resource.version)
     not_if { Xcode.installed?(new_resource.version) }
   end
 end
