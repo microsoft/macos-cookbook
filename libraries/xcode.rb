@@ -31,11 +31,11 @@ module MacOS
       end
 
       def available_versions
-        shell_out!("#{XCVersion.command} simulators").stdout
+        shell_out!(XCVersion.list_simulators).stdout
       end
 
       def available_list
-        available_versions.split(/\n/).map { |version| version.split[0...2] }
+        available_versions.split(/\n/).map { |version| version.split[0..1] }
       end
 
       def latest_semantic_version(major_version)
@@ -45,7 +45,8 @@ module MacOS
 
       class << self
         def installed?(semantic_version)
-          shell_out!("#{XCVersion.command} simulators").stdout.include?("#{semantic_version} Simulator (installed)")
+          shell_out!(XCVersion.list_simulators)
+            .stdout.include?("#{semantic_version} Simulator (installed)")
         end
 
         def included_major_version
