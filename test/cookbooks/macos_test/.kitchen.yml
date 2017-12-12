@@ -2,9 +2,6 @@
 driver:
   name: vagrant
   provider: parallels
-  customize:
-    memory: 10240
-    cpus: 8
 
 provisioner:
   name: chef_zero

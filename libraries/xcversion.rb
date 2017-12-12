@@ -1,11 +1,35 @@
 module MacOS
   module XCVersion
     class << self
-      def command
-        '/opt/chef/embedded/bin/xcversion'.freeze
+      def xcversion
+        '/opt/chef/embedded/bin/xcversion '.freeze
       end
 
-      def version(semantic_version)
+      def update
+        xcversion + 'update'
+      end
+
+      def list_simulators
+        xcversion + 'simulators'
+      end
+
+      def install_simulator(version)
+        xcversion + "simulators --install='#{version}'"
+      end
+
+      def list_xcodes
+        xcversion + 'list'
+      end
+
+      def install_xcode(version)
+        xcversion + "install '#{apple_pseudosemantic_version(version)}'"
+      end
+
+      def installed_xcodes
+        xcversion + 'installed'
+      end
+
+      def apple_pseudosemantic_version(semantic_version)
         split_version = semantic_version.split('.')
         if split_version.length == 2 && split_version.last == '0'
           split_version.first

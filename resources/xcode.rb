@@ -19,14 +19,14 @@ action :setup do
 
   execute 'update available Xcode versions' do
     environment DEVELOPER_CREDENTIALS
-    command "#{XCVersion.command} update"
+    command XCVersion.update
   end
 end
 
 action :install_xcode do
   execute "install Xcode #{new_resource.version}" do
     environment DEVELOPER_CREDENTIALS
-    command "#{XCVersion.command} install '#{XCVersion.version(new_resource.version)}'"
+    command XCVersion.install_xcode(new_resource.version)
     not_if { Xcode.installed?(new_resource.version) }
   end
 end
@@ -35,11 +35,11 @@ action :install_simulators do
   if new_resource.ios_simulators
     new_resource.ios_simulators.each do |major_version|
       next if major_version.to_i >= Xcode::Simulator.included_major_version
-      version = Xcode::Simulator.highest_semantic_version(major_version)
+      version = Xcode::Simulator.new(major_version).version
 
       execute "install latest iOS #{major_version} Simulator" do
         environment DEVELOPER_CREDENTIALS
-        command "#{XCVersion.command} simulators --install='#{version}'"
+        command XCVersion.install_simulator(version)
         not_if { Xcode::Simulator.installed?(version) }
       end
     end
