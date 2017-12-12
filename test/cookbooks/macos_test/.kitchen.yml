@@ -23,6 +23,7 @@ suites:
       - recipe[macos::disable_software_updates]
       - recipe[macos_test::new_users]
       - recipe[macos_test::preferences]
+      - recipe[macos_test::machine_name]
     verifier:
       inspec_tests:
         - test/smoke/default
