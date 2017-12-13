@@ -33,3 +33,10 @@ suites:
     verifier:
       inspec_tests:
         - test/smoke/xcode
+
+  - name: disable-swu
+    run_list:
+      - recipe[macos::disable_software_updates]
+    verifier:
+      inspec_tests:
+        - test/smoke/disable_swu
