@@ -20,8 +20,8 @@ suites:
   - name: default
     run_list:
       - recipe[macos::keep_awake]
-      - recipe[macos::disable_software_updates]
       - recipe[macos_test::new_users]
+      - recipe[macos::disable_software_updates]
       - recipe[macos_test::preferences]
       - recipe[macos_test::machine_name]
     verifier:
@@ -34,10 +34,3 @@ suites:
     verifier:
       inspec_tests:
         - test/smoke/xcode
-
-  - name: disable-swu
-    run_list:
-      - recipe[macos::disable_software_updates]
-    verifier:
-      inspec_tests:
-        - test/smoke/disable_swu
