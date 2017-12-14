@@ -33,15 +33,15 @@ resource is:
 ```ruby
 ard 'description' do
   install_package                      String
-  uninstall_options                    Array, default: ['-files', '-settings', '-prefs']
-  restart_options                      Array, default: ['-agent', '-console', '-menu']
+  uninstall_options                    Array,  # defaults to ['-files', '-settings', '-prefs'] if not specified
+  restart_options                      Array, # defaults to ['-agent', '-console', '-menu'] if not specified
   users                                Array
-  privs                                Array, default: ['-all']
-  access                               String, default: '-on'
-  allow_access_for                     String, default: '-allUsers'
+  privs                                Array, # defaults to ['-all'] if not specified
+  access                               String, # defaults to '-on' if not specified
+  allow_access_for                     String, # defaults to '-allUsers' if not specified
   computerinfo                         Array
   clientopts                           Array
-  action                               Symbol
+  action                               Symbol # defaults to [:activate, :configure] if not specified
 end
 ```
 

@@ -26,10 +26,10 @@ resource is:
 
 ```ruby
 plist 'description' do
-  path                                 String
+  path                                 String # defaults to 'description' if not specified
   entry                                String
   value                                TrueClass, FalseClass, String, Integer, Float 
-  action                               Symbol
+  action                               Symbol # defaults to :set if not specified
 end
 ```
 
@@ -58,5 +58,7 @@ end
 where
 
 `path` is the absolute path to the `com.apple.finder.plist` plist file
+
 `entry` is the representing the plist entry `'AppleShowAllFiles'`
+
 `value` is the entry's value to boolean type: `true`

@@ -17,8 +17,8 @@ Requirements
 - Only tested on Chef 13
 - Surprisingly, this cookbook is only compatible with macOS
 
-Supported OS X/macOS versions
------------------------------
+Supported OS Versions
+---------------------
 
 - OS X El Capitan 10.11
 - macOS Sierra 10.12
@@ -80,7 +80,9 @@ name, version number, and checksum in order to override.
 Installs Xcode 9.1 and simulators for iOS 10 and iOS 11. Check out
 the documentation for the Xcode resource if you need more flexibility.
 
-**Usage:** `include_recipe::xcode`
+:large_orange_diamond: Requires an `apple_id` data bag item.
+
+**Usage:** `include_recipe macos::xcode`
 
 | Attribute Used                                                | Default value |
 |---------------------------------------------------------------|---------------|
@@ -90,13 +92,18 @@ the documentation for the Xcode resource if you need more flexibility.
 ### Apple Configurator 2
 
 Installs Apple Configurator 2 using `mas` and links `cfgutil` to
-`/usr/local/bin`. Requires a `data_bag_item` containing valid App Store credentials.
+`/usr/local/bin`.
 
-**Usage:** `include_recipe::configurator`
+:large_orange_diamond: Requires an `apple_id` data bag item.
+
+**Usage:** `include_recipe macos::configurator`
 
 **Attributes**: No attributes used in this recipe.
 
-#### Required Data Bag Items
+#### Data Bags
+
+Both the `macos::xcode` and `macos::configurator` recipes require a data bag
+item named `apple_id` containing valid Apple ID credentials. For example:
 
 **Example:**
 
@@ -111,5 +118,6 @@ Installs Apple Configurator 2 using `mas` and links `cfgutil` to
 Resources
 ---------
 
-- [ARD (Apple Remote Desktop)](https://github.com/Microsoft/macos-cookbook/blob/feature/documentation/documentation/resource_ard.md)
-- [Plist](https://github.com/Microsoft/macos-cookbook/blob/feature/documentation/documentation/resource_plist.md)
+- [ARD (Apple Remote Desktop)](./documentation/resource_ard.md)
+- [Plist](./documentation/resource_plist.md)
+- [Xcode](./documentation/resource_xcode.md)
