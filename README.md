@@ -1,7 +1,8 @@
 macOS Cookbook
 ==============
 
-![build-status](https://office.visualstudio.com/_apis/public/build/definitions/59d72877-1cea-4eb6-9d06-66716573631a/2140/badge)
+macOS Sierra 10.12 ![build-status-1012](https://office.visualstudio.com/_apis/public/build/definitions/59d72877-1cea-4eb6-9d06-66716573631a/2143/badge)
+macOS High Sierra 10.13 ![build-status-1013](https://office.visualstudio.com/_apis/public/build/definitions/59d72877-1cea-4eb6-9d06-66716573631a/2140/badge)
 
 The macOS cookbook is a Chef library cookbook that provides resources for configuring
 and provisioning macOS. Additionally, it provides recipes that implement common
