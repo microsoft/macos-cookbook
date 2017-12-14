@@ -10,8 +10,15 @@ use-cases of the macOS cookbook's recources.
 Requirements
 ------------
 
-- Chef 13+
-- macOS
+- Only tested on Chef 13
+- Surprisingly, this cookbook is only compatible with macOS
+
+Supported OS X/macOS versions
+-----------------------------
+
+- OS X El Capitan 10.11
+- macOS Sierra 10.12
+- macOS High Sierra 10.13
 
 Attributes
 ----------
@@ -24,23 +31,74 @@ node['macos']['admin_password'] = 'vagrant'
 ```
 
 Each of these attributes defaults to vagrant since our resources are developed
-with the Vagrant paradigm. In other words, the use and password declared here
-should be an admin user.
-
-### Xcode
-
-```ruby
-node['macos']['xcode']['version'] = '9.2'
-```
+with the Vagrant paradigm. In other words, the user and password declared here
+should be an admin user with passwordless super-user rights.
 
 Recipes
 -------
 
-- `disable_software_updates`
-- `keep_awake`
-- `mono`
-- `xcode`
-- `configurator`
+### Disable Software Updates
+
+**Usage:** `include_recipe macos::disable_software_updates`
+**Description:** Disables automatic checking and downloading of software updates.
+
+No attributes used in this recipe.
+
+### Keep Awake
+
+**Usage:** `include_recipe macos::keep_awake`
+**Description:** Prevent macOS from falling asleep, disable the screensaver, and
+several other settings to always keep macOS on. Uses the `plistbuddy` and `pmset`
+resources.
+
+| Attribute used                        | Default value           |
+|---------------------------------------|-------------------------|
+| `node['macos']['network_time_server']`| `'time.windows.com'`    |
+| `node['macos']['time_zone']`          | `'America/Los_Angeles'` |
+
+### Mono
+
+**Usage:** `include_recipe macos::mono`
+**Description:** Installs [Mono](http://www.mono-project.com/docs/about-mono/).
+Version 4.4.2 by default.
+
+| Attribute used                      | Default value              |
+|-------------------------------------|----------------------------------------|
+| `node['macos']['mono']['package']`  | `'MonoFramework-MDK-4.4.2.11.macos10.xamarin.universal.pkg'` |
+| `node['macos']['mono']['version']`  | `'4.4.2'`                  |
+| `node['macos']['mono']['checksum']` | `'d8bfbee7ae4d0d1facaf0ddfb70c0de4b1a3d94bb1b4c38e8fa4884539f54e23'` |
+
+### Xcode
+
+**Usage:** `include_recipe::xcode`
+**Description:** Installs Xcode 9.2 and simulators for iOS 10 and iOS 11. Uses the
+`xcode-install` gem.
+
+| Attribute Used                                                | Default value |
+|---------------------------------------------------------------|---------------|
+| `node['macos']['xcode']['version']`                           |  `'9.1'`      |
+| `node['macos']['xcode']['simulator']['major_version']`        | `%w(11 10)`   |
+
+### Apple Configurator 2
+
+**Usage:** `include_recipe::configurator`
+
+**Description:** Installs Apple Configurator 2 using `mas` and links `cfgutil` to
+`/usr/local/bin`. Requires a `data_bag_item` containing valid App Store credentials.
+
+**Attributes**: No attributes used in this recipe.
+
+#### Required Data Bag Items
+
+**Example:**
+
+```json
+{
+  "id": "apple_id"
+  "apple_id": "farva@spurbury.gov",
+  "password": "0k@yN0cR34m"
+}
+```
 
 Resources
 ---------
