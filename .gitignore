@@ -102,3 +102,4 @@ Vagrantfile
 .rubocop.yml
 .vagrant
 data_bags
+*.code-workspace
