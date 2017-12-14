@@ -39,17 +39,19 @@ Recipes
 
 ### Disable Software Updates
 
+Disables automatic checking and downloading of software updates.
+
 **Usage:** `include_recipe macos::disable_software_updates`
-**Description:** Disables automatic checking and downloading of software updates.
 
 No attributes used in this recipe.
 
 ### Keep Awake
 
-**Usage:** `include_recipe macos::keep_awake`
-**Description:** Prevent macOS from falling asleep, disable the screensaver, and
+Prevent macOS from falling asleep, disable the screensaver, and
 several other settings to always keep macOS on. Uses the `plistbuddy` and `pmset`
 resources.
+
+**Usage:** `include_recipe macos::keep_awake`
 
 | Attribute used                        | Default value           |
 |---------------------------------------|-------------------------|
@@ -58,9 +60,10 @@ resources.
 
 ### Mono
 
+Installs [Mono](http://www.mono-project.com/docs/about-mono/). Requires package
+name, version number, and checksum in order to override.
+
 **Usage:** `include_recipe macos::mono`
-**Description:** Installs [Mono](http://www.mono-project.com/docs/about-mono/).
-Version 4.4.2 by default.
 
 | Attribute used                      | Default value              |
 |-------------------------------------|----------------------------------------|
@@ -70,9 +73,10 @@ Version 4.4.2 by default.
 
 ### Xcode
 
+Installs Xcode 9.1 and simulators for iOS 10 and iOS 11. Check out
+the documentation for the Xcode resource if you need more flexibility.
+
 **Usage:** `include_recipe::xcode`
-**Description:** Installs Xcode 9.2 and simulators for iOS 10 and iOS 11. Uses the
-`xcode-install` gem.
 
 | Attribute Used                                                | Default value |
 |---------------------------------------------------------------|---------------|
@@ -81,10 +85,10 @@ Version 4.4.2 by default.
 
 ### Apple Configurator 2
 
-**Usage:** `include_recipe::configurator`
-
-**Description:** Installs Apple Configurator 2 using `mas` and links `cfgutil` to
+Installs Apple Configurator 2 using `mas` and links `cfgutil` to
 `/usr/local/bin`. Requires a `data_bag_item` containing valid App Store credentials.
+
+**Usage:** `include_recipe::configurator`
 
 **Attributes**: No attributes used in this recipe.
 
@@ -94,7 +98,7 @@ Version 4.4.2 by default.
 
 ```json
 {
-  "id": "apple_id"
+  "id": "apple_id",
   "apple_id": "farva@spurbury.gov",
   "password": "0k@yN0cR34m"
 }
