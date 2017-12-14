@@ -112,3 +112,4 @@ Resources
 ---------
 
 - [ARD (Apple Remote Desktop)](https://github.com/Microsoft/macos-cookbook/blob/feature/documentation/documentation/resource_ard.md)
+- [Plist](https://github.com/Microsoft/macos-cookbook/blob/feature/documentation/documentation/resource_plist.md)

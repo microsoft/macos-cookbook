@@ -6,7 +6,9 @@ Under the hood, an **ard** resource executes the `kickstart` command, located
 in ARDAgent.app (one of the CoreServices of macOS). It has some basic actions,
 which pertain to the simple `kickstart` subcommands. It also has the more
 complicated `:configure` action, which requires some familiarity with
-`kickstart`. You can learn more about the `kickstart` command [here](https://support.apple.com/en-us/HT201710).
+`kickstart`.
+
+[Learn more about the `kickstart` command](https://support.apple.com/en-us/HT201710).
 
 Syntax
 ------
