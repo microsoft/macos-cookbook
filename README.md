@@ -1,18 +1,20 @@
-# macOS Cookbook
+macOS Cookbook
+==============
 
-This cookbook provides:
-- Resources for configuring and provisioning macOS.
-- Recipes that implement common use-cases of the macOS cookbook's recources.
+![build-status](https://office.visualstudio.com/_apis/public/build/definitions/59d72877-1cea-4eb6-9d06-66716573631a/2140/badge)
 
-## Platforms
+The macOS cookbook is a Chef library cookbook that provides resources for configuring
+and provisioning macOS. Additionally, it provides recipes that implement common
+use-cases of the macOS cookbook's recources.
 
-- macOS
-
-## Chef
+Requirements
+------------
 
 - Chef 13+
+- macOS
 
-## Attributes
+Attributes
+----------
 
 ### Admin User and Password
 
@@ -25,30 +27,31 @@ Each of these attributes defaults to vagrant since our resources are developed
 with the Vagrant paradigm. In other words, the use and password declared here
 should be an admin user.
 
-### Mono
+### Xcode
 
-_TODO_
+```ruby
+node['macos']['xcode']['version'] = '9.2'
+```
 
----
-
-## Resources
-
-- `ard`
-- `name`
-- `defaults`
-- `pmset`
-- `systemsetup`
-- `xcode`
-
-Checkout the [Wiki](https://github.com/Microsoft/macos-cookbook/wiki) for details about the macOS Cookbook resources.
-
----
-
-## Recipes
+Recipes
+-------
 
 - `disable_software_updates`
 - `keep_awake`
 - `mono`
+- `xcode`
 - `configurator`
 
+Resources
+---------
 
+- `ard`
+- `machine_name`
+- `defaults`
+- `pmset`
+- `systemsetup`
+- `xcode`
+- `plist`
+
+Checkout the [Wiki](https://github.com/Microsoft/macos-cookbook/wiki) for details
+about the macOS Cookbook resources.
