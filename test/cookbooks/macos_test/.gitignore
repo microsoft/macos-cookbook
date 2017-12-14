@@ -68,7 +68,6 @@ kitchen-tests/vendor
 
 # Visual Studio Code files
 .vscode
-*/**/*.code-workspace
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
 .idea
 
@@ -102,4 +101,3 @@ Vagrantfile
 .rubocop.yml
 .vagrant
 data_bags
-*.code-workspace

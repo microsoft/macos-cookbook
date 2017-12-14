@@ -1,41 +1,80 @@
-systemsetup 'keep awake and set time with systemsetup' do
-  set sleep: 0,
-      computersleep: 0,
-      displaysleep: 0,
-      harddisksleep: 0,
-      remoteappleevents: 'On',
-      allowpowerbuttontosleepcomputer: 'Off',
-      waitforstartupafterpowerfailure: 0,
-      restartfreeze: 'On',
-      networktimeserver: 'time.windows.com',
-      timezone: 'America/Los_Angeles'
+plist 'disable Power Nap' do
+  path '/Library/Preferences/com.apple.PowerManagement.plist'
+  entry 'DarkWakeBackgroundTasks'
+  value false
 end
 
-pmset 'keep awake with /usr/bin/pmset' do
-  settings sleep: 0,
-           hibernatemode: 0,
-           womp: 1, # wake on ethernet magic packet
-           hibernatefile: '/var/vm/sleepimage',
-           ttyskeepawake: 1
+plist 'enable automatic restart on power loss' do
+  path '/Library/Preferences/com.apple.PowerManagement.plist'
+  entry 'Automatic Restart On Power Loss'
+  value true
 end
 
-defaults '/Library/Preferences/com.apple.PowerManagement' do
-  settings 'DarkWakeBackgroundTasks' => false, # power nap
-           '"Automatic Restart On Power Loss"' => true,
-           '"Display Sleep Timer"' => 0,
-           '"Disk Sleep Timer"' => 0,
-           '"Wake On LAN"' => true,
-           '"System Sleep Timer"' => 0
+plist 'set display sleep timer to zero' do
+  path '/Library/Preferences/com.apple.PowerManagement.plist'
+  entry 'Display Sleep Timer'
+  value 0
 end
 
-ruby_block 'set power settings to autoLoginUser' do
-  block do
-    loginwindow_plist = '/Library/Preferences/com.apple.loginwindow'
-    auto_login_user = "defaults read #{loginwindow_plist} autoLoginUser"
-    node.default['macos']['power']['owner'] = shell_out!(auto_login_user).stdout.strip
-  end
+plist 'enable wake from sleep via network' do
+  path '/Library/Preferences/com.apple.PowerManagement.plist'
+  entry 'Wake On LAN'
+  value true
 end
 
-execute 'disable screensaver' do
-  command lazy { "sudo -u #{node['macos']['power']['owner']} defaults -currentHost write com.apple.screensaver idleTime 0" }
+plist 'set system sleep timer to zero' do
+  path '/Library/Preferences/com.apple.PowerManagement.plist'
+  entry 'System Sleep Timer'
+  value 0
+end
+
+plist 'disable screensaver' do
+  path "/Users/#{node['macos']['admin_user']}/Library/Preferences/ByHost/com.apple.screensaver.#{hardware_uuid}.plist"
+  entry 'idleTime'
+  value 0
+end
+
+systemsetup 'Set amount of idle time until computer sleeps to never' do
+  setting 'computersleep'
+  value 'Never'
+end
+
+systemsetup 'set amount of idle time until display sleeps to never' do
+  setting 'displaysleep'
+  value 'Never'
+end
+
+systemsetup 'set amount of idle time until hard disk sleeps to never' do
+  setting 'harddisksleep'
+  value 'Never'
+end
+
+systemsetup 'set remote apple events to on' do
+  setting 'remoteappleevents'
+  value 'On'
+end
+
+systemsetup 'disable the power button from being able to sleep the computer.' do
+  setting 'allowpowerbuttontosleepcomputer'
+  value 'Off'
+end
+
+systemsetup 'set the number of seconds after which the computer will start up after a power failure to zero.' do
+  setting 'waitforstartupafterpowerfailure'
+  value 0
+end
+
+systemsetup 'set restart on freeze to on' do
+  setting 'restartfreeze'
+  value 'On'
+end
+
+systemsetup "set network time server to #{node['macos']['network_time_server']}" do
+  setting 'networktimeserver'
+  value node['macos']['network_time_server']
+end
+
+systemsetup "set current time zone to #{node['macos']['time_zone']}" do
+  setting 'timezone'
+  value node['macos']['time_zone']
 end
