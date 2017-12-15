@@ -5,6 +5,7 @@ property :username, String, name_property: true
 property :password, String, default: 'password'
 property :autologin, [TrueClass]
 property :admin, [TrueClass]
+property :fullname, String
 
 action_class do
   def user_home
@@ -25,6 +26,14 @@ action_class do
     '/usr/sbin/sysadminctl'
   end
 
+  def full_name?
+    if property_is_set?(:fullname)
+      "-fullName #{new_resource.fullname}"
+    else
+      ''
+    end
+  end
+
   def admin_user?
     if property_is_set?(:admin)
       '-admin'
@@ -36,7 +45,7 @@ end
 
 action :create do
   execute "add user #{new_resource.username}" do
-    command "#{sysadminctl} -addUser #{new_resource.username} -password #{new_resource.password} #{admin_user?}"
+    command "#{sysadminctl} -addUser #{new_resource.username} #{full_name?} -password #{new_resource.password} #{admin_user?}"
     not_if { ::File.exist? user_home }
   end
 
@@ -54,6 +63,8 @@ action :create do
       entry 'autoLoginUser'
       value new_resource.username
     end
+
+
 
     file '/etc/kcpassword' do
       content kcpassword_hash(new_resource.password)

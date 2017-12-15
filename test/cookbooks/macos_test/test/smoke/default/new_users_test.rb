@@ -14,4 +14,10 @@ control 'new macOS users' do
     its('gid') { should eq 20 }
     its('home') { should eq '/Users/johnny' }
   end
+
+  realname_cmd = 'dscl . read /Users/johnny RealName | grep -v RealName | cut -c 2-'
+
+  describe command(realname_cmd.to_s) do
+    its('stdout.strip') { should eq 'Johnny Appleseed' }
+  end
 end
