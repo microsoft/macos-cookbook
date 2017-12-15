@@ -64,8 +64,6 @@ action :create do
       value new_resource.username
     end
 
-
-
     file '/etc/kcpassword' do
       content kcpassword_hash(new_resource.password)
       owner 'root'
