@@ -39,9 +39,17 @@ describe MacOS::Xcode::Simulator do
                     XCVERSION_OUTPUT
                    )
     end
-    it 'returns the latest semantic version of iOS' do
+    it 'returns the latest semantic version of iOS 11' do
+      s = MacOS::Xcode::Simulator.new('11')
+      expect(s.version).to eq 'iOS 11.1'
+    end
+    it 'returns the latest semantic version of iOS 10' do
       s = MacOS::Xcode::Simulator.new('10')
       expect(s.version).to eq 'iOS 10.3.1'
+    end
+    it 'returns the latest semantic version of iOS 9' do
+      s = MacOS::Xcode::Simulator.new('9')
+      expect(s.version).to eq 'iOS 9.3'
     end
   end
 end
