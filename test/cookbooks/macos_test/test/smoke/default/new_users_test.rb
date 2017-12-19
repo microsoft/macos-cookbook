@@ -17,7 +17,7 @@ control 'new macOS users' do
 
   realname_cmd = 'dscl . read /Users/johnny RealName | grep -v RealName | cut -c 2-'
 
-  describe command(realname_cmd.to_s) do
+  describe command(realname_cmd) do
     its('stdout.strip') { should eq 'Johnny Appleseed' }
   end
 end
