@@ -7,5 +7,6 @@ end
 
 macos_user 'create non-admin user johnny' do
   username 'johnny'
+  fullname 'Johnny Appleseed'
   password 'yang-yolked-cordon-karate'
 end

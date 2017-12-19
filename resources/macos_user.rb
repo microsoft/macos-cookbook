@@ -5,6 +5,7 @@ property :username, String, name_property: true
 property :password, String, default: 'password'
 property :autologin, [TrueClass]
 property :admin, [TrueClass]
+property :fullname, String
 
 action_class do
   def user_home
@@ -25,6 +26,22 @@ action_class do
     '/usr/sbin/sysadminctl'
   end
 
+  def full_name?
+    if property_is_set?(:fullname)
+      '-fullName'
+    else
+      ''
+    end
+  end
+
+  def full_name
+    if property_is_set?(:fullname)
+      new_resource.fullname
+    else
+      ''
+    end
+  end
+
   def admin_user?
     if property_is_set?(:admin)
       '-admin'
@@ -36,7 +53,7 @@ end
 
 action :create do
   execute "add user #{new_resource.username}" do
-    command "#{sysadminctl} -addUser #{new_resource.username} -password #{new_resource.password} #{admin_user?}"
+    command [sysadminctl, '-addUser', new_resource.username, full_name?, full_name, '-password', new_resource.password, admin_user?]
     not_if { ::File.exist? user_home }
   end
 
