@@ -28,7 +28,15 @@ action_class do
 
   def full_name?
     if property_is_set?(:fullname)
-      "-fullName #{new_resource.fullname}"
+      '-fullName'
+    else
+      ''
+    end
+  end
+
+  def full_name
+    if property_is_set?(:fullname)
+      new_resource.fullname
     else
       ''
     end
@@ -45,7 +53,7 @@ end
 
 action :create do
   execute "add user #{new_resource.username}" do
-    command "#{sysadminctl} -addUser #{new_resource.username} #{full_name?} -password #{new_resource.password} #{admin_user?}"
+    command [sysadminctl, '-addUser', new_resource.username, full_name?, full_name, '-password', new_resource.password, admin_user?]
     not_if { ::File.exist? user_home }
   end
 
