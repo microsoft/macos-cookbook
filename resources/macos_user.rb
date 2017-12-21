@@ -26,35 +26,28 @@ action_class do
     '/usr/sbin/sysadminctl'
   end
 
-  def full_name?
-    if property_is_set?(:fullname)
-      '-fullName'
-    else
-      ''
-    end
+  def user_fullname
+    property_is_set?(:fullname) ? ['-fullName', new_resource.fullname] : ''
   end
 
-  def full_name
-    if property_is_set?(:fullname)
-      new_resource.fullname
-    else
-      ''
-    end
-  end
-
-  def admin_user?
+  def admin_user
     if property_is_set?(:admin)
       '-admin'
     else
       ''
     end
   end
+
+  def user_already_exists?
+    users_output = shell_out!('/usr/bin/dscl', '.', '-list', '/users').stdout
+    users_output.split("\n").include?(new_resource.username)
+  end
 end
 
 action :create do
   execute "add user #{new_resource.username}" do
-    command [sysadminctl, '-addUser', new_resource.username, full_name?, full_name, '-password', new_resource.password, admin_user?]
-    not_if { ::File.exist? user_home }
+    command [sysadminctl, '-addUser', new_resource.username, *user_fullname, '-password', new_resource.password, admin_user]
+    not_if { ::File.exist?(user_home) && user_already_exists? }
   end
 
   if property_is_set?(:autologin)
@@ -90,6 +83,6 @@ action :delete do
 
   execute "delete user: #{user}" do
     command "#{sysadminctl} -deleteUser #{new_resource.username}"
-    only_if { "/usr/bin/dscl . -list /users | grep ^#{new_resource.username}$" }
+    only_if { user_already_exists?}
   end
 end
