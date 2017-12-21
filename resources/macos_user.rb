@@ -83,6 +83,6 @@ action :delete do
 
   execute "delete user: #{user}" do
     command "#{sysadminctl} -deleteUser #{new_resource.username}"
-    only_if { user_already_exists?}
+    only_if { user_already_exists? }
   end
 end
