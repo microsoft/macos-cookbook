@@ -6,14 +6,14 @@ property :indexed, [true, false], default: true
 property :allow_search, [true, false], default: true
 
 action_class do
+  def state
+    new_resource.indexed ? 'on' : 'off'
   end
 
-  def allow_search?
+  def search
     new_resource.allow_search ? '' : '-d'
   end
 
-  def state
-    new_resource.indexed ? 'on' : 'off'
   end
 
   def volume_path(volume)
