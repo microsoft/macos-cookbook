@@ -25,7 +25,7 @@ spotlight 'disable indexing and delete metadata store on Macintosh TD' do
   erase_store true
 end
 
-spotlight 'disabled indexing and prevent searching index on TDD-ROM' do
+spotlight 'disable indexing and prevent searching index on TDD-ROM' do
   volume 'TDD-ROM'
   indexed false
   allow_search false
