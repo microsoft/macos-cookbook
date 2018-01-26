@@ -14,7 +14,7 @@ spotlight 'test_disk1' do
   indexed false
 end
 
-spotlight 'disable indexing on TDD2' do
+spotlight 'enable indexing on TDD2' do
   volume 'TDD2'
   indexed true
 end
