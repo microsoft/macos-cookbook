@@ -9,7 +9,7 @@ describe MacOS::MetadataUtil do
     end
     it 'returns an array containing the mdutil flags matching that state' do
       md = MacOS::MetadataUtil.new('/')
-      expect(md.desired).to eq ['on', '/', '']
+      expect(md.status_flags).to eq ['on', '/', '']
     end
   end
 
@@ -20,7 +20,7 @@ describe MacOS::MetadataUtil do
     end
     it 'returns an array containing the mdutil flags matching that state' do
       md = MacOS::MetadataUtil.new('/Volumes/test_disk1')
-      expect(md.desired).to eq ['off', '/Volumes/test_disk1', '']
+      expect(md.status_flags).to eq ['off', '/Volumes/test_disk1', '']
     end
   end
 
@@ -31,7 +31,7 @@ describe MacOS::MetadataUtil do
     end
     it 'returns an array containing the mdutil flags matching that state' do
       md = MacOS::MetadataUtil.new('/Volumes/TDD2')
-      expect(md.desired).to eq ['on', '/Volumes/TDD2', '']
+      expect(md.status_flags).to eq ['on', '/Volumes/TDD2', '']
     end
   end
 
@@ -42,7 +42,7 @@ describe MacOS::MetadataUtil do
     end
     it 'returns an array containing the mdutil flags matching that state' do
       md = MacOS::MetadataUtil.new('/Volumes/Macintosh\ TD')
-      expect(md.desired).to eq ['off', '/Volumes/Macintosh\ TD', '']
+      expect(md.status_flags).to eq ['off', '/Volumes/Macintosh\ TD', '']
     end
   end
 
@@ -53,7 +53,7 @@ describe MacOS::MetadataUtil do
     end
     it 'returns an array containing the mdutil flags matching that state' do
       md = MacOS::MetadataUtil.new('/Volumes/TDD-ROM')
-      expect(md.desired).to eq ['off', '/Volumes/TDD-ROM', '-d']
+      expect(md.status_flags).to eq ['off', '/Volumes/TDD-ROM', '-d']
     end
   end
 end
