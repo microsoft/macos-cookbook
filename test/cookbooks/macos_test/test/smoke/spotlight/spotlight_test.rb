@@ -6,11 +6,11 @@ control 'spotlight metadata stores for mounted volumes' do
   end
 
   describe command('/usr/bin/mdutil -s /Volumes/test_disk1') do
-    its('stdout') { should match "/Volumes/test_disk1:\n\tIndexing enabled." }
+    its('stdout') { should match "/Volumes/test_disk1:\n\tIndexing disabled." }
   end
 
   describe command('/usr/bin/mdutil -s /Volumes/TDD2') do
-    its('stdout') { should match "/Volumes/TDD2:\n\tIndexing disabled." }
+    its('stdout') { should match "/Volumes/TDD2:\n\tIndexing enabled." }
   end
 
   describe command('/usr/bin/mdutil -s /Volumes/Macintosh\ TD') do

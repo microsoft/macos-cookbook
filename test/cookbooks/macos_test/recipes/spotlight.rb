@@ -5,24 +5,23 @@ execute 'create test disk collection' do
            'jhfs+', 'TDD2', '1G',
            'jhfs+', 'Macintosh TD', '1G',
            'jhfs+', 'TDD-ROM', '700MB']
+  not_if ['ls', '/Volumes/test_disk1']
 end
 
 spotlight '/'
 
-spotlight 'enable indexing on test_disk1' do
-  volume 'test_disk1'
-  indexed true
+spotlight 'test_disk1' do
+  indexed false
 end
 
 spotlight 'disable indexing on TDD2' do
   volume 'TDD2'
-  indexed false
+  indexed true
 end
 
-spotlight 'disable indexing and delete metadata store on Macintosh TD' do
+spotlight 'disable indexing on Macintosh TD' do
   volume 'Macintosh TD'
   indexed false
-  erase_store true
 end
 
 spotlight 'disable indexing and prevent searching index on TDD-ROM' do
