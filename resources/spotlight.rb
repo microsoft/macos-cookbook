@@ -14,6 +14,8 @@ action_class do
     new_resource.allow_search ? '' : '-d'
   end
 
+  def target_volume
+    volume_path(new_resource.volume)
   end
 
   def volume_path(volume)
@@ -25,11 +27,17 @@ action_class do
   end
 
   def mdutil
-    '/usr/bin/mdutil'
+    ['/usr/bin/mdutil']
+  end
+
+  def desired_spotlight_state
+    [state, target_volume, search]
   end
 end
 
 action :set do
-  execute "turn Spotlight indexing #{state} for #{new_resource.volume}" do
+  execute "turn Spotlight indexing #{state} for #{target_volume}" do
+    command mdutil + desired_spotlight_state.insert(0, '-i')
+    not_if { MetadataUtil.status(target_volume) == desired_spotlight_state }
   end
 end
