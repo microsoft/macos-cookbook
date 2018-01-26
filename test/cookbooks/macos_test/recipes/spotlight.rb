@@ -7,10 +7,7 @@ execute 'create test disk collection' do
            'jhfs+', 'TDD-ROM', '700MB']
 end
 
-spotlight 'enabled on boot volume' do
-  volume '/'
-  indexed true
-end
+spotlight '/'
 
 spotlight 'enable indexing on test_disk1' do
   volume 'test_disk1'
