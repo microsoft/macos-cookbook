@@ -1,18 +1,21 @@
 include Chef::Mixin::ShellOut
 
 module MacOS
-  module MetadataUtil
-    class << self
-      def status(volume)
-        volume_current_state = shell_out("/usr/bin/mdutil -s #{volume.shellescape}")
-                               .stdout.split(':')[1].strip
+  class MetadataUtil
+    attr_reader :desired
 
-        mdutil_possible_states = { 'Indexing enabled.' => ['on', ''],
-                                   'Indexing disabled.' => ['off', ''],
-                                   'Indexing and searching disabled.' => ['off', '-d'] }
+    def initialize(volume)
+      mdutil_possible_states = { 'Indexing enabled.' => ['on', ''],
+                                 'Indexing disabled.' => ['off', ''],
+                                 'Indexing and searching disabled.' => ['off', '-d'] }
 
-        mdutil_possible_states[volume_current_state].insert(1, volume)
-      end
+      @desired = mdutil_possible_states[volume_current_state(volume)]
+                 .insert(1, volume)
+    end
+
+    def volume_current_state(volume)
+      shell_out("/usr/bin/mdutil -s #{volume.shellescape}")
+        .stdout.split(':')[1].strip
     end
   end
 end
