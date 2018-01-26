@@ -1,5 +1,5 @@
 resource_name :spotlight
-default_action %i(set)
+default_action :set
 
 property :volume, String, name_property: true
 property :indexed, [true, false], default: true
