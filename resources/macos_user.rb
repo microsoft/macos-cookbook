@@ -30,6 +30,10 @@ action_class do
     property_is_set?(:fullname) ? ['-fullName', new_resource.fullname] : ''
   end
 
+  def admin_credentials
+    Gem::Version.new(node['platform_version']) >= Gem::Version.new('10.13') ? ['-adminUser', node['macos']['admin_user'], '-adminPassword', node['macos']['admin_password']] : ''
+  end
+
   def admin_user
     if property_is_set?(:admin)
       '-admin'
@@ -46,7 +50,7 @@ end
 
 action :create do
   execute "add user #{new_resource.username}" do
-    command [sysadminctl, '-addUser', new_resource.username, *user_fullname, '-password', new_resource.password, admin_user]
+    command [sysadminctl, *admin_credentials, '-addUser', new_resource.username, *user_fullname, '-password', new_resource.password, admin_user]
     not_if { ::File.exist?(user_home) && user_already_exists? }
   end
 
