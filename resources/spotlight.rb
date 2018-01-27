@@ -14,16 +14,12 @@ action_class do
     new_resource.searchable ? '' : '-d'
   end
 
-  def target_volume
-    volume_path(new_resource.volume)
+  def volume_path(volume)
+    volume == '/' ? volume : ::File.join('/Volumes', volume)
   end
 
-  def volume_path(volume)
-    if volume == '/'
-      volume
-    else
-      "/Volumes/#{volume}"
-    end
+  def target_volume
+    volume_path(new_resource.volume)
   end
 
   def mdutil
