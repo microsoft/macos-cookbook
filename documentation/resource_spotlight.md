@@ -26,7 +26,7 @@ The full syntax for all of the properties available to the **spotlight** resourc
 spotlight 'volume name' do
   volume                      String # defaults to 'volume name' if not specified
   indexed                     TrueClass, FalseClass # defaults to TrueClass if not specified
-  searchable                TrueClass, FalseClass # defaults to TrueClass if not specified
+  searchable                  TrueClass, FalseClass # defaults to TrueClass if not specified
 end
 ```
 
@@ -43,6 +43,23 @@ property. This is the only, and default, action.
 
 Properties
 ----------
+
+<dl>
+  <dt>volume</dt>
+  </br>
+  <dd><b>Ruby Type:</b> String</dd>
+  <dd>The name of the disk volume to manage.</dd>
+
+  <dt>indexed</dt>
+  </br>
+  <dd><b>Ruby Type:</b> TrueClass, FalseClass</dd>
+  <dd>Whether or not the desired state of the named disk volume is to be indexed.</dd>
+
+  <dt>searchable</dt>
+  </br>
+  <dd><b>Ruby Type:</b> TrueClass, FalseClass</b></dd>
+  <dd>The name of the disk volume to manage. Disables Spotlight searching if the index has already been created for the volume. Only applicable if the indexed property is set to false.</dd>
+</dl>
 
 `volume`
 
@@ -61,8 +78,7 @@ be indexed.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Ruby type:** `TrueClass, FalseClass`
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Disables Spotlight searching if the index has already been
-created for the volume. Only applicable if the `indexed` property is set to `false`.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Disables Spotlight searching if the index has already been created for the volume. Only applicable if the `indexed` property is set to `false`.
 
 Examples
 ----------
