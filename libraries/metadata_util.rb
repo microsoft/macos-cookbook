@@ -14,8 +14,7 @@ module MacOS
     end
 
     def volume_current_state(volume)
-      shell_out("/usr/bin/mdutil -s #{volume.shellescape}")
-        .stdout.split(':')[1].strip
+      shell_out('/usr/bin/mdutil', '-s', volume).stdout.split(':')[1].strip
     end
   end
 end
