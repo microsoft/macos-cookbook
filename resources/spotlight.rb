@@ -3,7 +3,7 @@ default_action :set
 
 property :volume, String, name_property: true
 property :indexed, [true, false], default: true
-property :allow_search, [true, false], default: true
+property :searchable, [true, false], default: true
 
 action_class do
   def state
@@ -11,7 +11,7 @@ action_class do
   end
 
   def search
-    new_resource.allow_search ? '' : '-d'
+    new_resource.searchable ? '' : '-d'
   end
 
   def target_volume

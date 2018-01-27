@@ -27,5 +27,5 @@ end
 spotlight 'disable indexing and prevent searching index on TDD-ROM' do
   volume 'TDD-ROM'
   indexed false
-  allow_search false
+  searchable false
 end

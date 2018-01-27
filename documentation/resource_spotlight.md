@@ -26,7 +26,7 @@ The full syntax for all of the properties available to the **spotlight** resourc
 spotlight 'volume name' do
   volume                      String # defaults to 'volume name' if not specified
   indexed                     TrueClass, FalseClass # defaults to TrueClass if not specified
-  allow_search                TrueClass, FalseClass # defaults to TrueClass if not specified
+  searchable                TrueClass, FalseClass # defaults to TrueClass if not specified
 end
 ```
 
@@ -57,7 +57,7 @@ Properties
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Whether or not the desired state of the named disk volume is to
 be indexed.
 
-`allow_search`
+`searchable`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Ruby type:** `TrueClass, FalseClass`
 
@@ -82,6 +82,6 @@ end
 spotlight 'disable indexing and prevent searching index on TDD-ROM' do
   volume 'TDD-ROM'
   indexed false
-  allow_search false
+  searchable false
 end
 ```
