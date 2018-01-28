@@ -3,7 +3,7 @@ macOS Cookbook
 
 The macOS cookbook is a Chef library cookbook that provides resources for configuring
 and provisioning macOS. Additionally, it provides recipes that implement common
-use-cases of the macOS cookbook's recources.
+use-cases of the macOS cookbook's resources.
 
 |||
 |-|-|
