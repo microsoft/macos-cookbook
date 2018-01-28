@@ -12,7 +12,6 @@ verifier:
   sudo: true
 
 platforms:
-  - name: apex/macos-10.11.6
   - name: apex/macos-10.12.6
   - name: apex/macos-10.13.2
 
@@ -34,3 +33,10 @@ suites:
     verifier:
       inspec_tests:
         - test/smoke/xcode
+
+  - name: spotlight
+    run_list:
+      - recipe[macos_test::spotlight]
+    verifier:
+      inspec_tests:
+        - test/smoke/spotlight
