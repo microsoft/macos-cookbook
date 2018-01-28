@@ -13,7 +13,7 @@ verifier:
 
 platforms:
   - name: apex/macos-10.12.6
-  - name: apex/macos-10.13.2
+  - name: apex/macos-10.13.3
 
 suites:
   - name: default
