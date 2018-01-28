@@ -121,3 +121,4 @@ Resources
 - [ARD (Apple Remote Desktop)](./documentation/resource_ard.md)
 - [Plist](./documentation/resource_plist.md)
 - [Xcode](./documentation/resource_xcode.md)
+- [Spotlight (mdutil)](./documentation/resource_spotlight.md)
