@@ -6,6 +6,9 @@ driver:
 provisioner:
   name: chef_zero
   always_update_cookbooks: true
+  multiple_converge: 2
+  enforce_idempotency: true
+  require_chef_omnibus: true
 
 verifier:
   name: inspec

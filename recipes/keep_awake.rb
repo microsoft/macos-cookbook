@@ -1,80 +1,66 @@
-plist 'disable Power Nap' do
-  path '/Library/Preferences/com.apple.PowerManagement.plist'
-  entry 'DarkWakeBackgroundTasks'
-  value false
+system_preference 'disable computer sleep' do
+  preference :computersleep
+  setting 'Never'
 end
 
-plist 'enable automatic restart on power loss' do
-  path '/Library/Preferences/com.apple.PowerManagement.plist'
-  entry 'Automatic Restart On Power Loss'
-  value true
+system_preference 'disable display sleep' do
+  preference :displaysleep
+  setting 'Never'
 end
 
-plist 'set display sleep timer to zero' do
-  path '/Library/Preferences/com.apple.PowerManagement.plist'
-  entry 'Display Sleep Timer'
-  value 0
+system_preference 'disable hard disk sleep' do
+  preference :harddisksleep
+  setting 'Never'
+  only_if { node['macos']['hard_disk_sleep'] }
 end
 
-plist 'enable wake from sleep via network' do
-  path '/Library/Preferences/com.apple.PowerManagement.plist'
-  entry 'Wake On LAN'
-  value true
+system_preference 'restart if the computer becomes unresponsive' do
+  preference :restartfreeze
+  setting 'On'
 end
 
-plist 'set system sleep timer to zero' do
-  path '/Library/Preferences/com.apple.PowerManagement.plist'
-  entry 'System Sleep Timer'
-  value 0
+system_preference 'wake the computer when accessed using a network connection' do
+  preference :wakeonnetworkaccess
+  setting 'On'
+  not_if { running_in_a_vm? }
 end
 
-plist 'disable screensaver' do
-  path "/Users/#{node['macos']['admin_user']}/Library/Preferences/ByHost/com.apple.screensaver.#{hardware_uuid}.plist"
-  entry 'idleTime'
-  value 0
+system_preference 'restart after a power failure' do
+  preference :restartpowerfailure
+  setting 'On'
+  not_if { running_in_a_vm? }
 end
 
-systemsetup 'Set amount of idle time until computer sleeps to never' do
-  setting 'computersleep'
-  value 'Never'
+system_preference 'pressing power button does not sleep computer' do
+  preference :allowpowerbuttontosleepcomputer
+  setting 'Never'
+  only_if { power_button_model? }
 end
 
-systemsetup 'set amount of idle time until display sleeps to never' do
-  setting 'displaysleep'
-  value 'Never'
+system_preference 'allow remote apple events' do
+  preference :remoteappleevents
+  setting 'On'
 end
 
-systemsetup 'set amount of idle time until hard disk sleeps to never' do
-  setting 'harddisksleep'
-  value 'Never'
+system_preference 'set the network time server' do
+  preference :networktimeserver
+  setting node['macos']['network_time_server']
 end
 
-systemsetup 'set remote apple events to on' do
-  setting 'remoteappleevents'
-  value 'On'
+system_preference 'set the time zone' do
+  preference :timezone
+  setting node['macos']['time_zone']
 end
 
-systemsetup 'disable the power button from being able to sleep the computer.' do
-  setting 'allowpowerbuttontosleepcomputer'
-  value 'Off'
+system_preference 'enable remote login' do
+  preference :remotelogin
+  setting 'On'
+  only_if { node['macos']['remote_login'] }
 end
 
-systemsetup 'set the number of seconds after which the computer will start up after a power failure to zero.' do
-  setting 'waitforstartupafterpowerfailure'
-  value 0
-end
-
-systemsetup 'set restart on freeze to on' do
-  setting 'restartfreeze'
-  value 'On'
-end
-
-systemsetup "set network time server to #{node['macos']['network_time_server']}" do
-  setting 'networktimeserver'
-  value node['macos']['network_time_server']
-end
-
-systemsetup "set current time zone to #{node['macos']['time_zone']}" do
-  setting 'timezone'
-  value node['macos']['time_zone']
+defaults 'com.apple.screensaver' do
+  option '-currentHost write'
+  settings 'idleTime' => 0
+  not_if { screensaver_disabled? }
+  user node['macos']['admin_user']
 end
