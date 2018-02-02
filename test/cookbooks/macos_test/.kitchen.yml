@@ -6,8 +6,6 @@ driver:
 provisioner:
   name: chef_zero
   always_update_cookbooks: true
-  multiple_converge: 3
-  enforce_idempotency: true
   require_chef_omnibus: true
 
 verifier:
@@ -15,11 +13,15 @@ verifier:
   sudo: true
 
 platforms:
-  - name: apex/macos-10.12.6
   - name: apex/macos-10.13.3
+  - name: apex/macos-10.12.6
+  - name: apex/macos-10.11.6
+
 
 suites:
   - name: default
+    multiple_converge: 2
+    enforce_idempotency: true
     run_list:
       - recipe[macos::keep_awake]
       - recipe[macos_test::new_users]
@@ -41,6 +43,8 @@ suites:
         - test/smoke/xcode
 
   - name: spotlight
+    multiple_converge: 2
+    enforce_idempotency: true
     run_list:
       - recipe[macos_test::spotlight]
     verifier:
