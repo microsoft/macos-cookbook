@@ -28,7 +28,7 @@ control 'power' do
     its('stdout') { should match(/ttyskeepawake\s*1/) }
   end
 
-  describe command("/usr/libexec/PlistBuddy -c 'Print :DarkWakeBackgroundTasks' '/Library/Preferences/com.apple.PowerManagement.plist'") do
+  describe command("/usr/libexec/PlistBuddy -c 'Print :DarkWakeBackgroundTasks' '/Library/Preferences/com.apple.PowerManagement.plist'"), :skip do
     its('stdout') { should match('false') }
   end
 end
