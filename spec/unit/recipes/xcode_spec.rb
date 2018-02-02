@@ -9,7 +9,7 @@ describe 'macos::xcode' do
     end
 
     let(:chef_run) do
-      runner = ChefSpec::SoloRunner.new(platform: 'mac_os_x', version: '10.12')
+      runner = ChefSpec::SoloRunner.new(platform: 'mac_os_x', version: '10.13')
       runner.converge(described_recipe)
     end
 

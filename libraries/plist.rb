@@ -68,7 +68,7 @@ module MacOS
       [plistbuddy_executable, '-c', "\'#{subcommand}\'", path].join(' ')
     end
 
-    def system_preference(path, entry)
+    def setting_from_plist(path, entry)
       defaults_read_type_output = shell_out(defaults_executable, 'read-type', path, entry).stdout
       defaults_read_output = shell_out(defaults_executable, 'read', path, entry).stdout
       { key_type: defaults_read_type_output.split.last, key_value: defaults_read_output.strip }

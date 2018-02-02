@@ -12,10 +12,10 @@ action_class do
 end
 
 load_current_value do |desired|
-  system_preference = system_preference(desired.path, desired.entry)
-  current_value_does_not_exist! if system_preference[:key_type].nil?
-  entry desired.entry unless system_preference[:key_type].nil?
-  value convert_to_data_type_from_string(system_preference[:key_type], system_preference[:key_value])
+  setting = setting_from_plist(desired.path, desired.entry)
+  current_value_does_not_exist! if setting[:key_type].nil?
+  entry desired.entry unless setting[:key_type].nil?
+  value convert_to_data_type_from_string(setting[:key_type], setting[:key_value])
 end
 
 action :set do

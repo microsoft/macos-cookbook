@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'macos::disable_software_updates' do
-  context 'When all attributes are default, on macOS 10.12' do
+  context 'When all attributes are default, on macOS High Sierra 10.13' do
     let(:chef_run) { ChefSpec::SoloRunner.new.converge(described_recipe) }
 
     it 'converges successfully' do
