@@ -31,7 +31,7 @@ suites:
         - test/smoke/default
     attributes:
       macos:
-        disable_disk_sleep: false
+        disk_sleep_disabled: true
 
   - name: xcode
     run_list:

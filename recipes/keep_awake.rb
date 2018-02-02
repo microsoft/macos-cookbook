@@ -10,8 +10,11 @@ end
 
 system_preference 'disable hard disk sleep' do
   preference :harddisksleep
-  setting 'Never'
-  only_if { node['macos']['disable_disk_sleep'] }
+  if node['macos']['disk_sleep_disabled']
+    setting 'Never'
+  else
+    setting '10'
+  end
 end
 
 system_preference 'restart if the computer becomes unresponsive' do
@@ -54,8 +57,11 @@ end
 
 system_preference 'enable remote login' do
   preference :remotelogin
-  setting 'On'
-  only_if { node['macos']['remote_login'] }
+  if node['macos']['remote_login_enabled']
+    setting 'On'
+  else
+    setting 'Off'
+  end
 end
 
 defaults 'com.apple.screensaver' do
