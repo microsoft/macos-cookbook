@@ -10,7 +10,7 @@ module MacOS
 
     def screensaver_disabled?
       screensaver_settings('read', '0') &&
-      screensaver_settings('read-type', 'integer')
+        screensaver_settings('read-type', 'integer')
     end
 
     private
@@ -19,7 +19,7 @@ module MacOS
       expression_pattern = Regexp.new(expected_value)
       shell_out('defaults', '-currentHost', query_type, 'com.apple.screensaver', 'idleTime',
         user: Chef.node['macos']['admin_user'])
-      .stdout.chomp.match?(expression_pattern)
+        .stdout.chomp.match?(expression_pattern)
     end
   end
 end

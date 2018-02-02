@@ -13,4 +13,3 @@ issues_url 'https://github.com/Microsoft/macos-cookbook/issues'
 supports 'mac_os_x'
 
 depends 'homebrew'
-
