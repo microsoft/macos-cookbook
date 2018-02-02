@@ -29,6 +29,9 @@ suites:
     verifier:
       inspec_tests:
         - test/smoke/default
+    attributes:
+      macos:
+        disable_disk_sleep: false
 
   - name: xcode
     run_list:

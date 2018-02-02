@@ -11,7 +11,7 @@ end
 system_preference 'disable hard disk sleep' do
   preference :harddisksleep
   setting 'Never'
-  only_if { node['macos']['hard_disk_sleep'] }
+  only_if { node['macos']['disable_disk_sleep'] }
 end
 
 system_preference 'restart if the computer becomes unresponsive' do

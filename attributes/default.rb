@@ -9,6 +9,6 @@ default['macos']['xcode']['version'] = '9.1'
 default['macos']['xcode']['simulator']['major_version'] = %w(11 10)
 
 default['macos']['remote_login'] = true
-default['macos']['hard_disk_sleep'] = false
+default['macos']['disable_disk_sleep'] = false
 default['macos']['network_time_server'] = 'time.windows.com'
 default['macos']['time_zone'] = 'America/Los_Angeles'
