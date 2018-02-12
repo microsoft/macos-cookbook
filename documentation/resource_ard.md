@@ -1,19 +1,17 @@
 ard
 ===
 
-Use the **ard** resource to manage Remote Desktop settings and preferences.
-Under the hood, an **ard** resource executes the `kickstart` command, located
-in ARDAgent.app (one of the CoreServices of macOS). It has some basic actions,
-which pertain to the simple `kickstart` subcommands. It also has the more
-complicated `:configure` action, which requires some familiarity with
-`kickstart`.
-
-[Learn more about the `kickstart` command](https://support.apple.com/en-us/HT201710).
+Use the **ard** resource to manage the "Remote Management" settings, found in System
+Preferences > Sharing > Remote Management. Under the hood, an **ard** resource
+executes the `kickstart` command, located in ARDAgent.app (one of macOS' "core services").
+It has some basic actions, which pertain to the simple `kickstart` subcommands.
+It also has the more complicated `:configure` action, which requires some familiarity
+with [`kickstart`](https://support.apple.com/en-us/HT201710).
 
 Syntax
 ------
 
-A **ard** resource block declares a basic description of the command configuration
+An **ard** resource block declares a basic description of the command configuration
 and a set of properties depending on the actions executed. For example:
 
 ```ruby
@@ -27,25 +25,31 @@ where
 - `:activate` activates the ARD agent
 - `:configure` configures the agent using the `kickstart` defaut commandline arguments.
 
+The default `:configure` action is equivalent to the following
+**System Preferences > Sharing** settings:
+
+![Sharing Preferences](sharing_preferences.png)
+
 The full syntax for all of the properties that are available to the **ard**
 resource is:
 
 ```ruby
 ard 'description' do
-  install_package                      String
-  uninstall_options                    Array,  # defaults to ['-files', '-settings', '-prefs'] if not specified
-  restart_options                      Array, # defaults to ['-agent', '-console', '-menu'] if not specified
-  users                                Array
-  privs                                Array, # defaults to ['-all'] if not specified
-  access                               String, # defaults to '-on' if not specified
-  allow_access_for                     String, # defaults to '-allUsers' if not specified
-  computerinfo                         Array
-  clientopts                           Array
-  action                               Symbol # defaults to [:activate, :configure] if not specified
+  install_package                String
+  uninstall_options              Array # defaults to ['-files', '-settings', '-prefs'] if not specified
+  restart_options                Array # defaults to ['-agent', '-console', '-menu'] if not specified
+  users                          Array
+  privs                          Array # defaults to ['-all'] if not specified
+  access                         String # defaults to '-on' if not specified
+  allow_access_for               String # defaults to '-allUsers' if not specified
+  computerinfo                   Array
+  clientopts                     Array
+  action                         Symbol # defaults to [:activate, :configure] if not specified
 end
 ```
 
-**Note:** Not all properties are compatible with each action.
+:warning: Not all properties are compatible with each action. For example, the
+`uninstall_options` property is only applicable when the `:uninstall` action is used.
 
 Actions
 -------
@@ -63,7 +67,7 @@ This resource has the following actions:
 `:uninstall`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Uninstall a package from another remotely
-managed mac.
+managed Mac.
 
 `:stop`
 
@@ -76,8 +80,7 @@ managed mac.
 `:configure`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Configure the setup of the remote desktop
-agent using the default options. If you were to configure the default options,
-your settings would look like this in the GUI:
+agent using the default options.
 
 Properties
 ----------

@@ -12,11 +12,13 @@ During the `chef-client` run, the client knows to check the state of the plist
 before changing any values. It also makes sure that the plist is in binary format
 so that the settings can be interpreted correctly by the operating system.
 
-Prior knowledge of using commandline utilities such as `/usr/bin/defaults`
-and `/usr/libexec/PlistBuddy` will be useful when implementing the
-**plist** resource.
+Prior knowledge of using commandline utilities such as
+[defaults](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/defaults.1.html),
+[plutil](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/plutil.1.html),
+and [PlistBuddy](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man8/PlistBuddy.8.html)
+will be useful when implementing the **plist** resource.
 
-[Learn more about property lists.](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/PropertyLists/QuickStartPlist/QuickStartPlist.html#//apple_ref/doc/uid/10000048i-CH4-SW5)
+Want to learn more? See the [Property List Programming Guide](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/PropertyLists/QuickStartPlist/QuickStartPlist.html#//apple_ref/doc/uid/10000048i-CH4-SW5).
 
 Syntax
 ------
@@ -26,10 +28,10 @@ resource is:
 
 ```ruby
 plist 'description' do
-  path                                 String # defaults to 'description' if not specified
-  entry                                String
-  value                                TrueClass, FalseClass, String, Integer, Float 
-  action                               Symbol # defaults to :set if not specified
+  path                         String # defaults to 'description' if not specified
+  entry                        String
+  value                        TrueClass, FalseClass, String, Integer, Float
+  action                       Symbol # defaults to :set if not specified
 end
 ```
 
@@ -45,7 +47,7 @@ This resource has the following actions:
 Examples
 --------
 
-Enabling the setting to show both visible and invisible files.
+**Show invisible files**
 
 ```ruby
 plist 'show hidden files' do
