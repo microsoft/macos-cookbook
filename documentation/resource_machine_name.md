@@ -4,7 +4,7 @@ machine_name
 Use the **machine_name** resource to manage a machine's name.
 
 As defined by the `scutil` manual, an individual macOS system has three different
-types of names managed by `scutil`: `ComputerName`, LocalHostName, and HostName.
+types of names managed by `scutil`: `ComputerName`, `LocalHostName`, and `HostName`.
 
 The fourth and lesser-known name, the **NetBIOS** name, will be set to an appropriately
 formatted version of `HostName` by default unless otherwise set explicitly.
