@@ -1,5 +1,7 @@
-name = "New#{node['platform_version']}_Washing_Machine"
+washing_machine = "New#{node['platform_version']}_Washing_Machine"
 
-machine_name name do
-  not_if { shell_out('scutil', '--get', 'HostName').stdout.match? Regexp.union name }
+machine_name 'set computer/hostname' do
+  hostname washing_machine
+  computer_name washing_machine
+  local_hostname washing_machine
 end

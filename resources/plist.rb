@@ -4,13 +4,6 @@ property :path, String, name_property: true
 property :entry, String, desired_state: true
 property :value, [TrueClass, FalseClass, String, Integer, Float], desired_state: true
 
-action_class do
-  def binary?
-    file_type_output = shell_out('/usr/bin/file', '--brief', '--mime-encoding', new_resource.path).stdout
-    file_type_output.strip == 'binary'
-  end
-end
-
 load_current_value do |desired|
   setting = setting_from_plist(desired.path, desired.entry)
   current_value_does_not_exist! if setting[:key_type].nil?
@@ -33,7 +26,14 @@ action :set do
 
   unless binary?
     converge_by "convert \"#{new_resource.path.split('/').last}\" to binary" do
-      execute "/usr/bin/plutil -convert binary1 #{new_resource.path}"
+      execute ['/usr/bin/plutil', '-convert', 'binary1', new_resource.path]
     end
+  end
+end
+
+action_class do
+  def binary?
+    file_type_output = shell_out('/usr/bin/file', '--brief', '--mime-encoding', new_resource.path).stdout
+    file_type_output.chomp == 'binary'
   end
 end
