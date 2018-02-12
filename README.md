@@ -82,7 +82,7 @@ the `package`, `version` and `checksum` attributes in order to override.
 ### Xcode
 
 Installs Xcode 9.1 and simulators for iOS 10 and iOS 11. See the
-[Xcode resource documentation](./documentation/resource_xcode.md) if you need
+[Xcode resource documentation](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_xcode.md) if you need
 more flexibility.
 
 :warning: Requires a `credentials` data bag containing an `apple_id` data bag item.
@@ -125,8 +125,8 @@ credentials. For example:
 Resources
 ---------
 
-- [ARD (Apple Remote Desktop)](./documentation/resource_ard.md)
-- [Machine Name](./documentation/resource_machine_name.md)
-- [Plist](./documentation/resource_plist.md)
-- [Spotlight (mdutil)](./documentation/resource_spotlight.md)
-- [Xcode](./documentation/resource_xcode.md)
+- [ARD (Apple Remote Desktop)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_ard.md)
+- [Machine Name](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_machine_name.md)
+- [Plist](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_plist.md)
+- [Spotlight (mdutil)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_spotlight.md)
+- [Xcode](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_xcode.md)
