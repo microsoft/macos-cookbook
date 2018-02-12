@@ -6,6 +6,7 @@ property :password, String, default: 'password'
 property :autologin, [TrueClass]
 property :admin, [TrueClass]
 property :fullname, String
+property :groups, [Array, String]
 
 action_class do
   def user_home
@@ -74,6 +75,24 @@ action :create do
       owner 'root'
       group 'wheel'
       mode '0600'
+    end
+  end
+
+  if property_is_set?(:groups)
+    if groups.is_a? String
+      group groups do
+        action :create
+        members username
+        append true
+      end
+    else
+      groups.each do |g|
+        group g do
+          action :create
+          members username
+          append true
+        end
+      end
     end
   end
 end

@@ -36,7 +36,7 @@ end
 
 system_preference 'pressing power button does not sleep computer' do
   preference :allowpowerbuttontosleepcomputer
-  setting 'Never'
+  setting 'Off'
   only_if { power_button_model? }
 end
 

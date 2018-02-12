@@ -9,6 +9,14 @@ version of iOS simulators are always installed with Xcode.
 Syntax
 ------
 
+The simplest use of an **xcode** resource is:
+
+```ruby
+xcode '9.2'
+```
+
+which would install Xcode 9.2 with the default simulators.
+
 The full syntax for all of the properties that are available to the **xcode**
 resource is:
 
@@ -38,17 +46,7 @@ install the declared array of the major versions of `ios_simulators`.
 Examples
 --------
 
-### Basic usage
-
-The **xcode** resource in its simplest form:
-
-```ruby
-xcode '9.2'
-```
-
-### Using with node attributes
-
-Install different versions of Xcode based on the macOS version:
+**Install different versions of Xcode based on platform version node attributes**
 
 ```ruby
 if node['platform_version'].match?(/10\.13/) || node['platform_version'].match?(/10\.12/)
