@@ -63,6 +63,7 @@ module MacOS
               value
             end
       entry = "\"#{entry}\"" if entry.include?(' ')
+      path = "\"#{path}\"" if path.include?(' ')
       entry_with_arg = [entry, arg].join(' ').strip
       subcommand = "#{subcommand.capitalize} :#{entry_with_arg}"
       [plistbuddy_executable, '-c', "\'#{subcommand}\'", path].join(' ')

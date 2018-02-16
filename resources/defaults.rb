@@ -2,7 +2,7 @@ resource_name :defaults
 
 BASE_COMMAND = '/usr/bin/defaults'.freeze
 
-property :domain, String, name_property: true
+property :domain, String, name_property: true, coerce: proc { |m| m.include?(' ') ? Shellwords.shellescape(m) : m }
 property :option, String, default: 'write'
 property :read_only, [true, false], default: false
 property :settings, Hash
@@ -21,6 +21,7 @@ action :run do
               Float.to_s => "-float #{value}" }
     value = cases[value.class.to_s]
     execute BASE_COMMAND do
+      setting = "\"#{setting}\"" if setting.include?(' ')
       command "#{BASE_COMMAND} #{new_resource.option} #{new_resource.domain} #{setting} #{value}"
       user new_resource.user
     end

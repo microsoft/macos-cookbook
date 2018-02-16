@@ -30,6 +30,18 @@ describe MacOS::PlistHelpers, '#plist_command' do
       expect(plistbuddy_command(:print, 'Foo Bar Baz', 'path/to/file.plist')).to eq "/usr/libexec/PlistBuddy -c 'Print :\"Foo Bar Baz\"' path/to/file.plist"
     end
   end
+
+  context 'The value to be added contains spaces' do
+    it 'returns the value properly formatted with double quotes' do
+      expect(plistbuddy_command(:add, 'Foo Bar Baz', 'path/to/file.plist', true)).to eq "/usr/libexec/PlistBuddy -c 'Add :\"Foo Bar Baz\" bool' path/to/file.plist"
+    end
+  end
+
+  context 'The plist itself contains spaces' do
+    it 'returns the value properly formatted with double quotes' do
+      expect(plistbuddy_command(:print, 'Foo Bar Baz', 'Library/Preferences/com.parallels.Parallels Desktop.plist')).to eq "/usr/libexec/PlistBuddy -c 'Print :\"Foo Bar Baz\"' \"Library/Preferences/com.parallels.Parallels Desktop.plist\""
+    end
+  end
 end
 
 describe MacOS::PlistHelpers, '#convert_to_data_type_from_string' do
