@@ -78,17 +78,17 @@ action :create do
   end
 
   if property_is_set?(:groups)
-    if groups.is_a? String
-      group groups do
+    if new_resource.groups.is_a? String
+      group new_resource.groups do
         action :create
-        members username
+        members new_resource.username
         append true
       end
     else
-      groups.each do |g|
+      new_resource.groups.each do |g|
         group g do
           action :create
-          members username
+          members new_resource.username
           append true
         end
       end
