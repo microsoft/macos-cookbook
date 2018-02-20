@@ -17,11 +17,11 @@ platforms:
   - name: apex/macos-10.12.6
   - name: apex/macos-10.11.6
 
-
 suites:
   - name: default
-    multiple_converge: 2
-    enforce_idempotency: true
+    provisioner:
+      multiple_converge: 3
+      enforce_idempotency: true
     run_list:
       - recipe[macos::keep_awake]
       - recipe[macos_test::new_users]
@@ -43,8 +43,9 @@ suites:
         - test/smoke/xcode
 
   - name: spotlight
-    multiple_converge: 2
-    enforce_idempotency: true
+    provisioner:
+      multiple_converge: 2
+      enforce_idempotency: true
     run_list:
       - recipe[macos_test::spotlight]
     verifier:

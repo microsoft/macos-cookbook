@@ -1,4 +1,4 @@
-macos_user 'create admin user randall and enable automatic login' do
+macos_user 'create admin user with autologin' do
   username 'randall'
   password 'correct-horse-battery-staple'
   autologin true
@@ -6,14 +6,14 @@ macos_user 'create admin user randall and enable automatic login' do
   groups 'alpha'
 end
 
-macos_user 'create non-admin user johnny' do
+macos_user 'create non-admin user with groups' do
   username 'johnny'
   fullname 'Johnny Appleseed'
   password 'yang-yolked-cordon-karate'
   groups %w(alpha beta)
 end
 
-macos_user 'create non-admin user paul' do
+macos_user 'create non-admin without groups' do
   username 'paul'
-  password 'yang-yolked-cordon-karate'
+  password 'bacon-saffron-doormat-educe'
 end

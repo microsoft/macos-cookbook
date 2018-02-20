@@ -56,11 +56,10 @@ action :create do
   end
 
   if property_is_set?(:autologin)
-    setup_assistant_keypair_values.each do |key, setting|
-      plist "set #{setting} to #{key}" do
-        path setup_assistant_plist
-        entry key
-        value setting
+    setup_assistant_keypair_values.each do |e, v|
+      plist setup_assistant_plist do
+        entry e
+        value v
       end
     end
 
@@ -79,17 +78,17 @@ action :create do
   end
 
   if property_is_set?(:groups)
-    if groups.is_a? String
-      group groups do
+    if new_resource.groups.is_a? String
+      group new_resource.groups do
         action :create
-        members username
+        members new_resource.username
         append true
       end
     else
-      groups.each do |g|
+      new_resource.groups.each do |g|
         group g do
           action :create
-          members username
+          members new_resource.username
           append true
         end
       end
