@@ -7,6 +7,8 @@ control 'new macOS users' do
     its('gid') { should eq 20 }
     its('home') { should eq '/Users/randall' }
     its('groups') { should include 'alpha' }
+    its('groups') { should include  'staff' }
+    its('groups') { should include  'admin' }
   end
 
   describe user('johnny') do
@@ -14,11 +16,18 @@ control 'new macOS users' do
     its('uid') { should eq 504 }
     its('gid') { should eq 20 }
     its('home') { should eq '/Users/johnny' }
+    its('groups') { should include 'staff' }
     its('groups') { should include 'alpha' }
     its('groups') { should include 'beta' }
+    its('groups') { should_not include  'admin' }
   end
 
-  realname_cmd = 'dscl . read /Users/johnny RealName | grep -v RealName | cut -c 2-'
+  describe group('admin') do
+    it { should exist }
+    its('gid') { should eq 80 }
+  end
+
+ realname_cmd = 'dscl . read /Users/johnny RealName | grep -v RealName | cut -c 2-'
 
   describe command(realname_cmd) do
     its('stdout.strip') { should eq 'Johnny Appleseed' }
@@ -27,7 +36,20 @@ control 'new macOS users' do
   describe user('paul') do
     it { should exist }
     its('uid') { should eq 505 }
-    its('gid') { should eq 20 }
+    its('groups') { should include 'staff' }
+    its('groups') { should_not include  'admin' }
     its('home') { should eq '/Users/paul' }
+  end
+
+  describe command('su -l randall -c "id -G"') do
+    its('stdout.split') { should include '80' }
+  end
+
+  describe command('su -l johnny -c "id -G"') do
+    its('stdout.split') { should_not include '80' }
+  end
+
+  describe command('su -l paul -c "id -G"') do
+    its('stdout.split') { should_not include '80' }
   end
 end
