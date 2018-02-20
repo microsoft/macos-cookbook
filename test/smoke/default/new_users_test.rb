@@ -27,7 +27,7 @@ control 'new macOS users' do
     its('gid') { should eq 80 }
   end
 
- realname_cmd = 'dscl . read /Users/johnny RealName | grep -v RealName | cut -c 2-'
+  realname_cmd = 'dscl . read /Users/johnny RealName | grep -v RealName | cut -c 2-'
 
   describe command(realname_cmd) do
     its('stdout.strip') { should eq 'Johnny Appleseed' }

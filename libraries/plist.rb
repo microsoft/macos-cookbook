@@ -10,6 +10,8 @@ module MacOS
         value.to_f
       when 'string'
         value
+      when nil
+        ''
       else
         raise "Unknown or unsupported data type: #{type.class}"
       end
@@ -47,6 +49,11 @@ module MacOS
       end
     end
 
+    def print_entry_value(entry, path)
+      cmd = shell_out(plistbuddy_command(:print, entry, path))
+      cmd.exitstatus == 0
+    end
+
     def hardware_uuid
       system_profiler_hardware_output = shell_out('system_profiler', 'SPHardwareDataType').stdout
       hardware_overview = Psych.load(system_profiler_hardware_output)['Hardware']['Hardware Overview']
@@ -62,13 +69,12 @@ module MacOS
             else
               value
             end
-      entry = "\"#{entry}\"" if entry.include?(' ')
-      entry_with_arg = [entry, arg].join(' ').strip
+      entry_with_arg = ["\"#{entry}\"", arg].join(' ').strip
       subcommand = "#{subcommand.capitalize} :#{entry_with_arg}"
-      [plistbuddy_executable, '-c', "\'#{subcommand}\'", path].join(' ')
+      [plistbuddy_executable, '-c', "\'#{subcommand}\'", "\"#{path}\""].join(' ')
     end
 
-    def setting_from_plist(path, entry)
+    def setting_from_plist(entry, path)
       defaults_read_type_output = shell_out(defaults_executable, 'read-type', path, entry).stdout
       defaults_read_output = shell_out(defaults_executable, 'read', path, entry).stdout
       { key_type: defaults_read_type_output.split.last, key_value: defaults_read_output.strip }
