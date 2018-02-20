@@ -17,14 +17,14 @@ action :set do
   converge_if_changed :path do
     converge_by "creating \"#{new_resource.path}\"" do
       file new_resource.path do
-        content <<~EOF
-        <?xml version="1.0" encoding="UTF-8"?>
-        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-        <plist version="1.0">
-        <dict>
-        </dict>
-        </plist>
-        EOF
+        content <<-EOF
+            <?xml version="1.0" encoding="UTF-8"?>
+            <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+            <plist version="1.0">
+            <dict>
+            </dict>
+            </plist>
+            EOF
       end
     end
   end
@@ -56,7 +56,7 @@ action_class do
     file_type_output.chomp == 'binary'
   end
 
-  def convert_to_binary(path)
+  def convert_to_binary(_path)
     execute ['/usr/bin/plutil', '-convert', 'binary1', new_resource.path]
   end
 end
