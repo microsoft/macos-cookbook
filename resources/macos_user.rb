@@ -58,8 +58,8 @@ action :create do
   if property_is_set?(:autologin)
     setup_assistant_keypair_values.each do |e, v|
       plist setup_assistant_plist do
-	entry e
-	value v
+        entry e
+        value v
       end
     end
 

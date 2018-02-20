@@ -69,11 +69,9 @@ module MacOS
             else
               value
             end
-      entry = "\"#{entry}\"" if entry.include?(' ')
-      path = "\"#{path}\"" if path.include?(' ')
-      entry_with_arg = [entry, arg].join(' ').strip
+      entry_with_arg = ["\"#{entry}\"", arg].join(' ').strip
       subcommand = "#{subcommand.capitalize} :#{entry_with_arg}"
-      [plistbuddy_executable, '-c', "\'#{subcommand}\'", path].join(' ')
+      [plistbuddy_executable, '-c', "\'#{subcommand}\'", "\"#{path}\""].join(' ')
     end
 
     def setting_from_plist(entry, path)
