@@ -35,6 +35,13 @@ suites:
       macos:
         disk_sleep_disabled: true
 
+  - name: boxcutter
+    provisioner:
+      multiple_converge: 2
+      enforce_idempotency: true
+    run_list:
+      - recipe[macos_test::boxcutter]
+
   - name: xcode
     run_list:
       - recipe[macos_test::xcode]
