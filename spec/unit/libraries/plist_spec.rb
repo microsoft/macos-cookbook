@@ -86,8 +86,8 @@ describe MacOS::PlistHelpers, '#convert_to_data_type_from_string' do
   end
 
   context 'When the type nor the value is given' do
-    it 'find the value from somewhere else' do
-      expect { convert_to_data_type_from_string(nil, '') }.to raise_error(RuntimeError)
+    it 'returns an empty string' do
+      expect(convert_to_data_type_from_string(nil, '')).to eq ''
     end
   end
 end
