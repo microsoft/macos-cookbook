@@ -126,12 +126,12 @@ describe MacOS::PlistHelpers, '#convert_to_string_from_data_type' do
       expect(convert_to_string_from_data_type(true)).to eq 'bool true'
     end
 
-    # TODO: Skip until proper plist array support is implemented (i.e. containers)
+    # TODO: Skip until proper array support is implemented (i.e. containers)
     xit 'returns the required array entry' do
       expect(convert_to_string_from_data_type(%w(foo bar))).to eq 'array foo bar'
     end
 
-    # TODO: Skip until proper plist array support is implemented (i.e. containers)
+    # TODO: Skip until proper dict support is implemented (i.e. containers)
     xit 'returns the required dictionary entry' do
       expect(convert_to_string_from_data_type('baz' => 'qux')).to eq 'dict key value'
     end
