@@ -1,4 +1,99 @@
+default_ds_node_root = '/private/var/db/dslocal/nodes/Default'
+ssh_access_group_plist = "#{default_ds_node_root}/groups/com.apple.access_ssh.plist"
+crashreporter_support = '/Library/Application Support/CrashReporter'
+crashreporter_diag_plist = "#{crashreporter_support}/DiagnosticMessagesHistory.plist"
+current_version = Gem::Version.new node['platform_version']
+yosemite = Gem::Version.new '10.10'
+
 include_recipe 'macos::keep_awake'
+include_recipe 'sudo::default'
+
+macos_user "create user #{node['macos']['admin_user']} with autologin" do
+  username node['macos']['admin_user']
+  password node['macos']['admin_user']
+  groups node['macos']['admin_user']
+  autologin true
+  admin true
+end
+
+directory 'ssh home directory' do
+  path ::File.join(ENV['HOME'], '.ssh')
+  user node['macos']['admin_user']
+  owner node['macos']['admin_user']
+  mode 0o700
+end
+
+# TODO: plist resource needs to support arrays
+plist ssh_access_group_plist do
+  entry 'groupmembers'
+  value [node['macos']['uid']]
+  action :nothing
+end
+
+# TODO: plist resource needs to support arrays
+plist ssh_access_group_plist do
+  entry 'users'
+  value [node['macos']['admin_user']]
+  action :nothing
+end
+
+# TODO: Implement into macos_user resource and get the image from the web?
+execute 'get user image in base64' do
+  command ['openssl', 'base64', '-in', user_image.to_s]
+  action :nothing
+end
+
+plist '/private/var/db/com.apple.xpc.launchd/disabled.plist' do
+  entry 'com.openssh.sshd'
+  value false
+  only_if { current_version >= yosemite }
+end
+
+plist '/private/var/db/com.apple.xpc.launchd/disabled.plist' do
+  entry 'com.apple.screensharing'
+  value false
+  only_if { current_version >= yosemite }
+end
+
+plist '/private/var/db/launchd.db/com.apple.launchd/overrides.plist' do
+  entry 'com.openssh.sshd'
+  value false
+  only_if { current_version < yosemite }
+end
+
+plist '/private/var/db/launchd.db/com.apple.launchd/overrides.plist' do
+  entry 'com.apple.screensharing'
+  value false
+  only_if { current_version < yosemite }
+end
+
+directory crashreporter_support do
+  mode 0o755
+  owner 'root'
+  group 'admin'
+end
+
+plist crashreporter_diag_plist do
+  entry 'AutoSubmit'
+  value false
+end
+
+plist crashreporter_diag_plist do
+  entry 'AutoSubmitVersion'
+  value 4
+end
+
+plist crashreporter_diag_plist do
+  entry 'ThirdPartyDataSubmit'
+  value false
+end
+
+plist crashreporter_diag_plist do
+  entry 'ThirdPartyDataSubmitVersion'
+  value 4
+end
+
+file '/private/var/db/.AppleSetupDone'
 
 launchd 'add network interface detection' do
   program_arguments ['/usr/sbin/networksetup', '-detectnewhardware']
@@ -10,36 +105,12 @@ launchd 'add network interface detection' do
   group 'wheel'
 end
 
-file 'create file showing build time of the box' do
-  path '/etc/box_build_time'
-  content shell_out('date').stdout.chomp
-end
-
-directory 'ssh home directory' do
-  path ::File.join(ENV['HOME'], '.ssh')
-  user node['macos']['admin_user']
-  owner node['macos']['admin_user']
-  mode 0o700
-end
-
 remote_file 'add vagrant public key to authorized_keys' do
   source 'https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant.pub'
-  path ::File.join(ENV['HOME'], '.ssh', 'authorized_keys')
+  path ::File.join ENV['HOME'], '.ssh', 'authorized_keys'
   user node['macos']['admin_user']
   owner node['macos']['admin_user']
   mode 0o600
-end
-
-macos_user "create user #{node['macos']['admin_user']} with autologin" do
-  username node['macos']['admin_user']
-  password node['macos']['admin_user']
-  autologin true
-  admin true
-end
-
-group "create group #{node['macos']['admin_user']} to match user" do
-  group_name node['macos']['admin_user']
-  members node['macos']['admin_user']
 end
 
 machine_name 'set computer/hostname' do
@@ -53,4 +124,9 @@ execute 'install all available software updates' do
   command ['softwareupdate', '--install', '--all']
   live_stream true
   only_if { updates_available? }
+end
+
+file 'create file showing build time of the box' do
+  path '/etc/box_build_time'
+  content shell_out('date').stdout.chomp
 end
