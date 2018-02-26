@@ -69,22 +69,29 @@ module MacOS
       hardware_overview['Hardware UUID']
     end
 
-    def command_separator(value)
-      value.is_a?(Array) ? ':' : ' '
+    def cli_value_handler(subcommand, value)
+      commands = case subcommand.to_s
+                 when 'add'
+                   type_to_commandline_string(value)
+                 when 'print'
+                   ''
+                 else
+                   value
+                 end
+      commands.is_a?(Array) ? commands : [commands]
     end
 
-    def plistbuddy_command(subcommand, entry, path, value = nil)
-      arg = case subcommand.to_s
-            when 'add'
-              type_to_commandline_string(value)
-            when 'print'
-              ''
-            else
-              value
-            end
-      entry_with_arg = ["\"#{entry}\"", arg].join(command_separator(value)).strip
-      subcommand = "#{subcommand.capitalize} :#{entry_with_arg}"
-      [plistbuddy_executable, '-c', "\'#{subcommand}\'", "\"#{path}\""].join(' ')
+    def plistbuddy_command(subcommand, entry, path, resource_value = nil)
+      commands = []
+      args = cli_value_handler(subcommand, resource_value)
+      args.each do |arg|
+        sep = resource_value.is_a?(Array) ? ':' : ' '
+        entry_with_arg = ["\"#{entry}\"", arg].join(sep)
+        full_noninteractive_command = "#{subcommand.capitalize} :#{entry_with_arg}"
+        command = [plistbuddy_executable, '-c', "\'#{full_noninteractive_command}\'", "\"#{path}\""].join(' ')
+        commands.push(command)
+      end
+      commands
     end
 
     def setting_from_plist(entry, path)

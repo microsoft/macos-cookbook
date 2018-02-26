@@ -31,13 +31,19 @@ EOF
 
   converge_if_changed :entry do
     converge_by "adding entry \"#{new_resource.entry}\" to #{new_resource.path.split('/').last}" do
-      execute plistbuddy_command(:add, new_resource.entry, new_resource.path, new_resource.value)
+      commands = plistbuddy_command(:add, new_resource.entry, new_resource.path, new_resource.value)
+      commands.each do |command|
+        execute command
+      end
     end
   end
 
   converge_if_changed :value do
     converge_by "#{new_resource.path.split('/').last}: set new_resource.entry to new_resource.value" do
-      execute plistbuddy_command(:set, new_resource.entry, new_resource.path, new_resource.value)
+      commands = plistbuddy_command(:set, new_resource.entry, new_resource.path, new_resource.value)
+      commands.each do |command|
+        execute command
+      end
     end
   end
 
