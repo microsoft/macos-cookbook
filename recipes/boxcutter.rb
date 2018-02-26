@@ -23,37 +23,29 @@ directory 'ssh home directory' do
   mode 0o700
 end
 
-# TODO: plist resource needs to support arrays
 plist ssh_access_group_plist do
   entry 'groupmembers'
   value ['501']
-  action :nothing
 end
 
-# TODO: plist resource needs to support arrays
 plist ssh_access_group_plist do
   entry 'users'
   value [node['macos']['admin_user']]
-  action :nothing
 end
 
-# TODO: plist resource needs to support arrays
 plist '/private/etc/RemoteManagement.launchd' do
   entry 'naprivs'
   value ['-1073741569']
-  action :nothing
 end
 
 plist '/Library/Preferences/com.apple.RemoteManagement.plist' do
   entry 'ARD_AllLocalUsersPrivs'
   value '-1073741569'
-  action :nothing
 end
 
 plist '/Library/Preferences/com.apple.RemoteManagement.plist' do
   entry 'ARD_AllLocalUsers'
   value false
-  action :nothing
 end
 
 plist '/private/var/db/com.apple.xpc.launchd/disabled.plist' do

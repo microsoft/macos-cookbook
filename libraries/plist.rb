@@ -86,7 +86,7 @@ module MacOS
       args = cli_value_handler(subcommand, resource_value)
       args.each do |arg|
         sep = resource_value.is_a?(Array) ? ':' : ' '
-        entry_with_arg = ["\"#{entry}\"", arg].join(sep)
+        entry_with_arg = ["\"#{entry}\"", arg].join(sep).strip
         full_noninteractive_command = "#{subcommand.capitalize} :#{entry_with_arg}"
         command = [plistbuddy_executable, '-c', "\'#{full_noninteractive_command}\'", "\"#{path}\""].join(' ')
         commands.push(command)
