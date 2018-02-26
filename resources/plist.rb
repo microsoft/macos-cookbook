@@ -2,7 +2,7 @@ resource_name :plist
 
 property :path, String, name_property: true, desired_state: true
 property :entry, String, desired_state: true
-property :value, [TrueClass, FalseClass, String, Integer, Float], desired_state: true
+property :value, [TrueClass, FalseClass, String, Integer, Float, Array], desired_state: true
 property :binary, [TrueClass, FalseClass], desired_state: true, default: true
 
 load_current_value do |desired|

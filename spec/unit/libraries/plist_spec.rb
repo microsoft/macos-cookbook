@@ -23,6 +23,14 @@ describe MacOS::PlistHelpers, '#plist_command' do
     it 'the print command is formatted properly' do
       expect(plistbuddy_command(:print, 'QuxEntry', 'path/to/file.plist')).to eq "/usr/libexec/PlistBuddy -c 'Print :\"QuxEntry\"' \"path/to/file.plist\""
     end
+
+    xit 'the add command is formatted properly when adding a new array with multiple items' do
+      expect(plistbuddy_command(:add, 'QuuxArray', 'path/to/file.plist', ['Baz', 15])).to eq ["/usr/libexec/PlistBuddy -c 'Add :\"QuuxArray\":0 string Baz' \"path/to/file.plist\"", "/usr/libexec/PlistBuddy -c 'Add :\"QuuxArray\":1 integer 15' \"path/to/file.plist\""]
+    end
+
+    it 'the add command is formatted properly when adding a new array' do
+      expect(plistbuddy_command(:add, 'QuuxArray', 'path/to/file.plist', ['Baz'])).to eq "/usr/libexec/PlistBuddy -c 'Add :\"QuuxArray\":0 string Baz' \"path/to/file.plist\""
+    end
   end
 
   context 'The value provided contains spaces' do
@@ -99,7 +107,7 @@ describe MacOS::PlistHelpers, '#type_to_commandline_string' do
     end
 
     it 'returns the required array entry type as a string' do
-      expect(type_to_commandline_string(%w(foo bar))).to eq 'array'
+      expect(type_to_commandline_string(%w(foo bar))).to eq ['0 string foo', '1 string bar']
     end
 
     it 'returns the required dictionary entry type as a string' do
@@ -120,6 +128,20 @@ describe MacOS::PlistHelpers, '#type_to_commandline_string' do
   end
 end
 
+describe MacOS::PlistHelpers, '#plist_array_handler' do
+  context 'When given an array with strings and integer data types' do
+    it 'returns the required command line syntax' do
+      expect(plist_array_handler(['foo', 4])).to eq ['0 string foo', '1 integer 4']
+    end
+  end
+
+  context 'When given an array with boolean and integer data types' do
+    it 'returns the required command line syntax' do
+      expect(plist_array_handler([false, 6])).to eq ['0 bool false', '1 integer 6']
+    end
+  end
+end
+
 describe MacOS::PlistHelpers, '#convert_to_string_from_data_type' do
   context 'When given a certain data type' do
     it 'returns the required boolean entry' do
@@ -128,7 +150,7 @@ describe MacOS::PlistHelpers, '#convert_to_string_from_data_type' do
 
     # TODO: Skip until proper array support is implemented (i.e. containers)
     xit 'returns the required array entry' do
-      expect(convert_to_string_from_data_type(%w(foo bar))).to eq 'array foo bar'
+      expect(convert_to_string_from_data_type(%w(foo bar))).to eq ['0 string foo', '1 string bar']
     end
 
     # TODO: Skip until proper dict support is implemented (i.e. containers)

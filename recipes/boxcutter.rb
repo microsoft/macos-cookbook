@@ -26,7 +26,7 @@ end
 # TODO: plist resource needs to support arrays
 plist ssh_access_group_plist do
   entry 'groupmembers'
-  value [node['macos']['uid']]
+  value ['501']
   action :nothing
 end
 
@@ -37,9 +37,22 @@ plist ssh_access_group_plist do
   action :nothing
 end
 
-# TODO: Implement into macos_user resource and get the image from the web?
-execute 'get user image in base64' do
-  command ['openssl', 'base64', '-in', user_image.to_s]
+# TODO: plist resource needs to support arrays
+plist '/private/etc/RemoteManagement.launchd' do
+  entry 'naprivs'
+  value ['-1073741569']
+  action :nothing
+end
+
+plist '/Library/Preferences/com.apple.RemoteManagement.plist' do
+  entry 'ARD_AllLocalUsersPrivs'
+  value '-1073741569'
+  action :nothing
+end
+
+plist '/Library/Preferences/com.apple.RemoteManagement.plist' do
+  entry 'ARD_AllLocalUsers'
+  value false
   action :nothing
 end
 
@@ -94,6 +107,7 @@ plist crashreporter_diag_plist do
 end
 
 file '/private/var/db/.AppleSetupDone'
+file '/private/var/db/.AppleDiagnosticsSetupDone'
 
 launchd 'add network interface detection' do
   program_arguments ['/usr/sbin/networksetup', '-detectnewhardware']

@@ -21,6 +21,7 @@ shared_context 'converged default recipe', type: :default_recipe do
   before(:each) do
     allow_any_instance_of(Chef::Resource).to receive(:running_in_a_vm?).and_return(true)
     allow_any_instance_of(Chef::Resource).to receive(:power_button_model?).and_return(true)
+    stub_command('which sudo').and_return('/usr/bin/sudo')
   end
 
   let(:chef_run) do

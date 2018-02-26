@@ -1,6 +1,6 @@
 module MacOS
   module PlistHelpers
-    def convert_to_data_type_from_string(type, value)
+    def convert_to_data_type_from_string(type, value) # used in the plist resource
       case type
       when 'boolean'
         value.to_i == 1
@@ -17,21 +17,10 @@ module MacOS
       end
     end
 
-    def convert_to_string_from_data_type(value)
-      data_type_cases = { Array => "array #{value}",
-                          Integer => "integer #{value}",
-                          TrueClass => "bool #{value}",
-                          FalseClass => "bool #{value}",
-                          Hash => "dict #{value}",
-                          String => "string #{value}",
-                          Float => "float #{value}" }
-      data_type_cases[value.class]
-    end
-
-    def type_to_commandline_string(value)
+    def type_to_commandline_string(value) # used in plistbuddy_command
       case value
       when Array
-        'array'
+        plist_array_handler(value)
       when Integer
         'integer'
       when FalseClass
@@ -49,6 +38,26 @@ module MacOS
       end
     end
 
+    def plist_array_handler(value)
+      commands = []
+      value.each do |item|
+        full_cmd = [value.index(item).to_s, type_to_commandline_string(item), item]
+        commands.push(full_cmd.join(' '))
+      end
+      commands
+    end
+
+    def convert_to_string_from_data_type(value) # used in the defaults resource
+      data_type_cases = { Array => "array #{value}",
+                          Integer => "integer #{value}",
+                          TrueClass => "bool #{value}",
+                          FalseClass => "bool #{value}",
+                          Hash => "dict #{value}",
+                          String => "string #{value}",
+                          Float => "float #{value}" }
+      data_type_cases[value.class]
+    end
+
     def print_entry_value(entry, path)
       cmd = shell_out(plistbuddy_command(:print, entry, path))
       cmd.exitstatus == 0
@@ -60,6 +69,10 @@ module MacOS
       hardware_overview['Hardware UUID']
     end
 
+    def command_separator(value)
+      value.is_a?(Array) ? ':' : ' '
+    end
+
     def plistbuddy_command(subcommand, entry, path, value = nil)
       arg = case subcommand.to_s
             when 'add'
@@ -69,7 +82,7 @@ module MacOS
             else
               value
             end
-      entry_with_arg = ["\"#{entry}\"", arg].join(' ').strip
+      entry_with_arg = ["\"#{entry}\"", arg].join(command_separator(value)).strip
       subcommand = "#{subcommand.capitalize} :#{entry_with_arg}"
       [plistbuddy_executable, '-c', "\'#{subcommand}\'", "\"#{path}\""].join(' ')
     end
