@@ -38,11 +38,6 @@ module MacOS
       end
     end
 
-    def print_entry_value(entry, path)
-      cmd = shell_out(plistbuddy_command(:print, entry, path))
-      cmd.exitstatus == 0
-    end
-
     def hardware_uuid
       system_profiler_hardware_output = shell_out('system_profiler', 'SPHardwareDataType').stdout
       hardware_overview = Psych.load(system_profiler_hardware_output)['Hardware']['Hardware Overview']

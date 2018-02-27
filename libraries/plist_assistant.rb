@@ -1,10 +1,10 @@
 module MacOS
   module PlistAssistant
-    def to_hash(path)
+    def convert_to_hash(path)
       temp_file = ::Tempfile.new.path
       ::FileUtils.copy(path, temp_file)
       shell_out!(plutil_executable, '-convert', 'xml1', temp_file)
-      ::Plist.parse_xml(temp)
+      ::Plist.parse_xml(temp_file)
     end
 
     def defaults_executable

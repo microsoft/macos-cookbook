@@ -7,10 +7,8 @@ property :binary, [TrueClass, FalseClass], desired_state: true, default: true
 
 load_current_value do |desired|
   current_value_does_not_exist! unless ::File.exist?(desired.path)
-  contents = to_hash(desired.path)
-  entry desired.entry if print_entry_value(desired.entry, desired.path)
-  # setting = setting_from_plist(desired.entry, desired.path)
-  # value convert_to_data_type_from_string(setting[:key_type], setting[:key_value])
+  contents = convert_to_hash desired.path
+  entry desired.entry if contents.key? desired.entry
   value contents[desired.entry]
   binary shell_out('/usr/bin/file', '--brief', '--mime-encoding', desired.path).stdout.chomp == 'binary'
 end
