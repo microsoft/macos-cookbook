@@ -1,41 +1,10 @@
+require 'plist'
+require 'tempfile'
+
 module MacOS
   module PlistHelpers
-    def convert_to_data_type_from_string(type, value) # used in the plist resource
-      case type
-      when 'boolean'
-        value.to_i == 1
-      when 'integer'
-        value.to_i
-      when 'float'
-        value.to_f
-      when 'string'
-        value
-      when nil
-        ''
-      else
-        raise "Unknown or unsupported data type: #{type.class}"
-      end
-    end
-
-    def type_to_commandline_string(value) # used in plistbuddy_command
-      case value
-      when Array
-        plist_array_handler(value)
-      when Integer
-        'integer'
-      when FalseClass
-        'bool'
-      when TrueClass
-        'bool'
-      when Hash
-        'dict'
-      when String
-        'string'
-      when Float
-        'float'
-      else
-        raise "Unknown or unsupported data type: #{value} of #{value.class}"
-      end
+    def cli_value_handler(_subcommand, _value)
+      commands.is_a?(Array) ? commands : [commands]
     end
 
     def plist_array_handler(value)
@@ -47,15 +16,26 @@ module MacOS
       commands
     end
 
-    def convert_to_string_from_data_type(value) # used in the defaults resource
-      data_type_cases = { Array => "array #{value}",
-                          Integer => "integer #{value}",
-                          TrueClass => "bool #{value}",
-                          FalseClass => "bool #{value}",
-                          Hash => "dict #{value}",
-                          String => "string #{value}",
-                          Float => "float #{value}" }
-      data_type_cases[value.class]
+    def find_items_in_array(entry, path)
+      defaults_read = shell_out(defaults_executable, 'read', path, entry)
+      items = defaults_read.stdout.tr("\(\)\n\s", '').split(',')
+      items.each do |vals|
+        setting_from_plist(vals)
+      end
+    end
+
+    def entry_type_to_string(value)
+      type_map = { Integer => 'integer',
+                   TrueClass => 'bool',
+                   FalseClass => 'bool',
+                   Hash => 'dict',
+                   String => 'string',
+                   Float => 'float' }
+      begin
+        type_map[value.class]
+      rescue
+        raise "Tried to set \'#{value}\' of an unsupported data type: #{value.class}"
+      end
     end
 
     def print_entry_value(entry, path)
@@ -69,38 +49,23 @@ module MacOS
       hardware_overview['Hardware UUID']
     end
 
-    def cli_value_handler(subcommand, value)
-      commands = case subcommand.to_s
-                 when 'add'
-                   type_to_commandline_string(value)
-                 when 'print'
-                   ''
-                 else
-                   value
-                 end
-      commands.is_a?(Array) ? commands : [commands]
-    end
-
-    def plistbuddy_command(subcommand, entry, path, resource_value = nil)
-      commands = []
-      args = cli_value_handler(subcommand, resource_value)
-      args.each do |arg|
-        sep = resource_value.is_a?(Array) ? ':' : ' '
-        entry_with_arg = ["\"#{entry}\"", arg].join(sep).strip
-        full_noninteractive_command = "#{subcommand.capitalize} :#{entry_with_arg}"
-        command = [plistbuddy_executable, '-c', "\'#{full_noninteractive_command}\'", "\"#{path}\""].join(' ')
-        commands.push(command)
-      end
-      commands
-    end
-
     def setting_from_plist(entry, path)
-      defaults_read_type_output = shell_out(defaults_executable, 'read-type', path, entry).stdout
-      defaults_read_output = shell_out(defaults_executable, 'read', path, entry).stdout
-      { key_type: defaults_read_type_output.split.last, key_value: defaults_read_output.strip }
+      defaults_read_type = shell_out(defaults_executable, 'read-type', path, entry)
+      defaults_read = shell_out(defaults_executable, 'read', path, entry)
+      { key_type: defaults_read_type.stdout.split.last, key_value: defaults_read.stdout.strip }
     end
 
-    private
+    def defaults_array_items(entry, path)
+      defaults_read = shell_out(defaults_executable, 'read', path, entry)
+      defaults_read.stdout.tr("\(\)\n\s", '').split(',')
+    end
+
+    def convert_to_hash(path)
+      temp_file = Tempfile.new.path
+      FileUtils.copy(path, temp_file)
+      shell_out!(plutil_executable, '-convert', 'xml1', temp_file)
+      Plist.parse_xml(temp)
+    end
 
     def defaults_executable
       '/usr/bin/defaults'
@@ -108,6 +73,10 @@ module MacOS
 
     def plistbuddy_executable
       '/usr/libexec/PlistBuddy'
+    end
+
+    def plutil_executable
+      '/usr/bin/plutil'
     end
   end
 end
