@@ -8,8 +8,8 @@ module MacOS
     attr_reader :entry
 
     def initialize(entry, path)
-      @entry = ":\"#{entry}\""
-      @path = "\"#{path}\""
+      @entry = ':' + Shellwords.shellescape(entry)
+      @path = Shellwords.shellescape(path)
     end
 
     def add(value = nil)
