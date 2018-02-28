@@ -16,14 +16,6 @@ module MacOS
       commands
     end
 
-    def find_items_in_array(entry, path)
-      defaults_read = shell_out(defaults_executable, 'read', path, entry)
-      items = defaults_read.stdout.tr("\(\)\n\s", '').split(',')
-      items.each do |vals|
-        setting_from_plist(vals)
-      end
-    end
-
     def entry_type_to_string(value)
       type_map = { Integer => 'integer',
                    TrueClass => 'bool',
@@ -36,38 +28,6 @@ module MacOS
       rescue
         raise "Tried to set \'#{value}\' of an unsupported data type: #{value.class}"
       end
-    end
-
-    def hardware_uuid
-      system_profiler_hardware_output = shell_out('system_profiler', 'SPHardwareDataType').stdout
-      hardware_overview = Psych.load(system_profiler_hardware_output)['Hardware']['Hardware Overview']
-      hardware_overview['Hardware UUID']
-    end
-
-    def setting_from_plist(entry, path)
-      defaults_read_type = shell_out(defaults_executable, 'read-type', path, entry)
-      defaults_read = shell_out(defaults_executable, 'read', path, entry)
-      { key_type: defaults_read_type.stdout.split.last, key_value: defaults_read.stdout.strip }
-    end
-
-    def defaults_array_items(entry, path)
-      defaults_read = shell_out(defaults_executable, 'read', path, entry)
-      defaults_read.stdout.tr("\(\)\n\s", '').split(',')
-    end
-
-    def convert_to_hash(path)
-      temp_file = Tempfile.new.path
-      FileUtils.copy(path, temp_file)
-      shell_out!(plutil_executable, '-convert', 'xml1', temp_file)
-      Plist.parse_xml(temp)
-    end
-
-    def defaults_executable
-      '/usr/bin/defaults'
-    end
-
-    def plistbuddy_executable
-      '/usr/libexec/PlistBuddy'
     end
 
     def plutil_executable

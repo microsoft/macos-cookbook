@@ -36,7 +36,7 @@ module MacOS
     end
 
     def plistbuddy_wrapper(core_command)
-      [[plistbuddy_executable, '-c', "\'#{core_command}\'", @path].join(' ')]
+      [plistbuddy_executable, '-c', "\'#{core_command}\'", @path]
     end
 
     def add_container # dict or array logic goes here
