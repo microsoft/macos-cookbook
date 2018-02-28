@@ -1,6 +1,7 @@
 require_relative 'plist'
 
 include MacOS::PlistHelpers
+include Shellwords
 
 module MacOS
   class PlistBuddy
@@ -8,16 +9,16 @@ module MacOS
     attr_reader :entry
 
     def initialize(entry, path)
-      @entry = ':' + Shellwords.shellescape(entry)
-      @path = Shellwords.shellescape(path)
+      @entry = ':' + shellescape(entry)
+      @path = shellescape(path)
     end
 
     def add(value = nil)
-      construct_command __method__.to_s.capitalize, entry_type_to_string(value), value
+      construct_command __method__.to_s.capitalize, entry_type_to_string(value), shellescape(value)
     end
 
     def set(value)
-      construct_command __method__.to_s.capitalize, value
+      construct_command __method__.to_s.capitalize, shellescape(value)
     end
 
     def delete
@@ -36,7 +37,7 @@ module MacOS
     end
 
     def plistbuddy_wrapper(core_command)
-      [plistbuddy_executable, '-c', "\'#{core_command}\'", @path]
+      [plistbuddy_executable, '-c', "'#{core_command}'", @path]
     end
 
     def add_container # dict or array logic goes here
