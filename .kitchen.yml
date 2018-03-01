@@ -56,6 +56,6 @@ suites:
     run_list:
       - recipe[macos_test::certificate]
     verifier:
-    inspec_tests:
-      - test/smoke/certificate
+      inspec_tests:
+        - test/smoke/certificate
 
