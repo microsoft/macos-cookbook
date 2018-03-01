@@ -2,18 +2,20 @@ resource_name :plist
 
 property :path, String, name_property: true, desired_state: true
 property :entry, String, desired_state: true
-property :value, [TrueClass, FalseClass, String, Integer, Float], desired_state: true
+property :value, [TrueClass, FalseClass, String, Integer, Float, Array], desired_state: true
 property :binary, [TrueClass, FalseClass], desired_state: true, default: true
 
 load_current_value do |desired|
   current_value_does_not_exist! unless ::File.exist?(desired.path)
-  entry desired.entry if print_entry_value(desired.entry, desired.path)
-  setting = setting_from_plist(desired.entry, desired.path)
-  value convert_to_data_type_from_string(setting[:key_type], setting[:key_value])
+  contents = convert_to_hash desired.path
+  entry desired.entry if contents.key? desired.entry
+  value contents[desired.entry]
   binary shell_out('/usr/bin/file', '--brief', '--mime-encoding', desired.path).stdout.chomp == 'binary'
 end
 
 action :set do
+  plist_entry = PlistBuddy.new new_resource.entry, new_resource.path
+
   converge_if_changed :path do
     converge_by "creating \"#{new_resource.path}\"" do
       file new_resource.path do
@@ -31,20 +33,20 @@ EOF
 
   converge_if_changed :entry do
     converge_by "adding entry \"#{new_resource.entry}\" to #{new_resource.path.split('/').last}" do
-      execute plistbuddy_command(:add, new_resource.entry, new_resource.path, new_resource.value)
+      execute plist_entry.add new_resource.value
     end
   end
 
   converge_if_changed :value do
-    converge_by "#{new_resource.path.split('/').last}: set new_resource.entry to new_resource.value" do
-      execute plistbuddy_command(:set, new_resource.entry, new_resource.path, new_resource.value)
+    converge_by "#{new_resource.path.split('/').last}: set #{new_resource.entry} to #{new_resource.value}" do
+      execute plist_entry.set new_resource.value
     end
   end
 
   converge_if_changed :binary do
     converge_by "convert \"#{new_resource.path.split('/').last}\" to binary" do
       execute "convert #{new_resource.path} to binary format" do
-        command ['/usr/bin/plutil', '-convert', 'binary1', new_resource.path]
+        command [plutil_executable, '-convert', 'binary1', new_resource.path]
       end
     end
   end

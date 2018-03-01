@@ -26,7 +26,6 @@ suites:
       - recipe[macos::keep_awake]
       - recipe[macos_test::new_users]
       - recipe[macos::disable_software_updates]
-      - recipe[macos_test::preferences]
       - recipe[macos_test::machine_name]
     verifier:
       inspec_tests:
@@ -34,6 +33,13 @@ suites:
     attributes:
       macos:
         disk_sleep_disabled: true
+
+  - name: boxcutter
+    provisioner:
+      multiple_converge: 2
+      enforce_idempotency: true
+    run_list:
+      - recipe[macos_test::boxcutter]
 
   - name: xcode
     run_list:
@@ -51,3 +57,13 @@ suites:
     verifier:
       inspec_tests:
         - test/smoke/spotlight
+
+  - name: plist
+    provisioner:
+      multiple_converge: 2
+      enforce_idempotency: true
+    run_list:
+      - recipe[macos_test::preferences]
+    verifier:
+      inspec_tests:
+        - test/smoke/default/preferences.rb
