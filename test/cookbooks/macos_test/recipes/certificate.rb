@@ -4,12 +4,8 @@ cookbook_file '/Users/vagrant/Test.p12' do
   source 'Test.p12'
 end
 
-execute 'unlock the keychain' do
-  command 'security unlock-keychain -p vagrant'
-end
-
-certificate 'install some PFX file' do
+certificate 'install a PFX format certificate file' do
   certfile '/Users/vagrant/Test.p12'
-  password 'test'
+  cert_password 'test'
   action :install
 end
