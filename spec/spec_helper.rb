@@ -3,7 +3,7 @@ require 'chefspec/berkshelf'
 
 require_relative '../libraries/macos_user'
 require_relative '../libraries/metadata_util'
-require_relative '../libraries/plist'
+require_relative '../libraries/plutil'
 require_relative '../libraries/plistbuddy'
 require_relative '../libraries/systemsetup'
 require_relative '../libraries/xcode'

@@ -1,24 +1,24 @@
-require_relative 'plist'
-
-include MacOS::PlistHelpers
 include Shellwords
 
 module MacOS
   class PlistBuddy
     attr_reader :path
     attr_reader :entry
+    attr_reader :value
+    attr_accessor :new_container
 
     def initialize(entry, path)
       @entry = ':' + shellescape(entry)
       @path = shellescape(path)
+      @new_container = false
     end
 
-    def add(value = nil)
-      construct_command __method__.to_s.capitalize, entry_type_to_string(value), shellescape(value)
+    def add(value)
+      construct_command __method__.to_s.capitalize, data_type_as_string(value), type_handler(value)
     end
 
     def set(value)
-      construct_command __method__.to_s.capitalize, shellescape(value)
+      construct_command __method__.to_s.capitalize, type_handler(value)
     end
 
     def delete
@@ -30,6 +30,30 @@ module MacOS
     end
 
     private
+
+    def data_type_as_string(value)
+      type_map = { Integer => 'integer',
+                   TrueClass => 'bool',
+                   FalseClass => 'bool',
+                   Hash => 'dict',
+                   String => 'string',
+                   Float => 'float',
+                   Array => 'array',
+                   NilClass => '' }
+      begin
+        type_map[value.class]
+      rescue
+        raise "Tried to set \'#{value}\' of an unsupported data type: #{value.class}"
+      end
+    end
+
+    def container_contents_handler(contents)
+      contents.collect { |item| [contents.index(item).to_s, data_type_as_string, item].join(' ') }
+    end
+
+    def type_handler(value)
+      @new_container ? '' : shellescape(value)
+    end
 
     def construct_command(action, *components)
       core_command = [action, @entry, components].join(' ').strip
@@ -45,6 +69,29 @@ module MacOS
 
     def plistbuddy_executable
       '/usr/libexec/PlistBuddy'
+    end
+  end
+
+  class PlistContainer < PlistBuddy
+    def initialize(name, path)
+      super(name, path)
+      @new_container = true
+    end
+
+    def create
+      add []
+    end
+
+    def items(items)
+      puts items
+    end
+
+    def insert(_index, _entry)
+      add
+    end
+
+    def push(value)
+      puts value
     end
   end
 end

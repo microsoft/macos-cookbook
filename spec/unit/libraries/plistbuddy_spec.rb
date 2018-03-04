@@ -54,6 +54,8 @@ describe MacOS::PlistBuddy do
   let(:chess_get_info) { PlistBuddy.new 'CFBundleGetInfoString', '/Applications/Chess.app/Contents/Info.plist' }
   let(:preview_doc_types) { PlistBuddy.new 'CFBundleDocumentTypes', '/Applications/Preview.app/Contents/Info.plist' }
 
+  let(:additional_url_types) { PlistContainer.new 'MGAdditionalURLTypes', '/Applications/QuickTime Player.app/Contents/Info.plist' }
+
   context 'when setting the CFBundleIdentifier property to com.apple.QuickTimePlayerX' do
     it 'formats the command and escapes the file name properly' do
       expect(qt_bundle_id.set('com.apple.QuickTimePlayerX')).to eq ['/usr/libexec/PlistBuddy', '-c', "'Set :CFBundleIdentifier com.apple.QuickTimePlayerX'", '/Applications/QuickTime\\ Player.app/Contents/Info.plist']
@@ -66,27 +68,33 @@ describe MacOS::PlistBuddy do
     end
   end
 
+  context 'when adding a new array entry called CFBundleDocumentTypes' do
+    it 'uses the add command and only specifies the data type' do
+      expect(additional_url_types.add(%w(one two))).to eq ['/usr/libexec/PlistBuddy', '-c', "'Add :MGAdditionalURLTypes array'", '/Applications/QuickTime\\ Player.app/Contents/Info.plist']
+    end
+  end
+
   context 'when adding a new item of type dict to the CFBundleDocumentTypes array' do
     xit 'uses the add command and contains a semi-colon at the end of the entry' do
-      expect(preview_doc_types.insert(:dict)).to eq ['/usr/libexec/PlistBuddy', '-c', 'Add :CFBundleDocumentTypes: dict', '/Applications/Preview.app/Contents/Info.plist']
+      expect(additional_url_types.push(Hash)).to eq ['/usr/libexec/PlistBuddy', '-c', 'Add :MGAdditionalURLTypes: dict', '/Applications/Preview.app/Contents/Info.plist']
     end
   end
 
   context 'when adding a new item of type dict to the beginning of the CFBundleDocumentTypes array' do
     xit 'uses the add command, specifies the 0th index, and specifies type' do
-      expect(preview_doc_types.insert(:dict, 0)).to eq ['/usr/libexec/PlistBuddy', '-c', 'Add :CFBundleDocumentTypes:0 dict', '/Applications/Preview.app/Contents/Info.plist']
+      expect(additional_url_types.insert(0, Hash)).to eq ['/usr/libexec/PlistBuddy', '-c', 'Add :MGAdditionalURLTypes:0 dict', '/Applications/Preview.app/Contents/Info.plist']
     end
   end
 
   context 'when deleting the first item in the array' do
     xit 'uses the delete command and specifies the entry and the 0th index' do
-      expect(preview_doc_types.delete(0)).to eq ['/usr/libexec/PlistBuddy', '-c', 'Delete :CFBundleDocumentTypes:0', '/Applications/Preview.app/Contents/Info.plist']
+      expect preview_doc_types.delete.first to eq ['/usr/libexec/PlistBuddy', '-c', 'Delete :MGAdditionalURLTypes:0', '/Applications/Preview.app/Contents/Info.plist']
     end
   end
 
   context 'when deleting the entire CFBundleDocumentTypes array' do
     xit 'formats the command properly' do
-      expect(preview_doc_types.delete(0)).to eq ['/usr/libexec/PlistBuddy', '-c', 'Delete :CFBundleDocumentTypes', '/Applications/Preview.app/Contents/Info.plist']
+      expect(preview_doc_types.delete).to eq ['/usr/libexec/PlistBuddy', '-c', 'Delete :CFBundleDocumentTypes', '/Applications/Preview.app/Contents/Info.plist']
     end
   end
 end
