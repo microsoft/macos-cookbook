@@ -98,3 +98,30 @@ end
 
 Chef::Recipe.include(MacOS)
 Chef::Resource.include(MacOS)
+
+
+
+def copy
+  # Copy <EntrySrc> <EntryDst>
+end
+
+def delete
+  # Delete <Entry>
+end
+
+def merge
+  # Merge <file.plist> [<Entry>]
+end
+
+def import
+  # Import <Entry> <file>
+end
+
+
+def clear(type = nil)
+  # Clear [<Type>]
+end
+
+def print(entry = nil)
+  # Print [<Entry>]
+end
