@@ -3,7 +3,7 @@ control 'certificate install' do
     it { should exist }
   end
 
-  describe command('/usr/bin/security find-certificate') do
+  describe command('/usr/bin/security find-certificate /Users/vagrant/Library/Keychains/login.keychain') do
     its('stdout') { should include 'Test' }
   end
 end
