@@ -20,6 +20,21 @@ module MacOS
       command = shell_out(scutil, '--get', name_type)
       command.stdout.chomp
     end
+
+    def current_hostname
+      split_up.first
+    end
+
+    def current_domainname
+      without_short = split_up.length - 1
+      split_up.last(without_short).join('.')
+    end
+
+    private
+
+    def split_up
+      get_name('HostName').split('.')
+    end
   end
 end
 
