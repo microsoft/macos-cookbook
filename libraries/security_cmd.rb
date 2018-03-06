@@ -13,7 +13,7 @@ module MacOS
     end
 
     def unlock_keychain(kc_passwd)
-      [@security_cmd, 'unlock-keychain', '-p', kc_passwd, @keychain]
+      @keychain == '' ? [@security_cmd, 'unlock-keychain', '-p', kc_passwd] : [@security_cmd, 'unlock-keychain', '-p', kc_passwd, @keychain]
     end
 
     def add_certificates
@@ -21,7 +21,7 @@ module MacOS
     end
 
     def import(cert_passwd)
-      [@security_cmd, 'import', @cert, '-P', cert_passwd, '-k', @keychain, ]
+      @keychain == '' ? [@security_cmd, 'import', @cert, '-P', cert_passwd] : [@security_cmd, 'import', @cert, '-P', cert_passwd, '-k', @keychain]
     end
 
     def install_certificate(cert_passwd)

@@ -3,6 +3,7 @@ include MacOS
 
 describe MacOS::SecurityCommand do
   let(:p12_cert) { MacOS::SecurityCommand.new('/Users/vagrant/Test.p12', '') }
+  let(:p12_cert_kc) { MacOS::SecurityCommand.new('/Users/vagrant/Test.p12', 'test.keychain') }
   let(:cer_cert) { MacOS::SecurityCommand.new('/Users/vagrant/Test.cer', '') }
   let(:cer_cert_kc) { MacOS::SecurityCommand.new('/Users/vagrant/Test.cer', 'test.keychain') }
 
@@ -24,15 +25,27 @@ describe MacOS::SecurityCommand do
     end
   end
 
-  context 'Unlocking a keychain' do
+  context 'unlocking a keychain' do
     it 'unlocks a keychain matching the specified command' do
       expect(p12_cert.unlock_keychain('password')).to eq ['/usr/bin/security', 'unlock-keychain', '-p', 'password']
     end
   end
 
+  context 'unlocking a keychain' do
+    it 'unlocks a specific keychain matching the specified command' do
+      expect(p12_cert_kc.unlock_keychain('password')).to eq ['/usr/bin/security', 'unlock-keychain', '-p', 'password', 'test.keychain']
+    end
+  end
+
   context 'importing a certificate (.p12)' do
     it 'imports a specified .p12 certificate file' do
-      expect(p12_cert.import('password')).to eq ['/usr/bin/security', 'import', '/Users/vagrant/Test.p12', '-P', 'password', '']
+      expect(p12_cert.import('password')).to eq ['/usr/bin/security', 'import', '/Users/vagrant/Test.p12', '-P', 'password']
+    end
+  end
+
+  context 'importing a certificate (.p12)' do
+    it 'imports a specified .p12 certificate file to a specified keychain' do
+      expect(p12_cert_kc.import('password')).to eq ['/usr/bin/security', 'import', '/Users/vagrant/Test.p12', '-P', 'password', '-k', 'test.keychain']
     end
   end
 
@@ -50,7 +63,7 @@ describe MacOS::SecurityCommand do
 
   context 'installing a certificate (.p12)' do
     it 'installs a specified .p12 certificate file' do
-      expect(p12_cert.install_certificate('password')).to eq ['/usr/bin/security', 'import', '/Users/vagrant/Test.p12', '-P', 'password', '']
+      expect(p12_cert.install_certificate('password')).to eq ['/usr/bin/security', 'import', '/Users/vagrant/Test.p12', '-P', 'password']
     end
   end
 
