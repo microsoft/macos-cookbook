@@ -51,3 +51,11 @@ suites:
     verifier:
       inspec_tests:
         - test/smoke/spotlight
+
+  - name: certificate
+    run_list:
+      - recipe[macos_test::certificate]
+    verifier:
+      inspec_tests:
+        - test/smoke/certificate
+
