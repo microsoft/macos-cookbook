@@ -46,9 +46,11 @@ action :set do
     path '/Library/Preferences/SystemConfiguration/com.apple.smb.server.plist'
     entry 'NetBIOSName'
     value new_resource.netbios_name
-    notifies :restart, 'service[com.apple.smb.preferences]'
-    notifies :restart, 'service[com.apple.smbd]'
+    notifies :restart, 'service[com.apple.smb.preferences]', :immediately
+    notifies :restart, 'service[com.apple.smbd]', :immediately
+    notifies :run, 'ruby_block[sleep ten seconds]'
     notifies :reload, 'ohai[reload ohai]'
+    binary true
   end
 
   service 'com.apple.smb.preferences' do
@@ -57,6 +59,13 @@ action :set do
   end
 
   service 'com.apple.smbd' do
+    action :nothing
+  end
+
+  ruby_block 'sleep ten seconds' do
+    block do
+      sleep 10
+    end
     action :nothing
   end
 
