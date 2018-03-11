@@ -3,7 +3,7 @@ resource_name :plist
 property :path, String, name_property: true, desired_state: true
 property :entry, String, desired_state: true
 property :value, [TrueClass, FalseClass, String, Integer, Float], desired_state: true
-property :binary, [TrueClass, FalseClass], desired_state: true, default: true
+property :encoding, String, desired_state: true, default: 'binary', equal_to: ['text/xml', 'binary', 'us-ascii']
 
 load_current_value do |desired|
   current_value_does_not_exist! unless ::File.exist? desired.path
@@ -12,8 +12,8 @@ load_current_value do |desired|
   setting = setting_from_plist desired.entry, desired.path
   value convert_to_data_type_from_string(setting[:key_type], setting[:key_value])
 
-  file_type_cmd = shell_out '/usr/bin/file', '--brief', '--mime-encoding', desired.path
-  binary file_type_cmd.stdout.chomp == 'binary'
+  file_type_cmd = shell_out '/usr/bin/file', '--brief', '--mime-encoding', '--preserve-date', desired.path
+  encoding file_type_cmd.stdout.chomp
 end
 
 action :set do
@@ -46,11 +46,17 @@ EOF
     end
   end
 
-  converge_if_changed :binary do
-    converge_by "convert \"#{plist_file_name}\" to binary" do
-      execute "convert #{new_resource.path} to binary format" do
-        command ['/usr/bin/plutil', '-convert', 'binary1', new_resource.path]
-      end
+  converge_if_changed :encoding do
+    converge_by 'change format' do
+      execute ['/usr/bin/plutil', '-convert', plutil_format_map[new_resource.encoding], new_resource.path]
     end
+  end
+end
+
+action_class do
+  def plutil_format_map
+    { 'us-ascii' => 'xml1',
+      'text/xml' => 'xml1',
+      'binary' => 'binary1' }
   end
 end

@@ -42,23 +42,20 @@ action :set do
   end
 
   property_is_set?(:netbios_name) ? new_resource.netbios_name : new_resource.netbios_name = new_resource.hostname
-  plist 'netbios name' do # converge_if_changed is not needed since `plist` is already idempotent
+  plist 'NetBIOSName' do # converge_if_changed is not needed since `plist` is already idempotent
     path '/Library/Preferences/SystemConfiguration/com.apple.smb.server.plist'
     entry 'NetBIOSName'
     value new_resource.netbios_name
-    notifies :restart, 'service[com.apple.smb.preferences]', :immediately
-    notifies :restart, 'service[com.apple.smbd]', :immediately
+    encoding 'us-ascii'
     notifies :run, 'ruby_block[sleep ten seconds]'
-    notifies :reload, 'ohai[reload ohai]'
-    binary true
   end
 
   service 'com.apple.smb.preferences' do
-    retry_delay 5
     action :nothing
+    notifies :reload, 'ohai[reload ohai]'
   end
 
-  service 'com.apple.smbd' do
+  ohai 'reload ohai' do
     action :nothing
   end
 
@@ -67,9 +64,6 @@ action :set do
       sleep 10
     end
     action :nothing
-  end
-
-  ohai 'reload ohai' do
-    action :nothing
+    notifies :restart, 'service[com.apple.smb.preferences]', :immediately
   end
 end
