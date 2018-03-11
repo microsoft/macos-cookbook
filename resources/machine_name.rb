@@ -9,23 +9,27 @@ property :dns_domain, String, desired_state: false, default: ''
 load_current_value do
   hostname current_hostname
   dns_domain current_dns_domain
+  netbios_name shell_out('defaults', 'read', '/Library/Preferences/SystemConfiguration/com.apple.smb.server.plist', 'NetBIOSName').stdout.chomp
   computer_name get_name('ComputerName')
   local_hostname get_name('LocalHostName')
 end
 
 action :set do
+  property_is_set?(:netbios_name) ? new_resource.netbios_name : new_resource.netbios_name = new_resource.hostname
+  property_is_set?(:computer_name) ? new_resource.computer_name : new_resource.computer_name = new_resource.hostname
+  property_is_set?(:local_hostname) ? new_resource.local_hostname : new_resource.local_hostname = new_resource.hostname
+
   converge_if_changed :hostname do
-    converge_by "set Hostname to #{new_resource.hostname}" do
-      full_hostname = [new_resource.hostname, new_resource.dns_domain].join('.')
-      execute [scutil, '--set', 'HostName', full_hostname] do
+    converge_by 'set Hostname' do
+      fqdn = [new_resource.hostname, new_resource.dns_domain].join '.'
+      execute [scutil, '--set', 'HostName', fqdn] do
         notifies :reload, 'ohai[reload ohai]'
       end
     end
   end
 
   converge_if_changed :computer_name do
-    property_is_set?(:computer_name) ? new_resource.computer_name : new_resource.computer_name = new_resource.hostname
-    converge_by "set ComputerName to #{new_resource.computer_name}" do
+    converge_by 'set ComputerName' do
       execute [scutil, '--set', 'ComputerName', new_resource.computer_name] do
         notifies :reload, 'ohai[reload ohai]'
       end
@@ -33,37 +37,40 @@ action :set do
   end
 
   converge_if_changed :local_hostname do
-    property_is_set?(:local_hostname) ? new_resource.local_hostname : new_resource.local_hostname = new_resource.hostname
-    converge_by "set LocalHostName to #{new_resource.local_hostname}" do
+    converge_by 'set LocalHostName' do
       execute [scutil, '--set', 'LocalHostName', new_resource.local_hostname] do
         notifies :reload, 'ohai[reload ohai]'
       end
     end
   end
 
-  property_is_set?(:netbios_name) ? new_resource.netbios_name : new_resource.netbios_name = new_resource.hostname
-  plist 'NetBIOSName' do # converge_if_changed is not needed since `plist` is already idempotent
-    path '/Library/Preferences/SystemConfiguration/com.apple.smb.server.plist'
-    entry 'NetBIOSName'
-    value new_resource.netbios_name
-    encoding 'us-ascii'
-    notifies :run, 'ruby_block[sleep ten seconds]'
-  end
+  converge_if_changed :netbios_name do
+    converge_by 'set NetBIOSName name' do
+      defaults '/Library/Preferences/SystemConfiguration/com.apple.smb.server.plist' do
+        settings 'NetBIOSName' => new_resource.netbios_name, 'ServerDescription' => new_resource.hostname
+        notifies :restart, 'service[com.apple.cfprefsd.xpc.daemon]'
+      end
 
-  service 'com.apple.smb.preferences' do
-    action :nothing
-    notifies :reload, 'ohai[reload ohai]'
+      service 'com.apple.cfprefsd.xpc.daemon' do
+        notifies :reload, 'ohai[reload ohai]'
+        action :nothing
+      end
+
+      service 'com.apple.smb.preferences' do
+        action :nothing
+      end
+    end
   end
 
   ohai 'reload ohai' do
     action :nothing
+    notifies :run, 'ruby_block[sleep a while]'
   end
 
-  ruby_block 'sleep ten seconds' do
+  ruby_block 'sleep a while' do
     block do
-      sleep 10
+      sleep 60
     end
     action :nothing
-    notifies :restart, 'service[com.apple.smb.preferences]', :immediately
   end
 end

@@ -4,9 +4,9 @@ driver:
   provider: parallels
 
 provisioner:
-  name: chef_zero
+  product_name: chef
+  product_version: 13.8
   always_update_cookbooks: true
-  require_chef_omnibus: true
 
 verifier:
   name: inspec

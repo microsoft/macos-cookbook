@@ -36,19 +36,25 @@ EOF
 
   converge_if_changed :entry do
     converge_by "add entry \"#{new_resource.entry}\" to #{plist_file_name}" do
-      execute plistbuddy_command(:add, new_resource.entry, new_resource.path, new_resource.value)
+      execute plistbuddy_command(:add, new_resource.entry, new_resource.path, new_resource.value) do
+        action :run
+      end
     end
   end
 
   converge_if_changed :value do
     converge_by "#{plist_file_name}: set #{new_resource.entry} to #{new_resource.value}" do
-      execute plistbuddy_command(:set, new_resource.entry, new_resource.path, new_resource.value)
+      execute plistbuddy_command(:set, new_resource.entry, new_resource.path, new_resource.value) do
+        action :run
+      end
     end
   end
 
   converge_if_changed :encoding do
     converge_by 'change format' do
-      execute ['/usr/bin/plutil', '-convert', plutil_format_map[new_resource.encoding], new_resource.path]
+      execute ['/usr/bin/plutil', '-convert', plutil_format_map[new_resource.encoding], new_resource.path] do
+        action :run
+      end
     end
   end
 end
