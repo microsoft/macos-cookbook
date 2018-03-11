@@ -4,11 +4,11 @@ property :hostname, String, desired_state: true, coerce: proc { |name| conform_t
 property :computer_name, String, desired_state: true
 property :local_hostname, String, desired_state: true, coerce: proc { |name| conform_to_rfc1034(name) }
 property :netbios_name, String, desired_state: false, coerce: proc { |name| conform_to_rfc1034(name)[0, 15].upcase }
-property :domainname, String, desired_state: false, default: ''
+property :dns_domain, String, desired_state: false, default: ''
 
 load_current_value do
   hostname current_hostname
-  domainname current_domainname
+  dns_domain current_dns_domain
   computer_name get_name('ComputerName')
   local_hostname get_name('LocalHostName')
 end
@@ -16,7 +16,7 @@ end
 action :set do
   converge_if_changed :hostname do
     converge_by "set Hostname to #{new_resource.hostname}" do
-      full_hostname = [new_resource.hostname, new_resource.domainname].join('.')
+      full_hostname = [new_resource.hostname, new_resource.dns_domain].join('.')
       execute [scutil, '--set', 'HostName', full_hostname] do
         notifies :reload, 'ohai[reload ohai]'
       end

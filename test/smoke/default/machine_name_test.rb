@@ -9,7 +9,7 @@ control 'machine-name' do
   end
 
   describe command('scutil --get LocalHostName') do
-    its('stdout') { should eq "New#{version_digits_only}-Washing-Machine.local" }
+    its('stdout') { should eq "New#{version_digits_only}-Washing-Machine" }
   end
 
   describe command('scutil --get ComputerName') do

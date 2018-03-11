@@ -4,5 +4,5 @@ machine_name 'set computer/hostname' do
   hostname washing_machine_name
   computer_name washing_machine_name
   local_hostname washing_machine_name
-  domainname 'body-of-swirling-water.com'
+  dns_domain 'body-of-swirling-water.com'
 end
