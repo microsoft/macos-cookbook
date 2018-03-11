@@ -10,7 +10,7 @@ module MacOS
 
     def get_name(name_type)
       valid_names = %w(LocalHostName HostName ComputerName)
-      Chef::Application.fatal! "name_type must be one of #{valid_names}" unless valid_names.include? valid_names
+      Chef::Application.fatal! "Name type must be one of #{valid_names}. We got '#{name_type}'." unless valid_names.include? valid_names
       command = shell_out scutil, '--get', name_type
       command.stdout.chomp
     end
@@ -24,12 +24,12 @@ module MacOS
       split_hostname.last(dns_domain).join '.'
     end
 
-    def split_hostname(hostname = nil)
-      hostname ||= get_name 'HostName'
+    private
+
+    def split_hostname
+      hostname = get_name 'HostName'
       hostname.split '.'
     end
-
-    private
 
     def special_chars
       '!\"\#$%&\'()*+,./:;<=>?'
