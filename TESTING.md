@@ -3,7 +3,6 @@
 - [Syntax and style](#syntax-and-style)
 - [Unit tests](#unit-tests)
 - [Integration tests](#integration-tests)
-- [Testing via a Pull Request](#testing-via-a-pull-request)
 
 ## Syntax and style
 
@@ -75,17 +74,22 @@ in the suite. Every suite is tested against all three platform version.
 
 Due to Apple's Software License Agreement, you'll need to build your own boxes.
 There's a number of different resources on GitHub that provide some really great
-guys, but we're partial to [osx-vm-templates](https://github.com/timsutton/osx-vm-templates).
+guides, but we're partial to [osx-vm-templates](https://github.com/timsutton/osx-vm-templates).
 
 This procedure is a bit of a pain to really nail down. We've been working on
 refining and automating it as much as possible, but regular changes to the macOS
 operating system by Apple (e.g. signing restrictions introduced in 10.12.3) have
 made this challenging.
 
-Read the [osx-vm-templates README](https://github.com/timsutton/osx-vm-templates/README.md)
+Read the [osx-vm-templates README](https://github.com/timsutton/osx-vm-templates/blob/master/README.md)
 thouroughly to get a clear understanding of what needs to be done to turn a "vanilla"
 macOS installer into a shiny new, barely-touched macOS Vagrant base box. The process
 is pretty different depending on which version you're building, so tread lightly.
+
+It should be noted that we also maintain a [fork of osx-vm-templates](https://github.com/americanhanko/osx-vm-templates)
+that contains a revised README and better support for building Parallels Desktop
+Vagrant boxes. We're working on getting those changes implemented, but there is
+a few issues that need to be addressed before doing so.
 
 ### Running the tests
 
@@ -145,15 +149,3 @@ can take a while to run - some of our builds end up being 30-40 minutes per oper
 system. If you've got the hardware, don't be afraid to run
 `kitchen test --concurrency n` to save a little time (where `n` is the number of concurrent
 instances you want to boot up).
-
-## Testing via a Pull Request
-
-If you're looking to contribute, the easiest way to test is by opening a Pull
-Request. This is a great approach since we rely heavily on code reviews before
-merging. CRs are really great way to get feedback and make the contribution
-process happen faster.
-
-When a PR is opened, all types of tests are executed in our CI pipeline on MacPro
-build agents that we host internally and manage ourselves. You won't be able to
-see the details of the result, but we're good about posting logs to the PR and
-investigating build failures. _Any_ type of failure will cause a build to fail.
