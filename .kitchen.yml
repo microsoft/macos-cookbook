@@ -20,7 +20,7 @@ platforms:
 suites:
   - name: default
     provisioner:
-      multiple_converge: 3
+      multiple_converge: 2
       enforce_idempotency: true
     run_list:
       - recipe[macos::keep_awake]
@@ -36,7 +36,7 @@ suites:
 
   - name: machine_name
     provisioner:
-      multiple_converge: 3
+      multiple_converge: 2
       enforce_idempotency: true
     run_list:
       - recipe[macos_test::machine_name]
