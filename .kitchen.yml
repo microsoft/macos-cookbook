@@ -23,16 +23,22 @@ suites:
       multiple_converge: 2
       enforce_idempotency: true
     run_list:
-      - recipe[macos::keep_awake]
       - recipe[macos_test::new_users]
       - recipe[macos::disable_software_updates]
       - recipe[macos_test::preferences]
     verifier:
       inspec_tests:
         - test/smoke/default
-    attributes:
-      macos:
-        disk_sleep_disabled: true
+
+  - name: keep_awake
+    provisioner:
+      multiple_converge: 2
+      enforce_idempotency: true
+    run_list:
+      - recipe[macos::keep_awake]
+    verifier:
+      inspec_tests:
+        - test/smoke/keep_awake
 
   - name: machine_name
     provisioner:
