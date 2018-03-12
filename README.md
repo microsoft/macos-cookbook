@@ -99,7 +99,7 @@ more flexibility.
 Installs Apple Configurator 2 using `mas` and links `cfgutil` to
 `/usr/local/bin`.
 
-:warning: Requires a `credentials` data bag containing an `apple_id.json` data bag item.
+:warning: Requires a `credentials` data bag containing an `apple_id` data bag item.
 
 **Usage:** `include_recipe macos::configurator`
 
@@ -126,6 +126,7 @@ Resources
 ---------
 
 - [ARD (Apple Remote Desktop)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_ard.md)
+- [Certificate](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_certificate.md)
 - [Machine Name](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_machine_name.md)
 - [Plist](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_plist.md)
 - [Spotlight (mdutil)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_spotlight.md)
