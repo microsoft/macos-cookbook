@@ -1,9 +1,9 @@
 resource_name :machine_name
 
-property :hostname, String, desired_state: true, coerce: proc { |name| conform_to_rfc1034(name) }, required: true, name_property: true
+property :hostname, String, desired_state: true, coerce: proc { |name| conform_to_dns_standards(name) }, required: true, name_property: true
 property :computer_name, String, desired_state: true
-property :local_hostname, String, desired_state: true, coerce: proc { |name| conform_to_rfc1034(name) }
-property :netbios_name, String, desired_state: false, coerce: proc { |name| conform_to_rfc1034(name)[0, 15].upcase }
+property :local_hostname, String, desired_state: true, coerce: proc { |name| conform_to_dns_standards(name) }
+property :netbios_name, String, desired_state: false, coerce: proc { |name| conform_to_dns_standards(name)[0, 15].upcase }
 property :dns_domain, String, desired_state: false
 
 load_current_value do

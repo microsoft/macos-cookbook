@@ -1,6 +1,6 @@
 module MacOS
   module MachineName
-    def conform_to_rfc1034(hostname)
+    def conform_to_dns_standards(hostname)
       hostname.tr(' _', '-')
               .tr(special_chars, '')
               .strip_chars('-_' + special_chars)[0, 63]
