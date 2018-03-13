@@ -32,6 +32,7 @@ plist 'description' do
   entry                        String
   value                        TrueClass, FalseClass, String, Integer, Float
   action                       Symbol # defaults to :set if not specified
+  encoding                     String # defaults to 'binary' if not specified.
 end
 ```
 

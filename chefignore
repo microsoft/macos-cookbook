@@ -47,9 +47,12 @@ a.out
 ###########
 .watchr
 .rspec
+data_bags
 spec/*
+spec
 spec/fixtures/*
 test/*
+test
 features/*
 examples/*
 Guardfile
@@ -61,6 +64,7 @@ Rakefile
 .travis.yml
 .foodcritic
 .codeclimate.yml
+.delivery
 
 # SCM #
 #######
@@ -70,6 +74,7 @@ Rakefile
 .gitmodules
 .gitconfig
 .gitattributes
+.mailmap
 .svn
 */.bzr/*
 */.hg/*
@@ -114,10 +119,3 @@ Vagrantfile
 ##########
 template.json
 output-parallels-pvm
-
-# Other Chef Stuff #
-####################
-.delivery
-spec
-test
-data_bags

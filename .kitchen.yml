@@ -4,9 +4,9 @@ driver:
   provider: parallels
 
 provisioner:
-  name: chef_zero
+  product_name: chef
+  product_version: 13.8
   always_update_cookbooks: true
-  require_chef_omnibus: true
 
 verifier:
   name: inspec
@@ -20,20 +20,35 @@ platforms:
 suites:
   - name: default
     provisioner:
-      multiple_converge: 3
+      multiple_converge: 2
       enforce_idempotency: true
     run_list:
-      - recipe[macos::keep_awake]
       - recipe[macos_test::new_users]
       - recipe[macos::disable_software_updates]
       - recipe[macos_test::preferences]
-      - recipe[macos_test::machine_name]
     verifier:
       inspec_tests:
         - test/smoke/default
-    attributes:
-      macos:
-        disk_sleep_disabled: true
+
+  - name: keep_awake
+    provisioner:
+      multiple_converge: 2
+      enforce_idempotency: true
+    run_list:
+      - recipe[macos::keep_awake]
+    verifier:
+      inspec_tests:
+        - test/smoke/keep_awake
+
+  - name: machine_name
+    provisioner:
+      multiple_converge: 2
+      enforce_idempotency: true
+    run_list:
+      - recipe[macos_test::machine_name]
+    verifier:
+      inspec_tests:
+        - test/smoke/machine_name
 
   - name: xcode
     run_list:
@@ -58,4 +73,3 @@ suites:
     verifier:
       inspec_tests:
         - test/smoke/certificate
-
