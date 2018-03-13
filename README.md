@@ -99,7 +99,7 @@ more flexibility.
 Installs Apple Configurator 2 using `mas` and links `cfgutil` to
 `/usr/local/bin`.
 
-:warning: Requires a `credentials` data bag containing an `apple_id.json` data bag item.
+:warning: Requires a `credentials` data bag containing an `apple_id` data bag item.
 
 **Usage:** `include_recipe macos::configurator`
 
