@@ -12,8 +12,32 @@ module MacOS
       @security_cmd = '/usr/bin/security'
     end
 
+    def create_keychain(kc_pass)
+      if kc_pass == ''
+        Chef::Exception.fatal('New keychains require a password.')
+      end
+
+      [@security_cmd, 'create-keychain', '-p', kc_pass, @keychain]
+    end
+
+    def delete_keychain
+      [@security_cmd, 'delete-keychain', @keychain]
+    end
+
+    def lock_keychain
+      @keychain == '' ? [@security_cmd, 'lock-keychain'] : [@security_cmd, 'lock-keychain', @keychain]
+    end
+
     def unlock_keychain(kc_passwd)
       @keychain == '' ? [@security_cmd, 'unlock-keychain', '-p', kc_passwd] : [@security_cmd, 'unlock-keychain', '-p', kc_passwd, @keychain]
+    end
+
+    def default_keychain(set_default)
+      set_default ? [@security_cmd, 'default-keychain', '-s', @keychain] : [@security_cmd, 'default-keychain', '-s']
+    end
+
+    def login_keychain(set_login)
+      set_login ? [@security_cmd, 'login-keychain', '-s', @keychain] : [@security_cmd, 'login-keychain', '-s']
     end
 
     def add_certificates
