@@ -3,7 +3,7 @@ resource_name :plist
 property :path, String, name_property: true, desired_state: true
 property :entry, String, desired_state: true
 property :value, [TrueClass, FalseClass, String, Integer, Float], desired_state: true
-property :encoding, String, desired_state: true, default: 'binary', equal_to: plutil_format_map.keys
+property :encoding, String, desired_state: true, default: 'binary'
 
 load_current_value do |desired|
   current_value_does_not_exist! unless ::File.exist? desired.path
@@ -52,6 +52,9 @@ EOF
 
   converge_if_changed :encoding do
     converge_by 'change format' do
+      Chef::Application.fatal!(
+        "Option encoding must be equal to one of: #{plutil_format_map.keys}!  You passed \"#{new_resource.encoding}\"."
+      ) unless plutil_format_map.keys.include? new_resource.encoding
       execute ['/usr/bin/plutil', '-convert', plutil_format_map[new_resource.encoding], new_resource.path] do
         action :run
       end
