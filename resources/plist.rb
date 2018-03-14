@@ -3,7 +3,7 @@ resource_name :plist
 property :path, String, name_property: true, desired_state: true
 property :entry, String, desired_state: true
 property :value, [TrueClass, FalseClass, String, Integer, Float], desired_state: true
-property :encoding, String, desired_state: true, default: 'binary', equal_to: ['text/xml', 'binary', 'us-ascii']
+property :encoding, String, desired_state: true, default: 'binary', equal_to: plutil_format_map.keys
 
 load_current_value do |desired|
   current_value_does_not_exist! unless ::File.exist? desired.path
@@ -63,6 +63,7 @@ action_class do
   def plutil_format_map
     { 'us-ascii' => 'xml1',
       'text/xml' => 'xml1',
+      'utf-8' => 'xml1',
       'binary' => 'binary1' }
   end
 end
