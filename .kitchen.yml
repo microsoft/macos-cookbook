@@ -73,3 +73,10 @@ suites:
     verifier:
       inspec_tests:
         - test/smoke/certificate
+  
+  - name: keychain
+    run_list:
+      - recipe[macos_test::keychain]
+    verifier:
+      inspec_tests:
+        - test/smoke/keychain
