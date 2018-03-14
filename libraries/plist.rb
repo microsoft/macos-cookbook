@@ -80,6 +80,13 @@ module MacOS
       { key_type: defaults_read_type_output.split.last, key_value: defaults_read_output.strip }
     end
 
+    def plutil_format_map
+      { 'us-ascii' => 'xml1',
+        'text/xml' => 'xml1',
+        'utf-8' => 'xml1',
+        'binary' => 'binary1' }
+    end
+
     private
 
     def defaults_executable

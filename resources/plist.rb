@@ -58,12 +58,3 @@ EOF
     end
   end
 end
-
-action_class do
-  def plutil_format_map
-    { 'us-ascii' => 'xml1',
-      'text/xml' => 'xml1',
-      'utf-8' => 'xml1',
-      'binary' => 'binary1' }
-  end
-end
