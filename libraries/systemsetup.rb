@@ -1,7 +1,7 @@
 module MacOS
   module SystemSetup
     def running_in_a_vm?
-      Chef.node['virtualization']['systems'].values.include? 'guest'
+      !Chef.node['virtualization']['systems'].values.include? 'host'
     end
 
     def power_button_model?

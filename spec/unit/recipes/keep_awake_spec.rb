@@ -17,13 +17,18 @@ describe 'macos::keep_awake' do
     end
   end
 
-  context 'when running in a virtual machine' do
-    include_context 'running in a virtual machine'
-    it_behaves_like 'skip setting bare-metal specific power preferences'
+  describe 'keep_awake in a parallels vm' do
+    include_context 'running in a parallels virtual machine'
+    it_behaves_like 'not setting metal-specific power prefs'
   end
 
-  context 'when running on bare metal' do
-    include_context 'running on bare metal'
-    it_behaves_like 'setting bare-metal specific power preferences'
+  describe 'keep_awake in a vmware fusion vm' do
+    include_context 'running in a vmware fusion virtual machine'
+    it_behaves_like 'not setting metal-specific power prefs'
+  end
+
+  describe 'keep_awake on bare metal' do
+    include_context 'when running on bare metal'
+    it_behaves_like 'setting metal-specific power preferences'
   end
 end
