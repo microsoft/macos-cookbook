@@ -1,5 +1,7 @@
+macos_version = command('/usr/bin/sw_vers -productVersion').stdout.strip
+
 control 'keychain creation' do
-  if platform_version?('10.11.6')
+  if macos_version == '10.11.6'
     describe file('/Users/vagrant/Library/Keychains/test.keychain') do
       it { should exist }
     end
