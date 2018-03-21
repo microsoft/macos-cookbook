@@ -73,3 +73,10 @@ suites:
     verifier:
       inspec_tests:
         - test/smoke/certificate
+
+  - name: users
+    run_list:
+      - recipe[macos_test::new_users]
+    verifier:
+      inspec_tests:
+        - test/smoke/users
