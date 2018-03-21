@@ -22,9 +22,9 @@ control 'new macOS users' do
     its('groups') { should_not include  'admin' }
   end
 
-  describe group('admin') do
+  describe groups.where { name == 'admin'} do
     it { should exist }
-    its('gid') { should eq 80 }
+    its('gids') { should include 80 }
   end
 
   realname_cmd = 'dscl . read /Users/johnny RealName | grep -v RealName | cut -c 2-'
