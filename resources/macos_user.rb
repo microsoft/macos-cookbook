@@ -55,10 +55,6 @@ action :create do
     not_if { ::File.exist?(user_home) && user_already_exists? }
   end
 
-  # execute 'flush cache' do
-  #   command ['/usr/bin/dscacheutil', '-flushcache']
-  # end
-
   sleep(0.5)
 
   if property_is_set?(:autologin)
