@@ -85,7 +85,7 @@ shared_context 'running in a parallels virtual machine' do
   end
 end
 
-shared_context 'running virtualization system is unable to be determined' do
+shared_context 'running in an undetermined virtualization system' do
   let(:chef_run) do
     ChefSpec::SoloRunner.new do |node|
       node.override['virtualization']['systems'] = {}
