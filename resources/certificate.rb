@@ -3,6 +3,7 @@ resource_name :certificate
 property :certfile, String
 property :cert_password, String
 property :keychain, String
+property :apps, Array
 
 action_class do
   def keychain
@@ -18,6 +19,6 @@ action :install do
   end
 
   execute 'install-certificate' do
-    command [*cert.install_certificate(new_resource.cert_password)]
+    command [*cert.install_certificate(new_resource.cert_password, new_resource.apps)]
   end
 end

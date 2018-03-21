@@ -7,7 +7,7 @@ property :ios_simulators, Array
 
 action :setup do
   chef_gem 'xcode-install' do
-    options('--no-document')
+    options('--no-document --no-user-install')
   end
 
   CREDENTIALS_DATA_BAG = data_bag_item(:credentials, :apple_id)

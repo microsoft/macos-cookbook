@@ -39,13 +39,19 @@ describe MacOS::SecurityCommand do
 
   context 'importing a certificate (.p12)' do
     it 'imports a specified .p12 certificate file' do
-      expect(p12_cert.import('password')).to eq ['/usr/bin/security', 'import', '/Users/vagrant/Test.p12', '-P', 'password']
+      expect(p12_cert.import('password', [])).to eq ['/usr/bin/security', 'import', '/Users/vagrant/Test.p12', '-P', 'password']
     end
   end
 
   context 'importing a certificate (.p12)' do
     it 'imports a specified .p12 certificate file to a specified keychain' do
-      expect(p12_cert_kc.import('password')).to eq ['/usr/bin/security', 'import', '/Users/vagrant/Test.p12', '-P', 'password', '-k', 'test.keychain']
+      expect(p12_cert_kc.import('password', [])).to eq ['/usr/bin/security', 'import', '/Users/vagrant/Test.p12', '-P', 'password', '-k', 'test.keychain']
+    end
+  end
+
+  context 'importing a certificate (.p12) accessible by Mail and App Store ' do
+    it 'imports a specified .p12 certificate file to a specified keychain' do
+      expect(p12_cert_kc.import('password', ['/Applications/Mail.app', '/Applications/App Store.app'])).to eq ['/usr/bin/security', 'import', '/Users/vagrant/Test.p12', '-P', 'password', '-k', 'test.keychain', '-T', '/Applications/Mail.app', '-T', '/Applications/App Store.app']
     end
   end
 
@@ -63,13 +69,13 @@ describe MacOS::SecurityCommand do
 
   context 'installing a certificate (.p12)' do
     it 'installs a specified .p12 certificate file' do
-      expect(p12_cert.install_certificate('password')).to eq ['/usr/bin/security', 'import', '/Users/vagrant/Test.p12', '-P', 'password']
+      expect(p12_cert.install_certificate('password', [])).to eq ['/usr/bin/security', 'import', '/Users/vagrant/Test.p12', '-P', 'password']
     end
   end
 
   context 'installing a certificate (.cer)' do
     it 'adds a specified .cer certificate file' do
-      expect(cer_cert.install_certificate('password')).to eq ['/usr/bin/security', 'add-certificates', '/Users/vagrant/Test.cer']
+      expect(cer_cert.install_certificate('password', [])).to eq ['/usr/bin/security', 'add-certificates', '/Users/vagrant/Test.cer']
     end
   end
 end
