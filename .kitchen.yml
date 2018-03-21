@@ -33,7 +33,7 @@ suites:
   - name: keep_awake
     provisioner:
       multiple_converge: 2
-      enforce_idempotency: true
+      enforce_idempotency: false
     run_list:
       - recipe[macos::keep_awake]
     verifier:
