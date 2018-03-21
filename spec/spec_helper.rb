@@ -10,6 +10,8 @@ require_relative '../libraries/xcode'
 require_relative '../libraries/xcversion'
 require_relative '../libraries/security_cmd'
 
+include MacOS::SystemSetup
+
 RSpec.configure do |config|
   config.platform = 'mac_os_x'
   config.version = '10.13'
@@ -28,6 +30,10 @@ shared_context 'when running on bare metal' do
   end
 
   shared_examples 'setting metal-specific power preferences' do
+    it 'returns false' do
+      expect(running_in_a_vm?).to be false
+    end
+
     it 'sets wake on lan' do
       chef_run.converge(described_recipe)
       expect(chef_run).to set_system_preference('wake the computer when accessed using a network connection')
@@ -58,6 +64,10 @@ shared_context 'running in a parallels virtual machine' do
   end
 
   shared_examples 'not setting metal-specific power prefs' do
+    it 'confirms we are in a vm' do
+      expect(running_in_a_vm?).to be true
+    end
+
     it 'does not set wake on lan' do
       chef_run.converge(described_recipe)
       expect(chef_run).to_not set_system_preference('wake the computer when accessed using a network connection')
@@ -75,10 +85,10 @@ shared_context 'running in a parallels virtual machine' do
   end
 end
 
-shared_context 'running in a vmware fusion virtual machine' do
+shared_context 'running virtualization system is unable to be determined' do
   let(:chef_run) do
     ChefSpec::SoloRunner.new do |node|
-      node.normal['virtualization']['systems'] = {}
+      node.override['virtualization']['systems'] = {}
     end
   end
 
@@ -88,6 +98,10 @@ shared_context 'running in a vmware fusion virtual machine' do
   end
 
   shared_examples 'not setting metal-specific power prefs' do
+    it 'assumes we are in a vm' do
+      expect(running_in_a_vm?).to be true
+    end
+
     it 'does not set wake on lan' do
       chef_run.converge(described_recipe)
       expect(chef_run).to_not set_system_preference('wake the computer when accessed using a network connection')

@@ -22,8 +22,8 @@ describe 'macos::keep_awake' do
     it_behaves_like 'not setting metal-specific power prefs'
   end
 
-  describe 'keep_awake in a vmware fusion vm' do
-    include_context 'running in a vmware fusion virtual machine'
+  describe 'keep_awake in an undetermined virtualization system' do
+    include_context 'running in an undetermined virtualization system'
     it_behaves_like 'not setting metal-specific power prefs'
   end
 

@@ -22,7 +22,7 @@ control 'new macOS users' do
     its('groups') { should_not include  'admin' }
   end
 
-  describe groups.where { name == 'admin'} do
+  describe groups.where { name == 'admin' } do
     it { should exist }
     its('gids') { should include 80 }
   end
