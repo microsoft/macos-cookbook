@@ -1,7 +1,8 @@
 module MacOS
   module SystemSetup
     def running_in_a_vm?
-      Chef.node['hardware']['machine_model'].match?(/Parallels/) # TODO: cover more hypervisors
+      virtualization_systems = Chef.node['virtualization']['systems']
+      virtualization_systems.empty? || virtualization_systems.values.include?('guest') ? true : false
     end
 
     def power_button_model?
