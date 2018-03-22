@@ -8,13 +8,24 @@ control 'admin-user' do
     it { should exist }
     its('uid') { should eq 503 }
     its('gid') { should eq 20 }
-    its('group') { should eq 'admin' }
     its('home') { should eq '/Users/randall' }
+    its('groups') { should include 'alpha' }
+    its('groups') { should include  'staff' }
+    its('groups') { should include  'admin' }
+  end
+
+  describe command('su -l randall -c "id -G"') do
+    its('stdout.split') { should include '80' }
   end
 
   describe command("/usr/libexec/PlistBuddy -c 'Print :autoLoginUser' /Library/Preferences/com.apple.loginwindow.plist") do
     its('exit_status') { should eq 0 }
     its('stdout.chomp') { should eq 'randall' }
+  end
+
+  describe groups.where { name == 'admin' } do
+    it { should exist }
+    its('gids') { should include 80 }
   end
 end
 
@@ -26,8 +37,15 @@ control 'standard-user' do
     it { should exist }
     its('uid') { should eq 504 }
     its('gid') { should eq 20 }
-    its('group') { should_not eq 'admin' }
     its('home') { should eq '/Users/johnny' }
+    its('groups') { should include 'staff' }
+    its('groups') { should include 'alpha' }
+    its('groups') { should include 'beta' }
+    its('groups') { should_not include  'admin' }
+  end
+
+  describe command('su -l johnny -c "id -G"') do
+    its('stdout.split') { should_not include '80' }
   end
 
   describe command('dscl . read /Users/johnny RealName') do
@@ -39,5 +57,17 @@ control 'standard-user' do
   describe command("/usr/libexec/PlistBuddy -c 'Print :autoLoginUser' /Library/Preferences/com.apple.loginwindow.plist") do
     its('exit_status') { should eq 0 }
     its('stdout.chomp') { should_not eq 'johnny' }
+  end
+
+  describe user('paul') do
+    it { should exist }
+    its('uid') { should eq 505 }
+    its('groups') { should include 'staff' }
+    its('groups') { should_not include  'admin' }
+    its('home') { should eq '/Users/paul' }
+  end
+
+  describe command('su -l paul -c "id -G"') do
+    its('stdout.split') { should_not include '80' }
   end
 end

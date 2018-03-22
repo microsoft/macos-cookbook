@@ -8,7 +8,7 @@ control 'screensaver-disabled' do
   desc 'Verify that when the computer is not in use, moving images or patterns do not appear'
 
   def hardware_uuid
-    system_profiler_command = command('system_profiler SPHardwareDataType')
+    system_profiler_command = command('/usr/sbin/system_profiler SPHardwareDataType')
     hardware_data = ::Psych.load(system_profiler_command.stdout)
     hardware_data['Hardware']['Hardware Overview']['Hardware UUID']
   end

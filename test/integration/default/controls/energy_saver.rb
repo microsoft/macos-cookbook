@@ -72,21 +72,3 @@ control 'no-sleep' do
     its('stdout') { should match display_sleep_pattern }
   end
 end
-
-# the 'DarkWakeBackgroundTasks' key changes namespaces depending on the hardware
-# the location of the com.apple.PowerManagement.plist plist is also different depending on the OS version
-# also, if sleep is disabled, why does this matter?
-control 'disable-powernap', :skip do
-  title 'do not perform useful activities while macOS is asleep'
-  desc 'Verify powernap is disabled using pmset output'
-
-  power_management_plist = if os[:release].match? Regexp.union ['10.12', '10.13']
-                             '/Library/Preferences/com.apple.PowerManagement.plist'
-                           else
-                             '/Library/Preferences/SystemConfiguration/com.apple.PowerManagement.plist'
-                           end
-
-  describe command("/usr/libexec/PlistBuddy -c 'Print :DarkWakeBackgroundTasks' #{power_management_plist}"), :skip do
-    its('stdout') { should match(/false/) }
-  end
-end
