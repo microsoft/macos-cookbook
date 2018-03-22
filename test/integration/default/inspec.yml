@@ -1,0 +1,8 @@
+name: macos
+title: macOS Cookbook InSpec Profile
+maintainer: Microsoft
+copyright: Microsoft Corporation
+copyright_email: chef@microsoft.com
+license: MIT
+summary: Test the macOS cookbook custom resources and recipes
+version: 1.0.1
