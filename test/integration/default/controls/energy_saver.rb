@@ -22,18 +22,15 @@ control 'remote-administration' do
   end
 
   describe command('pmset -g') do
-    hibernate_mode_pattern = Regexp.union('hibernatemode        0')
-    its('stdout') { should match hibernate_mode_pattern }
+    its('stdout') { should match(/hibernatemode\s+0/) }
   end
 
   describe command('pmset -g') do
-    hibernate_pattern = Regexp.union('hibernatefile        /var/vm/sleepimage')
-    its('stdout') { should match hibernate_pattern }
+    its('stdout') { should match %r{hibernatefile\s+/var/vm/sleepimage} }
   end
 
   describe command('pmset -g') do
-    ttys_awake_pattern = Regexp.union('ttyskeepawake        1')
-    its('stdout') { should match ttys_awake_pattern }
+    its('stdout') { should match(/ttyskeepawake\s+1/) }
   end
 end
 
@@ -58,17 +55,14 @@ control 'no-sleep' do
   end
 
   describe command('pmset -g') do
-    no_sleep_pattern = Regexp.union('sleep                0')
-    its('stdout') { should match no_sleep_pattern }
+    its('stdout') { should match(/sleep\s+0/) }
   end
 
   describe command('pmset -g') do
-    disk_sleep_pattern = Regexp.union('disksleep            0')
-    its('stdout') { should match disk_sleep_pattern }
+    its('stdout') { should match(/disksleep\s+10/) }
   end
 
   describe command('pmset -g') do
-    display_sleep_pattern = Regexp.union('displaysleep         0')
-    its('stdout') { should match display_sleep_pattern }
+    its('stdout') { should match(/displaysleep\s+0/) }
   end
 end

@@ -9,33 +9,32 @@ control 'standardized-hostname' do
   '
 
   macos_version = command('/usr/bin/sw_vers -productVersion').stdout.strip
-  version_digits_only = macos_version.tr '.', ''
-  platform_and_version = [os[:name], version_digits_only].join('-')
-  computer_name_pattern = Regexp.union platform_and_version
-  hostname_pattern = Regexp.union [platform_and_version, '.vagrantup.com'].join
+  platform_and_version = [os[:name], macos_version.tr('.', '')].join('-')
+  hostname_pattern = Regexp.union platform_and_version
+  fqdn_pattern = Regexp.union [platform_and_version, 'vagrantup.com'].join('.')
 
   describe command('scutil --get ComputerName') do
-    its('stdout') { should match computer_name_pattern }
+    its('stdout.chomp') { should match hostname_pattern }
   end
 
   describe command('scutil --get LocalHostName') do
-    its('stdout') { should match computer_name_pattern }
+    its('stdout.chomp') { should match hostname_pattern }
   end
 
   describe command('scutil --get HostName') do
-    its('stdout') { should match hostname_pattern }
+    its('stdout.chomp') { should match fqdn_pattern }
   end
 
   describe command('hostname') do
-    its('stdout') { should match hostname_pattern }
+    its('stdout.chomp') { should match fqdn_pattern }
   end
 
   describe command('hostname -s') do
-    its('stdout') { should match hostname_pattern }
+    its('stdout.chomp') { should match hostname_pattern }
   end
 
   describe command('hostname -f') do
-    its('stdout') { should match hostname_pattern }
+    its('stdout.chomp') { should match fqdn_pattern }
   end
 end
 
@@ -50,31 +49,32 @@ control 'nonstandard-computer-name' do
   ref 'https://tools.ietf.org/html/rfc1034'
 
   macos_version = command('/usr/bin/sw_vers -productVersion').stdout.strip
-  hostname = "New#{macos_version.tr('_.', '')}_Washing_Machine"
+  computer_name_pattern = Regexp.union("New#{macos_version}_Washing_Machine")
+  hostname = "New#{macos_version.tr('.', '')}-Washing-Machine"
   hostname_pattern = Regexp.union(hostname)
-  fqdn_pattern = Regexp.union [hostname, '.body-of-swirling-water.com'].join
+  fqdn_pattern = Regexp.union [hostname, 'body-of-swirling-water.com'].join('.')
 
   describe command('scutil --get ComputerName') do
-    its('stdout') { should match Regexp.union("New#{macos_version}_Washing_Machine") }
+    its('stdout.chomp') { should match computer_name_pattern }
   end
 
   describe command('scutil --get LocalHostName') do
-    its('stdout') { should match hostname_pattern }
+    its('stdout.chomp') { should match hostname_pattern }
   end
 
   describe command('scutil --get HostName') do
-    its('stdout') { should match fqdn_pattern }
+    its('stdout.chomp') { should match fqdn_pattern }
   end
 
   describe command('hostname') do
-    its('stdout') { should match fqdn_pattern }
+    its('stdout.chomp') { should match fqdn_pattern }
   end
 
   describe command('hostname -s') do
-    its('stdout') { should match fqdn_pattern }
+    its('stdout.chomp') { should match hostname_pattern }
   end
 
   describe command('hostname -f') do
-    its('stdout') { should match fqdn_pattern }
+    its('stdout.chomp') { should match fqdn_pattern }
   end
 end
