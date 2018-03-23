@@ -31,4 +31,8 @@ control 'updates-disabled' do
   describe command("/usr/bin/defaults read #{software_update_plist} #{automatic_check_enabled}") do
     its('stdout') { should match('0') }
   end
+
+  describe command('/usr/sbin/softwareupdate --schedule') do
+    its('stdout') { should match 'Automatic check is off' }
+  end
 end
