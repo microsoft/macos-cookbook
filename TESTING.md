@@ -31,7 +31,7 @@ $ foodcritic .
 - [RSpec](http://rspec.info/)
 - [ChefDK](https://downloads.chef.io/chefdk) (optional)
 
-For unit tests, we focus on testing the library files, which are usually writtin
+For unit tests, we focus on testing the library files, which are written
 in pure Ruby and tested with RSpec. The library files contain most of the core
 business logic for each of the custom resources and are used as either mixins
 for the custom resources or contain classes that act as helpers, except with

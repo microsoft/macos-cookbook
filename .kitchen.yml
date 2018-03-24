@@ -21,18 +21,13 @@ platforms:
 suites:
 - name: default
   run_list:
-  - recipe[macos_test::new_users]
   - recipe[macos::disable_software_updates]
   - recipe[macos_test::preferences]
-  - recipe[macos_test::certificate]
   verifier:
     controls:
     - dock-appearance
     - show-all-files
-    - admin-user
-    - standard-user
     - updates-disabled
-    - certificate-install
 
 - name: power_management
   run_list:
@@ -63,3 +58,18 @@ suites:
   verifier:
     controls:
     - xcode/simulators
+
+- name: certificate
+  run_list:
+  - recipe[macos_test::certificate]
+  verifier:
+    controls:
+    - certificate-install
+
+- name: users
+  run_list:
+  - recipe[macos_test::new_users]
+  verifier:
+    controls:
+    - admin-user
+    - standard-user
