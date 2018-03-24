@@ -14,7 +14,7 @@ control 'remote-administration' do
   end
 
   describe command('systemsetup -getwaitforstartupafterpowerfailure') do
-    its('stdout') { should match(/0 seconds/) }
+    its('stdout') { should match(/getwaitforstartupafterpowerfailure: 0 seconds/) }
   end
 
   describe command('systemsetup -getremotelogin') do
@@ -47,7 +47,7 @@ control 'no-sleep' do
   end
 
   describe command('systemsetup -getharddisksleep') do
-    its('stdout') { should match(/Never/) }
+    its('stdout') { should match(/after 10 minutes/) }
   end
 
   describe command('systemsetup -getrestartfreeze') do
