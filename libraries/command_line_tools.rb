@@ -5,9 +5,15 @@ module MacOS
     attr_reader :product
 
     def initialize
-      @product = available_products.lines
-                                   .select { |s| s.include?('* Command') }
-                                   .last.tr('*', '').strip
+      @product = if available_command_line_tools.empty?
+                   'none'
+                 else
+                   available_command_line_tools.last.tr('*', '').strip
+                 end
+    end
+
+    def available_command_line_tools
+      available_products.lines.select { |s| s.include?('* Command') }
     end
 
     def available_products
