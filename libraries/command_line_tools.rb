@@ -17,7 +17,7 @@ module MacOS
     end
 
     def available_products
-      shell_out('softwareupdate -l').stdout
+      shell_out(['softwareupdate', '--list']).stdout
     end
   end
 end
