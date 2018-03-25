@@ -5,7 +5,7 @@ describe MacOS::CommandLineTools do
   context 'when provided an available list of software update products' do
     before do
       allow_any_instance_of(MacOS::CommandLineTools).to receive(:available_products)
-        .and_return(<<-SOFTWAREUPDATE_LIST
+        .and_return(<<~SOFTWAREUPDATE_LIST
                     Software Update Tool
                     Finding available software
                     Software Update found the following new or updated software:
