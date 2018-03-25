@@ -6,6 +6,18 @@ property :path, String, default: '/Applications/Xcode.app'
 property :ios_simulators, Array
 
 action :setup do
+  file 'sentinel to make CLT available' do
+    path '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
+    not_if { ::File.exist?('/Library/Developer/CommandLineTools/usr/lib/libxcrun.dylib') }
+    notifies :run, 'execute[install Xcode CLT]', :immediately
+  end
+
+  execute 'install Xcode CLT' do
+    command lazy { "softwareupdate --verbose -i '#{CommandLineTools.new}'" }
+    action :nothing
+    notifies :delete, 'file[sentinel to make CLT available]', :immediately
+  end
+
   chef_gem 'xcode-install' do
     options('--no-document --no-user-install')
   end
