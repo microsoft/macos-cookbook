@@ -23,11 +23,13 @@ action :setup do
     options('--no-document --no-user-install')
   end
 
-  CREDENTIALS_DATA_BAG = data_bag_item(:credentials, :apple_id)
+  credentials = Xcode.find_apple_id(
+    -> { data_bag_item(:credentials, :apple_id) },
+    node['macos']['apple_id'])
 
   DEVELOPER_CREDENTIALS = {
-    XCODE_INSTALL_USER:     CREDENTIALS_DATA_BAG['apple_id'],
-    XCODE_INSTALL_PASSWORD: CREDENTIALS_DATA_BAG['password'],
+    XCODE_INSTALL_USER:     credentials['apple_id'],
+    XCODE_INSTALL_PASSWORD: credentials['password'],
   }.freeze
 
   execute 'update available Xcode versions' do
@@ -41,6 +43,7 @@ action :install_xcode do
     environment DEVELOPER_CREDENTIALS
     command XCVersion.install_xcode(new_resource.version)
     not_if { Xcode.installed?(new_resource.version) }
+    timeout 7200
   end
 end
 
