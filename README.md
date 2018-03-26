@@ -81,11 +81,12 @@ the `package`, `version` and `checksum` attributes in order to override.
 
 ### Xcode
 
-Installs Xcode 9.1 and simulators for iOS 10 and iOS 11. See the
+Installs Xcode 9.2 and simulators for iOS 10 and iOS 11. See the
 [Xcode resource documentation](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_xcode.md) if you need
 more flexibility.
 
-:warning: Requires a `credentials` data bag containing an `apple_id` data bag item.
+:warning: Requires a `credentials` data bag containing an `apple_id` data bag item,
+or a user/password pair set under `node['macos']['apple_id']`.
 
 **Usage:** `include_recipe macos::xcode`
 
@@ -93,6 +94,8 @@ more flexibility.
 |--------------------------------------------------------|---------------|
 | `node['macos']['xcode']['version']`                    | `'9.2'`       |
 | `node['macos']['xcode']['simulator']['major_version']` | `[11, 10]`    |
+| `node['macos']['apple_id']['user']`                    | `nil`         |
+| `node['macos']['apple_id']['password']`                | `nil`         |
 
 ### Apple Configurator 2
 
