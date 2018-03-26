@@ -24,7 +24,7 @@ Supported OS Versions
 
 | OS X El Capitan 10.11 | macOS Sierra 10.12 | macOS High Sierra 10.13 |
 |:---------------------:|:------------------:|:-----------------------:|
-| ![build-status-1011](https://office.visualstudio.com/_apis/public/build/definitions/59d72877-1cea-4eb6-9d06-66716573631a/2140/badge) | ![build-status-1012](https://office.visualstudio.com/_apis/public/build/definitions/59d72877-1cea-4eb6-9d06-66716573631a/2140/badge) | ![build-status-1013](https://office.visualstudio.com/_apis/public/build/definitions/59d72877-1cea-4eb6-9d06-66716573631a/2143/badge) |
+| ![build-status-1011](https://office.visualstudio.com/_apis/public/build/definitions/59d72877-1cea-4eb6-9d06-66716573631a/2302/badge) | ![build-status-1012](https://office.visualstudio.com/_apis/public/build/definitions/59d72877-1cea-4eb6-9d06-66716573631a/2140/badge) | ![build-status-1013](https://office.visualstudio.com/_apis/public/build/definitions/59d72877-1cea-4eb6-9d06-66716573631a/2143/badge) |
 
 Attributes
 ----------
@@ -47,7 +47,7 @@ Recipes
 
 Disables automatic checking and downloading of software updates.
 
-**Usage:** `include_recipe macos::disable_software_updates`
+**Usage:** `include_recipe 'macos::disable_software_updates'`
 
 No attributes used in this recipe.
 
@@ -57,7 +57,7 @@ Prevent macOS from falling asleep, disable the screensaver, reboot upon power fa
 enable wake on LAN, enable remote login (SSH) and adjust several other settings
 to always keep macOS on and available.
 
-**Usage:** `include_recipe macos::keep_awake`
+**Usage:** `include_recipe 'macos::keep_awake'`
 
 | Attributes used                         | Default value           |
 |-----------------------------------------|-------------------------|
@@ -71,7 +71,7 @@ to always keep macOS on and available.
 Installs [Mono](http://www.mono-project.com/docs/about-mono/). Requires setting
 the `package`, `version` and `checksum` attributes in order to override.
 
-**Usage:** `include_recipe macos::mono`
+**Usage:** `include_recipe 'macos::mono'`
 
 | Attributes used                     | Default value                                                        |
 |-------------------------------------|----------------------------------------------------------------------|
@@ -81,18 +81,21 @@ the `package`, `version` and `checksum` attributes in order to override.
 
 ### Xcode
 
-Installs Xcode 9.1 and simulators for iOS 10 and iOS 11. See the
+Installs Xcode 9.2 and simulators for iOS 10 and iOS 11. See the
 [Xcode resource documentation](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_xcode.md) if you need
 more flexibility.
 
-:warning: Requires a `credentials` data bag containing an `apple_id` data bag item.
+:warning: Requires a `credentials` data bag containing an `apple_id` data bag item,
+or a user/password pair set under `node['macos']['apple_id']`.
 
-**Usage:** `include_recipe macos::xcode`
+**Usage:** `include_recipe 'macos::xcode'`
 
 | Attributes used                                        | Default value |
 |--------------------------------------------------------|---------------|
 | `node['macos']['xcode']['version']`                    | `'9.2'`       |
 | `node['macos']['xcode']['simulator']['major_version']` | `[11, 10]`    |
+| `node['macos']['apple_id']['user']`                    | `nil`         |
+| `node['macos']['apple_id']['password']`                | `nil`         |
 
 ### Apple Configurator 2
 
@@ -101,7 +104,7 @@ Installs Apple Configurator 2 using `mas` and links `cfgutil` to
 
 :warning: Requires a `credentials` data bag containing an `apple_id` data bag item.
 
-**Usage:** `include_recipe macos::configurator`
+**Usage:** `include_recipe 'macos::configurator'`
 
 **Attributes**: No attributes used in this recipe.
 

@@ -8,6 +8,7 @@ require_relative '../libraries/plist'
 require_relative '../libraries/systemsetup'
 require_relative '../libraries/xcode'
 require_relative '../libraries/xcversion'
+require_relative '../libraries/command_line_tools'
 require_relative '../libraries/security_cmd'
 
 RSpec.configure do |config|
