@@ -9,12 +9,14 @@ module MacOS
         installed_xcodes.include?(semantic_version)
       end
 
-      def find_apple_id(data_bag_retrieval, node_attributes)
-        data_bag_retrieval.call
+      def find_apple_id(data_bag_retrieval, node_credential_attributes)
+        if node_credential_attributes
+          { 'apple_id' => node_credential_attributes['user'],
+            'password' => node_credential_attributes['password'] }
+        else
+          data_bag_retrieval.call
+        end
       rescue Net::HTTPServerException
-        { 'apple_id' => node_attributes['user'],
-          'password' => node_attributes['password'] }
-      rescue NoMethodError
         Chef::Application.fatal!('No developer credentials supplied!')
       end
     end
