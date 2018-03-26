@@ -1,5 +1,8 @@
-control 'spotlight metadata stores for mounted volumes' do
-  desc 'they are set as intended by the smoke recipe'
+title 'spotlight'
+
+control 'indexing-and-searching' do
+  title 'manipulated metadata settings'
+  desc 'Verify search and index settings are set correctly for various volumes'
 
   describe command('/usr/bin/mdutil -s /') do
     its('stdout') { should match "/:\n\tIndexing enabled." }
