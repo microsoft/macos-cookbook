@@ -13,6 +13,15 @@ module MacOS
         xcode_version = '/Applications/Xcode.app/Contents/version.plist CFBundleShortVersionString'
         node['macos']['xcode']['version'] == shell_out("defaults read #{xcode_version}").stdout.strip
       end
+
+      def find_apple_id(data_bag_retrieval, node_attributes)
+        data_bag_retrieval.call
+      rescue Net::HTTPServerException
+        { 'apple_id' => node_attributes['user'],
+          'password' => node_attributes['password'] }
+      rescue NoMethodError
+        Chef::Application.fatal!('No developer credentials supplied!')
+      end
     end
 
     class Simulator
