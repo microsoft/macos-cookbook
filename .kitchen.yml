@@ -30,7 +30,7 @@ suites:
     - show-all-files
     - updates-disabled
 
-- name: power_management
+- name: power-management
   run_list:
   - recipe[macos::keep_awake]
   verifier:
@@ -39,7 +39,7 @@ suites:
     - remote-administration
     - no-sleep
 
-- name: machine_name
+- name: machine-name
   run_list:
   - recipe[macos_test::machine_name]
   verifier:
