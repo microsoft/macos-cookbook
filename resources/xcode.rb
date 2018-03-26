@@ -41,6 +41,7 @@ action :install_xcode do
     environment DEVELOPER_CREDENTIALS
     command XCVersion.install_xcode(new_resource.version)
     not_if { Xcode.installed?(new_resource.version) }
+    timeout 7200
   end
 end
 
