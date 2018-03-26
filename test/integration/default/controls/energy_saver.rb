@@ -9,8 +9,7 @@ control 'remote-administration' do
   '
 
   describe command('systemsetup -getremoteappleevents') do
-    apple_events_pattern = Regexp.union('Remote Apple Events: On')
-    its('stdout') { should match apple_events_pattern }
+    its('stdout') { should include 'Remote Apple Events: On' }
   end
 
   describe command('systemsetup -getwaitforstartupafterpowerfailure') do

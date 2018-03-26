@@ -1,6 +1,6 @@
 title 'spotlight'
 
-control 'indexing/searching' do
+control 'indexing-and-searching' do
   title 'manipulated metadata settings'
   desc 'Verify search and index settings are set correctly for various volumes'
 

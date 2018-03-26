@@ -4,8 +4,9 @@ driver:
   provider: parallels
 
 provisioner:
-  name: chef_zero
-  always_update_cookbooks: true
+  product_name: chef
+  product_version: latest
+  install_strategy: always
 
 verifier:
   name: inspec
@@ -50,14 +51,14 @@ suites:
   - recipe[macos_test::spotlight]
   verifier:
     controls:
-    - indexing/searching
+    - indexing-and-searching
 
 - name: xcode
   run_list:
   - recipe[macos_test::xcode]
   verifier:
     controls:
-    - xcode/simulators
+    - xcode-and-simulators
 
 - name: certificate
   run_list:

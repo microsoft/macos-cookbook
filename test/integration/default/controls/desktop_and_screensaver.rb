@@ -1,4 +1,4 @@
-title 'desktop & screen saver'
+title 'desktop and screen saver'
 
 user_home = os_env('HOME').content
 test_user = 'vagrant'
