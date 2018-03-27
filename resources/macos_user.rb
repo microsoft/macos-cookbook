@@ -55,6 +55,8 @@ action :create do
     not_if { ::File.exist?(user_home) && user_already_exists? }
   end
 
+  sleep(0.5)
+
   if property_is_set?(:autologin)
     setup_assistant_keypair_values.each do |e, v|
       plist setup_assistant_plist do

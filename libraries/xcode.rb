@@ -9,9 +9,15 @@ module MacOS
         installed_xcodes.include?(semantic_version)
       end
 
-      def bundle_version_correct?
-        xcode_version = '/Applications/Xcode.app/Contents/version.plist CFBundleShortVersionString'
-        node['macos']['xcode']['version'] == shell_out("defaults read #{xcode_version}").stdout.strip
+      def find_apple_id(data_bag_retrieval, node_credential_attributes)
+        if node_credential_attributes
+          { 'apple_id' => node_credential_attributes['user'],
+            'password' => node_credential_attributes['password'] }
+        else
+          data_bag_retrieval.call
+        end
+      rescue Net::HTTPServerException
+        Chef::Application.fatal!('No developer credentials supplied!')
       end
     end
 

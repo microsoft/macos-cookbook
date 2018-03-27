@@ -5,78 +5,80 @@ driver:
 
 provisioner:
   product_name: chef
-  product_version: 13.8
-  always_update_cookbooks: true
+  product_version: latest
+  install_strategy: always
 
 verifier:
   name: inspec
   sudo: true
+  inspec_tests:
+  - test/integration/default
 
 platforms:
-  - name: apex/macos-10.13.3
-  - name: apex/macos-10.12.6
-  - name: apex/macos-10.11.6
+- name: apex/macos-10.11.6
+- name: apex/macos-10.12.6
+- name: apex/macos-10.13.3
 
 suites:
-  - name: default
-    provisioner:
-      multiple_converge: 2
-      enforce_idempotency: true
-    run_list:
-      - recipe[macos_test::new_users]
-      - recipe[macos::disable_software_updates]
-      - recipe[macos_test::preferences]
-    verifier:
-      inspec_tests:
-        - test/smoke/default
+- name: default
+  run_list:
+  - recipe[macos::disable_software_updates]
+  - recipe[macos_test::preferences]
+  verifier:
+    controls:
+    - dock-appearance
+    - show-all-files
+    - updates-disabled
 
-  - name: keep_awake
-    provisioner:
-      multiple_converge: 2
-      enforce_idempotency: true
-    run_list:
-      - recipe[macos::keep_awake]
-    verifier:
-      inspec_tests:
-        - test/smoke/keep_awake
+- name: power-management
+  run_list:
+  - recipe[macos::keep_awake]
+  verifier:
+    controls:
+    - screensaver-disabled
+    - remote-administration
+    - no-sleep
 
-  - name: machine_name
-    provisioner:
-      multiple_converge: 2
-      enforce_idempotency: true
-    run_list:
-      - recipe[macos_test::machine_name]
-    verifier:
-      inspec_tests:
-        - test/smoke/machine_name
+- name: machine-name
+  run_list:
+  - recipe[macos_test::machine_name]
+  verifier:
+    controls:
+    - nonstandard-computer-name
 
-  - name: xcode
-    run_list:
-      - recipe[macos_test::xcode]
-    verifier:
-      inspec_tests:
-        - test/smoke/xcode
+- name: spotlight
+  run_list:
+  - recipe[macos_test::spotlight]
+  verifier:
+    controls:
+    - indexing-and-searching
 
-  - name: spotlight
-    provisioner:
-      multiple_converge: 2
-      enforce_idempotency: true
-    run_list:
-      - recipe[macos_test::spotlight]
-    verifier:
-      inspec_tests:
-        - test/smoke/spotlight
+- name: xcode
+  run_list:
+  - recipe[macos_test::xcode]
+  verifier:
+    controls:
+    - xcode-and-simulators
 
-  - name: certificate
-    run_list:
-      - recipe[macos_test::certificate]
-    verifier:
-      inspec_tests:
-        - test/smoke/certificate
-  
-  - name: keychain
-    run_list:
-      - recipe[macos_test::keychain]
-    verifier:
-      inspec_tests:
-        - test/smoke/keychain
+- name: certificate
+  run_list:
+  - recipe[macos_test::certificate]
+  verifier:
+    controls:
+    - certificate-install
+
+- name: users
+  run_list:
+  - recipe[macos_test::new_users]
+  verifier:
+    controls:
+    - admin-user
+    - standard-user
+
+- name: keychain
+  run_list:
+  - recipe[macos_test::keychain]
+  verifier:
+    controls:
+    - keychain-creation
+    - login-keychain-creation

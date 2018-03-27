@@ -20,6 +20,7 @@ certificate 'cert name' do
   certfile                      String # certificate in .p12(PFX) or .cer(SSl certificate file) format
   cert_passwd                   String # password for PFX format certificate file
   keychain                      String # keychain to install certificate to
+  apps                          Array  # list of apps that may access the imported key
 end
 ```
 
@@ -68,5 +69,14 @@ end
 certificate 'cert name' do
   certfile '/User/edward/Documents/cert.p12'
   keychain '/User/edward/Library/Keychains/florida.keychain'
+end
+```
+
+**Install PFX format certificate to default keychain, accessible by certain app**
+```ruby
+certificate 'cert name' do
+  certfile '/User/edward/Documents/cert.p12'
+  cert_passwd 'teach'
+  apps ['/Applications/Maps.app', '/Applications/Time Machine.app']
 end
 ```
