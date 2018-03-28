@@ -9,3 +9,21 @@ keychain 'unlock test keychain' do
   kc_passwd 'test'
   action :unlock
 end
+
+macos_user 'create admin user' do
+  username 'testuser'
+  password 'testuser'
+  admin true
+end
+
+kcfile = '/Users/testuser/Library/Keychains/login.keychain-db'
+
+keychain 'create login keychain' do
+  kc_file kcfile
+  kc_passwd 'testuser'
+  action :create
+end
+
+# execute 'make it login' do
+#   command ['usr/bin/security', 'default-keychain', '-s', kcfile]
+# end
