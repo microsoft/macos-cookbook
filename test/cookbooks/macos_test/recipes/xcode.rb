@@ -3,7 +3,7 @@ if node['platform_version'].match? Regexp.union ['10.12', '10.13']
     command ['spctl', '--master-disable']
   end
 
-  xcode '9.2' do
+  xcode '9.3' do
     ios_simulators %w(11 10)
   end
 
