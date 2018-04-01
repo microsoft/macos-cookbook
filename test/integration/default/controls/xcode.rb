@@ -15,7 +15,7 @@ control 'xcode-and-simulators' do
   end
 
   if macos_version.match? Regexp.union ['10.12', '10.13']
-    describe directory('/Applications/Xcode-9.2.app') do
+    describe directory('/Applications/Xcode-9.3.app') do
       it { should exist }
     end
 
