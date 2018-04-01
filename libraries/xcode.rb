@@ -5,8 +5,7 @@ module MacOS
     class << self
       def installed?(semantic_version)
         xcversion_output = shell_out(XCVersion.installed_xcodes).stdout.split
-        installed_xcodes = xcversion_output.values_at(*xcversion_output.each_index.select(&:even?))
-        installed_xcodes.include?(semantic_version)
+        xcversion_output.include?(semantic_version)
       end
 
       def find_apple_id(data_bag_retrieval, node_credential_attributes)
