@@ -6,6 +6,7 @@ module MacOS
     attr_reader :credentials
 
     def initialize(semantic_version, data_bag_retrieval = nil, node_credential_attributes = nil)
+      @semantic_version = semantic_version
       developer_id = find_apple_id(data_bag_retrieval, node_credential_attributes)
       @credentials = {
         XCODE_INSTALL_USER:     developer_id['apple_id'],
@@ -28,7 +29,7 @@ module MacOS
 
     def installed?
       xcversion_output = shell_out(XCVersion.installed_xcodes).stdout.split
-      xcversion_output.include?(@version)
+      xcversion_output.include?(@semantic_version)
     end
 
     def authenticate_with_apple(credentials)
