@@ -22,27 +22,15 @@ action :setup do
   chef_gem 'xcode-install' do
     options('--no-document --no-user-install')
   end
-
-  xcode = Xcode.new(new_resource.version)
-
-  credentials = xcode.find_apple_id(
-    -> { data_bag_item(:credentials, :apple_id) },
-    node['macos']['apple_id'])
-
-  DEVELOPER_CREDENTIALS = {
-    XCODE_INSTALL_USER:     credentials['apple_id'],
-    XCODE_INSTALL_PASSWORD: credentials['password'],
-  }.freeze
-
-  execute 'update available Xcode versions' do
-    environment DEVELOPER_CREDENTIALS
-    command XCVersion.update
-  end
 end
 
 action :install_xcode do
-  execute "install Xcode #{new_resource.version}" do
-    environment DEVELOPER_CREDENTIALS
+  xcode = Xcode.new(new_resource.version,
+    -> { data_bag_item(:credentials, :apple_id) },
+    node['macos']['apple_id'])
+
+  execute "install Xcode #{xcode.version}" do
+    environment xcode.credentials
     command XCVersion.install_xcode(xcode)
     not_if { xcode.installed? }
     timeout 7200
@@ -56,7 +44,7 @@ action :install_simulators do
       version = Xcode::Simulator.new(major_version).version
 
       execute "install latest iOS #{major_version} Simulator" do
-        environment DEVELOPER_CREDENTIALS
+        environment xcode.credentials
         command XCVersion.install_simulator(version)
         not_if { Xcode::Simulator.installed?(version) }
       end
