@@ -20,27 +20,15 @@ module MacOS
       end
 
       def list_xcodes
-        shell_out(xcversion + 'list').stdout
+        xcversion + 'list'
       end
 
-      def install_xcode(semantic_version)
-        apple_version = apple_pseudosemantic_version(semantic_version)
-        xcodes = list_xcodes.lines
-        xcode_name = xcodes.find { |v| v.match?(apple_version) }.strip
-        xcversion + "install '#{xcode_name}'"
+      def install_xcode(xcode)
+        xcversion + "install '#{xcode.version}'"
       end
 
       def installed_xcodes
         xcversion + 'installed'
-      end
-
-      def apple_pseudosemantic_version(semantic_version)
-        split_version = semantic_version.split('.')
-        if split_version.length == 2 && split_version.last == '0'
-          split_version.first
-        else
-          semantic_version
-        end
       end
     end
   end

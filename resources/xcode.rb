@@ -23,7 +23,9 @@ action :setup do
     options('--no-document --no-user-install')
   end
 
-  credentials = Xcode.find_apple_id(
+  xcode = Xcode.new(new_resource.version)
+
+  credentials = xcode.find_apple_id(
     -> { data_bag_item(:credentials, :apple_id) },
     node['macos']['apple_id'])
 
@@ -41,8 +43,8 @@ end
 action :install_xcode do
   execute "install Xcode #{new_resource.version}" do
     environment DEVELOPER_CREDENTIALS
-    command XCVersion.install_xcode(new_resource.version)
-    not_if { Xcode.installed?(new_resource.version) }
+    command XCVersion.install_xcode(xcode)
+    not_if { xcode.installed? }
     timeout 7200
   end
 end
