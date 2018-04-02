@@ -26,6 +26,11 @@ module MacOS
       xcodes.find { |v| v.match?(apple_version) }.strip
     end
 
+    def installed?
+      xcversion_output = shell_out(XCVersion.installed_xcodes).stdout.split
+      xcversion_output.include?(@version)
+    end
+
     def authenticate_with_apple(credentials)
       shell_out!(XCVersion.update, env: credentials)
     end
