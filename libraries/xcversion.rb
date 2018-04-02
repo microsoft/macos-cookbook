@@ -1,3 +1,5 @@
+include Chef::Mixin::ShellOut
+
 module MacOS
   module XCVersion
     class << self
@@ -18,11 +20,14 @@ module MacOS
       end
 
       def list_xcodes
-        xcversion + 'list'
+        shell_out(xcversion + 'list').stdout
       end
 
-      def install_xcode(version)
-        xcversion + "install '#{apple_pseudosemantic_version(version)}'"
+      def install_xcode(semantic_version)
+        apple_version = apple_pseudosemantic_version(semantic_version)
+        xcodes = list_xcodes.lines
+        xcode_name = xcodes.find { |v| v.match?(apple_version) }.strip
+        xcversion + "install '#{xcode_name}'"
       end
 
       def installed_xcodes
