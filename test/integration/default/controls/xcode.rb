@@ -35,3 +35,24 @@ control 'xcode-and-simulators' do
     end
   end
 end
+
+control 'xcode-beta' do
+  title 'beta integrated development environment for macOS'
+  desc '
+    Verify that Xcode beta exists, developer mode is enabled, and the expected
+    simulators are installed using the xcversion commandline utility
+  '
+
+  macos_version = command('/usr/bin/sw_vers -productVersion').stdout.strip
+
+  describe file('/Applications/Xcode.app') do
+    it { should exist }
+    it { should be_symlink }
+  end
+
+  if macos_version.match? Regexp.union ['10.12', '10.13']
+    describe directory('/Applications/Xcode-9.4.app') do
+      it { should exist }
+    end
+  end
+end
