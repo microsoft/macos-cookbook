@@ -5,7 +5,7 @@ module MacOS
     attr_reader :version
     attr_reader :credentials
 
-    def initialize(semantic_version, data_bag_retrieval=nil, node_credential_attributes=nil)
+    def initialize(semantic_version, data_bag_retrieval = nil, node_credential_attributes = nil)
       developer_id = find_apple_id(data_bag_retrieval, node_credential_attributes)
       @credentials = {
         XCODE_INSTALL_USER:     developer_id['apple_id'],
