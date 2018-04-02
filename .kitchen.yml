@@ -60,6 +60,10 @@ suites:
     controls:
     - xcode-and-simulators
 
+- name: xcode_beta
+  run_list:
+  - recipe[macos_test::xcode_beta]
+
 - name: certificate
   run_list:
   - recipe[macos_test::certificate]
