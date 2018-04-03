@@ -14,9 +14,19 @@ control 'xcode-and-simulators' do
     it { should be_symlink }
   end
 
-  if macos_version.match? Regexp.union ['10.12', '10.13']
+  if macos_version.match? Regexp.union '10.13'
     describe directory('/Applications/Xcode-9.3.app') do
       it { should exist }
+    end
+
+  elsif macos_version.match? Regexp.union '10.12'
+    describe directory('/Applications/Xcode-9.2.app') do
+      it { should exist }
+    end
+
+    describe command('/opt/chef/embedded/bin/xcversion simulators') do
+      its('exit_status') { should eq 0 }
+      its('stdout') { should include 'iOS 10.3.1 Simulator (installed)' }
     end
 
   elsif macos_version.match? Regexp.union '10.11'
