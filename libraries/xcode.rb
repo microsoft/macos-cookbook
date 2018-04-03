@@ -75,13 +75,12 @@ module MacOS
         available_versions.split(/\n/).map { |version| version.split[0..1] }
       end
 
-      def available_versions
-        shell_out!(XCVersion.list_simulators).stdout
+      def installed?
+        available_versions.include?("#{@version} Simulator (installed)")
       end
 
-      def installed?
-        shell_out!(XCVersion.list_simulators)
-          .stdout.include?("#{@version} Simulator (installed)")
+      def available_versions
+        shell_out!(XCVersion.list_simulators).stdout
       end
 
       def included_with_xcode?
