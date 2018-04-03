@@ -13,16 +13,19 @@ module MacOS
         XCODE_INSTALL_PASSWORD: developer_id['password'],
       }
       authenticate_with_apple(@credentials)
-      @version = apple_pseudosemantic_version(semantic_version)
+      @version = latest_version(apple_pseudosemantic_version(semantic_version))
     end
 
     def apple_pseudosemantic_version(semantic_version)
       split_version = semantic_version.split('.')
-      apple_version = if split_version.length == 2 && split_version.last == '0'
-                        split_version.first
-                      else
-                        semantic_version
-                      end
+      if split_version.length == 2 && split_version.last == '0'
+        split_version.first
+      else
+        semantic_version
+      end
+    end
+
+    def latest_version(apple_version)
       xcodes = available_versions.lines
       xcodes.find { |v| v.match?(apple_version) }.strip
     end
