@@ -41,7 +41,7 @@ action :install_simulators do
   if new_resource.ios_simulators
     new_resource.ios_simulators.each do |major_version|
       simulator = Xcode::Simulator.new(major_version)
-      next if simulator.included_with_xcode?(major_version)
+      next if simulator.included_with_xcode?
 
       execute "install iOS #{simulator.version} Simulator" do
         command XCVersion.install_simulator(simulator)
