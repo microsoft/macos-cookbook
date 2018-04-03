@@ -84,11 +84,11 @@ module MacOS
           .stdout.include?("#{@version} Simulator (installed)")
       end
 
-      def included_major_version
+      def included_with_xcode?
         version_matcher    = /\d{1,2}\.\d{0,2}\.?\d{0,3}/
         sdks               = shell_out!('/usr/bin/xcodebuild -showsdks').stdout
         included_simulator = sdks.match(/Simulator - iOS (?<version>#{version_matcher})/)
-        included_simulator[:version].split('.').first.to_i
+        @version.to_i >= included_simulator[:version].to_i
       end
     end
   end
