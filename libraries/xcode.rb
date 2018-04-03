@@ -90,7 +90,6 @@ module MacOS
         included_simulator = sdks.match(/Simulator - iOS (?<version>#{version_matcher})/)
         included_simulator[:version].split('.').first.to_i
       end
-      end
     end
   end
 end
