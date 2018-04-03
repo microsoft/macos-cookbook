@@ -30,8 +30,8 @@ action :install_xcode do
     node['macos']['apple_id'])
 
   execute "install Xcode #{xcode.version}" do
-    environment xcode.credentials
     command XCVersion.install_xcode(xcode)
+    environment xcode.credentials
     not_if { xcode.installed? }
     timeout 7200
   end
@@ -41,12 +41,11 @@ action :install_simulators do
   if new_resource.ios_simulators
     new_resource.ios_simulators.each do |major_version|
       next if major_version.to_i >= Xcode::Simulator.included_major_version
-      version = Xcode::Simulator.new(major_version).version
+      simulator = Xcode::Simulator.new(major_version)
 
-      execute "install latest iOS #{major_version} Simulator" do
-        environment xcode.credentials
-        command XCVersion.install_simulator(version)
-        not_if { Xcode::Simulator.installed?(version) }
+      execute "install iOS #{simulator.version} Simulator" do
+        command XCVersion.install_simulator(simulator.version)
+        not_if { Xcode::Simulator.installed?(simulator.version) }
       end
     end
   end
