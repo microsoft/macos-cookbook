@@ -79,18 +79,17 @@ module MacOS
         shell_out!(XCVersion.list_simulators).stdout
       end
 
-      class << self
-        def installed?(semantic_version)
-          shell_out!(XCVersion.list_simulators)
-            .stdout.include?("#{semantic_version} Simulator (installed)")
-        end
+      def installed?
+        shell_out!(XCVersion.list_simulators)
+          .stdout.include?("#{@version} Simulator (installed)")
+      end
 
-        def included_major_version
-          version_matcher    = /\d{1,2}\.\d{0,2}\.?\d{0,3}/
-          sdks               = shell_out!('/usr/bin/xcodebuild -showsdks').stdout
-          included_simulator = sdks.match(/Simulator - iOS (?<version>#{version_matcher})/)
-          included_simulator[:version].split('.').first.to_i
-        end
+      def included_major_version
+        version_matcher    = /\d{1,2}\.\d{0,2}\.?\d{0,3}/
+        sdks               = shell_out!('/usr/bin/xcodebuild -showsdks').stdout
+        included_simulator = sdks.match(/Simulator - iOS (?<version>#{version_matcher})/)
+        included_simulator[:version].split('.').first.to_i
+      end
       end
     end
   end

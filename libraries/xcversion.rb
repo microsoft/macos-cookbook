@@ -15,8 +15,8 @@ module MacOS
         xcversion + 'simulators'
       end
 
-      def install_simulator(version)
-        xcversion + "simulators --install='#{version}'"
+      def install_simulator(simulator)
+        xcversion + "simulators --install='#{simulator.version}'"
       end
 
       def list_xcodes

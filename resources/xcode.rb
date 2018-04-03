@@ -44,8 +44,8 @@ action :install_simulators do
       simulator = Xcode::Simulator.new(major_version)
 
       execute "install iOS #{simulator.version} Simulator" do
-        command XCVersion.install_simulator(simulator.version)
-        not_if { Xcode::Simulator.installed?(simulator.version) }
+        command XCVersion.install_simulator(simulator)
+        not_if { simulator.installed? }
       end
     end
   end
