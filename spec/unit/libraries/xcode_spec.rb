@@ -2,7 +2,7 @@ require 'spec_helper'
 include MacOS
 
 describe MacOS::Xcode do
-  context 'when initialized with beta and GM seeds available' do
+  context 'when initialized with developer credentials and Xcode betas available' do
     before do
       allow_any_instance_of(MacOS::Xcode).to receive(:authenticate_with_apple)
         .and_return(true)
@@ -48,6 +48,10 @@ describe MacOS::Xcode do
       xcode = MacOS::Xcode.new('8.3.3')
       expect(xcode.version).to eq '8.3.3'
     end
+    it 'properly converts semantic versions into Apple versions' do
+      xcode = MacOS::Xcode.new('9.0')
+      expect(xcode.apple_pseudosemantic_version('9.0')).to eq '9'
+    end
   end
 end
 
@@ -90,16 +94,53 @@ describe MacOS::Xcode::Simulator do
                    )
     end
     it 'returns the latest semantic version of iOS 11' do
-      s = MacOS::Xcode::Simulator.new('11')
-      expect(s.version).to eq 'iOS 11.1'
+      simulator = MacOS::Xcode::Simulator.new('11')
+      expect(simulator.version).to eq 'iOS 11.1'
     end
     it 'returns the latest semantic version of iOS 10' do
-      s = MacOS::Xcode::Simulator.new('10')
-      expect(s.version).to eq 'iOS 10.3.1'
+      simulator = MacOS::Xcode::Simulator.new('10')
+      expect(simulator.version).to eq 'iOS 10.3.1'
     end
     it 'returns the latest semantic version of iOS 9' do
-      s = MacOS::Xcode::Simulator.new('9')
-      expect(s.version).to eq 'iOS 9.3'
+      simulator = MacOS::Xcode::Simulator.new('9')
+      expect(simulator.version).to eq 'iOS 9.3'
+    end
+
+    context 'when provided a list of device SDKs included with Xcode' do
+      before do
+        allow_any_instance_of(MacOS::Xcode::Simulator).to receive(:show_sdks)
+          .and_return(<<-XCODEBUILD_OUTPUT
+                    iOS SDKs:
+                            iOS 11.2                      	-sdk iphoneos11.2
+
+                    iOS Simulator SDKs:
+                            Simulator - iOS 11.2          	-sdk iphonesimulator11.2
+
+                    macOS SDKs:
+                            macOS 10.13                   	-sdk macosx10.13
+
+                    tvOS SDKs:
+                            tvOS 11.2                     	-sdk appletvos11.2
+
+                    tvOS Simulator SDKs:
+                            Simulator - tvOS 11.2         	-sdk appletvsimulator11.2
+
+                    watchOS SDKs:
+                            watchOS 4.2                   	-sdk watchos4.2
+
+                    watchOS Simulator SDKs:
+                            Simulator - watchOS 4.2       	-sdk watchsimulator4.2
+                    XCODEBUILD_OUTPUT
+                     )
+      end
+      it 'determines that iOS 11 is included with this Xcode' do
+        simulator = MacOS::Xcode::Simulator.new('11')
+        expect(simulator.included_with_xcode?).to be true
+      end
+      it 'determines that iOS 10 is not included with this Xcode' do
+        simulator = MacOS::Xcode::Simulator.new('10')
+        expect(simulator.included_with_xcode?).to be false
+      end
     end
   end
 end
