@@ -82,3 +82,4 @@ suites:
     controls:
     - keychain-creation
     - login-keychain-creation
+    - default-keychain-creation

@@ -19,17 +19,17 @@ action :create do
     command [*keyc.create_keychain(new_resource.kc_passwd)]
   end
 
-  if property_is_set?(:default)
-    execute 'set as default keychain' do
-      command [*keyc.default_keychain(new_resource.default)]
-    end
-  end
+  # if property_is_set?(:default)
+  #   execute 'set as default keychain' do
+  #     command [*keyc.default_keychain(new_resource.default)]
+  #   end
+  # end
 
-  if property_is_set?(:login)
-    execute 'set as login keychain' do
-      command [*keyc.login_keychain(new_resource.login)]
-    end
-  end
+  # if property_is_set?(:login)
+  #   execute 'set as login keychain' do
+  #     command [*keyc.login_keychain(new_resource.login)]
+  #   end
+  # end
 end
 
 action :delete do
