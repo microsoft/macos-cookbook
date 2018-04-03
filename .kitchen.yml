@@ -5,7 +5,7 @@ driver:
 
 provisioner:
   product_name: chef
-  product_version: latest
+  product_version: 13
   install_strategy: always
 
 verifier:
