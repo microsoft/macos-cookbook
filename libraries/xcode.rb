@@ -88,7 +88,7 @@ module MacOS
         version_matcher    = /\d{1,2}\.\d{0,2}\.?\d{0,3}/
         sdks               = shell_out!('/usr/bin/xcodebuild -showsdks').stdout
         included_simulator = sdks.match(/Simulator - iOS (?<version>#{version_matcher})/)
-        @version.to_i >= included_simulator[:version].to_i
+        @version.split.last.to_i == included_simulator[:version].to_i
       end
     end
   end
