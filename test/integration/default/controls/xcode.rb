@@ -50,12 +50,7 @@ control 'xcode-beta' do
 
   macos_version = command('/usr/bin/sw_vers -productVersion').stdout.strip
 
-  describe file('/Applications/Xcode.app') do
-    it { should exist }
-    it { should be_symlink }
-  end
-
-  if macos_version.match? Regexp.union ['10.12', '10.13']
+  if macos_version.match? Regexp.union '10.13'
     describe directory('/Applications/Xcode-9.4.app') do
       it { should exist }
     end
