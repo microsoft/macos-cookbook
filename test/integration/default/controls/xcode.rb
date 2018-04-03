@@ -19,11 +19,6 @@ control 'xcode-and-simulators' do
       it { should exist }
     end
 
-    describe command('/opt/chef/embedded/bin/xcversion simulators') do
-      its('exit_status') { should eq 0 }
-      its('stdout') { should include 'iOS 10.3.1 Simulator (installed)' }
-    end
-
   elsif macos_version.match? Regexp.union '10.11'
     describe directory('/Applications/Xcode-8.2.1.app') do
       it { should exist }
