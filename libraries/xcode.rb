@@ -8,10 +8,8 @@ module MacOS
     def initialize(semantic_version, data_bag_retrieval = nil, node_credential_attributes = nil)
       @semantic_version = semantic_version
       developer_id = find_apple_id(data_bag_retrieval, node_credential_attributes)
-      @credentials = {
-        XCODE_INSTALL_USER:     developer_id['apple_id'],
-        XCODE_INSTALL_PASSWORD: developer_id['password'],
-      }
+      @credentials = { XCODE_INSTALL_USER:     developer_id['apple_id'],
+                       XCODE_INSTALL_PASSWORD: developer_id['password'] }
       authenticate_with_apple(@credentials)
       @version = find_xcode(apple_pseudosemantic_version(Xcode::Version.new(semantic_version)))
     end
@@ -21,7 +19,7 @@ module MacOS
         xcode.major.to_s
       else
         xcode.version
-      end
+    end
     end
 
     def find_xcode(apple_version)
