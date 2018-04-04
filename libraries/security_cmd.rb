@@ -32,14 +32,6 @@ module MacOS
       @keychain == '' ? [@security_cmd, 'unlock-keychain', '-p', kc_passwd] : [@security_cmd, 'unlock-keychain', '-p', kc_passwd, @keychain]
     end
 
-    # def default_keychain(set_default)
-    #   set_default ? [@security_cmd, 'default-keychain', '-s', @keychain] : [@security_cmd, 'default-keychain', '-s']
-    # end
-
-    # def login_keychain(set_login)
-    #   set_login ? [@security_cmd, 'login-keychain', '-s', @keychain] : [@security_cmd, 'login-keychain', '-s']
-    # end
-
     def add_certificates
       @keychain == '' ? [@security_cmd, 'add-certificates', @cert] : [@security_cmd, 'add-certificates', @cert, '-k', @keychain]
     end
