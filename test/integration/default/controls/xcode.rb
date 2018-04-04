@@ -14,7 +14,12 @@ control 'xcode-and-simulators' do
     it { should be_symlink }
   end
 
-  if macos_version.match? Regexp.union ['10.12', '10.13']
+  if macos_version.match? Regexp.union '10.13'
+    describe directory('/Applications/Xcode-9.3.app') do
+      it { should exist }
+    end
+
+  elsif macos_version.match? Regexp.union '10.12'
     describe directory('/Applications/Xcode-9.2.app') do
       it { should exist }
     end
@@ -32,6 +37,22 @@ control 'xcode-and-simulators' do
     describe command('/opt/chef/embedded/bin/xcversion simulators') do
       its('exit_status') { should eq 0 }
       its('stdout') { should include 'iOS 9.3 Simulator (installed)' }
+    end
+  end
+end
+
+control 'xcode-beta' do
+  title 'beta integrated development environment for macOS'
+  desc '
+    Verify that Xcode beta exists, developer mode is enabled, and the expected
+    simulators are installed using the xcversion commandline utility
+  '
+
+  macos_version = command('/usr/bin/sw_vers -productVersion').stdout.strip
+
+  if macos_version.match? Regexp.union '10.13'
+    describe directory('/Applications/Xcode-9.4.app') do
+      it { should exist }
     end
   end
 end

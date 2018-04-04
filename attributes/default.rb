@@ -5,8 +5,7 @@ default['macos']['mono']['package'] = 'MonoFramework-MDK-4.4.2.11.macos10.xamari
 default['macos']['mono']['version'] = '4.4.2'
 default['macos']['mono']['checksum'] = 'd8bfbee7ae4d0d1facaf0ddfb70c0de4b1a3d94bb1b4c38e8fa4884539f54e23'
 
-default['macos']['xcode']['version'] = '9.2'
-default['macos']['xcode']['simulator']['major_version'] = ['11']
+default['macos']['xcode']['version'] = '9.3'
 
 default['macos']['remote_login_enabled'] = true
 default['macos']['disk_sleep_disabled'] = false

@@ -4,7 +4,10 @@ xcode
 Use the **xcode** resource to manage a single installation of Apple's Xcode IDE.
 An **xcode** resource instance represents the state of a single Xcode installation
 and any simulators that are declared using the `ios_simulators` property. The latest
-version of iOS simulators are always installed with Xcode.
+version of iOS simulators are always installed with Xcode. This resource supports
+beta and GM seeds from Apple if currently available via your developer credentials.
+Be sure to only provide the semantic version (e.g. `9.4` and not `9.4 beta` or
+`10 GM seed`) in the version property.
 
 Syntax
 ------
@@ -12,10 +15,10 @@ Syntax
 The simplest use of an **xcode** resource is:
 
 ```ruby
-xcode '9.2'
+xcode '9.3'
 ```
 
-which would install Xcode 9.2 with the default simulators.
+which would install Xcode 9.3 with the default simulators.
 
 The full syntax for all of the properties that are available to the **xcode**
 resource is:

@@ -5,7 +5,7 @@ driver:
 
 provisioner:
   product_name: chef
-  product_version: latest
+  product_version: 13
   install_strategy: always
 
 verifier:
@@ -59,6 +59,15 @@ suites:
   verifier:
     controls:
     - xcode-and-simulators
+
+- name: xcode_beta
+  includes:
+  - apex/macos-10.13.3
+  run_list:
+  - recipe[macos_test::xcode_beta]
+  verifier:
+    controls:
+    - xcode-beta
 
 - name: certificate
   run_list:
