@@ -13,19 +13,18 @@ module MacOS
         XCODE_INSTALL_PASSWORD: developer_id['password'],
       }
       authenticate_with_apple(@credentials)
-      @version = latest_version(apple_pseudosemantic_version(semantic_version))
+      @version = find_xcode(apple_pseudosemantic_version(Xcode::Version.new(semantic_version)))
     end
 
-    def apple_pseudosemantic_version(semantic_version)
-      split_version = semantic_version.split('.')
-      if split_version.length == 2 && split_version.last == '0'
-        split_version.first
+    def apple_pseudosemantic_version(xcode)
+      if xcode.major_release?
+        xcode.major.to_s
       else
-        semantic_version
+        xcode.version
       end
     end
 
-    def latest_version(apple_version)
+    def find_xcode(apple_version)
       xcodes = available_versions.lines
       xcodes.find { |v| v.match?(apple_version) }.strip
     end
@@ -94,6 +93,32 @@ module MacOS
         version_matcher    = /\d{1,2}\.\d{0,2}\.?\d{0,3}/
         included_simulator = show_sdks.match(/Simulator - iOS (?<version>#{version_matcher})/)
         @version.split.last.to_i == included_simulator[:version].to_i
+      end
+    end
+
+    class Version < Gem::Version
+      def major
+        _segments.first
+      end
+
+      def minor
+        _segments[1] || 0
+      end
+
+      def patch
+        _segments[2] || 0
+      end
+
+      def major_release?
+        minor == 0 && patch == 0
+      end
+
+      def minor_release?
+        minor != 0 && patch == 0
+      end
+
+      def patch_release?
+        patch != 0
       end
     end
   end

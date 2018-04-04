@@ -48,10 +48,6 @@ describe MacOS::Xcode do
       xcode = MacOS::Xcode.new('8.3.3')
       expect(xcode.version).to eq '8.3.3'
     end
-    it 'properly converts semantic versions into Apple versions' do
-      xcode = MacOS::Xcode.new('9.0')
-      expect(xcode.apple_pseudosemantic_version('9.0')).to eq '9'
-    end
   end
 end
 
@@ -141,6 +137,71 @@ describe MacOS::Xcode::Simulator do
         simulator = MacOS::Xcode::Simulator.new('10')
         expect(simulator.included_with_xcode?).to be false
       end
+    end
+  end
+end
+
+describe MacOS::Xcode::Version do
+  context 'when initalized with a new major release of Xcode' do
+    it 'recognizes a major release' do
+      xcode = MacOS::Xcode::Version.new('9')
+      expect(xcode.major_release?).to be true
+      expect(xcode.minor_release?).to be false
+      expect(xcode.patch_release?).to be false
+    end
+  end
+
+  context 'when initalized with a new major release of Xcode' do
+    it 'recognizes a major release' do
+      xcode = MacOS::Xcode::Version.new('9.0')
+      expect(xcode.major_release?).to be true
+      expect(xcode.minor_release?).to be false
+      expect(xcode.patch_release?).to be false
+    end
+  end
+
+  context 'when initalized with a new major release of Xcode' do
+    it 'recognizes a major release' do
+      xcode = MacOS::Xcode::Version.new('9.0.0')
+      expect(xcode.major_release?).to be true
+      expect(xcode.minor_release?).to be false
+      expect(xcode.patch_release?).to be false
+    end
+  end
+
+  context 'when initalized with a minor release of Xcode' do
+    it 'recognizes a minor release' do
+      xcode = MacOS::Xcode::Version.new('9.1')
+      expect(xcode.major_release?).to be false
+      expect(xcode.minor_release?).to be true
+      expect(xcode.patch_release?).to be false
+    end
+  end
+
+  context 'when initalized with a minor release of Xcode' do
+    it 'recognizes a minor release' do
+      xcode = MacOS::Xcode::Version.new('9.1.0')
+      expect(xcode.major_release?).to be false
+      expect(xcode.minor_release?).to be true
+      expect(xcode.patch_release?).to be false
+    end
+  end
+
+  context 'when initalized with a patch release of Xcode' do
+    it 'recognizes a patch release' do
+      xcode = MacOS::Xcode::Version.new('9.0.1')
+      expect(xcode.major_release?).to be false
+      expect(xcode.minor_release?).to be false
+      expect(xcode.patch_release?).to be true
+    end
+  end
+
+  context 'when initalized with a patch release of Xcode' do
+    it 'recognizes a patch release' do
+      xcode = MacOS::Xcode::Version.new('0.3.3')
+      expect(xcode.major_release?).to be false
+      expect(xcode.minor_release?).to be false
+      expect(xcode.patch_release?).to be true
     end
   end
 end

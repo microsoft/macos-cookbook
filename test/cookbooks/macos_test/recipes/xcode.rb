@@ -11,7 +11,7 @@ elsif node['platform_version'].match? Regexp.union '10.12'
   end
 
 elsif node['platform_version'].match? Regexp.union '10.11'
-  xcode '8.2.1' do
+  xcode '8.0' do
     ios_simulators %w(10 9)
   end
 end
