@@ -55,23 +55,3 @@ control 'login-keychain-creation' do
     its('stdout') { should include 'login' }
   end
 end
-
-# control 'default-keychain-creation' do
-#   title 'creation of login keychain'
-
-#   desc '
-#     Verify that a test default keychain is able to be created and discoverable
-#     based on macOS version and file name.
-#     '
-#   describe user('testuser') do
-#     it { should exist }
-#   end
-
-#   describe file('/Users/testuser/Library/Keychains/testuser.keychain-db') do
-#     it { should exist }
-#   end
-
-#   describe command('/usr/bin/security default-keychain') do
-#     its('stdout') { should include 'testuser' }
-#   end
-# end
