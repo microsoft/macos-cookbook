@@ -43,7 +43,7 @@ action :install_simulators do
       simulator = Xcode::Simulator.new(major_version)
       next if simulator.included_with_xcode?
 
-      execute "install iOS #{simulator.version} Simulator" do
+      execute "install #{simulator.version} Simulator" do
         command XCVersion.install_simulator(simulator)
         not_if { simulator.installed? }
       end
