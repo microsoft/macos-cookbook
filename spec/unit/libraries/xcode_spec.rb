@@ -8,24 +8,56 @@ describe MacOS::Xcode do
         .and_return(true)
       allow_any_instance_of(MacOS::Xcode).to receive(:find_apple_id)
         .and_return('apple_id': 'apple_id', 'password': 'password')
-      allow_any_instance_of(MacOS::Xcode).to receive(:available_versions)
-        .and_return(<<-XCVERSION_OUTPUT
-                    8
-                    8.1
-                    8.2
-                    8.2.1
-                    8.3
-                    8.3.1
-                    8.3.2
-                    8.3.3
-                    9
-                    9.0.1
-                    9.1
-                    9.2
-                    9.3
-                    9.4 beta
-                    10 GM seed
-                    XCVERSION_OUTPUT
+      allow_any_instance_of(MacOS::Xcode).to receive(:available_versions_list)
+        .and_return(["4.3 for Lion\n",
+                     "4.3.1 for Lion\n",
+                     "4.3.2 for Lion\n",
+                     "4.3.3 for Lion\n",
+                     "4.4\n",
+                     "4.4.1\n",
+                     "4.5\n",
+                     "4.5.1\n",
+                     "4.5.2\n",
+                     "4.6\n",
+                     "4.6.1\n",
+                     "4.6.2\n",
+                     "4.6.3\n",
+                     "5\n",
+                     "5.0.1\n",
+                     "5.0.2\n",
+                     "5.1\n",
+                     "5.1.1\n",
+                     "6.0.1\n",
+                     "6.1\n",
+                     "6.1.1\n",
+                     "6.2\n",
+                     "6.3\n",
+                     "6.3.1\n",
+                     "6.3.2\n",
+                     "6.4\n",
+                     "7\n",
+                     "7.0.1\n",
+                     "7.1\n",
+                     "7.1.1\n",
+                     "7.2\n",
+                     "7.2.1\n",
+                     "7.3\n",
+                     "7.3.1\n",
+                     "8\n",
+                     "8.1\n",
+                     "8.2\n",
+                     "8.2.1\n",
+                     "8.3\n",
+                     "8.3.1\n",
+                     "8.3.2\n",
+                     "8.3.3\n",
+                     "9\n",
+                     "9.0.1\n",
+                     "9.1\n",
+                     "9.2\n",
+                     "9.3\n",
+                     "9.4 beta\n",
+                     "10 GM seed\n"]
                    )
     end
     it 'returns the name of Xcode 10 GM when initialized with the semantic version' do
