@@ -14,12 +14,11 @@ module MacOS
         screensaver_settings('read-type', 'integer')
     end
 
-    private
-
     def screensaver_settings(query_type, expected_value)
-      expression_pattern = Regexp.new(expected_value)
+      regex_value = query_type == 'read' ? "/^[#{expected_value}]+$/" : expected_value
+      expression_pattern = Regexp.new(regex_value)
       shell_out('defaults', '-currentHost', query_type, 'com.apple.screensaver', 'idleTime',
-        user: Chef.node['macos']['admin_user'])
+      user: Chef.node['macos']['admin_user'])
         .stdout.chomp.match?(expression_pattern)
     end
   end
