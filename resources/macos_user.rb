@@ -28,7 +28,7 @@ action_class do
   end
 
   def user_fullname
-    property_is_set?(:fullname) ? ['-fullName', new_resource.fullname] : ''
+    new_resource.property_is_set?(:fullname) ? ['-fullName', new_resource.fullname] : ''
   end
 
   def admin_credentials
@@ -36,7 +36,7 @@ action_class do
   end
 
   def admin_user
-    if property_is_set?(:admin)
+    if new_resource.property_is_set?(:admin)
       '-admin'
     else
       ''
@@ -57,7 +57,7 @@ action :create do
 
   sleep(0.5)
 
-  if property_is_set?(:autologin)
+  if new_resource.property_is_set?(:autologin)
     setup_assistant_keypair_values.each do |e, v|
       plist setup_assistant_plist do
         entry e
@@ -79,7 +79,7 @@ action :create do
     end
   end
 
-  if property_is_set?(:groups)
+  if new_resource.property_is_set?(:groups)
     if new_resource.groups.is_a? String
       group new_resource.groups do
         action :create
