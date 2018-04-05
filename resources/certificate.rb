@@ -7,7 +7,7 @@ property :apps, Array
 
 action_class do
   def keychain
-    property_is_set?(:keychain) ? new_resource.keychain : ''
+    new_resource.property_is_set?(:keychain) ? new_resource.keychain : ''
   end
 end
 
