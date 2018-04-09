@@ -1,17 +1,18 @@
 require 'spec_helper'
 
-include MacOS::SystemSetup
+include MacOS::System
 
 shared_context 'when running on bare metal' do
   shared_examples 'setting metal-specific power preferences' do
+    sys_pow = System::Power.new()
     before(:each) do
-      allow_any_instance_of(Chef::Resource).to receive(:power_button_model?).and_return(true)
+      allow_any_instance_of(Chef::System::Power).to receive(:power_button_model?).and_return(true)
       chef_run.node.normal['virtualization']['systems'] = { 'vbox' => 'host', 'parallels' => 'host' }
       stub_command('which git').and_return('/usr/bin/git')
     end
 
     it 'returns false' do
-      expect(running_in_a_vm?).to be false
+      expect(sys_pow.running_in_a_vm?).to be false
     end
 
     it 'sets wake on lan' do
@@ -36,15 +37,16 @@ shared_context 'when running on bare metal' do
 end
 
 shared_context 'running in a parallels virtual machine' do
+  sys_pow = System::Power.new()
   before(:each) do
-    allow_any_instance_of(Chef::Resource).to receive(:power_button_model?).and_return(false)
+    allow_any_instance_of(Chef::System::Power).to receive(:power_button_model?).and_return(false)
     chef_run.node.normal['virtualization']['systems'] = { 'parallels' => 'guest' }
     stub_command('which git').and_return('/usr/bin/git')
   end
 
   shared_examples 'not setting metal-specific power prefs' do
     it 'confirms we are in a vm' do
-      expect(running_in_a_vm?).to be true
+      expect(sys_pow.running_in_a_vm?).to be true
     end
 
     it 'does not set wake on lan' do
@@ -69,15 +71,16 @@ shared_context 'running in a parallels virtual machine' do
 end
 
 shared_context 'running in an undetermined virtualization system' do
+  sys_pow = System::Power.new()
   before(:each) do
-    allow_any_instance_of(Chef::Resource).to receive(:power_button_model?).and_return(false)
+    allow_any_instance_of(Chef::System::Power).to receive(:power_button_model?).and_return(false)
     chef_run.node.override['virtualization']['systems'] = {}
     stub_command('which git').and_return('/usr/bin/git')
   end
 
   shared_examples 'not setting metal-specific power prefs' do
     it 'assumes we are in a vm' do
-      expect(running_in_a_vm?).to be true
+      expect(sys_pow.running_in_a_vm?).to be true
     end
 
     it 'does not set wake on lan' do
