@@ -1,16 +1,39 @@
 module MacOS
   module System
     class Power
-      def initialize
+      attr_reader :machine_model
+      attr_reader :virtualization_systems
+
+      def initialize(machine_model = nil, virtualization_systems = nil)
+        @machine_model = if Chef.node['hardware']['machine_model'].nil?
+                           machine_model
+                         else
+                           Chef.node['hardware']['machine_model']
+                         end
+
+        @virtualization_systems = if Chef.node['virtualization']['systems'].nil?
+                                    virtualization_systems
+                                  else
+                                    Chef.node['virtualization']['systems']
+                                  end
       end
 
       def running_in_a_vm?
-        virtualization_systems = Chef.node['virtualization']['systems']
         virtualization_systems.empty? || virtualization_systems.values.include?('guest') ? true : false
+
+        # return false if @virtualization_systems.empty?
+        # return true if @virtualization_systems.values.include?('guest')
+        # return false if @virtualization_systems.empty? || @virtualization_systems.values.include?('guest')
       end
 
-      def power_button_model?
-        Chef.node['hardware']['machine_model'].match? Regexp.union %w(Macmini MacPro)
+      def desktop?
+        return false if @machine_model.nil?
+        Chef.node['hardware']['machine_model'].match? Regexp.union %w(MacMini MacPro iMac)
+      end
+
+      def portable?
+        return false if @machine_model.nil?
+        Chef.node['hardware']['machine_model'].match? Regexp.union %w(Macbook)
       end
     end
 
