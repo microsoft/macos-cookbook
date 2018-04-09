@@ -1,4 +1,5 @@
-sys_pow = MacOS::System::Power.new()
+form_factor = MacOS::System::FormFactor.new()
+env = MacOS::System::Environment.new()
 scr_svr = MacOS::System::ScreenSaver.new()
 
 system_preference 'disable computer sleep' do
@@ -28,19 +29,19 @@ end
 system_preference 'wake the computer when accessed using a network connection' do
   preference :wakeonnetworkaccess
   setting 'On'
-  not_if { sys_pow.running_in_a_vm? }
+  not_if { env.vm? }
 end
 
 system_preference 'restart after a power failure' do
   preference :restartpowerfailure
   setting 'On'
-  not_if { sys_pow.running_in_a_vm? }
+  not_if { env.vm? }
 end
 
 system_preference 'pressing power button does not sleep computer' do
   preference :allowpowerbuttontosleepcomputer
   setting 'Off'
-  only_if { sys_pow.desktop? }
+  only_if { form_factor.desktop? }
 end
 
 system_preference 'allow remote apple events' do

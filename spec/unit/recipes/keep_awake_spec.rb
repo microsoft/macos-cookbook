@@ -5,16 +5,14 @@ include MacOS::System
 shared_context 'when running on bare metal macmini' do
   shared_examples 'setting metal-specific power preferences' do
     before(:each) do
-      allow_any_instance_of(Chef::System::Power).to receive(:desktop?).and_return(true)
-      allow_any_instance_of(Chef::System::Power).to receive(:portable?).and_return(false)
       chef_run.node.normal['hardware']['machine_model'] = 'MacMini6,2'
       chef_run.node.normal['virtualization']['systems'] = { 'vbox' => 'host', 'parallels' => 'host' }
       stub_command('which git').and_return('/usr/bin/git')
     end
 
     it 'returns false' do
-      sys_pow = System::Power.new('MacMini6,2', 'host')
-      expect(sys_pow.running_in_a_vm?).to be false
+      env = System::Environment.new('host')
+      expect(env.vm?).to be false
     end
 
     it 'sets wake on lan' do
@@ -40,8 +38,6 @@ end
 
 shared_context 'running in a parallels virtual machine' do
   before(:each) do
-    allow_any_instance_of(Chef::System::Power).to receive(:desktop?).and_return(false)
-    allow_any_instance_of(Chef::System::Power).to receive(:portable?).and_return(false)
     chef_run.node.normal['virtualization']['systems'] = { 'parallels' => 'guest' }
     chef_run.node.normal['hardware']['machine_model'] = 'Parallels13,1'
     stub_command('which git').and_return('/usr/bin/git')
@@ -49,8 +45,8 @@ shared_context 'running in a parallels virtual machine' do
 
   shared_examples 'not setting metal-specific power prefs' do
     it 'confirms we are in a vm' do
-      sys_pow = System::Power.new()
-      expect(sys_pow.running_in_a_vm?).to be true
+      env = System::Environment.new()
+      expect(env.vm?).to be true
     end
 
     it 'does not set wake on lan' do
@@ -76,8 +72,6 @@ end
 
 shared_context 'running in an undetermined virtualization system' do
   before(:each) do
-    allow_any_instance_of(Chef::System::Power).to receive(:desktop?).and_return(false)
-    allow_any_instance_of(Chef::System::Power).to receive(:portable?).and_return(false)
     chef_run.node.normal['virtualization']['systems'] = {}
     chef_run.node.normal['hardware']['machine_model'] = ''
     stub_command('which git').and_return('/usr/bin/git')
@@ -85,8 +79,8 @@ shared_context 'running in an undetermined virtualization system' do
 
   shared_examples 'not setting metal-specific power prefs' do
     it 'assumes we are in a vm' do
-      sys_pow = System::Power.new('undetermined', 'undetermined')
-      expect(sys_pow.running_in_a_vm?).to be true
+      env = System::Environment.new('undetermined')
+      expect(env.vm?).to be true
     end
 
     it 'does not set wake on lan' do
