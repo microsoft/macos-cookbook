@@ -19,11 +19,7 @@ module MacOS
       end
 
       def running_in_a_vm?
-        virtualization_systems.empty? || virtualization_systems.values.include?('guest') ? true : false
-
-        # return false if @virtualization_systems.empty?
-        # return true if @virtualization_systems.values.include?('guest')
-        # return false if @virtualization_systems.empty? || @virtualization_systems.values.include?('guest')
+        @virtualization_systems.empty? || @virtualization_systems.values.include?('guest') ? true : false
       end
 
       def desktop?
