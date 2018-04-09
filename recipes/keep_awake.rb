@@ -40,7 +40,7 @@ end
 system_preference 'pressing power button does not sleep computer' do
   preference :allowpowerbuttontosleepcomputer
   setting 'Off'
-  only_if { sys_pow.power_button_model? }
+  only_if { sys_pow.desktop? }
 end
 
 system_preference 'allow remote apple events' do
