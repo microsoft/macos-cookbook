@@ -1,3 +1,6 @@
+sys_pow = MacOS::System::Power.new()
+scr_svr = MacOS::System::ScreenSaver.new()
+
 system_preference 'disable computer sleep' do
   preference :computersleep
   setting 'Never'
@@ -25,19 +28,19 @@ end
 system_preference 'wake the computer when accessed using a network connection' do
   preference :wakeonnetworkaccess
   setting 'On'
-  not_if { running_in_a_vm? }
+  not_if { sys_pow.running_in_a_vm? }
 end
 
 system_preference 'restart after a power failure' do
   preference :restartpowerfailure
   setting 'On'
-  not_if { running_in_a_vm? }
+  not_if { sys_pow.running_in_a_vm? }
 end
 
 system_preference 'pressing power button does not sleep computer' do
   preference :allowpowerbuttontosleepcomputer
   setting 'Off'
-  only_if { power_button_model? }
+  only_if { sys_pow.power_button_model? }
 end
 
 system_preference 'allow remote apple events' do
@@ -67,6 +70,6 @@ end
 defaults 'com.apple.screensaver' do
   option '-currentHost write'
   settings 'idleTime' => 0
-  not_if { screensaver_disabled? }
+  not_if { scr_svr.disabled? }
   user node['macos']['admin_user']
 end
