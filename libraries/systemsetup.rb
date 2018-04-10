@@ -4,7 +4,7 @@ module MacOS
       attr_reader :machine_model
 
       def initialize(machine_model = nil)
-        @machine_model = if Chef.node['hardware']['machine_model'].nil?
+        @machine_model = if Chef.node.nil?
                            machine_model
                          else
                            Chef.node['hardware']['machine_model']
@@ -13,12 +13,12 @@ module MacOS
 
       def desktop?
         return false if @machine_model.nil?
-        Chef.node['hardware']['machine_model'].match? Regexp.union %w(MacMini MacPro iMac)
+        @machine_model.match? Regexp.union %w(MacMini MacPro iMac)
       end
 
       def portable?
         return false if @machine_model.nil?
-        Chef.node['hardware']['machine_model'].match? Regexp.union %w(Macbook)
+        @machine_model.match? Regexp.union %w(Macbook)
       end
     end
 
