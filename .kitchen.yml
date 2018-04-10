@@ -5,7 +5,6 @@ driver:
 
 provisioner:
   product_name: chef
-  product_version: latest
   install_strategy: always
 
 verifier:
@@ -21,6 +20,22 @@ platforms:
 
 suites:
 - name: default
+  provisioner:
+    product_version:
+    - latest
+  run_list:
+  - recipe[macos::disable_software_updates]
+  - recipe[macos_test::preferences]
+  verifier:
+    controls:
+    - dock-appearance
+    - show-all-files
+    - updates-disabled
+
+- name: default-chef13
+  provisioner:
+    product_version:
+    - 13
   run_list:
   - recipe[macos::disable_software_updates]
   - recipe[macos_test::preferences]
@@ -31,6 +46,21 @@ suites:
     - updates-disabled
 
 - name: power-management
+  provisioner:
+    product_version:
+    - latest
+  run_list:
+  - recipe[macos::keep_awake]
+  verifier:
+    controls:
+    - screensaver-disabled
+    - remote-administration
+    - no-sleep
+
+- name: power-management-chef13
+  provisioner:
+    product_version:
+    - 13
   run_list:
   - recipe[macos::keep_awake]
   verifier:
@@ -40,6 +70,19 @@ suites:
     - no-sleep
 
 - name: machine-name
+  provisioner:
+    product_version:
+    - latest
+  run_list:
+  - recipe[macos_test::machine_name]
+  verifier:
+    controls:
+    - nonstandard-computer-name
+
+- name: machine-name-chef13
+  provisioner:
+    product_version:
+    - 13
   run_list:
   - recipe[macos_test::machine_name]
   verifier:
@@ -47,6 +90,19 @@ suites:
     - nonstandard-computer-name
 
 - name: spotlight
+  provisioner:
+    product_version:
+    - latest
+  run_list:
+  - recipe[macos_test::spotlight]
+  verifier:
+    controls:
+    - indexing-and-searching
+
+- name: spotlight-chef13
+  provisioner:
+    product_version:
+    - 13
   run_list:
   - recipe[macos_test::spotlight]
   verifier:
@@ -54,13 +110,41 @@ suites:
     - indexing-and-searching
 
 - name: xcode
+  provisioner:
+    product_version:
+    - latest
   run_list:
   - recipe[macos_test::xcode]
   verifier:
     controls:
     - xcode-and-simulators
 
-- name: xcode_beta
+- name: xcode-chef13
+  provisioner:
+    product_version:
+    - 13
+  run_list:
+  - recipe[macos_test::xcode]
+  verifier:
+    controls:
+    - xcode-and-simulators
+
+- name: xcode-beta
+  provisioner:
+    product_version:
+    - latest
+  includes:
+  - apex/macos-10.13.3
+  run_list:
+  - recipe[macos_test::xcode_beta]
+  verifier:
+    controls:
+    - xcode-beta
+
+- name: xcode-beta-chef13
+  provisioner:
+    product_version:
+    - 13
   includes:
   - apex/macos-10.13.3
   run_list:
@@ -70,6 +154,19 @@ suites:
     - xcode-beta
 
 - name: certificate
+  provisioner:
+    product_version:
+    - latest
+  run_list:
+  - recipe[macos_test::certificate]
+  verifier:
+    controls:
+    - certificate-install
+
+- name: certificate-chef13
+  provisioner:
+    product_version:
+    - 13
   run_list:
   - recipe[macos_test::certificate]
   verifier:
@@ -77,6 +174,20 @@ suites:
     - certificate-install
 
 - name: users
+  provisioner:
+    product_version:
+    - latest
+  run_list:
+  - recipe[macos_test::new_users]
+  verifier:
+    controls:
+    - admin-user
+    - standard-user
+
+- name: users-chef13
+  provisioner:
+    product_version:
+    - 13
   run_list:
   - recipe[macos_test::new_users]
   verifier:
