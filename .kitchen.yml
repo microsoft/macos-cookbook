@@ -21,8 +21,7 @@ platforms:
 suites:
 - name: default
   provisioner:
-    product_version:
-    - 14
+    product_version: 14
   run_list:
   - recipe[macos::disable_software_updates]
   - recipe[macos_test::preferences]
