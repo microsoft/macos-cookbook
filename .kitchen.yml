@@ -34,8 +34,7 @@ suites:
 
 - name: default-chef13
   provisioner:
-    product_version:
-    - 13
+    product_version: 13
   run_list:
   - recipe[macos::disable_software_updates]
   - recipe[macos_test::preferences]
@@ -47,8 +46,7 @@ suites:
 
 - name: power-management
   provisioner:
-    product_version:
-    - 14
+    product_version: 14
   run_list:
   - recipe[macos::keep_awake]
   verifier:
@@ -59,8 +57,7 @@ suites:
 
 - name: power-management-chef13
   provisioner:
-    product_version:
-    - 13
+    product_version: 13
   run_list:
   - recipe[macos::keep_awake]
   verifier:
@@ -71,8 +68,7 @@ suites:
 
 - name: machine-name
   provisioner:
-    product_version:
-    - 14
+    product_version: 14
   run_list:
   - recipe[macos_test::machine_name]
   verifier:
@@ -81,8 +77,7 @@ suites:
 
 - name: machine-name-chef13
   provisioner:
-    product_version:
-    - 13
+    product_version: 13
   run_list:
   - recipe[macos_test::machine_name]
   verifier:
@@ -91,8 +86,7 @@ suites:
 
 - name: spotlight
   provisioner:
-    product_version:
-    - 14
+    product_version: 14
   run_list:
   - recipe[macos_test::spotlight]
   verifier:
@@ -101,8 +95,7 @@ suites:
 
 - name: spotlight-chef13
   provisioner:
-    product_version:
-    - 13
+    product_version: 13
   run_list:
   - recipe[macos_test::spotlight]
   verifier:
@@ -111,8 +104,7 @@ suites:
 
 - name: xcode
   provisioner:
-    product_version:
-    - 14
+    product_version: 14
   run_list:
   - recipe[macos_test::xcode]
   verifier:
@@ -121,8 +113,7 @@ suites:
 
 - name: xcode-chef13
   provisioner:
-    product_version:
-    - 13
+    product_version: 13
   run_list:
   - recipe[macos_test::xcode]
   verifier:
@@ -131,8 +122,7 @@ suites:
 
 - name: xcode-beta
   provisioner:
-    product_version:
-    - 14
+    product_version: 14
   includes:
   - apex/macos-10.13.3
   run_list:
@@ -143,8 +133,7 @@ suites:
 
 - name: xcode-beta-chef13
   provisioner:
-    product_version:
-    - 13
+    product_version: 13
   includes:
   - apex/macos-10.13.3
   run_list:
@@ -155,8 +144,7 @@ suites:
 
 - name: certificate
   provisioner:
-    product_version:
-    - 14
+    product_version: 14
   run_list:
   - recipe[macos_test::certificate]
   verifier:
@@ -165,8 +153,7 @@ suites:
 
 - name: certificate-chef13
   provisioner:
-    product_version:
-    - 13
+    product_version: 13
   run_list:
   - recipe[macos_test::certificate]
   verifier:
@@ -175,8 +162,7 @@ suites:
 
 - name: users
   provisioner:
-    product_version:
-    - 14
+    product_version: 14
   run_list:
   - recipe[macos_test::new_users]
   verifier:
@@ -186,8 +172,7 @@ suites:
 
 - name: users-chef13
   provisioner:
-    product_version:
-    - 13
+    product_version: 13
   run_list:
   - recipe[macos_test::new_users]
   verifier:
