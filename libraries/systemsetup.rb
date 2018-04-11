@@ -39,7 +39,13 @@ module MacOS
     end
 
     class ScreenSaver
-      def initialize
+      attr_reader :user
+      def initialize(user = nil)
+        @user = if Chef.node.nil?
+                  user
+                else
+                  Chef.node['macos']['admin_user']
+                end
       end
 
       def disabled?
@@ -55,7 +61,7 @@ module MacOS
 
       def query(query_type)
         shell_out('defaults', '-currentHost', query_type, 'com.apple.screensaver', 'idleTime',
-        user: Chef.node['macos']['admin_user'])
+        user: @user)
       end
     end
   end

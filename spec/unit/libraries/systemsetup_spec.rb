@@ -74,26 +74,19 @@ describe MacOS::System::FormFactor do
   end
 end
 
+
 describe MacOS::System::ScreenSaver do
   context 'querying a read for idleTime' do
-    before do
-      allow_any_instance_of(MacOS::System::ScreenSaver).to receive(:query)
-        .and_return('defaults -currentHost read com.apple.screensaver idleTime')
-    end
     it 'returns a defaults read command' do
-      screen = MacOS::System::ScreenSaver.new()
-      expect(screen.query('read')).to eq 'defaults -currentHost read com.apple.screensaver idleTime'
+      screen = MacOS::System::ScreenSaver.new('vagrant')
+      expect(screen.query('read').command).to eq ['defaults', '-currentHost', 'read', 'com.apple.screensaver', 'idleTime']
     end
   end
 
   context 'querying a read-type for idleTime' do
-    before do
-      allow_any_instance_of(MacOS::System::ScreenSaver).to receive(:query)
-        .and_return('defaults -currentHost read-type com.apple.screensaver idleTime')
-    end
     it 'returns a defaults read-type command' do
-      screen = MacOS::System::ScreenSaver.new()
-      expect(screen.query('read-type')).to eq 'defaults -currentHost read-type com.apple.screensaver idleTime'
+      screen = MacOS::System::ScreenSaver.new('vagrant')
+      expect(screen.query('read-type').command).to eq ['defaults', '-currentHost', 'read-type', 'com.apple.screensaver', 'idleTime']
     end
   end
 end
