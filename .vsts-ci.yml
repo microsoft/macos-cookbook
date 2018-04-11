@@ -2,6 +2,11 @@
 resources:
 - repo:            self
   clean:           true
+variables:
+  kitchen_suites:  default,power-management,machine-name,spotlight,xcode,xcode-beta,certificate,users
+  macos_versions:  el-capitan,sierra,high-sierra
+  chef_versions:   chef13,chef14
+  admin_password:  vagrant
 queue:
   name:            ApexInfra macOS
 steps:
