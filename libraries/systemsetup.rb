@@ -26,7 +26,7 @@ module MacOS
       attr_reader :virtualization_systems
 
       def initialize(virtualization_systems = nil)
-        @virtualization_systems = if Chef.node['virtualization']['systems'].nil?
+        @virtualization_systems = if Chef.node.nil?
                                     virtualization_systems
                                   else
                                     Chef.node['virtualization']['systems']
