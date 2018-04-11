@@ -40,13 +40,13 @@ platforms:
 
 - name: high-sierra-chef13
   driver:
-    box: apex/macos-10.13.3
+    box: apex/macos-10.13.4
   provisioner:
     product_version: 13
 
 - name: high-sierra-chef14
   driver:
-    box: apex/macos-10.13.3
+    box: apex/macos-10.13.4
   provisioner:
     product_version: 14
 
