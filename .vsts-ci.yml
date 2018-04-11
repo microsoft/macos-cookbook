@@ -1,40 +1,117 @@
 ---
 resources:
-- repo:             self
-  clean:            true
+- repo:               self
+  clean:              true
 variables:
-  kitchen_suites:   default,power-management,machine-name,spotlight,xcode,xcode-beta,certificate,users
-  macos_versions:   el-capitan,sierra,high-sierra
-  chef_versions:    chef13,chef14
-  admin_password:   vagrant
+  admin_password:     vagrant
 queue:
-  name:             ApexInfra macOS
-  parallel:         18
-  multipliers:      kitchen_suites,macos_versions,chef_versions
-  timeoutInMinutes: 120
+  name:               ApexInfra macOS
+  parallel:           18
+  timeoutInMinutes:   120
+  matrix:
+    suite:            default
+      macos_version:  el-capitan
+        chef_version: chef13
+        chef_version: chef14
+      macos_version:  sierra
+        chef_version: chef13
+        chef_version: chef14
+      macos_version:  high-sierra
+        chef_version: chef13
+        chef_version: chef14
+    suite:            power-management
+      macos_version:  el-capitan
+        chef_version: chef13
+        chef_version: chef14
+      macos_version:  sierra
+        chef_version: chef13
+        chef_version: chef14
+      macos_version:  high-sierra
+        chef_version: chef13
+        chef_version: chef14
+    suite:            machine-name
+      macos_version:  el-capitan
+        chef_version: chef13
+        chef_version: chef14
+      macos_version:  sierra
+        chef_version: chef13
+        chef_version: chef14
+      macos_version:  high-sierra
+        chef_version: chef13
+        chef_version: chef14
+    suite:            spotlight
+      macos_version:  el-capitan
+        chef_version: chef13
+        chef_version: chef14
+      macos_version:  sierra
+        chef_version: chef13
+        chef_version: chef14
+      macos_version:  high-sierra
+        chef_version: chef13
+        chef_version: chef14
+    suite:            xcode
+      macos_version:  el-capitan
+        chef_version: chef13
+        chef_version: chef14
+      macos_version:  sierra
+        chef_version: chef13
+        chef_version: chef14
+      macos_version:  high-sierra
+        chef_version: chef13
+        chef_version: chef14
+    suite:            xcode-beta
+      macos_version:  el-capitan
+        chef_version: chef13
+        chef_version: chef14
+      macos_version:  sierra
+        chef_version: chef13
+        chef_version: chef14
+      macos_version:  high-sierra
+        chef_version: chef13
+        chef_version: chef14
+    suite:            certificate
+      macos_version:  el-capitan
+        chef_version: chef13
+        chef_version: chef14
+      macos_version:  sierra
+        chef_version: chef13
+        chef_version: chef14
+      macos_version:  high-sierra
+        chef_version: chef13
+        chef_version: chef14
+    suite:            users
+      macos_version:  el-capitan
+        chef_version: chef13
+        chef_version: chef14
+      macos_version:  sierra
+        chef_version: chef13
+        chef_version: chef14
+      macos_version:  high-sierra
+        chef_version: chef13
+        chef_version: chef14
 steps:
-- script:           |
+- script:             |
     export PATH=$PATH:/usr/local/bin
     eval "`/usr/local/bin/chef shell-init bash`"
     knife download /data_bags --chef-repo-path $(Build.SourcesDirectory) --no-color
-  displayName:      Download data bags
-  failOnStderr:     false
-  continueOnError:  false
-- script:           |
+  displayName:        Download data bags
+  failOnStderr:       false
+  continueOnError:    false
+- script:             |
     export PATH=$PATH:/usr/local/bin
     eval "`/usr/local/bin/chef shell-init bash`"
     export VAGRANT_HOME=$(Agent.HomeDirectory)/../.vagrant.d/
     foodcritic . --exclude spec --epic-fail any --tags any
     cookstyle --extra-details --no-color
     rspec spec --no-color
-  displayName:      Verify
-  failOnStderr:     false
-  continueOnError:  false
-- script:           |
+  displayName:        Verify
+  failOnStderr:       false
+  continueOnError:    false
+- script:             |
     export PATH=$PATH:/usr/local/bin
     eval "`/usr/local/bin/chef shell-init bash`"
     export VAGRANT_HOME=$(Agent.HomeDirectory)/../.vagrant.d/
-    kitchen test $(kitchen_suites)-$(macos_versions)-$(chef_versions) --concurrency 1 --destroy always --no-color
-  displayName:      Acceptance
-  failOnStderr:     false
-  continueOnError:  false
+    kitchen test $(suite)-$(macos_version)-$(chef_version) --concurrency 1 --destroy always --no-color
+  displayName:        Acceptance
+  failOnStderr:       false
+  continueOnError:    false
