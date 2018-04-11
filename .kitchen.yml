@@ -5,7 +5,6 @@ driver:
 
 provisioner:
   product_name: chef
-  product_version: latest
   install_strategy: always
 
 verifier:
@@ -15,9 +14,41 @@ verifier:
   - test/integration/default
 
 platforms:
-- name: apex/macos-10.11.6
-- name: apex/macos-10.12.6
-- name: apex/macos-10.13.3
+- name: el-capitan-chef13
+  driver:
+    box: apex/macos-10.11.6
+  provisioner:
+    product_version: 13
+
+- name: el-capitan-chef14
+  driver:
+    box: apex/macos-10.11.6
+  provisioner:
+    product_version: 14
+
+- name: sierra-chef13
+  driver:
+    box: apex/macos-10.12.6
+  provisioner:
+    product_version: 13
+
+- name: sierra-chef14
+  driver:
+    box: apex/macos-10.12.6
+  provisioner:
+    product_version: 14
+
+- name: high-sierra-chef13
+  driver:
+    box: apex/macos-10.13.4
+  provisioner:
+    product_version: 13
+
+- name: high-sierra-chef14
+  driver:
+    box: apex/macos-10.13.4
+  provisioner:
+    product_version: 14
 
 suites:
 - name: default
@@ -59,6 +90,13 @@ suites:
   verifier:
     controls:
     - xcode-and-simulators
+
+- name: xcode-beta
+  run_list:
+  - recipe[macos_test::xcode_beta]
+  verifier:
+    controls:
+    - xcode-beta
 
 - name: certificate
   run_list:
