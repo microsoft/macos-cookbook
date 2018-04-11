@@ -1,0 +1,32 @@
+---
+resources:
+- repo:            self
+  clean:           true
+queue:
+  name:            ApexInfra macOS
+steps:
+- script:          |
+    export PATH=$PATH:/usr/local/bin
+    eval "`/usr/local/bin/chef shell-init bash`"
+    knife download /data_bags --chef-repo-path $(Build.SourcesDirectory) --no-color
+  displayName:     Download data bags
+  failOnStderr:    false
+  continueOnError: false
+- script:          |
+    export PATH=$PATH:/usr/local/bin
+    eval "`/usr/local/bin/chef shell-init bash`"
+    export VAGRANT_HOME=$(Agent.HomeDirectory)/../.vagrant.d/
+    foodcritic . --exclude spec --epic-fail any --tags any
+    cookstyle --extra-details --no-color
+    rspec spec --no-color
+  displayName:     Verify
+  failOnStderr:    false
+  continueOnError: false
+- script:          |
+    export PATH=$PATH:/usr/local/bin
+    eval "`/usr/local/bin/chef shell-init bash`"
+    export VAGRANT_HOME=$(Agent.HomeDirectory)/../.vagrant.d/
+    kitchen test $(kitchen_suites)-$(macos_versions)-$(chef_versions) --concurrency 1 --destroy always --no-color
+  displayName:     Acceptance
+  failOnStderr:    false
+  continueOnError: false
