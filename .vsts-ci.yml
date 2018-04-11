@@ -1,38 +1,133 @@
 ---
 resources:
-- repo:                        self
-  clean:                       true
+- repo:                                  self
+  clean:                                 true
 variables:
-  admin_password:              vagrant
+  admin_password:                        vagrant
 queue:
-  name:                        ApexInfra macOS
-  parallel:                    18
-  timeoutInMinutes:            120
+  name:                                  ApexInfra macOS
+  parallel:                              18
+  timeoutInMinutes:                      120
   matrix:
-    default-el-capitan-chef13: default-el-capitan-chef13
+    default-el-capitan-chef13:
+      kitchen_suite:                     default-el-capitan-chef13
+    default-el-capitan-chef14:
+      kitchen_suite:                     default-el-capitan-chef14
+    default-sierra-chef13:
+      kitchen_suite:                     default-sierra-chef13
+    default-sierra-chef14:
+      kitchen_suite:                     default-sierra-chef14
+    default-high-sierra-chef13:
+      kitchen_suite:                     default-high-sierra-chef13
+    default-high-sierra-chef14:
+      kitchen_suite:                     default-high-sierra-chef14
+    power-management-el-capitan-chef13:
+      kitchen_suite:                     power-management-el-capitan-chef13
+    power-management-el-capitan-chef14:
+      kitchen_suite:                     power-management-el-capitan-chef14
+    power-management-sierra-chef13:
+      kitchen_suite:                     power-management-sierra-chef13
+    power-management-sierra-chef14:
+      kitchen_suite:                     power-management-sierra-chef14
+    power-management-high-sierra-chef13:
+      kitchen_suite:                     power-management-high-sierra-chef13
+    power-management-high-sierra-chef14:
+      kitchen_suite:                     power-management-high-sierra-chef14
+    machine-name-el-capitan-chef13:
+      kitchen_suite:                     machine-name-el-capitan-chef13
+    machine-name-el-capitan-chef14:
+      kitchen_suite:                     machine-name-el-capitan-chef14
+    machine-name-sierra-chef13:
+      kitchen_suite:                     machine-name-sierra-chef13
+    machine-name-sierra-chef14:
+      kitchen_suite:                     machine-name-sierra-chef14
+    machine-name-high-sierra-chef13:
+      kitchen_suite:                     machine-name-high-sierra-chef13
+    machine-name-high-sierra-chef14:
+      kitchen_suite:                     machine-name-high-sierra-chef14
+    spotlight-el-capitan-chef13:
+      kitchen_suite:                     spotlight-el-capitan-chef13
+    spotlight-el-capitan-chef14:
+      kitchen_suite:                     spotlight-el-capitan-chef14
+    spotlight-sierra-chef13:
+      kitchen_suite:                     spotlight-sierra-chef13
+    spotlight-sierra-chef14:
+      kitchen_suite:                     spotlight-sierra-chef14
+    spotlight-high-sierra-chef13:
+      kitchen_suite:                     spotlight-high-sierra-chef13
+    spotlight-high-sierra-chef14:
+      kitchen_suite:                     spotlight-high-sierra-chef14
+    xcode-el-capitan-chef13:
+      kitchen_suite:                     xcode-el-capitan-chef13
+    xcode-el-capitan-chef14:
+      kitchen_suite:                     xcode-el-capitan-chef14
+    xcode-sierra-chef13:
+      kitchen_suite:                     xcode-sierra-chef13
+    xcode-sierra-chef14:
+      kitchen_suite:                     xcode-sierra-chef14
+    xcode-high-sierra-chef13:
+      kitchen_suite:                     xcode-high-sierra-chef13
+    xcode-high-sierra-chef14:
+      kitchen_suite:                     xcode-high-sierra-chef14
+    xcode-beta-el-capitan-chef13:
+      kitchen_suite:                     xcode-beta-el-capitan-chef13
+    xcode-beta-el-capitan-chef14:
+      kitchen_suite:                     xcode-beta-el-capitan-chef14
+    xcode-beta-sierra-chef13:
+      kitchen_suite:                     xcode-beta-sierra-chef13
+    xcode-beta-sierra-chef14:
+      kitchen_suite:                     xcode-beta-sierra-chef14
+    xcode-beta-high-sierra-chef13:
+      kitchen_suite:                     xcode-beta-high-sierra-chef13
+    xcode-beta-high-sierra-chef14:
+      kitchen_suite:                     xcode-beta-high-sierra-chef14
+    certificate-el-capitan-chef13:
+      kitchen_suite:                     certificate-el-capitan-chef13
+    certificate-el-capitan-chef14:
+      kitchen_suite:                     certificate-el-capitan-chef14
+    certificate-sierra-chef13:
+      kitchen_suite:                     certificate-sierra-chef13
+    certificate-sierra-chef14:
+      kitchen_suite:                     certificate-sierra-chef14
+    certificate-high-sierra-chef13:
+      kitchen_suite:                     certificate-high-sierra-chef13
+    certificate-high-sierra-chef14:
+      kitchen_suite:                     certificate-high-sierra-chef14
+    users-el-capitan-chef13:
+      kitchen_suite:                     users-el-capitan-chef13
+    users-el-capitan-chef14:
+      kitchen_suite:                     users-el-capitan-chef14
+    users-sierra-chef13:
+      kitchen_suite:                     users-sierra-chef13
+    users-sierra-chef14:
+      kitchen_suite:                     users-sierra-chef14
+    users-high-sierra-chef13:
+      kitchen_suite:                     users-high-sierra-chef13
+    users-high-sierra-chef14:
+      kitchen_suite:                     users-high-sierra-chef14
 steps:
-- script:                      |
+- script:                                |
     export PATH=$PATH:/usr/local/bin
     eval "`/usr/local/bin/chef shell-init bash`"
     knife download /data_bags --chef-repo-path $(Build.SourcesDirectory) --no-color
-  displayName:                 Download data bags
-  failOnStderr:                false
-  continueOnError:             false
-- script:                      |
+  displayName:                           Download data bags
+  failOnStderr:                          false
+  continueOnError:                       false
+- script:                                |
     export PATH=$PATH:/usr/local/bin
     eval "`/usr/local/bin/chef shell-init bash`"
     export VAGRANT_HOME=$(Agent.HomeDirectory)/../.vagrant.d/
     foodcritic . --exclude spec --epic-fail any --tags any
     cookstyle --extra-details --no-color
     rspec spec --no-color
-  displayName:                 Verify
-  failOnStderr:                false
-  continueOnError:             false
-- script:                      |
+  displayName:                           Verify
+  failOnStderr:                          false
+  continueOnError:                       false
+- script:                                |
     export PATH=$PATH:/usr/local/bin
     eval "`/usr/local/bin/chef shell-init bash`"
     export VAGRANT_HOME=$(Agent.HomeDirectory)/../.vagrant.d/
     kitchen test $(kitchen_suite) --concurrency 1 --destroy always --no-color
-  displayName:                 Acceptance
-  failOnStderr:                false
-  continueOnError:             false
+  displayName:                           Acceptance
+  failOnStderr:                          false
+  continueOnError:                       false
