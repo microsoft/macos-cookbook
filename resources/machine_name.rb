@@ -13,12 +13,12 @@ load_current_value do
 end
 
 action :set do
-  property_is_set?(:computer_name) ? new_resource.computer_name : new_resource.computer_name = new_resource.hostname
-  property_is_set?(:local_hostname) ? new_resource.local_hostname : new_resource.local_hostname = new_resource.hostname
+  new_resource.property_is_set?(:computer_name) ? new_resource.computer_name : new_resource.computer_name = new_resource.hostname
+  new_resource.property_is_set?(:local_hostname) ? new_resource.local_hostname : new_resource.local_hostname = new_resource.hostname
 
   converge_if_changed :hostname do
     converge_by 'set Hostname' do
-      fqdn = property_is_set?(:dns_domain) ? [new_resource.hostname, new_resource.dns_domain].join('.') : new_resource.hostname
+      fqdn = new_resource.property_is_set?(:dns_domain) ? [new_resource.hostname, new_resource.dns_domain].join('.') : new_resource.hostname
       execute [scutil, '--set', 'HostName', fqdn] do
         notifies :reload, 'ohai[reload ohai]'
       end
