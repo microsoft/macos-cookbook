@@ -74,12 +74,16 @@ describe MacOS::System::FormFactor do
   end
 end
 
-
 describe MacOS::System::ScreenSaver do
   context 'querying a read for idleTime' do
     it 'returns a defaults read command' do
       screen = MacOS::System::ScreenSaver.new('vagrant')
       expect(screen.query('read').command).to eq ['defaults', '-currentHost', 'read', 'com.apple.screensaver', 'idleTime']
+    end
+
+    it 'returns a defaults read command' do
+      screen = MacOS::System::ScreenSaver.new('vagrant')
+      expect(screen.query('read').command).should_not eq ['defaults', '-currentHost', 'read-type', 'com.apple.screensaver', 'idleTime']
     end
   end
 
@@ -87,6 +91,35 @@ describe MacOS::System::ScreenSaver do
     it 'returns a defaults read-type command' do
       screen = MacOS::System::ScreenSaver.new('vagrant')
       expect(screen.query('read-type').command).to eq ['defaults', '-currentHost', 'read-type', 'com.apple.screensaver', 'idleTime']
+    end
+
+    it 'returns a defaults read-type command' do
+      screen = MacOS::System::ScreenSaver.new('vagrant')
+      expect(screen.query('read-type').command).should_not eq ['defaults', '-currentHost', 'read', 'com.apple.screensaver', 'idleTime']
+    end
+  end
+
+  context 'when idleTime is 0 and its type is integer' do
+    before do
+      allow_any_instance_of(MacOS::System::ScreenSaver).to receive(:settings)
+        .and_return(true)
+    end
+
+    it 'screensaver is disabled' do
+      screen = MacOS::System::ScreenSaver.new('vagrant')
+      expect(screen.disabled?).to eq true
+    end
+  end
+
+  context 'when idleTime is 0 and its type is integer' do
+    before do
+      allow_any_instance_of(MacOS::System::ScreenSaver).to receive(:settings)
+        .and_return(false)
+    end
+
+    it 'screensaver is disabled' do
+      screen = MacOS::System::ScreenSaver.new('vagrant')
+      expect(screen.disabled?).to eq false
     end
   end
 end
