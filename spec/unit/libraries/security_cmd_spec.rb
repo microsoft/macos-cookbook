@@ -119,28 +119,4 @@ describe MacOS::SecurityCommand, 'keychain creation commands' do
       expect(test_kc_default.unlock_keychain('password')).to eq ['/usr/bin/security', 'unlock-keychain', '-p', 'password']
     end
   end
-
-  # context 'setting default keychain' do
-  #   it 'sets the default keychain' do
-  #     expect(test_kc.default_keychain(true)).to eq ['/usr/bin/security', 'default-keychain', '-s', '/Users/vagrant/Library/Keychains/test.keychain']
-  #   end
-  # end
-
-  # context 'unsetting default keychain' do
-  #   it 'unsets the default keychain' do
-  #     expect(test_kc.default_keychain(false)).to eq ['/usr/bin/security', 'default-keychain', '-s']
-  #   end
-  # end
-
-  # context 'setting login keychain' do
-  #   it 'sets the login keychain' do
-  #     expect(test_kc.login_keychain(true)).to eq ['/usr/bin/security', 'login-keychain', '-s', '/Users/vagrant/Library/Keychains/test.keychain']
-  #   end
-  # end
-
-  # context 'unsetting login keychain' do
-  #   it 'unsets the login keychain' do
-  #     expect(test_kc.login_keychain(false)).to eq ['/usr/bin/security', 'login-keychain', '-s']
-  #   end
-  # end
 end
