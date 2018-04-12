@@ -74,6 +74,29 @@ describe MacOS::System::FormFactor do
   end
 end
 
+describe MacOS::System::Environment do
+  context 'setting virtualization_systems to have key value pair: parallels, guest' do
+    it 'returns running in a vm' do
+      env = MacOS::System::Environment.new('parallels' => 'guest')
+      expect(env.vm?).to eq true
+    end
+  end
+
+  context 'setting virtualization_systems to empty' do
+    it 'returns running in a vm' do
+      env = MacOS::System::Environment.new({})
+      expect(env.vm?).to eq true
+    end
+  end
+
+  context 'setting virtualization_systems to have key value pair: vbox, host' do
+    it 'returns not running in a vm' do
+      env = MacOS::System::Environment.new('vbox' => 'host')
+      expect(env.vm?).to eq false
+    end
+  end
+end
+
 describe MacOS::System::ScreenSaver do
   context 'querying a read for idleTime' do
     it 'returns a defaults read command' do
@@ -111,13 +134,13 @@ describe MacOS::System::ScreenSaver do
     end
   end
 
-  context 'when idleTime is 0 and its type is integer' do
+  context 'when idleTime is not 0 or its type is not an integer' do
     before do
       allow_any_instance_of(MacOS::System::ScreenSaver).to receive(:settings)
         .and_return(false)
     end
 
-    it 'screensaver is disabled' do
+    it 'screensaver is not disabled' do
       screen = MacOS::System::ScreenSaver.new('vagrant')
       expect(screen.disabled?).to eq false
     end
