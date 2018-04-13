@@ -46,7 +46,7 @@ control 'no-sleep' do
   end
 
   describe command('systemsetup -getharddisksleep') do
-    its('stdout') { should match(/after 10 minutes/) }
+    its('stdout') { should match(/Never/) }
   end
 
   describe command('systemsetup -getrestartfreeze') do

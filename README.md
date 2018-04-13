@@ -61,7 +61,6 @@ to always keep macOS on and available.
 | Attributes used                         | Default value           |
 |-----------------------------------------|-------------------------|
 | `node['macos']['remote_login_enabled']` | `true`                  |
-| `node['macos']['disk_sleep_disabled']`  | `false`                 |
 | `node['macos']['network_time_server']`  | `'time.windows.com'`    |
 | `node['macos']['time_zone']`            | `'America/Los_Angeles'` |
 
