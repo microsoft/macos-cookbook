@@ -45,7 +45,7 @@ control 'no-sleep' do
     its('stdout') { should match(/Never/) }
   end
 
-  describe command('systemsetup -getharddisksleep') do
+  describe command('systemsetup -getharddisksleep'), :skip do
     its('stdout') { should match(/after 10 minutes/) }
   end
 
@@ -57,7 +57,7 @@ control 'no-sleep' do
     its('stdout') { should match(/sleep\s+0/) }
   end
 
-  describe command('pmset -g') do
+  describe command('pmset -g'), :skip do
     its('stdout') { should match(/disksleep\s+10/) }
   end
 
