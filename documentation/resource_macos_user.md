@@ -72,7 +72,7 @@ macos_user 'create user' do
 end
 ```
 
-**Create a user that has a fullnames**
+**Create a user that has a fullname**
 
 ```ruby
 macos_user 'create user' do
