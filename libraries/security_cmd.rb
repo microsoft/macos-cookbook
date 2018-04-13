@@ -13,7 +13,7 @@ module MacOS
     end
 
     def create_keychain(kc_pass)
-      if kc_pass == ''
+      if kc_pass.empty?
         Chef::Exception.fatal('New keychains require a password.')
       end
 
@@ -25,15 +25,15 @@ module MacOS
     end
 
     def lock_keychain
-      @keychain == '' ? [@security_cmd, 'lock-keychain'] : [@security_cmd, 'lock-keychain', @keychain]
+      @keychain.empty? ? [@security_cmd, 'lock-keychain'] : [@security_cmd, 'lock-keychain', @keychain]
     end
 
     def unlock_keychain(kc_passwd)
-      @keychain == '' ? [@security_cmd, 'unlock-keychain', '-p', kc_passwd] : [@security_cmd, 'unlock-keychain', '-p', kc_passwd, @keychain]
+      @keychain.empty? ? [@security_cmd, 'unlock-keychain', '-p', kc_passwd] : [@security_cmd, 'unlock-keychain', '-p', kc_passwd, @keychain]
     end
 
     def add_certificates
-      @keychain == '' ? [@security_cmd, 'add-certificates', @cert] : [@security_cmd, 'add-certificates', @cert, '-k', @keychain]
+      @keychain.empty? ? [@security_cmd, 'add-certificates', @cert] : [@security_cmd, 'add-certificates', @cert, '-k', @keychain]
     end
 
     def import(cert_passwd, apps)

@@ -6,7 +6,7 @@ property :kc_passwd, String
 
 action_class do
   def keychain
-    property_is_set?(:kc_file) ? new_resource.kc_file : ''
+    new_resource.property_is_set?(:kc_file) ? new_resource.kc_file : nil
   end
 end
 
