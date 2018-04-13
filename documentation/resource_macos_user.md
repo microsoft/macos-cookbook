@@ -22,6 +22,18 @@ macos_user 'user and action description' do
 end
 ```
 
+The following example is equivalent to issuing ```"sysadminctl  -addUser jlevinson -password serenity -admin"```
+
+```ruby
+macos_user 'create admin user' do
+  username 'jlevinson'
+  password 'serenity'
+  admin     true
+end
+```
+
+
+
 Actions
 -------
 
@@ -66,7 +78,7 @@ end
 macos_user 'create user' do
   username 'omartinez'
   fullname 'Oscar Martinez'
-  password 'tacobelldog'
+  password 'reason'
   groups   ['accounting']
 end
 ```
