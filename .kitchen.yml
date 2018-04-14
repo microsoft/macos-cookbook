@@ -114,3 +114,12 @@ suites:
     controls:
     - admin-user
     - standard-user
+
+- name: keychain
+  run_list:
+  - recipe[macos_test::keychain]
+  verifier:
+    controls:
+    - keychain-creation
+    - login-keychain-creation
+    - default-keychain-creation
