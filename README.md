@@ -1,7 +1,7 @@
 macOS Cookbook
 ==============
 
-![build-status-badge](https://office.visualstudio.com/_apis/public/build/definitions/59d72877-1cea-4eb6-9d06-66716573631a/2143/badge)
+![build-status-badge](https://office.visualstudio.com/_apis/public/build/definitions/59d72877-1cea-4eb6-9d06-66716573631a/2791/badge)
 
 Chef resources and recipes for managing and provisioning macOS.
 
