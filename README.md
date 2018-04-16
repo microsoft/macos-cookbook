@@ -1,9 +1,9 @@
 macOS Cookbook
 ==============
 
-The macOS cookbook is a Chef library cookbook that provides resources for configuring
-and provisioning macOS. Additionally, it provides recipes that implement common
-use-cases of the macOS cookbook's resources.
+![build-status-badge](https://office.visualstudio.com/_apis/public/build/definitions/59d72877-1cea-4eb6-9d06-66716573631a/2791/badge)
+
+Chef resources and recipes for managing and provisioning macOS.
 
 - [Chef Requirements](#chef-requirements)
 - [Supported OS Versions](#supported-os-versions)
@@ -12,19 +12,18 @@ use-cases of the macOS cookbook's resources.
 - [Data Bags](#data-bags)
 - [Resources](#resources)
 
-Chef Requirements
------------------
+Supported Chef Versions
+-----------------------
 
-Currently, we've only tested the macOS cookbook using **Chef 13**. We do intend to implement
-better test coverage in order to support more versions of Chef. Let us know
-if you find issues with previous versions and we will do our best to resolve them.
+- Chef 13
+- Chef 14
 
 Supported OS Versions
 ---------------------
 
-| OS X El Capitan 10.11 | macOS Sierra 10.12 | macOS High Sierra 10.13 |
-|:---------------------:|:------------------:|:-----------------------:|
-| ![build-status-1011](https://office.visualstudio.com/_apis/public/build/definitions/59d72877-1cea-4eb6-9d06-66716573631a/2302/badge) | ![build-status-1012](https://office.visualstudio.com/_apis/public/build/definitions/59d72877-1cea-4eb6-9d06-66716573631a/2140/badge) | ![build-status-1013](https://office.visualstudio.com/_apis/public/build/definitions/59d72877-1cea-4eb6-9d06-66716573631a/2143/badge) |
+- OS X El Capitan 10.11
+- macOS Sierra 10.12
+- macOS High Sierra 10.13
 
 Attributes
 ----------
@@ -62,7 +61,6 @@ to always keep macOS on and available.
 | Attributes used                         | Default value           |
 |-----------------------------------------|-------------------------|
 | `node['macos']['remote_login_enabled']` | `true`                  |
-| `node['macos']['disk_sleep_disabled']`  | `false`                 |
 | `node['macos']['network_time_server']`  | `'time.windows.com'`    |
 | `node['macos']['time_zone']`            | `'America/Los_Angeles'` |
 
@@ -92,8 +90,8 @@ or a user/password pair set under `node['macos']['apple_id']`.
 
 | Attributes used                                        | Default value |
 |--------------------------------------------------------|---------------|
-| `node['macos']['xcode']['version']`                    | `'9.2'`       |
-| `node['macos']['xcode']['simulator']['major_version']` | `[11, 10]`    |
+| `node['macos']['xcode']['version']`                    | `'9.3'`       |
+| `node['macos']['xcode']['simulator']['major_version']` | `nil`         |
 | `node['macos']['apple_id']['user']`                    | `nil`         |
 | `node['macos']['apple_id']['password']`                | `nil`         |
 
@@ -130,7 +128,9 @@ Resources
 
 - [ARD (Apple Remote Desktop)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_ard.md)
 - [Certificate (security)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_certificate.md)
+- [Keychain (security)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/keychain_certificate.md)
 - [Machine Name](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_machine_name.md)
+- [macOS User (sysadminctl)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_macos_user.md)
 - [Plist](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_plist.md)
 - [Spotlight (mdutil)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_spotlight.md)
 - [Xcode](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_xcode.md)

@@ -1,17 +1,18 @@
 require 'spec_helper'
 
-include MacOS::SystemSetup
+include MacOS::System
 
-shared_context 'when running on bare metal' do
+shared_context 'when running on bare metal macmini' do
   shared_examples 'setting metal-specific power preferences' do
     before(:each) do
-      allow_any_instance_of(Chef::Resource).to receive(:power_button_model?).and_return(true)
+      chef_run.node.normal['hardware']['machine_model'] = 'MacMini6,2'
       chef_run.node.normal['virtualization']['systems'] = { 'vbox' => 'host', 'parallels' => 'host' }
       stub_command('which git').and_return('/usr/bin/git')
     end
 
     it 'returns false' do
-      expect(running_in_a_vm?).to be false
+      env = System::Environment.new('host')
+      expect(env.vm?).to be false
     end
 
     it 'sets wake on lan' do
@@ -37,14 +38,15 @@ end
 
 shared_context 'running in a parallels virtual machine' do
   before(:each) do
-    allow_any_instance_of(Chef::Resource).to receive(:power_button_model?).and_return(false)
     chef_run.node.normal['virtualization']['systems'] = { 'parallels' => 'guest' }
+    chef_run.node.normal['hardware']['machine_model'] = 'Parallels13,1'
     stub_command('which git').and_return('/usr/bin/git')
   end
 
   shared_examples 'not setting metal-specific power prefs' do
     it 'confirms we are in a vm' do
-      expect(running_in_a_vm?).to be true
+      env = System::Environment.new()
+      expect(env.vm?).to be true
     end
 
     it 'does not set wake on lan' do
@@ -70,14 +72,15 @@ end
 
 shared_context 'running in an undetermined virtualization system' do
   before(:each) do
-    allow_any_instance_of(Chef::Resource).to receive(:power_button_model?).and_return(false)
-    chef_run.node.override['virtualization']['systems'] = {}
+    chef_run.node.normal['virtualization']['systems'] = {}
+    chef_run.node.normal['hardware']['machine_model'] = ''
     stub_command('which git').and_return('/usr/bin/git')
   end
 
   shared_examples 'not setting metal-specific power prefs' do
     it 'assumes we are in a vm' do
-      expect(running_in_a_vm?).to be true
+      env = System::Environment.new('undetermined')
+      expect(env.vm?).to be true
     end
 
     it 'does not set wake on lan' do
@@ -115,7 +118,7 @@ describe 'macos::keep_awake' do
   end
 
   describe 'keep_awake on bare metal' do
-    include_context 'when running on bare metal'
+    include_context 'when running on bare metal macmini'
     it_behaves_like 'setting metal-specific power preferences'
   end
 end
