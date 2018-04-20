@@ -1,7 +1,7 @@
 require 'spec_helper'
 include MacOS
 
-describe MacOS::SecurityCommand do
+describe MacOS::SecurityCommand, 'certificate creation commands' do
   let(:p12_cert) { MacOS::SecurityCommand.new('/Users/vagrant/Test.p12', '') }
   let(:p12_cert_kc) { MacOS::SecurityCommand.new('/Users/vagrant/Test.p12', 'test.keychain') }
   let(:cer_cert) { MacOS::SecurityCommand.new('/Users/vagrant/Test.cer', '') }
@@ -76,6 +76,47 @@ describe MacOS::SecurityCommand do
   context 'installing a certificate (.cer)' do
     it 'adds a specified .cer certificate file' do
       expect(cer_cert.install_certificate('password', [])).to eq ['/usr/bin/security', 'add-certificates', '/Users/vagrant/Test.cer']
+    end
+  end
+end
+
+describe MacOS::SecurityCommand, 'keychain creation commands' do
+  let(:test_kc) { MacOS::SecurityCommand.new('', '/Users/vagrant/Library/Keychains/test.keychain') }
+  let(:test_kc_default) { MacOS::SecurityCommand.new('', '') }
+
+  context 'creating a new keychain' do
+    it 'creates the appropriate .keychain file' do
+      expect(test_kc.create_keychain('password')).to eq ['/usr/bin/security', 'create-keychain', '-p', 'password', '/Users/vagrant/Library/Keychains/test.keychain']
+    end
+  end
+
+  context 'deleting a keychain' do
+    it 'deletes the appropriate .keychain file' do
+      expect(test_kc.delete_keychain).to eq ['/usr/bin/security', 'delete-keychain', '/Users/vagrant/Library/Keychains/test.keychain']
+    end
+  end
+
+  context 'locking a specified keychain' do
+    it 'locks a specified keychain' do
+      expect(test_kc.lock_keychain).to eq ['/usr/bin/security', 'lock-keychain', '/Users/vagrant/Library/Keychains/test.keychain']
+    end
+  end
+
+  context 'locking default keychain' do
+    it 'locks the default keychain' do
+      expect(test_kc_default.lock_keychain).to eq ['/usr/bin/security', 'lock-keychain']
+    end
+  end
+
+  context 'unlocking a certain keychain' do
+    it 'unlocks a specified keychain' do
+      expect(test_kc.unlock_keychain('password')).to eq ['/usr/bin/security', 'unlock-keychain', '-p', 'password', '/Users/vagrant/Library/Keychains/test.keychain']
+    end
+  end
+
+  context 'unlocking default keychain' do
+    it 'unlocks the default keychain' do
+      expect(test_kc_default.unlock_keychain('password')).to eq ['/usr/bin/security', 'unlock-keychain', '-p', 'password']
     end
   end
 end
