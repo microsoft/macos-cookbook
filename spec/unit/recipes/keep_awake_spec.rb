@@ -85,7 +85,6 @@ shared_context 'running in a parallels virtual machine' do
   end
 
   shared_examples 'not setting metal-specific power prefs' do
-
     it 'returns not on bare metal' do
       ff = System::FormFactor.new()
       expect(ff.desktop?).to be false
@@ -126,7 +125,6 @@ shared_context 'running in an undetermined virtualization system' do
   end
 
   shared_examples 'not setting metal-specific power prefs' do
-
     it 'returns not on bare metal' do
       ff = System::FormFactor.new()
       expect(ff.desktop?).to be false
