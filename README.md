@@ -64,6 +64,18 @@ to always keep macOS on and available.
 | `node['macos']['network_time_server']`  | `'time.windows.com'`    |
 | `node['macos']['time_zone']`            | `'America/Los_Angeles'` |
 
+**N.b.** When ChefSpec testing implementations of this recipe, the `node['hardware']['machine_model']`
+attribute needs to be set to a Mac model identifier, e.g. `MacMini6,2`, in order 
+for tests to pass:
+
+```ruby
+let(:chef_run) do
+  ChefSpec::SoloRunner.new do |node|
+    node.normal['hardware']['machine_model'] = 'MacMini6,2'
+  end.converge(described_recipe)
+end
+```
+
 ### Mono
 
 Installs [Mono](http://www.mono-project.com/docs/about-mono/). Requires setting
