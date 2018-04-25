@@ -5,16 +5,6 @@ include MacOS::System
 shared_context 'when running on bare metal macmini' do
   before(:each) do
     chef_run.node.normal['virtualization']['systems'] = { 'vbox' => 'host', 'parallels' => 'host' }
-
-    it 'returns bare metal desktop' do
-      ff = System::FormFactor.new()
-      expect(ff.desktop?).to be true
-      expect(ff.portable?).to be false
-    end
-
-    it 'returns false' do
-      env = System::Environment.new('host')
-      expect(env.vm?).to be false
     chef_run.node.normal['hardware']['machine_model'] = 'MacMini6,2'
   end
 
@@ -43,16 +33,6 @@ end
 shared_context 'when running on bare metal macbook' do
   before(:each) do
     chef_run.node.normal['virtualization']['systems'] = { 'vbox' => 'host', 'parallels' => 'host' }
-
-    it 'returns bare metal portable' do
-      ff = System::FormFactor.new()
-      expect(ff.portable?).to be true
-      expect(ff.desktop?).to be false
-    end
-
-    it 'returns false' do
-      env = System::Environment.new()
-      expect(env.vm?).to be false
     chef_run.node.normal['hardware']['machine_model'] = 'Macbook10,1'
   end
 
@@ -80,17 +60,6 @@ shared_context 'running in a parallels virtual machine' do
   end
 
   shared_examples 'not setting metal-specific power prefs' do
-    it 'returns not on bare metal' do
-      ff = System::FormFactor.new()
-      expect(ff.desktop?).to be false
-      expect(ff.portable?).to be false
-    end
-
-    it 'confirms we are in a vm' do
-      env = System::Environment.new()
-      expect(env.vm?).to be true
-    end
-
     it 'does not set wake on lan' do
       chef_run.converge(described_recipe)
       expect(chef_run).to_not set_system_preference('wake the computer when accessed using a network connection')
@@ -105,7 +74,6 @@ shared_context 'running in a parallels virtual machine' do
       chef_run.converge(described_recipe)
       expect(chef_run).to_not set_system_preference('restart after a power failure')
     end
-
     it 'converges successfully in a vm' do
       expect { chef_run }.to_not raise_error
     end
@@ -119,17 +87,6 @@ shared_context 'running in an undetermined virtualization system' do
   end
 
   shared_examples 'not setting metal-specific power prefs' do
-    it 'returns not on bare metal' do
-      ff = System::FormFactor.new()
-      expect(ff.desktop?).to be false
-      expect(ff.portable?).to be false
-    end
-
-    it 'assumes we are in a vm' do
-      env = System::Environment.new('undetermined')
-      expect(env.vm?).to be true
-    end
-
     it 'does not set wake on lan' do
       chef_run.converge(described_recipe)
       expect(chef_run).to_not set_system_preference('wake the computer when accessed using a network connection')
