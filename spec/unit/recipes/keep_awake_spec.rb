@@ -5,8 +5,6 @@ include MacOS::System
 shared_context 'when running on bare metal macmini' do
   before(:each) do
     chef_run.node.normal['virtualization']['systems'] = { 'vbox' => 'host', 'parallels' => 'host' }
-      stub_command('which git').and_return('/usr/bin/git')
-    end
 
     it 'returns bare metal desktop' do
       ff = System::FormFactor.new()
@@ -45,8 +43,6 @@ end
 shared_context 'when running on bare metal macbook' do
   before(:each) do
     chef_run.node.normal['virtualization']['systems'] = { 'vbox' => 'host', 'parallels' => 'host' }
-      stub_command('which git').and_return('/usr/bin/git')
-    end
 
     it 'returns bare metal portable' do
       ff = System::FormFactor.new()
@@ -81,7 +77,6 @@ shared_context 'running in a parallels virtual machine' do
   before(:each) do
     chef_run.node.normal['virtualization']['systems'] = { 'parallels' => 'guest' }
     chef_run.node.normal['hardware']['machine_model'] = 'Parallels13,1'
-    stub_command('which git').and_return('/usr/bin/git')
   end
 
   shared_examples 'not setting metal-specific power prefs' do
@@ -121,7 +116,6 @@ shared_context 'running in an undetermined virtualization system' do
   before(:each) do
     chef_run.node.normal['virtualization']['systems'] = {}
     chef_run.node.normal['hardware']['machine_model'] = ''
-    stub_command('which git').and_return('/usr/bin/git')
   end
 
   shared_examples 'not setting metal-specific power prefs' do
