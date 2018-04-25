@@ -65,7 +65,7 @@ to always keep macOS on and available.
 | `node['macos']['time_zone']`            | `'America/Los_Angeles'` |
 
 **N.b.** When ChefSpec testing implementations of this recipe, the `node['hardware']['machine_model']`
-attribute needs to be set to a Mac model identifier, e.g. `MacMini6,2`, in order 
+attribute needs to be set to a Mac model identifier, e.g. `MacMini6,2`, in order
 for tests to pass:
 
 ```ruby
