@@ -1,6 +1,6 @@
-form_factor = MacOS::System::FormFactor.new()
-env = MacOS::System::Environment.new()
-scr_svr = MacOS::System::ScreenSaver.new()
+form_factor = MacOS::System::FormFactor.new(node['hardware']['machine_model'])
+env = MacOS::System::Environment.new(node['virtualization']['systems'])
+scr_svr = MacOS::System::ScreenSaver.new(node['macos']['admin_user'])
 
 system_preference 'disable computer sleep' do
   preference :computersleep
