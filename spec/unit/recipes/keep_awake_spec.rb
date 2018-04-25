@@ -3,10 +3,8 @@ require 'spec_helper'
 include MacOS::System
 
 shared_context 'when running on bare metal macmini' do
-  shared_examples 'setting metal-specific power preferences' do
-    before(:each) do
-      chef_run.node.normal['hardware']['machine_model'] = 'MacMini6,2'
-      chef_run.node.normal['virtualization']['systems'] = { 'vbox' => 'host', 'parallels' => 'host' }
+  before(:each) do
+    chef_run.node.normal['virtualization']['systems'] = { 'vbox' => 'host', 'parallels' => 'host' }
       stub_command('which git').and_return('/usr/bin/git')
     end
 
@@ -19,8 +17,10 @@ shared_context 'when running on bare metal macmini' do
     it 'returns false' do
       env = System::Environment.new('host')
       expect(env.vm?).to be false
-    end
+    chef_run.node.normal['hardware']['machine_model'] = 'MacMini6,2'
+  end
 
+  shared_examples 'setting metal-specific power preferences' do
     it 'sets wake on lan' do
       chef_run.converge(described_recipe)
       expect(chef_run).to set_system_preference('wake the computer when accessed using a network connection')
@@ -43,10 +43,8 @@ shared_context 'when running on bare metal macmini' do
 end
 
 shared_context 'when running on bare metal macbook' do
-  shared_examples 'setting portable metal-specific power preferences' do
-    before(:each) do
-      chef_run.node.normal['hardware']['machine_model'] = 'Macbook'
-      chef_run.node.normal['virtualization']['systems'] = { 'vbox' => 'host', 'parallels' => 'host' }
+  before(:each) do
+    chef_run.node.normal['virtualization']['systems'] = { 'vbox' => 'host', 'parallels' => 'host' }
       stub_command('which git').and_return('/usr/bin/git')
     end
 
@@ -59,8 +57,10 @@ shared_context 'when running on bare metal macbook' do
     it 'returns false' do
       env = System::Environment.new()
       expect(env.vm?).to be false
-    end
+    chef_run.node.normal['hardware']['machine_model'] = 'Macbook10,1'
+  end
 
+  shared_examples 'setting portable metal-specific power preferences' do
     it 'sets wake on lan' do
       chef_run.converge(described_recipe)
       expect(chef_run).to set_system_preference('wake the computer when accessed using a network connection')
