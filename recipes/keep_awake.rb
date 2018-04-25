@@ -1,6 +1,6 @@
-form_factor = MacOS::System::FormFactor.new()
-env = MacOS::System::Environment.new()
-scr_svr = MacOS::System::ScreenSaver.new()
+form_factor = MacOS::System::FormFactor.new(node['hardware']['machine_model'])
+environment = MacOS::System::Environment.new(node['virtualization']['systems'])
+screensaver = MacOS::System::ScreenSaver.new(node['macos']['admin_user'])
 
 system_preference 'disable computer sleep' do
   preference :computersleep
@@ -25,13 +25,13 @@ end
 system_preference 'wake the computer when accessed using a network connection' do
   preference :wakeonnetworkaccess
   setting 'On'
-  not_if { env.vm? }
+  not_if { environment.vm? }
 end
 
 system_preference 'restart after a power failure' do
   preference :restartpowerfailure
   setting 'On'
-  not_if { env.vm? }
+  not_if { environment.vm? }
 end
 
 system_preference 'pressing power button does not sleep computer' do
@@ -67,6 +67,6 @@ end
 defaults 'com.apple.screensaver' do
   option '-currentHost write'
   settings 'idleTime' => 0
-  not_if { scr_svr.disabled? }
+  not_if { screensaver.disabled? }
   user node['macos']['admin_user']
 end
