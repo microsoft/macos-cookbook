@@ -72,6 +72,20 @@ describe MacOS::System::FormFactor do
       expect(ff.portable?).to eq false
     end
   end
+
+  context 'when passed a machine model that is nil' do
+    it 'it does not register as form factor desktop' do
+      ff = MacOS::System::FormFactor.new(nil)
+      expect(ff.desktop?).to eq false
+    end
+  end
+
+  context 'when passed a machine model that is nil' do
+    it 'it does not register as form factor portable' do
+      ff = MacOS::System::FormFactor.new(nil)
+      expect(ff.portable?).to eq false
+    end
+  end
 end
 
 describe MacOS::System::Environment do
