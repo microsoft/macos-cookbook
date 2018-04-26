@@ -3,8 +3,8 @@ module MacOS
     class FormFactor
       attr_reader :machine_model
 
-      def initialize(machine_model)
-        @machine_model = machine_model
+      def initialize(hardware)
+        @machine_model = hardware.nil? ? nil : hardware['machine_model']
       end
 
       def desktop?
