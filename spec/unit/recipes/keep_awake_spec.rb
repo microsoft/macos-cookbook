@@ -5,7 +5,7 @@ include MacOS::System
 shared_context 'when running on bare metal macmini' do
   before(:each) do
     chef_run.node.normal['virtualization']['systems'] = { 'vbox' => 'host', 'parallels' => 'host' }
-    chef_run.node.normal['hardware']['machine_model'] = 'MacMini6,2'
+    chef_run.node.normal['hardware']['machine_model'] = 'Macmini7,1'
   end
 
   shared_examples 'setting metal-specific power preferences' do
@@ -33,7 +33,7 @@ end
 shared_context 'when running on bare metal macbook' do
   before(:each) do
     chef_run.node.normal['virtualization']['systems'] = { 'vbox' => 'host', 'parallels' => 'host' }
-    chef_run.node.normal['hardware']['machine_model'] = 'Macbook10,1'
+    chef_run.node.normal['hardware']['machine_model'] = 'MacBook10,1'
   end
 
   shared_examples 'setting portable metal-specific power preferences' do
