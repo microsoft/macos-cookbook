@@ -5,7 +5,7 @@ include MacOS::System
 describe MacOS::System::FormFactor do
   context 'when passed a machine model that has MacMini' do
     it 'it registers as form factor type desktop' do
-      ff = MacOS::System::FormFactor.new('MacMini')
+      ff = MacOS::System::FormFactor.new('machine_model' => 'Macmini7,1')
       expect(ff.desktop?).to eq true
       expect(ff.portable?).to eq false
     end
@@ -13,7 +13,7 @@ describe MacOS::System::FormFactor do
 
   context 'when passed a machine model that has MacPro' do
     it 'it registers as form factor type desktop' do
-      ff = MacOS::System::FormFactor.new('MacPro')
+      ff = MacOS::System::FormFactor.new('machine_model' => 'MacPro6,1')
       expect(ff.desktop?).to eq true
       expect(ff.portable?).to eq false
     end
@@ -21,7 +21,7 @@ describe MacOS::System::FormFactor do
 
   context 'when passed a machine model that has iMac' do
     it 'it registers as form factor type desktop' do
-      ff = MacOS::System::FormFactor.new('iMac')
+      ff = MacOS::System::FormFactor.new('machine_model' => 'iMac18,3')
       expect(ff.desktop?).to eq true
       expect(ff.portable?).to eq false
     end
@@ -29,7 +29,7 @@ describe MacOS::System::FormFactor do
 
   context 'when passed a machine model that has Macbook' do
     it 'registers as form factor type portable' do
-      ff = MacOS::System::FormFactor.new('Macbook')
+      ff = MacOS::System::FormFactor.new('machine_model' => 'MacBookPro14,3')
       expect(ff.portable?).to eq true
       expect(ff.desktop?).to eq false
     end
@@ -37,7 +37,7 @@ describe MacOS::System::FormFactor do
 
   context 'when passed a machine model that is unknown' do
     it 'it does not register as form factor desktop' do
-      ff = MacOS::System::FormFactor.new('unknown')
+      ff = MacOS::System::FormFactor.new('machine_model' => 'unknown')
       expect(ff.desktop?).to eq false
       expect(ff.portable?).to eq false
     end
