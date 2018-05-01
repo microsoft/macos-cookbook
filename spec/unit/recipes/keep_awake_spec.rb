@@ -2,13 +2,13 @@ require 'spec_helper'
 
 include MacOS::System
 
-shared_context 'when running on bare metal macmini' do
+shared_context 'running on bare metal Mac Mini' do
   before(:each) do
-    chef_run.node.normal['virtualization']['systems'] = { 'vbox' => 'host', 'parallels' => 'host' }
-    chef_run.node.normal['hardware']['machine_model'] = 'MacMini6,2'
+    chef_run.node.normal['virtualization']['systems'] = { 'vbox' => 'host', 'Parallels' => 'host' }
+    chef_run.node.normal['hardware']['machine_model'] = 'Macmini7,1'
   end
 
-  shared_examples 'setting metal-specific power preferences' do
+  shared_examples 'including metal-specific power preferences' do
     it 'sets wake on lan' do
       chef_run.converge(described_recipe)
       expect(chef_run).to set_system_preference('wake the computer when accessed using a network connection')
@@ -30,13 +30,13 @@ shared_context 'when running on bare metal macmini' do
   end
 end
 
-shared_context 'when running on bare metal macbook' do
+shared_context 'when running on bare metal MacBook Pro' do
   before(:each) do
-    chef_run.node.normal['virtualization']['systems'] = { 'vbox' => 'host', 'parallels' => 'host' }
-    chef_run.node.normal['hardware']['machine_model'] = 'Macbook10,1'
+    chef_run.node.normal['virtualization']['systems'] = { 'vbox' => 'host', 'Parallels' => 'host' }
+    chef_run.node.normal['hardware']['machine_model'] = 'MacBookPro14,3'
   end
 
-  shared_examples 'setting portable metal-specific power preferences' do
+  shared_examples 'including metal-specific power preferences for portables' do
     it 'sets wake on lan' do
       chef_run.converge(described_recipe)
       expect(chef_run).to set_system_preference('wake the computer when accessed using a network connection')
@@ -53,13 +53,13 @@ shared_context 'when running on bare metal macbook' do
   end
 end
 
-shared_context 'running in a parallels virtual machine' do
+shared_context 'running in a Parallels virtual machine' do
   before(:each) do
-    chef_run.node.normal['virtualization']['systems'] = { 'parallels' => 'guest' }
+    chef_run.node.normal['virtualization']['systems'] = { 'Parallels' => 'guest' }
     chef_run.node.normal['hardware']['machine_model'] = 'Parallels13,1'
   end
 
-  shared_examples 'not setting metal-specific power prefs' do
+  shared_examples 'ignoring metal-specific power preferences' do
     it 'does not set wake on lan' do
       chef_run.converge(described_recipe)
       expect(chef_run).to_not set_system_preference('wake the computer when accessed using a network connection')
@@ -86,7 +86,7 @@ shared_context 'running in an undetermined virtualization system' do
     chef_run.node.normal['hardware']['machine_model'] = ''
   end
 
-  shared_examples 'not setting metal-specific power prefs' do
+  shared_examples 'ignoring metal-specific power preferences' do
     it 'does not set wake on lan' do
       chef_run.converge(described_recipe)
       expect(chef_run).to_not set_system_preference('wake the computer when accessed using a network connection')
@@ -111,23 +111,23 @@ end
 describe 'macos::keep_awake' do
   let(:chef_run) { ChefSpec::SoloRunner.new }
 
-  describe 'keep_awake in a parallels vm' do
-    include_context 'running in a parallels virtual machine'
-    it_behaves_like 'not setting metal-specific power prefs'
+  describe 'keep_awake in a Parallels VM' do
+    include_context 'running in a Parallels virtual machine'
+    it_behaves_like 'ignoring metal-specific power preferences'
   end
 
   describe 'keep_awake in an undetermined virtualization system' do
     include_context 'running in an undetermined virtualization system'
-    it_behaves_like 'not setting metal-specific power prefs'
+    it_behaves_like 'ignoring metal-specific power preferences'
   end
 
   describe 'keep_awake on bare metal' do
-    include_context 'when running on bare metal macmini'
-    it_behaves_like 'setting metal-specific power preferences'
+    include_context 'running on bare metal Mac Mini'
+    it_behaves_like 'including metal-specific power preferences'
   end
 
   describe 'keep_awake on portable bare metal' do
-    include_context 'when running on bare metal macbook'
-    it_behaves_like 'setting portable metal-specific power preferences'
+    include_context 'when running on bare metal MacBook Pro'
+    it_behaves_like 'including metal-specific power preferences for portables'
   end
 end

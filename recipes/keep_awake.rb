@@ -1,4 +1,4 @@
-form_factor = MacOS::System::FormFactor.new(node['hardware']['machine_model'])
+form_factor = MacOS::System::FormFactor.new(node['hardware'])
 environment = MacOS::System::Environment.new(node['virtualization']['systems'])
 screensaver = MacOS::System::ScreenSaver.new(node['macos']['admin_user'])
 

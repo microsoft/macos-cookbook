@@ -3,18 +3,18 @@ module MacOS
     class FormFactor
       attr_reader :machine_model
 
-      def initialize(machine_model)
-        @machine_model = machine_model
+      def initialize(hardware)
+        @machine_model = hardware.nil? ? nil : hardware['machine_model']
       end
 
       def desktop?
         return false if @machine_model.nil?
-        @machine_model.match? Regexp.union %w(MacMini MacPro iMac)
+        @machine_model.match? Regexp.union %w(Macmini MacPro iMac)
       end
 
       def portable?
         return false if @machine_model.nil?
-        @machine_model.match? Regexp.union %w(Macbook)
+        @machine_model.match? Regexp.union %w(MacBook)
       end
     end
 
