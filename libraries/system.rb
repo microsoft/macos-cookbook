@@ -37,9 +37,8 @@ module MacOS
         @user = user
       end
 
-      def disabled?
-        settings('read', '0') &&
-          settings('read-type', 'integer')
+      def self.disabled?(user, idle_time)
+        return false
       end
 
       def settings(query_type, expected_value)
