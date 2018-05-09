@@ -82,23 +82,11 @@ or a user/password pair set under `node['macos']['apple_id']`.
 | `node['macos']['apple_id']['user']`                    | `nil`         |
 | `node['macos']['apple_id']['password']`                | `nil`         |
 
-### Apple Configurator 2
-
-Installs Apple Configurator 2 using `mas` and links `cfgutil` to
-`/usr/local/bin`.
-
-:warning: Requires a `credentials` data bag containing an `apple_id` data bag item.
-
-**Usage:** `include_recipe 'macos::configurator'`
-
-**Attributes**: No attributes used in this recipe.
-
 Data Bags
 ---------
 
-Both the `macos::xcode` and `macos::configurator` recipes require a `credentials`
-data bag with an `apple_id` data bag item. The item should contain valid Apple ID
-credentials. For example:
+The `macos::xcode` recipe can utilize a `credentials` data bag with an `apple_id`
+data bag item. The item should contain valid Apple ID credentials. For example:
 
 **Example:**
 
