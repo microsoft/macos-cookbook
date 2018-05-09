@@ -64,19 +64,6 @@ to always keep macOS on and available.
 | `node['macos']['network_time_server']`  | `'time.windows.com'`    |
 | `node['macos']['time_zone']`            | `'America/Los_Angeles'` |
 
-### Mono
-
-Installs [Mono](http://www.mono-project.com/docs/about-mono/). Requires setting
-the `package`, `version` and `checksum` attributes in order to override.
-
-**Usage:** `include_recipe 'macos::mono'`
-
-| Attributes used                     | Default value                                                        |
-|-------------------------------------|----------------------------------------------------------------------|
-| `node['macos']['mono']['package']`  | `'MonoFramework-MDK-4.4.2.11.macos10.xamarin.universal.pkg'`         |
-| `node['macos']['mono']['version']`  | `'4.4.2'`                                                            |
-| `node['macos']['mono']['checksum']` | `'d8bfbee7ae4d0d1facaf0ddfb70c0de4b1a3d94bb1b4c38e8fa4884539f54e23'` |
-
 ### Xcode
 
 Installs Xcode 9.2 and simulators for iOS 10 and iOS 11. See the
@@ -95,23 +82,11 @@ or a user/password pair set under `node['macos']['apple_id']`.
 | `node['macos']['apple_id']['user']`                    | `nil`         |
 | `node['macos']['apple_id']['password']`                | `nil`         |
 
-### Apple Configurator 2
-
-Installs Apple Configurator 2 using `mas` and links `cfgutil` to
-`/usr/local/bin`.
-
-:warning: Requires a `credentials` data bag containing an `apple_id` data bag item.
-
-**Usage:** `include_recipe 'macos::configurator'`
-
-**Attributes**: No attributes used in this recipe.
-
 Data Bags
 ---------
 
-Both the `macos::xcode` and `macos::configurator` recipes require a `credentials`
-data bag with an `apple_id` data bag item. The item should contain valid Apple ID
-credentials. For example:
+The `macos::xcode` recipe can utilize a `credentials` data bag with an `apple_id`
+data bag item. The item should contain valid Apple ID credentials. For example:
 
 **Example:**
 
