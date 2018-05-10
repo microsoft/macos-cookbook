@@ -81,12 +81,7 @@ describe MacOS::System::ScreenSaver do
     it 'returns disabled? as false' do
       idleTime = '10'
 
-      expect(MacOS::System::ScreenSaver.disabled?('vagrant', idleTime)).to eq false
-    end
-    
-    xit 'returns a defaults read command' do
-      screen = MacOS::System::ScreenSaver.new('vagrant')
-      expect(screen.query('read').command).to eq ['defaults', '-currentHost', 'read', 'com.apple.screensaver', 'idleTime']
+      expect(MacOS::System::ScreenSaver.disabled?(idleTime)).to eq false
     end
   end
 
@@ -97,10 +92,14 @@ describe MacOS::System::ScreenSaver do
     end
   end
 
-  context 'when idleTime is 0 and its type is integer' do
+  context 'when idleTime is 0' do
     before do
-      allow_any_instance_of(MacOS::System::ScreenSaver).to receive(:settings)
-        .and_return(true)
+    end
+
+    it 'returns disabled? as true' do
+      idleTime = '0'
+
+      expect(MacOS::System::ScreenSaver.disabled?(idleTime)).to eq true
     end
 
     xit 'screensaver is disabled' do

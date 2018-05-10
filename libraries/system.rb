@@ -37,15 +37,15 @@ module MacOS
         @user = user
       end
 
-      def self.disabled?(user, idle_time)
-        return false
+      def self.disabled?(idle_time)
+        return idle_time.to_i == 0
       end
 
-      def settings(query_type, expected_value)
-        regex_value = query_type == 'read' ? "/^[#{expected_value}]+$/" : expected_value
-        expression_pattern = Regexp.new(regex_value)
-        query(query_type).stdout.chomp.match?(expression_pattern)
-      end
+      #def settings(query_type, expected_value)
+        #regex_value = query_type == 'read' ? "/^[#{expected_value}]+$/" : expected_value
+        #expression_pattern = Regexp.new(regex_value)
+        #query(query_type).stdout.chomp.match?(expression_pattern)
+      #end
 
       def query(query_type)
         shell_out('defaults', '-currentHost', query_type, 'com.apple.screensaver', 'idleTime',
