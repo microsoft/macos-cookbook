@@ -10,7 +10,7 @@ property :groups, [Array, String]
 
 action_class do
   def user_home
-    ::File.join('/Users', new_resource.username)
+    ::File.join('/', 'Users', new_resource.username)
   end
 
   def setup_assistant_plist
