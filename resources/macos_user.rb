@@ -18,9 +18,12 @@ action_class do
   end
 
   def setup_assistant_keypair_values
-    { 'DidSeeSiriSetup' => true,
-      'DidSeeCloudSetup' => true,
-      'LastSeenCloudProductVersion' => node['platform_version'] }
+    { 'DidSeeCloudSetup' => true,
+      'DidSeeSiriSetup' => true,
+      'DidSeePrivacy' => true,
+      'LastSeenCloudProductVersion' => node['platform_version'],
+      'LastSeenBuddyBuildVersion' => node['platform_build'],
+    }
   end
 
   def sysadminctl
