@@ -14,7 +14,7 @@ action_class do
   end
 
   def setup_assistant_plist
-    ::File.join(user_home, '/Library/Preferences/com.apple.SetupAssistant.plist')
+    ::File.join(user_home, 'Library', 'Preferences', 'com.apple.SetupAssistant.plist')
   end
 
   def setup_assistant_keypair_values
