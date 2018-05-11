@@ -5,7 +5,6 @@ driver:
 
 provisioner:
   product_name: chef
-  install_strategy: always
 
 verifier:
   name: inspec
