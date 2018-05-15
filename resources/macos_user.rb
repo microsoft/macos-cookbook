@@ -10,17 +10,30 @@ property :groups, [Array, String]
 
 action_class do
   def user_home
-    ::File.join('/Users', new_resource.username)
+    ::File.join('/', 'Users', new_resource.username)
   end
 
   def setup_assistant_plist
-    ::File.join(user_home, '/Library/Preferences/com.apple.SetupAssistant.plist')
+    ::File.join(user_home, 'Library', 'Preferences', 'com.apple.SetupAssistant.plist')
+  end
+
+  def login_window_plist
+    ::File.join('/', 'Library', 'Preferences', 'com.apple.loginwindow.plist')
   end
 
   def setup_assistant_keypair_values
-    { 'DidSeeSiriSetup' => true,
-      'DidSeeCloudSetup' => true,
-      'LastSeenCloudProductVersion' => node['platform_version'] }
+    { 'DidSeeCloudSetup' => true,
+      'DidSeeSiriSetup' => true,
+      'DidSeePrivacy' => true,
+      'LastSeenCloudProductVersion' => node['platform_version'],
+      'LastSeenBuddyBuildVersion' => node['platform_build'],
+    }
+  end
+
+  def login_window_keypair_values
+    { 'autoLoginUser' => new_resource.username,
+      'lastUser' => 'loggedIn',
+    }
   end
 
   def sysadminctl
@@ -65,10 +78,11 @@ action :create do
       end
     end
 
-    plist "set user \"#{new_resource.username}\" to login automatically" do
-      path '/Library/Preferences/com.apple.loginwindow.plist'
-      entry 'autoLoginUser'
-      value new_resource.username
+    login_window_keypair_values.each do |e, v|
+      plist login_window_plist do
+        entry e
+        value v
+      end
     end
 
     file '/etc/kcpassword' do
