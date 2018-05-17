@@ -29,29 +29,6 @@ module MacOS
         @virtualization_systems.empty? || @virtualization_systems.values.include?('guest') ? true : false
       end
     end
-
-    class ScreenSaver
-      attr_reader :user
-
-      def initialize(user)
-        @user = user
-      end
-
-      def self.disabled?(idle_time)
-        return idle_time.to_i == 0
-      end
-
-      #def settings(query_type, expected_value)
-        #regex_value = query_type == 'read' ? "/^[#{expected_value}]+$/" : expected_value
-        #expression_pattern = Regexp.new(regex_value)
-        #query(query_type).stdout.chomp.match?(expression_pattern)
-      #end
-
-      def query(query_type)
-        shell_out('defaults', '-currentHost', query_type, 'com.apple.screensaver', 'idleTime',
-        user: @user)
-      end
-    end
   end
 end
 

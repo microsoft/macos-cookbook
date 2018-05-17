@@ -1,6 +1,5 @@
 form_factor = MacOS::System::FormFactor.new(node['hardware'])
 environment = MacOS::System::Environment.new(node['virtualization']['systems'])
-screensaver = MacOS::System::ScreenSaver.new(node['macos']['admin_user'])
 
 system_preference 'disable computer sleep' do
   preference :computersleep
@@ -67,6 +66,5 @@ end
 defaults 'com.apple.screensaver' do
   option '-currentHost write'
   settings 'idleTime' => 0
-  not_if { screensaver.disabled? }
   user node['macos']['admin_user']
 end
