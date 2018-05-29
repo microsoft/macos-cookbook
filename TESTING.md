@@ -3,6 +3,7 @@
 - [Syntax and style](#syntax-and-style)
 - [Unit tests](#unit-tests)
 - [Integration tests](#integration-tests)
+- [Rake Tasks](#rake-tasks)
 
 ## Syntax and style
 
@@ -149,3 +150,11 @@ can take a while to run - some of our builds end up being 30-40 minutes per oper
 system. If you've got the hardware, don't be afraid to run
 `kitchen test --concurrency n` to save a little time (where `n` is the number of concurrent
 instances you want to boot up).
+
+## Rake Tasks
+
+Included are some convenient rake tasks for running particular batteries of tests. Just run `rake` to see a list of tasks available.
+
+### Continuous testing with guard
+
+We've included a Guardfile custom-tailored to run the appropriate unit tests whenever a file is modified. To get started, simply `bundle install && rake test:guard` and watch the appropriate tests run automatically as you edit source files!
