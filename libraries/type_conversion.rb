@@ -1,5 +1,5 @@
 module TypeConversion
-  class Converter
+  class TypeConverter
     def self.to_string_from_native(value)
       "#{data_type_cases[value.class]} #{value}"
     end

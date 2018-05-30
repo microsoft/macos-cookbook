@@ -10,7 +10,7 @@ require_relative '../libraries/xcode'
 require_relative '../libraries/xcversion'
 require_relative '../libraries/command_line_tools'
 require_relative '../libraries/security_cmd'
-require_relative '../libraries/type_converter'
+require_relative '../libraries/type_conversion'
 
 RSpec.configure do |config|
   config.platform = 'mac_os_x'
