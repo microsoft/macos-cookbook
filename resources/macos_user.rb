@@ -119,8 +119,8 @@ action :delete do
     only_if { ::File.exist? user_home }
   end
 
-  execute "delete user: #{user}" do
-    command "#{sysadminctl} -deleteUser #{new_resource.username}"
+  execute "delete user: #{new_resource.username}" do
+    command [sysadminctl, '-deleteUser', new_resource.username]
     only_if { user_already_exists? }
   end
 end
