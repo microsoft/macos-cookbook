@@ -115,6 +115,13 @@ suites:
     - admin-user
     - standard-user
 
+- name: delete_users
+  run_list:
+  - recipe[macos_test::delete_users]
+  verifier:
+    controls:
+    - test-user
+
 - name: keychain
   run_list:
   - recipe[macos_test::keychain]
