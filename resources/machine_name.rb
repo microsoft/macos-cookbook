@@ -1,6 +1,6 @@
 resource_name :machine_name
 
-property :hostname, String, desired_state: true, coerce: proc { |name| conform_to_dns_standards(name) }, required: true, name_property: true
+property :hostname, String, desired_state: true, coerce: proc { |name| conform_to_dns_standards(name) }, name_property: true
 property :computer_name, String, desired_state: true
 property :local_hostname, String, desired_state: true, coerce: proc { |name| conform_to_dns_standards(name) }
 property :dns_domain, String, desired_state: false

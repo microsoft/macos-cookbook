@@ -18,9 +18,23 @@ control 'admin-user' do
     its('stdout.split') { should include '80' }
   end
 
-  describe command("/usr/libexec/PlistBuddy -c 'Print :autoLoginUser' /Library/Preferences/com.apple.loginwindow.plist") do
-    its('exit_status') { should eq 0 }
-    its('stdout.chomp') { should eq 'randall' }
+  setup_assistant_keypair_values = { 'autoLoginUser' => 'randall',
+                                     'lastUser' => 'loggedIn',
+                                   }
+  setup_assistant_keypair_values.each do |key, expected_value|
+    describe command("/usr/libexec/Plistbuddy -c 'Print #{key}' /Library/Preferences/com.apple.loginwindow.plist") do
+      its('stdout.chomp') { should eq expected_value }
+    end
+  end
+
+  login_window_keypair_values = { 'DidSeeCloudSetup' => true,
+                                  'DidSeeSiriSetup' => true,
+                                  'DidSeePrivacy' => true,
+                                }
+  login_window_keypair_values.each do |key, expected_value|
+    describe command("/usr/libexec/Plistbuddy -c 'Print #{key}' /Users/randall/Library/Preferences/com.apple.SetupAssistant.plist") do
+      its('stdout.chomp') { should eq expected_value.to_s }
+    end
   end
 
   describe groups.where { name == 'admin' } do
