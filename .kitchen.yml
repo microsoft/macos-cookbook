@@ -5,7 +5,6 @@ driver:
 
 provisioner:
   product_name: chef
-  install_strategy: always
 
 verifier:
   name: inspec
@@ -16,37 +15,37 @@ verifier:
 platforms:
 - name: el-capitan-chef13
   driver:
-    box: apex/macos-10.11.6
+    box: microsoft/os-x-el-capitan
   provisioner:
     product_version: 13
 
 - name: el-capitan-chef14
   driver:
-    box: apex/macos-10.11.6
+    box: microsoft/os-x-el-capitan
   provisioner:
     product_version: 14
 
 - name: sierra-chef13
   driver:
-    box: apex/macos-10.12.6
+    box: microsoft/macos-sierra
   provisioner:
     product_version: 13
 
 - name: sierra-chef14
   driver:
-    box: apex/macos-10.12.6
+    box: microsoft/macos-sierra
   provisioner:
     product_version: 14
 
 - name: high-sierra-chef13
   driver:
-    box: apex/macos-10.13.4
+    box: microsoft/macos-high-sierra
   provisioner:
     product_version: 13
 
 - name: high-sierra-chef14
   driver:
-    box: apex/macos-10.13.4
+    box: microsoft/macos-high-sierra
   provisioner:
     product_version: 14
 
