@@ -7,10 +7,19 @@ property :autologin, [TrueClass]
 property :admin, [TrueClass]
 property :fullname, String
 property :groups, [Array, String]
+property :hidden, [TrueClass]
 
 action_class do
   def user_home
     ::File.join('/', 'Users', new_resource.username)
+  end
+
+  def user_hidden_home
+    ::File.join('/', 'var', new_resource.username)
+  end
+
+  def user_sharepoints
+    ::File.join('/', 'SharePoints', new_resource.username)
   end
 
   def setup_assistant_plist
@@ -38,6 +47,10 @@ action_class do
 
   def sysadminctl
     '/usr/sbin/sysadminctl'
+  end
+
+  def dscl
+    '/usr/bin/dscl'
   end
 
   def user_fullname
@@ -69,6 +82,28 @@ action :create do
   end
 
   sleep(0.5)
+
+  if new_resource.property_is_set?(:hidden)
+    execute "hide user #{new_resource.username}" do
+      command [dscl, '.', 'create', user_home, 'IsHidden', '1']
+      only_if { ::File.exist?(user_home) }
+    end
+
+    execute "hide user #{new_resource.username} home directory #{user_home}" do
+      command ['mv', user_home, user_hidden_home]
+      only_if { ::File.exist?(user_home) }
+    end
+
+    execute 'update user record' do
+      command [dscl, '.', 'create', user_home, 'NFSHomeDirectory', user_hidden_home]
+      only_if { ::File.exist?(user_hidden_home) && ::File.exist?(user_home) }
+    end
+
+    execute 'remove Public Folder share point' do
+      command [dscl, '.', 'delete', user_sharepoints]
+      only_if { ::File.exist?(user_sharepoints) }
+    end
+  end
 
   if new_resource.property_is_set?(:autologin)
     setup_assistant_keypair_values.each do |e, v|
