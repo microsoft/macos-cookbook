@@ -114,6 +114,7 @@ suites:
     controls:
     - admin-user
     - standard-user
+    - hidden-user
 
 - name: keychain
   run_list:
