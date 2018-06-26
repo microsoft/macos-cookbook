@@ -85,3 +85,12 @@ control 'standard-user' do
     its('stdout.split') { should_not include '80' }
   end
 end
+
+control 'test-user' do
+  title 'Checks that a user does not exist'
+  desc 'Given a previously added user, check that its deletion results in user no longer being in existence.'
+
+  describe user('test_user').exists? do
+    it { should eq false }
+  end
+end
