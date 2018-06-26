@@ -1,23 +1,13 @@
-if node['platform_version'].match?(/10.13/)
-  execute 'create test disk collection on APFS' do
-    command ['diskutil', 'apfs', 'resizeContainer',
-             'disk0s2', '25g',
-             'jhfs+', 'test_disk1', '1G',
-             'jhfs+', 'TDD2', '1G',
-             'jhfs+', 'Macintosh TD', '1G',
-             'jhfs+', 'TDD-ROM', '700MB']
-    not_if ['ls', '/Volumes/test_disk1']
-  end
+test_file = 'test.txt'
+test_volumes = ['test_disk1', 'TDD2', 'Macintosh TD', 'TDD-ROM']
 
-else
+file test_file
+test_volumes.each do |volume|
   execute 'create test disk collection on HFS' do
-    command ['diskutil', 'resizeVolume',
-             'disk0s2', '25g',
-             'jhfs+', 'test_disk1', '1G',
-             'jhfs+', 'TDD2', '1G',
-             'jhfs+', 'Macintosh TD', '1G',
-             'jhfs+', 'TDD-ROM', '700MB']
-    not_if ['ls', '/Volumes/test_disk1']
+    command ['hdiutil', 'create', "#{volume}.dmg",
+             '-size', '1g', '-format', 'UDRW',
+             '-volname', volume, '-srcfolder', test_file,
+             '-ov', '-attach']
   end
 end
 
