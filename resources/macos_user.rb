@@ -7,7 +7,7 @@ property :autologin, [TrueClass]
 property :admin, [TrueClass]
 property :fullname, String
 property :groups, [Array, String]
-property :hidden, [TrueClass]
+property :hidden, [true, false], default: false
 
 action_class do
   def user_home
@@ -83,15 +83,21 @@ action :create do
 
   sleep(0.5)
 
-  if new_resource.property_is_set?(:hidden)
+  if new_resource.hidden == true
     execute "hide user #{new_resource.username}" do
-      command [dscl, '.', 'create', user_home, 'IsHidden', '1']
-      only_if { ::File.exist?(user_home) }
+      key = 'IsHidden'
+      desired_value = '1'
+      read_command = shell_out(dscl, '.', 'read', user_home, key)
+      current_value = read_command.stdout.empty? ? 0 : read_command.stdout.split(':').last.strip
+      command [dscl, '.', 'create', user_home, key, desired_value]
+      not_if { current_value.eql? desired_value }
     end
 
-    execute "hide user #{new_resource.username} home directory #{user_home}" do
-      command ['mv', user_home, user_hidden_home]
-      only_if { ::File.exist?(user_home) }
+    ruby_block "hide user #{new_resource.username} home directory #{user_home}" do
+      block do
+        FileUtils.mkdir_p user_hidden_home
+        FileUtils.cp_r(Dir[user_home.to_s], Dir[user_hidden_home.to_s])
+      end
     end
 
     execute 'update user record' do

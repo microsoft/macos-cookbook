@@ -92,7 +92,7 @@ control 'hidden-user' do
 
   describe user('griffin') do
     it { should exist }
-    its('home') { should eq '/Users/griffin' }
+    its('home') { should eq '/var/griffin' }
   end
 
   describe command("/usr/libexec/Plistbuddy -c 'Print IsHidden' /var/db/dslocal/nodes/Default/users/griffin.plist") do
