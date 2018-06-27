@@ -7,10 +7,19 @@ property :autologin, [TrueClass]
 property :admin, [TrueClass]
 property :fullname, String
 property :groups, [Array, String]
+property :hidden, [true, false], default: false
 
 action_class do
   def user_home
     ::File.join('/', 'Users', new_resource.username)
+  end
+
+  def user_hidden_home
+    ::File.join('/', 'var', new_resource.username)
+  end
+
+  def user_sharepoints
+    ::File.join('/', 'SharePoints', new_resource.username)
   end
 
   def setup_assistant_plist
@@ -38,6 +47,10 @@ action_class do
 
   def sysadminctl
     '/usr/sbin/sysadminctl'
+  end
+
+  def dscl
+    '/usr/bin/dscl'
   end
 
   def user_fullname
@@ -69,6 +82,34 @@ action :create do
   end
 
   sleep(0.5)
+
+  if new_resource.hidden == true
+    execute "hide user #{new_resource.username}" do
+      key = 'IsHidden'
+      desired_value = '1'
+      read_command = shell_out(dscl, '.', 'read', user_home, key)
+      current_value = read_command.stdout.empty? ? 0 : read_command.stdout.split(':').last.strip
+      command [dscl, '.', 'create', user_home, key, desired_value]
+      not_if { current_value.eql? desired_value }
+    end
+
+    ruby_block "hide user #{new_resource.username} home directory #{user_home}" do
+      block do
+        FileUtils.mkdir_p user_hidden_home
+        FileUtils.cp_r(Dir[user_home.to_s], Dir[user_hidden_home.to_s])
+      end
+    end
+
+    execute 'update user record' do
+      command [dscl, '.', 'create', user_home, 'NFSHomeDirectory', user_hidden_home]
+      only_if { ::File.exist?(user_hidden_home) && ::File.exist?(user_home) }
+    end
+
+    execute 'remove Public Folder share point' do
+      command [dscl, '.', 'delete', user_sharepoints]
+      only_if { ::File.exist?(user_sharepoints) }
+    end
+  end
 
   if new_resource.property_is_set?(:autologin)
     setup_assistant_keypair_values.each do |e, v|
