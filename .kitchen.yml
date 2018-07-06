@@ -9,6 +9,9 @@ provisioner:
 verifier:
   name: inspec
   sudo: true
+  format:
+  - cli
+  - junit:/tmp/inspec.xml
   inspec_tests:
   - test/integration/default
 
@@ -119,6 +122,14 @@ suites:
     controls:
     - admin-user
     - standard-user
+    - hidden-user
+
+- name: delete_users
+  run_list:
+  - recipe[macos_test::delete_users]
+  verifier:
+    controls:
+    - test-user
 
 - name: keychain
   run_list:

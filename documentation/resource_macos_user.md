@@ -17,6 +17,7 @@ macos_user 'user and action description' do
   password             String          # password for user, defaults to "password" if not specified
   autologin            TrueClass       # user autologin
   admin                TrueClass       # admin status of user
+  hidden               TrueClass       # hidden status of user
   fullname             String          # full name of user
   groups               Array, String   # list of groups the user is in
 end
