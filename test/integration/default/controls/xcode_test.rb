@@ -15,7 +15,7 @@ control 'xcode-and-simulators' do
   end
 
   if macos_version.match? Regexp.union '10.13'
-    describe directory('/Applications/Xcode-9.3.app') do
+    describe directory('/Applications/Xcode-9.4.1.app') do
       it { should exist }
     end
 
@@ -51,7 +51,7 @@ control 'xcode-beta' do
   macos_version = command('/usr/bin/sw_vers -productVersion').stdout.strip
 
   if macos_version.match? Regexp.union '10.13'
-    describe directory('/Applications/Xcode-9.4.app') do
+    describe directory('/Applications/Xcode-10.app') do
       it { should exist }
     end
   end

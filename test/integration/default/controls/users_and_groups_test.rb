@@ -85,3 +85,30 @@ control 'standard-user' do
     its('stdout.split') { should_not include '80' }
   end
 end
+
+control 'hidden-user' do
+  title 'added as a hidden user'
+  desc 'Verify that a standard user is hidden'
+
+  describe user('griffin') do
+    it { should exist }
+    its('home') { should eq '/var/griffin' }
+  end
+
+  describe command("/usr/libexec/Plistbuddy -c 'Print IsHidden' /var/db/dslocal/nodes/Default/users/griffin.plist") do
+    its('stdout') { should match(/1/) }
+  end
+
+  describe directory('/var/griffin') do
+    it { should exist }
+  end
+end
+
+control 'test-user' do
+  title 'Checks that a user does not exist'
+  desc 'Given a previously added user, check that its deletion results in user no longer being in existence.'
+
+  describe user('test_user').exists? do
+    it { should eq false }
+  end
+end

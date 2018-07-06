@@ -1,7 +1,7 @@
 default['macos']['admin_user'] = 'vagrant'
 default['macos']['admin_password'] = 'vagrant'
 
-default['macos']['xcode']['version'] = '9.3'
+default['macos']['xcode']['version'] = '9.4.1'
 
 default['macos']['remote_login_enabled'] = true
 

@@ -5,48 +5,56 @@ driver:
 
 provisioner:
   product_name: chef
-  install_strategy: always
 
 verifier:
   name: inspec
   sudo: true
+  format:
+  - cli
+  - junit:/tmp/inspec.xml
   inspec_tests:
   - test/integration/default
 
 platforms:
 - name: el-capitan-chef13
   driver:
-    box: apex/macos-10.11.6
+    box: microsoft/os-x-el-capitan
+    version: 10.11.6
   provisioner:
     product_version: 13
 
 - name: el-capitan-chef14
   driver:
-    box: apex/macos-10.11.6
+    box: microsoft/os-x-el-capitan
+    version: 10.11.6
   provisioner:
     product_version: 14
 
 - name: sierra-chef13
   driver:
-    box: apex/macos-10.12.6
+    box: microsoft/macos-sierra
+    version: 10.12.6
   provisioner:
     product_version: 13
 
 - name: sierra-chef14
   driver:
-    box: apex/macos-10.12.6
+    box: microsoft/macos-sierra
+    version: 10.12.6
   provisioner:
     product_version: 14
 
 - name: high-sierra-chef13
   driver:
-    box: apex/macos-10.13.4
+    box: microsoft/macos-high-sierra
+    version: 10.13.5
   provisioner:
     product_version: 13
 
 - name: high-sierra-chef14
   driver:
-    box: apex/macos-10.13.4
+    box: microsoft/macos-high-sierra
+    version: 10.13.5
   provisioner:
     product_version: 14
 
@@ -114,6 +122,14 @@ suites:
     controls:
     - admin-user
     - standard-user
+    - hidden-user
+
+- name: delete_users
+  run_list:
+  - recipe[macos_test::delete_users]
+  verifier:
+    controls:
+    - test-user
 
 - name: keychain
   run_list:
