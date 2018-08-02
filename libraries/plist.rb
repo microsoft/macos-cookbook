@@ -54,12 +54,6 @@ module MacOS
       cmd.exitstatus == 0
     end
 
-    def hardware_uuid
-      system_profiler_hardware_output = shell_out('system_profiler', 'SPHardwareDataType').stdout
-      hardware_overview = Psych.load(system_profiler_hardware_output)['Hardware']['Hardware Overview']
-      hardware_overview['Hardware UUID']
-    end
-
     def plistbuddy_command(subcommand, entry, path, value = nil)
       arg = case subcommand.to_s
             when 'add'

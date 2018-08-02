@@ -53,9 +53,19 @@ module MacOS
         user: @user)
       end
     end
+
+    class Hardware
+      class << self
+        def uuid
+          system_profiler_hardware_output = shell_out('system_profiler', 'SPHardwareDataType').stdout
+          hardware_overview = Psych.load(system_profiler_hardware_output)['Hardware']['Hardware Overview']
+          hardware_overview['Hardware UUID']
+        end
+      end
+    end
   end
 end
 
-Chef::Recipe.include(MacOS::System)
-Chef::Resource.include(MacOS::System)
-Chef::DSL::Recipe.include(MacOS::System)
+Chef::Recipe.include MacOS::System
+Chef::Resource.include MacOS::System
+Chef::DSL::Recipe.include MacOS::System
