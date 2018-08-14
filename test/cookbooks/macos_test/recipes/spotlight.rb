@@ -11,6 +11,10 @@ test_volumes.each do |volume|
   end
 end
 
+execute 'test' do
+  command ['sudo', 'launchctl', 'unload', '-w', '/System/Library/LaunchDaemons/com.apple.metadata.mds.plist']
+end
+
 spotlight '/'
 
 spotlight 'test_disk1' do
