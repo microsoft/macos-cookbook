@@ -56,4 +56,15 @@ describe MacOS::MetadataUtil do
       expect(md.status_flags).to eq ['off', '/Volumes/TDD-ROM', '-d']
     end
   end
+
+  context 'when the Spotlight server is disabled' do
+    before do
+      allow_any_instance_of(MacOS::MetadataUtil).to receive(:volume_current_state)
+        .and_return('Spotlight server is disabled.')
+    end
+    it 'returns an array containing the mdutil flags matching that state' do
+      md = MacOS::MetadataUtil.new('/')
+      expect(md.status_flags).to eq ['dis', '/', 'dis']
+    end
+  end
 end
