@@ -13,8 +13,12 @@ module MacOS
                       .insert(1, volume)
     end
 
+    def mdutil_output(volume)
+      shell_out('/usr/bin/mdutil', '-s', volume).stdout
+    end
+
     def volume_current_state(volume)
-      shell_out('/usr/bin/mdutil', '-s', volume).stdout.split(':')[1].strip
+      mdutil_output(volume).split(':')[1].strip
     end
   end
 end
