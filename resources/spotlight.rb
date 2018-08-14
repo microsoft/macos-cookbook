@@ -32,8 +32,14 @@ action_class do
 end
 
 action :set do
+  volume = MetadataUtil.new(target_volume)
+
+  execute 'Enable Spotlight server' do
+    command volume.toggle_spotlight_server(true)
+    only_if { volume.server_disabled?(target_volume) }
+  end
+
   execute "turn Spotlight indexing #{state} for #{target_volume}" do
-    volume = MetadataUtil.new(target_volume)
     command mdutil + desired_spotlight_state.insert(0, '-i')
     not_if { volume.status_flags == desired_spotlight_state }
   end
