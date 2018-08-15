@@ -36,7 +36,7 @@ action :set do
 
   execute 'Enable Spotlight server' do
     command volume.toggle_spotlight_server(true)
-    only_if { volume.server_disabled?(target_volume) }
+    only_if { volume.server_disabled? }
   end
 
   execute "turn Spotlight indexing #{state} for #{target_volume}" do
