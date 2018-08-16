@@ -103,7 +103,7 @@ Resources
 
 - [ARD (Apple Remote Desktop)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_ard.md)
 - [Certificate (security)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_certificate.md)
-- [Keychain (security)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/keychain_certificate.md)
+- [Keychain (security)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_keychain.md)
 - [Machine Name](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_machine_name.md)
 - [macOS User (sysadminctl)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_macos_user.md)
 - [Plist](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_plist.md)
