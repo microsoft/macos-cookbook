@@ -35,6 +35,21 @@ action :install_xcode do
     not_if { xcode.installed? }
     timeout 7200
   end
+
+  link 'delete symlink created by xcversion gem' do
+    target_file '/Applications/Xcode.app'
+    action :delete
+    only_if 'test -L /Applications/Xcode.app'
+  end
+
+  execute "move #{xcode.path} to #{new_resource.path}" do
+    command ['mv', xcode.path, new_resource.path]
+    not_if { xcode.path == new_resource.path }
+  end
+
+  execute "switch active Xcode to #{new_resource.path}" do
+    command ['xcode-select', '--switch', new_resource.path]
+  end
 end
 
 action :install_simulators do

@@ -4,6 +4,7 @@ module MacOS
   class Xcode
     attr_reader :version
     attr_reader :credentials
+    attr_reader :apple_version
 
     def initialize(semantic_version, data_bag_retrieval = nil, node_credential_attributes = nil)
       developer_id = find_apple_id(data_bag_retrieval, node_credential_attributes)
@@ -12,12 +13,12 @@ module MacOS
       authenticate_with_apple(@credentials)
 
       @semantic_version = semantic_version
-      apple_version = Xcode::Version.new(@semantic_version).apple_version
-      @version = available_versions_list[xcode_index(apple_version)].strip
+      @apple_version = Xcode::Version.new(@semantic_version).apple
+      @version = available_versions_list[xcode_index(@apple_version)].strip
     end
 
-    def xcode_index(xcode_version)
-      available_xcodes.index { |xcode| xcode.apple_version == xcode_version }
+    def xcode_index(version)
+      available_xcodes.index { |available_version| available_version.apple == version }
     end
 
     def available_versions_list
@@ -28,9 +29,18 @@ module MacOS
       available_versions_list.map { |v| Xcode::Version.new v.split.first }
     end
 
+    def path_hash
+      xcversion_output = shell_out(XCVersion.installed_xcodes).stdout.lines
+      xcode_paths = xcversion_output.map { |line| { line.split.first => line.split.last.delete('()') } }
+      xcode_paths.find { |path| path[@semantic_version] }
+    end
+
+    def path
+      path_hash[@semantic_version]
+    end
+
     def installed?
-      xcversion_output = shell_out(XCVersion.installed_xcodes).stdout.split
-      xcversion_output.include?(@semantic_version)
+      path_hash.any?
     end
 
     def authenticate_with_apple(credentials)
@@ -116,7 +126,7 @@ module MacOS
         patch != 0
       end
 
-      def apple_version
+      def apple
         if major_release?
           major
         else
