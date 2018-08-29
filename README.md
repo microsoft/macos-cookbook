@@ -58,11 +58,14 @@ to always keep macOS on and available.
 
 **Usage:** `include_recipe 'macos::keep_awake'`
 
-| Attributes used                         | Default value           |
-|-----------------------------------------|-------------------------|
-| `node['macos']['remote_login_enabled']` | `true`                  |
-| `node['macos']['network_time_server']`  | `'time.windows.com'`    |
-| `node['macos']['time_zone']`            | `'America/Los_Angeles'` |
+| Attributes used                            | Default value           |
+|--------------------------------------------|-------------------------|
+| `node['macos']['remote_login_enabled']`    | `true`                  |
+| `node['macos']['vnc_screen_lock_enabled']` | `true`                  |
+| `node['macos']['network_time_server']`     | `'time.windows.com'`    |
+| `node['macos']['time_zone']`               | `'America/Los_Angeles'` |
+
+:warning: Disabling VNC screen lock could be considered a security risk at some organizations. Use with caution.
 
 ### Xcode
 

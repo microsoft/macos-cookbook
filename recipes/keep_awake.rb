@@ -70,3 +70,8 @@ defaults 'com.apple.screensaver' do
   not_if { screensaver.disabled? }
   user node['macos']['admin_user']
 end
+
+defaults 'disable VNC screen lock' do
+  domain '/Library/Preferences/com.apple.RemoteManagement'
+  settings 'RestoreMachineState' => !node['macos']['vnc_screen_lock_enabled']
+end
