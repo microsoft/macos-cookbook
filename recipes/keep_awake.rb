@@ -73,5 +73,5 @@ end
 
 defaults 'disable VNC screen lock' do
   domain '/Library/Preferences/com.apple.RemoteManagement'
-  settings 'RestoreMachineState' => node['macos']['vnc_screen_lock_enabled']
+  settings 'RestoreMachineState' => !node['macos']['vnc_screen_lock_enabled']
 end
