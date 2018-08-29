@@ -61,7 +61,7 @@ to always keep macOS on and available.
 | Attributes used                            | Default value           |
 |--------------------------------------------|-------------------------|
 | `node['macos']['remote_login_enabled']`    | `true`                  |
-| `node['macos']['disable_vnc_screen_lock']` | `false`                 |
+| `node['macos']['vnc_screen_lock_enabled']` | `true`                  |
 | `node['macos']['network_time_server']`     | `'time.windows.com'`    |
 | `node['macos']['time_zone']`               | `'America/Los_Angeles'` |
 
