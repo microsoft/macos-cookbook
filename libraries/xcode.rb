@@ -29,18 +29,23 @@ module MacOS
       available_versions_list.map { |v| Xcode::Version.new v.split.first }
     end
 
-    def version_path_map
-      xcversion_output = shell_out(XCVersion.installed_xcodes).stdout.lines
-      xcode_paths = xcversion_output.map { |line| { line.split.first => line.split.last.delete('()') } }
+    def installed_xcodes
+      shell_out(XCVersion.installed_xcodes).stdout.lines
+    end
+
+    def version_path
+      xcode_paths = installed_xcodes.map { |line| { line.split.first => line.split.last.delete('()') } }
       xcode_paths.find { |path| path[@semantic_version] }
     end
 
     def path
-      version_path_map[@semantic_version]
+      return "/Applications/Xcode-#{@apple_version}.app" if version_path.nil?
+      version_path[@semantic_version]
     end
 
     def installed?
-      version_path_map.any?
+      return false if version_path.nil?
+      version_path.any?
     end
 
     def authenticate_with_apple(credentials)
