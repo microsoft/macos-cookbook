@@ -106,7 +106,7 @@ suites:
   - recipe[macos_test::xcode_beta]
   verifier:
     controls:
-    - xcode-beta
+    - xcode-and-simulators
 
 - name: certificate
   run_list:
