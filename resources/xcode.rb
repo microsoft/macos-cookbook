@@ -1,15 +1,17 @@
 resource_name :xcode
-default_action %i(setup install_xcode install_simulators)
+default_action %i(install_gem install_xcode install_simulators)
 
 property :version, String, name_property: true
 property :path, String, default: '/Applications/Xcode.app'
 property :ios_simulators, Array
 
-action :setup do
+action :install_gem do
+  command_line_tools = CommandLineTools.new
+
   execute 'install Command Line Tools' do
-    command lazy { ['softwareupdate', '--install', CommandLineTools.new.product] }
+    command lazy { ['softwareupdate', '--install', command_line_tools.version] }
     notifies :create, 'file[sentinel to request on-demand install]', :before
-    not_if { ::File.exist?('/Library/Developer/CommandLineTools/usr/lib/libxcrun.dylib') }
+    not_if { command_line_tools.installed? }
     live_stream true
   end
 

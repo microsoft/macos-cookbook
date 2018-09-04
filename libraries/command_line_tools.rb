@@ -2,10 +2,10 @@ include Chef::Mixin::ShellOut
 
 module MacOS
   class CommandLineTools
-    attr_reader :product
+    attr_reader :version
 
     def initialize
-      @product = if available_command_line_tools.empty?
+      @version = if available_command_line_tools.empty?
                    'none'
                  else
                    available_command_line_tools.last.tr('*', '').strip
@@ -18,6 +18,10 @@ module MacOS
 
     def available_products
       shell_out(['softwareupdate', '--list']).stdout
+    end
+
+    def installed?
+      ::File.exist?('/Library/Developer/CommandLineTools/usr/lib/libxcrun.dylib')
     end
   end
 end

@@ -73,8 +73,8 @@ describe 'xcode' do
     before(:each) do
       allow_any_instance_of(MacOS::Xcode).to receive(:installed_xcodes)
         .and_return([])
-      allow(File).to receive(:exist?).with('/Library/Developer/CommandLineTools/usr/lib/libxcrun.dylib')
-                                     .and_return(false)
+      allow_any_instance_of(MacOS::CommandLineTools).to receive(:installed?)
+        .and_return(false)
       stub_command('test -L /Applications/Xcode.app').and_return(true)
     end
 
@@ -100,8 +100,8 @@ describe 'xcode' do
     before(:each) do
       allow_any_instance_of(MacOS::Xcode).to receive(:installed_xcodes)
         .and_return([])
-      allow(File).to receive(:exist?).with('/Library/Developer/CommandLineTools/usr/lib/libxcrun.dylib')
-                                     .and_return(true)
+      allow_any_instance_of(MacOS::CommandLineTools).to receive(:installed?)
+        .and_return(true)
       stub_command('test -L /Applications/Xcode.app').and_return(true)
     end
 
@@ -123,8 +123,8 @@ describe 'xcode' do
     before(:each) do
       allow_any_instance_of(MacOS::Xcode).to receive(:installed_xcodes)
         .and_return(["9.4.1\t(/Applications/Xcode.app)\t\n"])
-      allow(File).to receive(:exist?).with('/Library/Developer/CommandLineTools/usr/lib/libxcrun.dylib')
-                                     .and_return(true)
+      allow_any_instance_of(MacOS::CommandLineTools).to receive(:installed?)
+        .and_return(true)
       stub_command('test -L /Applications/Xcode.app').and_return(false)
     end
 
@@ -146,8 +146,8 @@ describe 'xcode' do
     before(:each) do
       allow_any_instance_of(MacOS::Xcode).to receive(:installed_xcodes)
         .and_return(["9.4.1\t(/Applications/Some_Weird_Path.app)\t\n"])
-      allow(File).to receive(:exist?).with('/Library/Developer/CommandLineTools/usr/lib/libxcrun.dylib')
-                                     .and_return(true)
+      allow_any_instance_of(MacOS::CommandLineTools).to receive(:installed?)
+        .and_return(true)
       stub_command('test -L /Applications/Xcode.app').and_return(false)
     end
 
@@ -171,8 +171,8 @@ describe 'xcode' do
     before(:each) do
       allow_any_instance_of(MacOS::Xcode).to receive(:installed_xcodes)
         .and_return(["9.3\t(/Applications/Xcode.app)\t\n"])
-      allow(File).to receive(:exist?).with('/Library/Developer/CommandLineTools/usr/lib/libxcrun.dylib')
-                                     .and_return(false)
+      allow_any_instance_of(MacOS::CommandLineTools).to receive(:installed?)
+        .and_return(false)
       stub_command('test -L /Applications/Xcode.app').and_return(true)
     end
 
