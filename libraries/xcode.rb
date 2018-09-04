@@ -1,7 +1,5 @@
-require_relative '../libraries/xcversion'
-
 include Chef::Mixin::ShellOut
-include MacOS::XCVersion
+include MacOS
 
 module MacOS
   class Xcode
