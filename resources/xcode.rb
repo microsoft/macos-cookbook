@@ -27,13 +27,14 @@ action :install_gem do
 end
 
 action :install_xcode do
-  xcode = Xcode.new(new_resource.version,
-    -> { data_bag_item(:credentials, :apple_id) },
-    node['macos']['apple_id'])
+  developer = DeveloperAccount.new(-> { data_bag_item(:credentials, :apple_id) },
+                                    node['macos']['apple_id'])
+
+  xcode = Xcode.new(new_resource.version, new_resource.path)
 
   execute "install Xcode #{xcode.version}" do
     command XCVersion.install_xcode(xcode)
-    environment xcode.credentials
+    environment developer.credentials
     not_if { xcode.installed? }
     timeout 7200
   end
@@ -44,9 +45,9 @@ action :install_xcode do
     only_if 'test -L /Applications/Xcode.app'
   end
 
-  execute "move #{xcode.path} to #{new_resource.path}" do
-    command ['mv', xcode.path, new_resource.path]
-    not_if { xcode.path == new_resource.path }
+  execute "move #{xcode.current_path} to #{new_resource.path}" do
+    command ['mv', xcode.current_path, xcode.intended_path]
+    not_if { xcode.current_path == xcode.intended_path }
   end
 
   execute "switch active Xcode to #{new_resource.path}" do
