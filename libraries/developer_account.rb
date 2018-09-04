@@ -1,5 +1,5 @@
 include Chef::Mixin::ShellOut
-include MacOS::XCVersion
+include MacOS
 
 module MacOS
   class DeveloperAccount
