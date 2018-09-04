@@ -4,11 +4,7 @@ include MacOS
 describe MacOS::Xcode do
   context 'when initialized with developer credentials and Xcode betas available' do
     before do
-      allow_any_instance_of(MacOS::Xcode).to receive(:authenticate_with_apple)
-        .and_return(true)
-      allow_any_instance_of(MacOS::Xcode).to receive(:find_apple_id)
-        .and_return('apple_id': 'apple_id', 'password': 'password')
-      allow_any_instance_of(MacOS::Xcode).to receive(:available_versions_list)
+      allow(MacOS::XCVersion).to receive(:available_versions)
         .and_return(["4.3 for Lion\n",
                      "4.3.1 for Lion\n",
                      "4.3.2 for Lion\n",
@@ -56,28 +52,30 @@ describe MacOS::Xcode do
                      "9.1\n",
                      "9.2\n",
                      "9.3\n",
-                     "9.4 beta\n",
+                     "9.4\n",
+                     "9.4.1\n",
+                     "9.4.2 beta\n",
                      "10 GM seed\n"]
                    )
     end
     it 'returns the name of Xcode 10 GM when initialized with the semantic version' do
-      xcode = MacOS::Xcode.new('10.0')
+      xcode = MacOS::Xcode.new('10.0', '/Applications/Xcode.app')
       expect(xcode.version).to eq '10 GM seed'
     end
     it 'returns the name of Xcode 9.4 beta when initialized with the semantic version' do
-      xcode = MacOS::Xcode.new('9.4')
-      expect(xcode.version).to eq '9.4 beta'
+      xcode = MacOS::Xcode.new('9.4.2', '/Applications/Xcode.app')
+      expect(xcode.version).to eq '9.4.2 beta'
     end
     it 'returns the name of Xcode 9.3 when initialized with the semantic version' do
-      xcode = MacOS::Xcode.new('9.3')
+      xcode = MacOS::Xcode.new('9.3', '/Applications/Xcode.app')
       expect(xcode.version).to eq '9.3'
     end
     it 'returns the name of Xcode 9 when initialized with the semantic version' do
-      xcode = MacOS::Xcode.new('9.0')
+      xcode = MacOS::Xcode.new('9.0', '/Applications/Xcode.app')
       expect(xcode.version).to eq '9'
     end
     it 'returns the name of Xcode 8.3.3 when initialized with the semantic version' do
-      xcode = MacOS::Xcode.new('8.3.3')
+      xcode = MacOS::Xcode.new('8.3.3', '/Applications/Xcode.app')
       expect(xcode.version).to eq '8.3.3'
     end
   end

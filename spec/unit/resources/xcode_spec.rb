@@ -8,13 +8,13 @@ describe 'xcode' do
   default_attributes['macos']['apple_id']['password'] = 'apple_id_password'
 
   before(:each) do
-    allow_any_instance_of(MacOS::Xcode).to receive(:authenticate_with_apple)
+    allow_any_instance_of(MacOS::DeveloperAccount).to receive(:authenticate_with_apple)
       .and_return(true)
     allow_any_instance_of(MacOS::CommandLineTools).to receive(:available_command_line_tools)
       .and_return(["   * Command Line Tools (macOS El Capitan version 10.11) for Xcode-8.2\n",
                    "   * Command Line Tools (macOS High Sierra version 10.13) for Xcode-9.3\n",
                    "   * Command Line Tools (macOS High Sierra version 10.13) for Xcode-9.4\n"])
-    allow_any_instance_of(MacOS::Xcode).to receive(:available_versions_list)
+    allow(MacOS::XCVersion).to receive(:available_versions)
       .and_return(["4.3 for Lion\n",
                    "4.3.1 for Lion\n",
                    "4.3.2 for Lion\n",
@@ -64,6 +64,7 @@ describe 'xcode' do
                    "9.3\n",
                    "9.4\n",
                    "9.4.1\n",
+                   "9.4.2 beta\n",
                    "10 GM seed\n"]
                  )
     allow(File).to receive(:exist?).and_call_original
@@ -71,7 +72,7 @@ describe 'xcode' do
 
   context 'with no Xcodes installed, and no CLT installed' do
     before(:each) do
-      allow_any_instance_of(MacOS::Xcode).to receive(:installed_xcodes)
+      allow(MacOS::XCVersion).to receive(:installed_xcodes)
         .and_return([])
       allow_any_instance_of(MacOS::CommandLineTools).to receive(:installed?)
         .and_return(false)
@@ -98,7 +99,7 @@ describe 'xcode' do
 
   context 'with no Xcodes installed, and with CLT installed' do
     before(:each) do
-      allow_any_instance_of(MacOS::Xcode).to receive(:installed_xcodes)
+      allow(MacOS::XCVersion).to receive(:installed_xcodes)
         .and_return([])
       allow_any_instance_of(MacOS::CommandLineTools).to receive(:installed?)
         .and_return(true)
@@ -121,8 +122,8 @@ describe 'xcode' do
 
   context 'with requested Xcode installed, and with CLT installed' do
     before(:each) do
-      allow_any_instance_of(MacOS::Xcode).to receive(:installed_xcodes)
-        .and_return(["9.4.1\t(/Applications/Xcode.app)\t\n"])
+      allow(MacOS::XCVersion).to receive(:installed_xcodes)
+        .and_return([{ '9.4.1' => '/Applications/Xcode.app' }])
       allow_any_instance_of(MacOS::CommandLineTools).to receive(:installed?)
         .and_return(true)
       stub_command('test -L /Applications/Xcode.app').and_return(false)
@@ -144,8 +145,8 @@ describe 'xcode' do
 
   context 'with requested Xcode installed at a different path, and with CLT present' do
     before(:each) do
-      allow_any_instance_of(MacOS::Xcode).to receive(:installed_xcodes)
-        .and_return(["9.4.1\t(/Applications/Some_Weird_Path.app)\t\n"])
+      allow(MacOS::XCVersion).to receive(:installed_xcodes)
+        .and_return([{ '9.4.1' => '/Applications/Some_Weird_Path.app' }])
       allow_any_instance_of(MacOS::CommandLineTools).to receive(:installed?)
         .and_return(true)
       stub_command('test -L /Applications/Xcode.app').and_return(false)
@@ -169,8 +170,8 @@ describe 'xcode' do
 
   context 'with requested Xcode version not installed, and something at the requested path' do
     before(:each) do
-      allow_any_instance_of(MacOS::Xcode).to receive(:installed_xcodes)
-        .and_return(["9.3\t(/Applications/Xcode.app)\t\n"])
+      allow(MacOS::XCVersion).to receive(:installed_xcodes)
+        .and_return([{ '9.3' => '/Applications/Xcode.app' }])
       allow_any_instance_of(MacOS::CommandLineTools).to receive(:installed?)
         .and_return(false)
       stub_command('test -L /Applications/Xcode.app').and_return(true)
