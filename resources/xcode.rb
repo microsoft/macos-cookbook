@@ -8,19 +8,10 @@ property :ios_simulators, Array
 action :install_gem do
   command_line_tools = CommandLineTools.new
 
-  execute 'install Command Line Tools' do
-    command lazy { ['softwareupdate', '--install', command_line_tools.version] }
-    notifies :create, 'file[sentinel to request on-demand install]', :before
+  execute "install #{command_line_tools.version}" do
+    command ['softwareupdate', '--install', command_line_tools.version]
     not_if { command_line_tools.installed? }
     live_stream true
-  end
-
-  file 'sentinel to request on-demand install' do
-    path '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
-    subscribes :delete, 'execute[install Command Line Tools]', :immediately
-    owner 'root'
-    group 'wheel'
-    action :nothing
   end
 
   chef_gem 'xcode-install' do
