@@ -68,6 +68,8 @@ describe 'xcode' do
                    "10 GM seed\n"]
                  )
     allow(File).to receive(:exist?).and_call_original
+    allow(FileUtils).to receive(:touch).and_return(true)
+    allow(FileUtils).to receive(:chown).and_return(true)
   end
 
   context 'with no Xcodes installed, and no CLT installed' do
@@ -83,12 +85,7 @@ describe 'xcode' do
       xcode '9.4.1'
     end
 
-    it {
-      expect(chef_run.execute('install Command Line Tools'))
-        .to notify('file[sentinel to request on-demand install]')
-        .to(:create).before
-    }
-    it { is_expected.to run_execute('install Command Line Tools') }
+    it { is_expected.to run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-9.4') }
 
     it { is_expected.to run_execute('install Xcode 9.4.1') }
     it { is_expected.to delete_link('/Applications/Xcode.app') }
@@ -110,8 +107,7 @@ describe 'xcode' do
       xcode '9.4.1'
     end
 
-    it { is_expected.not_to run_execute('install Command Line Tools') }
-    it { is_expected.not_to render_file('/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress') }
+    it { is_expected.not_to run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-9.4') }
 
     it { is_expected.to run_execute('install Xcode 9.4.1') }
     it { is_expected.to delete_link('/Applications/Xcode.app') }
@@ -133,8 +129,7 @@ describe 'xcode' do
       xcode '9.4.1'
     end
 
-    it { is_expected.not_to run_execute('install Command Line Tools') }
-    it { is_expected.not_to render_file('/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress') }
+    it { is_expected.not_to run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-9.4') }
 
     it { is_expected.not_to run_execute('install Xcode 9.4.1') }
     it { is_expected.not_to delete_link('/Applications/Xcode.app') }
@@ -158,8 +153,7 @@ describe 'xcode' do
       end
     end
 
-    it { is_expected.not_to run_execute('install Command Line Tools') }
-    it { is_expected.not_to render_file('/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress') }
+    it { is_expected.not_to run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-9.4') }
 
     it { is_expected.not_to run_execute('install Xcode 9.4.1') }
     it { is_expected.not_to delete_link('/Applications/Xcode.app') }
@@ -183,12 +177,7 @@ describe 'xcode' do
       end
     end
 
-    it {
-      expect(chef_run.execute('install Command Line Tools'))
-        .to notify('file[sentinel to request on-demand install]')
-        .to(:create).before
-    }
-    it { is_expected.to run_execute('install Command Line Tools') }
+    it { is_expected.to run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-9.4') }
 
     it { is_expected.to run_execute('install Xcode 9.4.1') }
     it { is_expected.to delete_link('/Applications/Xcode.app') }
