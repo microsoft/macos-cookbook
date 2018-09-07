@@ -18,6 +18,8 @@ action :install_gem do
   file 'sentinel to request on-demand install' do
     path '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
     subscribes :delete, 'execute[install Command Line Tools]', :immediately
+    owner 'root'
+    group 'wheel'
     action :nothing
   end
 
