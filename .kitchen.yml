@@ -107,6 +107,11 @@ suites:
   verifier:
     controls:
     - xcode-and-simulators
+  excludes:
+    - el-capitan-chef13
+    - el-capitan-chef14
+    - sierra-chef13
+    - sierra-chef14
 
 - name: certificate
   run_list:
