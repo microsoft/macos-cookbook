@@ -106,7 +106,7 @@ suites:
   - recipe[macos_test::xcode_beta]
   verifier:
     controls:
-    - xcode-and-simulators
+    - xcode-beta
   excludes:
     - el-capitan-chef13
     - el-capitan-chef14
