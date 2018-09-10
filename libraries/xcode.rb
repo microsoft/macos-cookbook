@@ -1,51 +1,39 @@
 include Chef::Mixin::ShellOut
+include MacOS
 
 module MacOS
   class Xcode
     attr_reader :version
-    attr_reader :credentials
+    attr_reader :apple_version
+    attr_reader :intended_path
 
-    def initialize(semantic_version, data_bag_retrieval = nil, node_credential_attributes = nil)
-      developer_id = find_apple_id(data_bag_retrieval, node_credential_attributes)
-      @credentials = { XCODE_INSTALL_USER:     developer_id['apple_id'],
-                       XCODE_INSTALL_PASSWORD: developer_id['password'] }
-      authenticate_with_apple(@credentials)
-
+    def initialize(semantic_version, intended_path)
       @semantic_version = semantic_version
-      apple_version = Xcode::Version.new(@semantic_version).apple_version
-      @version = available_versions_list[xcode_index(apple_version)].strip
+      @intended_path = intended_path
+      @apple_version = Xcode::Version.new(@semantic_version).apple
+      @version = XCVersion.available_versions[xcode_index(@apple_version)].strip
     end
 
-    def xcode_index(xcode_version)
-      available_xcodes.index { |xcode| xcode.apple_version == xcode_version }
-    end
-
-    def available_versions_list
-      shell_out!(XCVersion.list_xcodes).stdout.lines
+    def xcode_index(version)
+      available_xcodes.index { |available_version| available_version.apple == version }
     end
 
     def available_xcodes
-      available_versions_list.map { |v| Xcode::Version.new v.split.first }
+      XCVersion.available_versions.map { |v| Xcode::Version.new v.split.first }
+    end
+
+    def installed_path
+      XCVersion.installed_xcodes.find { |path| path[@semantic_version] }
+    end
+
+    def current_path
+      return "/Applications/Xcode-#{@apple_version}.app" if installed_path.nil?
+      installed_path[@semantic_version]
     end
 
     def installed?
-      xcversion_output = shell_out(XCVersion.installed_xcodes).stdout.split
-      xcversion_output.include?(@semantic_version)
-    end
-
-    def authenticate_with_apple(credentials)
-      shell_out!(XCVersion.update, env: credentials)
-    end
-
-    def find_apple_id(data_bag_retrieval, node_credential_attributes)
-      if node_credential_attributes
-        { 'apple_id' => node_credential_attributes['user'],
-          'password' => node_credential_attributes['password'] }
-      else
-        data_bag_retrieval.call
-      end
-    rescue Net::HTTPServerException
-      Chef::Application.fatal!('No developer credentials supplied!')
+      return false if installed_path.nil?
+      installed_path.any?
     end
 
     class Simulator
@@ -116,7 +104,7 @@ module MacOS
         patch != 0
       end
 
-      def apple_version
+      def apple
         if major_release?
           major
         else
