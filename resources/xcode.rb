@@ -1,22 +1,17 @@
 resource_name :xcode
-default_action %i(setup install_xcode install_simulators)
+default_action %i(install_gem install_xcode install_simulators)
 
 property :version, String, name_property: true
 property :path, String, default: '/Applications/Xcode.app'
 property :ios_simulators, Array
 
-action :setup do
-  execute 'install Command Line Tools' do
-    command lazy { ['softwareupdate', '--install', CommandLineTools.new.product] }
-    notifies :create, 'file[sentinel to request on-demand install]', :before
-    not_if { ::File.exist?('/Library/Developer/CommandLineTools/usr/lib/libxcrun.dylib') }
-    live_stream true
-  end
+action :install_gem do
+  command_line_tools = CommandLineTools.new
 
-  file 'sentinel to request on-demand install' do
-    path '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
-    subscribes :delete, 'execute[install Command Line Tools]', :immediately
-    action :nothing
+  execute "install #{command_line_tools.version}" do
+    command ['softwareupdate', '--install', command_line_tools.version]
+    not_if { command_line_tools.installed? }
+    live_stream true
   end
 
   chef_gem 'xcode-install' do
@@ -25,15 +20,31 @@ action :setup do
 end
 
 action :install_xcode do
-  xcode = Xcode.new(new_resource.version,
-    -> { data_bag_item(:credentials, :apple_id) },
-    node['macos']['apple_id'])
+  developer = DeveloperAccount.new(-> { data_bag_item(:credentials, :apple_id) },
+                                    node['macos']['apple_id'])
+
+  xcode = Xcode.new(new_resource.version, new_resource.path)
 
   execute "install Xcode #{xcode.version}" do
     command XCVersion.install_xcode(xcode)
-    environment xcode.credentials
+    environment developer.credentials
     not_if { xcode.installed? }
     timeout 7200
+  end
+
+  link 'delete symlink created by xcversion gem' do
+    target_file '/Applications/Xcode.app'
+    action :delete
+    only_if 'test -L /Applications/Xcode.app'
+  end
+
+  execute "move #{xcode.current_path} to #{new_resource.path}" do
+    command ['mv', xcode.current_path, xcode.intended_path]
+    not_if { xcode.current_path == xcode.intended_path }
+  end
+
+  execute "switch active Xcode to #{new_resource.path}" do
+    command ['xcode-select', '--switch', new_resource.path]
   end
 end
 

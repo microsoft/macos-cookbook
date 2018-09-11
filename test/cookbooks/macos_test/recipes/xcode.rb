@@ -1,8 +1,4 @@
 if node['platform_version'].match? Regexp.union '10.13'
-  execute 'Disable Gatekeeper' do
-    command ['spctl', '--master-disable']
-  end
-
   include_recipe 'macos::xcode'
 
 elsif node['platform_version'].match? Regexp.union '10.12'
