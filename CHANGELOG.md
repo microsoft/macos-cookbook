@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [2.5.0] - 2018-09-10
+### Added
+
+### Fixed
+
 ## [2.4.0] - 2018-08-16
 ### Added
 - Added `CHANGELOG.md`, About time right? ([Issue #122](https://github.com/Microsoft/macos-cookbook/issues/122)).
@@ -19,4 +24,9 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - Fixed bug where deletion of a user was failing when using the macos_user resource.
-- Fixed a bug in the certificate resource for non-Vagrant use cases.
+- For those of you who like to set their user and password as the same characters, we fixed an issue in the certificate resource for non-Vagrant use cases, you know for normal human beings who like a secure environment.
+
+## [2.2.0] - 2018-05-29
+### Added
+- FoodCritics can be pretty harsh in their critiquing of food. The also have some pretty in depth rules we need to comply with, so we updated machine_name to comply with the new FoodCritic rule FC115.
+-
