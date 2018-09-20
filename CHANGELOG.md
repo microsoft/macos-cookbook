@@ -28,5 +28,19 @@ All notable changes to this project will be documented in this file.
 
 ## [2.2.0] - 2018-05-29
 ### Added
-- FoodCritics can be pretty harsh in their critiquing of food. The also have some pretty in depth rules we need to comply with, so we updated machine_name to comply with the new FoodCritic rule FC115.
--
+- FoodCritics can be pretty harsh in their critiquing of food. They also have some pretty in depth rules we need to comply with, so we updated machine_name to comply with the new FoodCritic rule FC115.
+- Added guard config to automatically run relevant unit tests when a file is changed.
+- Update to InSpec control filenames to match the standard. This allows for better understanding of the tests.
+
+## [2.1.0] - 2018-05-16
+### Added
+- Created an autologin functionality on 10.13.4 to allow for machine to automatically login to the machine.
+
+## [2.0.0] - 2018-05-09
+### Removed
+- Removed the Mono recipe as it is not in the scope of this cookbook.
+- Removed Apple Configurator recipe as a bug with the `mas` dependency does not function in High Sierra.
+
+## [1.14.0] - 2018-05-01
+### Added
+- Updated the `keep_awake` recipe and spec tests to not require node attribute stubbing when wrapped in another cookbook. 
