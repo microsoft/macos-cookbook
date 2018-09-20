@@ -24,13 +24,6 @@ platforms:
   provisioner:
     product_version: 13
 
-- name: el-capitan-chef14
-  driver:
-    box: microsoft/os-x-el-capitan
-    version: 10.11.6
-  provisioner:
-    product_version: 14
-
 - name: sierra-chef13
   driver:
     box: microsoft/macos-sierra
