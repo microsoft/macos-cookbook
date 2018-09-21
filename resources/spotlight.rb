@@ -34,7 +34,7 @@ end
 action :set do
   volume = MetadataUtil.new(target_volume)
 
-  service 'spotlight server' do
+  macosx_service 'spotlight server' do
     service_name 'mds'
     plist '/System/Library/LaunchDaemons/com.apple.metadata.mds.plist'
     action [:enable, :start]
