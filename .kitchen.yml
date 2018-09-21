@@ -95,13 +95,6 @@ suites:
     - remote-administration
     - no-sleep
 
-- name: machine-name
-  run_list:
-  - recipe[macos_test::machine_name]
-  verifier:
-    controls:
-    - nonstandard-computer-name
-
 - name: spotlight
   run_list:
   - recipe[macos_test::spotlight]
