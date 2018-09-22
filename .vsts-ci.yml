@@ -1,0 +1,40 @@
+---
+resources:
+- repo: self
+  clean: true
+jobs:
+- job: A
+  steps:
+  - script: kitchen list --bare | tr '\n' , | rev | cut -c 2- | rev "##vso[task.setvariable variable=kitchen_suites;isOutput=true]"
+    name: findKitchenSuites
+  pool:
+    name: ApexInfra macOS
+
+- job: B
+  dependsOn: A
+  pool:
+      name: ApexInfra macOS
+  strategy:
+    maxParallel: 4
+    parallel: 4
+  variables:
+    kitchen_suites: $[ dependencies.A.outputs['findKitchenSuites.kitchen_suites'] ]
+  steps:
+  - task: chef-software.vsts-chef-tasks.vsts-chef-task-exec-knife.vsts-chef-task-exec-knife@1
+    displayName: Execute Knife
+    inputs:
+      knifeEndpoint: Hephaestus (packer)
+      knifeArguments: download /data_bags --chef-repo-path $(Build.SourcesDirectory) -u {USERNAME} -s {URL}
+      knifePrivateKey: true
+  - task: chef-software.vsts-chef-tasks.vsts-chef-task-test-kitchen.vsts-chef-task-test-kitchen@1
+    displayName: 'Execute Test Kitchen: test'
+    inputs:
+      tkAzureEndpoint: Apex Lab - CorpNet
+      tkCommand: test
+      tkPattern: $(kitchen_suites)
+  - task: chef-software.vsts-chef-tasks.vsts-chef-task-test-kitchen.vsts-chef-task-test-kitchen@1
+    displayName: 'Execute Test Kitchen: destroy'
+    inputs:
+      tkAzureEndpoint: Apex Lab - CorpNet
+      tkCommand: destroy
+    condition: always()
