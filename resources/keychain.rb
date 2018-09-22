@@ -15,6 +15,7 @@ action :create do
 
   execute 'create a keychain' do
     command [*keyc.create_keychain(new_resource.kc_passwd)]
+    not_if { ::File.exist?(keychain) }
   end
 end
 
@@ -22,6 +23,7 @@ action :delete do
   keyc = SecurityCommand.new('', keychain)
   execute 'delete selected keychain' do
     command [*keyc.delete_keychain]
+    only_if { ::File.exist?(keychain) }
   end
 end
 
@@ -29,11 +31,13 @@ action :lock do
   keyc = SecurityCommand.new('', keychain)
   execute 'lock selected keychain' do
     command [*keyc.lock_keychain]
+    only_if { ::File.exist?(keychain) }
   end
 end
 
 action :unlock do
   keyc = SecurityCommand.new('', keychain) do
     command [*keyc.unlock_keychain(new_resource.kc_passwd)]
+    only_if { ::File.exist?(keychain) }
   end
 end

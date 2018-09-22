@@ -11,3 +11,8 @@ plist 'disable automatic software update check' do
   entry 'AutomaticCheckEnabled'
   value false
 end
+
+execute 'disable software updates using commandline utility' do
+  command [software_update_command, '--schedule', 'off']
+  not_if { automatic_check_disabled? }
+end

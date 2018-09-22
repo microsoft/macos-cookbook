@@ -2,19 +2,13 @@ require 'spec_helper'
 
 include MacOS::System
 
-shared_context 'when running on bare metal macmini' do
-  shared_examples 'setting metal-specific power preferences' do
-    before(:each) do
-      chef_run.node.normal['hardware']['machine_model'] = 'MacMini6,2'
-      chef_run.node.normal['virtualization']['systems'] = { 'vbox' => 'host', 'parallels' => 'host' }
-      stub_command('which git').and_return('/usr/bin/git')
-    end
+shared_context 'running on bare metal Mac Mini' do
+  before(:each) do
+    chef_run.node.normal['virtualization']['systems'] = { 'vbox' => 'host', 'Parallels' => 'host' }
+    chef_run.node.normal['hardware']['machine_model'] = 'Macmini7,1'
+  end
 
-    it 'returns false' do
-      env = System::Environment.new('host')
-      expect(env.vm?).to be false
-    end
-
+  shared_examples 'including metal-specific power preferences' do
     it 'sets wake on lan' do
       chef_run.converge(described_recipe)
       expect(chef_run).to set_system_preference('wake the computer when accessed using a network connection')
@@ -36,19 +30,36 @@ shared_context 'when running on bare metal macmini' do
   end
 end
 
-shared_context 'running in a parallels virtual machine' do
+shared_context 'when running on bare metal MacBook Pro' do
   before(:each) do
-    chef_run.node.normal['virtualization']['systems'] = { 'parallels' => 'guest' }
-    chef_run.node.normal['hardware']['machine_model'] = 'Parallels13,1'
-    stub_command('which git').and_return('/usr/bin/git')
+    chef_run.node.normal['virtualization']['systems'] = { 'vbox' => 'host', 'Parallels' => 'host' }
+    chef_run.node.normal['hardware']['machine_model'] = 'MacBookPro14,3'
   end
 
-  shared_examples 'not setting metal-specific power prefs' do
-    it 'confirms we are in a vm' do
-      env = System::Environment.new()
-      expect(env.vm?).to be true
+  shared_examples 'including metal-specific power preferences for portables' do
+    it 'sets wake on lan' do
+      chef_run.converge(described_recipe)
+      expect(chef_run).to set_system_preference('wake the computer when accessed using a network connection')
     end
 
+    it 'sets restart after a power failure' do
+      chef_run.converge(described_recipe)
+      expect(chef_run).to set_system_preference('restart after a power failure')
+    end
+
+    it 'converges successfully on bare metal' do
+      expect { chef_run }.to_not raise_error
+    end
+  end
+end
+
+shared_context 'running in a Parallels virtual machine' do
+  before(:each) do
+    chef_run.node.normal['virtualization']['systems'] = { 'Parallels' => 'guest' }
+    chef_run.node.normal['hardware']['machine_model'] = 'Parallels13,1'
+  end
+
+  shared_examples 'ignoring metal-specific power preferences' do
     it 'does not set wake on lan' do
       chef_run.converge(described_recipe)
       expect(chef_run).to_not set_system_preference('wake the computer when accessed using a network connection')
@@ -63,7 +74,6 @@ shared_context 'running in a parallels virtual machine' do
       chef_run.converge(described_recipe)
       expect(chef_run).to_not set_system_preference('restart after a power failure')
     end
-
     it 'converges successfully in a vm' do
       expect { chef_run }.to_not raise_error
     end
@@ -74,15 +84,9 @@ shared_context 'running in an undetermined virtualization system' do
   before(:each) do
     chef_run.node.normal['virtualization']['systems'] = {}
     chef_run.node.normal['hardware']['machine_model'] = ''
-    stub_command('which git').and_return('/usr/bin/git')
   end
 
-  shared_examples 'not setting metal-specific power prefs' do
-    it 'assumes we are in a vm' do
-      env = System::Environment.new('undetermined')
-      expect(env.vm?).to be true
-    end
-
+  shared_examples 'ignoring metal-specific power preferences' do
     it 'does not set wake on lan' do
       chef_run.converge(described_recipe)
       expect(chef_run).to_not set_system_preference('wake the computer when accessed using a network connection')
@@ -107,18 +111,23 @@ end
 describe 'macos::keep_awake' do
   let(:chef_run) { ChefSpec::SoloRunner.new }
 
-  describe 'keep_awake in a parallels vm' do
-    include_context 'running in a parallels virtual machine'
-    it_behaves_like 'not setting metal-specific power prefs'
+  describe 'keep_awake in a Parallels VM' do
+    include_context 'running in a Parallels virtual machine'
+    it_behaves_like 'ignoring metal-specific power preferences'
   end
 
   describe 'keep_awake in an undetermined virtualization system' do
     include_context 'running in an undetermined virtualization system'
-    it_behaves_like 'not setting metal-specific power prefs'
+    it_behaves_like 'ignoring metal-specific power preferences'
   end
 
   describe 'keep_awake on bare metal' do
-    include_context 'when running on bare metal macmini'
-    it_behaves_like 'setting metal-specific power preferences'
+    include_context 'running on bare metal Mac Mini'
+    it_behaves_like 'including metal-specific power preferences'
+  end
+
+  describe 'keep_awake on portable bare metal' do
+    include_context 'when running on bare metal MacBook Pro'
+    it_behaves_like 'including metal-specific power preferences for portables'
   end
 end

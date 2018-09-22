@@ -1,0 +1,1 @@
+Please refer to [Contributing to Chef Managed Community Cookbooks](https://github.com/chef-cookbooks/community_cookbook_documentation/blob/master/CONTRIBUTING.MD) for guidelines on contributing to this cookbook.

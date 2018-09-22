@@ -17,3 +17,9 @@ macos_user 'create non-admin without groups' do
   username 'paul'
   password 'bacon-saffron-doormat-educe'
 end
+
+macos_user 'create test' do
+  username 'griffin'
+  password 'wells'
+  hidden true
+end
