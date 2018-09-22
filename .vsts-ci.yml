@@ -7,13 +7,9 @@ jobs:
   steps:
   - script: kitchen list --bare | tr '\n' , | rev | cut -c 2- | rev "##vso[task.setvariable variable=kitchen_suites;isOutput=true]"
     name: findKitchenSuites
-  pool:
-    name: ApexInfra macOS
 
 - job: B
   dependsOn: A
-  pool:
-      name: ApexInfra macOS
   strategy:
     maxParallel: 4
     parallel: 4
