@@ -1,4 +1,4 @@
-if node['platform_version'].match? Regexp.union '10.13'
+if node['platform_version'].match? Regexp.union '10.14|10.13'
   include_recipe 'macos::xcode'
 
 elsif node['platform_version'].match? Regexp.union '10.12'
