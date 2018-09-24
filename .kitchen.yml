@@ -140,3 +140,10 @@ suites:
     - keychain-creation
     - login-keychain-creation
     - default-keychain-creation
+
+- name: remote-access
+  run_list:
+  - recipe[macos_test::remote_access]
+  verifier:
+    controls:
+    - remote-control

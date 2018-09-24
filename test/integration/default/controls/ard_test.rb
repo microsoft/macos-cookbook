@@ -1,16 +1,14 @@
-title 'ard'
+title 'remote access'
 
-dscl = '/usr/bin/dscl'
+control 'remote-control' do
+  title 'naprivs value represents remote control for all users'
+  desc 'verify that naprivs has the bitmask value -1073741569'
 
-control 'naprivs' do
-  title 'naprivs value for remote management'
-  desc 'Verify that naprivs in the users.plist has the value -1073741569'
-
-  describe command ('#{dscl} . list /Users naprivs') do
-      its('stdout') { should_match (/vagrant -1073741569/) }
+  describe command '/usr/bin/dscl . list /Users naprivs' do
+    its('stdout') { should_match /vagrant -1073741569/ }
   end
 
-  describe command ("sudo -E PlistBuddy -c 'Print naprivs:0' /var/db/dslocal/nodes/Default/users/vagrant.plist") do
-    its('stdout') { should_match (/-1073741569/) }
+  describe command "sudo -E PlistBuddy -c 'Print naprivs:0' /var/db/dslocal/nodes/Default/users/vagrant.plist" do
+    its('stdout') { should_match /-1073741569/ }
   end
 end
