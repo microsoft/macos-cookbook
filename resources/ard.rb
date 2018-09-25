@@ -1,4 +1,5 @@
 resource_name :ard
+default_action %i(activate configure)
 
 BASE_COMMAND = '/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart'.freeze
 
