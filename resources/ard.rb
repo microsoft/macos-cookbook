@@ -17,6 +17,7 @@ property :clientopts, Array
 action :activate do
   execute BASE_COMMAND do
     command "#{BASE_COMMAND} -activate"
+    live_stream true
   end
 end
 
@@ -72,5 +73,6 @@ action :configure do
   end
   execute BASE_COMMAND do
     command "#{BASE_COMMAND} -configure #{configure_options.join(' ')}"
+    live_stream true
   end
 end
