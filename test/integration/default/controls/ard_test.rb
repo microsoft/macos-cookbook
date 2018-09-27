@@ -24,4 +24,8 @@ control 'remote-control' do
   describe command('defaults read /Library/Preferences/com.apple.RemoteManagement ARD_AllLocalUsersPrivs') do
     its('stdout.to_i') { should match priv }
   end
+
+  describe command('/usr/libexec/PlistBuddy -c Print /Library/Preferences/com.apple.RemoteManagement.plist') do
+    its('stdout') { should match 'ARD_AllLocalUsers = true' }
+  end
 end
