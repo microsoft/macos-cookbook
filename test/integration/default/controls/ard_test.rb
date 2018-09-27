@@ -11,18 +11,20 @@ change_settings  = 1 << 6
 restart_shutdown = 1 << 7
 show_observe     = 1 << 30
 
-priv = text_messages | control_observe | send_files | delete_files | generate_reports | open_quit_apps | change_settings | restart_shutdown | show_observe
+all_privileges = text_messages | control_observe | send_files |
+                 delete_files | generate_reports | open_quit_apps |
+                 change_settings | restart_shutdown | show_observe
 
 control 'remote-control' do
   title 'naprivs value represents remote control for all users'
-  desc "verify that naprivs has the bitmask value #{priv}"
+  desc "verify that naprivs has the bitmask value #{all_privileges}"
 
-  describe command("/usr/bin/dscl . list /Users naprivs | tr -ds 'vagrant-' '[:space:]'") do
-    its('stdout.to_i') { should match user_has_access }
+  describe command('/usr/bin/dscl . list /Users naprivs') do
+    its('stdout') { should match /#{user_has_access}/ }
   end
 
   describe command('defaults read /Library/Preferences/com.apple.RemoteManagement ARD_AllLocalUsersPrivs') do
-    its('stdout.to_i') { should match priv }
+    its('stdout') { should cmp all_privileges }
   end
 
   describe command('/usr/libexec/PlistBuddy -c Print /Library/Preferences/com.apple.RemoteManagement.plist') do
