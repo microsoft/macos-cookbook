@@ -18,10 +18,15 @@ all_privileges = text_messages | control_observe | send_files |
 
 control 'remote-control' do
   title 'naprivs value represents remote control for all users'
-  desc 'Verify that naprivs has the magic value to indicate all privileges'
+  desc 'Verify that naprivs has the magic value to indicate all privileges and that it is activated.'
 
   describe command('/usr/libexec/PlistBuddy -c Print /Library/Preferences/com.apple.RemoteManagement.plist') do
     its('stdout') { should match 'ARD_AllLocalUsers = true' }
     its('stdout') { should match /#{all_privileges}/ }
+  end
+
+  describe file('/Library/Application Support/Apple/Remote Desktop/RemoteManagement.launchd') do
+    it { should exist }
+    its('content') { should match 'enabled' }
   end
 end
