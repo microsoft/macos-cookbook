@@ -43,4 +43,39 @@ All notable changes to this project will be documented in this file.
 
 ## [1.14.0] - 2018-05-01
 ### Added
-- Updated the `keep_awake` recipe and spec tests to not require node attribute stubbing when wrapped in another cookbook. 
+- Updated the `keep_awake` recipe and spec tests to not require node attribute stubbing when wrapped in another cookbook.
+
+## [1.13.0] - 2018-04-25
+### Added
+- Added a CONTRIBUTING.md to outline the Chef Community Guidelines for code contribution.
+
+### Fixed
+- Fixed an issue with ChefSpec when wrapping the `keep_awake` recipe.
+- Fixed an idempotence issue with the keychain resource.
+
+## [1.12.0] - 2018-04-16
+### Added
+- Added new keychain resource
+- Introduced three new library classes `Power`, `Environment`, and `ScreenSaver`.
+- Updated README.md to reflect single build definition.
+- Added feature to make disk sleep default to `Never`.
+
+## [1.11.0] - 2018-04-11
+### Added
+- Added the ability to install Xcode beta builds to the `xcode` resource.
+- Added support for Chef 14.
+
+## [1.10.0] - 2018-03-26
+### Added
+- Added feature that allows node attributes to be set for Developer Apple ID credentials while downloading Xcode from Apple.
+- Added ability to install Command Line tools from the `xcode-install` gem.
+
+### Fixed
+- Increased timeout for Xcode download for issue where method `bundle_version_correct` fails and unsuccessfully tries to access node attributes in Xcode library.
+- Resolved issue where adding users and groups would fail tests.
+
+## [1.9.0] - 2018-03-21
+### Added
+- Added support for other hypervisors and keep away logic.
+- Implemented `-t` option in certificate resource to allow apps to access imported key.
+- Add `utf-8` encoding type to `plist` resource to make it more robust. 
