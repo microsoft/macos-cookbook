@@ -24,7 +24,7 @@ describe MacOS::CommandLineTools do
     end
     it 'returns the latest recommended Command Line Tools product' do
       clt = MacOS::CommandLineTools.new
-      expect(clt.version).to eq 'Command Line Tools (macOS High Sierra version 10.13) for Xcode-9.2'
+      expect(clt.version).to eq 'Command Line Tools (macOS Mojave version 10.14) for Xcode-10.0'
     end
   end
 end
