@@ -12,8 +12,12 @@ module MacOS
       @version = if available.empty?
                    'Unavailable from Software Update Catalog'
                  else
-                   available_command_line_tools.last.tr('*', '').strip
+                   platform_specific.last.tr('*', '').strip
                  end
+    end
+
+    def platform_specific
+      available.select { |product_name| product_name.include? macos_version }
     end
 
     def available
