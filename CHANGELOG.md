@@ -107,3 +107,29 @@ All notable changes to this project will be documented in this file.
 
 ## [1.5.0] - 2018-02-12
 ### Added
+- Added new `system_preference` resource.
+
+### Removed
+- Removed `systemsetup` resource.
+- Removed `.delivery` in favor of `kitchen test` and concurrency testing model.
+
+### Fixed
+- Fixed issue where `plist` resources cause incomplete idempotence on second converge by making the `keep_awake` recipe idempotent. ([Issue #15](https://github.com/Microsoft/macos-cookbook/issues/15)).
+- Fixed issue where `macos_user` was not allowing users to be added to groups by creating a new `groups` property. ([Issue #40](https://github.com/Microsoft/macos-cookbook/issues/40)).
+- Fixed issue where `machine_name` resource does not set `LocalHostName` by making `machine_name` idempotent and having it properly set the `LocalHostName`. ([Issue #20](https://github.com/Microsoft/macos-cookbook/issues/20)).
+
+## [1.3.0] - 2018-02-02
+### Added
+- Added helper modules for `systemsetup`.
+- Added new attributes to adjust the `keep_awake` functions.
+- Added better functionality to the `keep_awake` power resources.
+
+### [1.2.0] - 2018-01-28
+### Added
+- Initial release of the macOS Cookbook.
+- Chef support for 10.10 to 10.13.
+- Added `xcode` resource.
+- Added `keep_awake` recipe.
+- Added `spotlight` resource.
+- Added `machine_name` resource.
+- Added `macos_user` resource.
