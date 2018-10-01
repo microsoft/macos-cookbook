@@ -34,9 +34,10 @@ end
 action :set do
   volume = MetadataUtil.new(target_volume)
 
-  execute 'Enable Spotlight server' do
-    command volume.toggle_spotlight_server(true)
-    only_if { volume.server_disabled? }
+  service 'spotlight server' do
+    service_name 'mds'
+    plist '/System/Library/LaunchDaemons/com.apple.metadata.mds.plist'
+    action [:enable, :start]
   end
 
   execute "turn Spotlight indexing #{state} for #{target_volume}" do

@@ -16,6 +16,7 @@ verifier:
   - test/integration/default
 
 platforms:
+
 - name: el-capitan-chef13
   driver:
     box: microsoft/os-x-el-capitan
@@ -55,6 +56,20 @@ platforms:
   driver:
     box: microsoft/macos-high-sierra
     version: 10.13.5
+  provisioner:
+    product_version: 14
+
+- name: mojave-chef13
+  driver:
+    box: microsoft/macos-mojave
+    version: 10.14.0
+  provisioner:
+    product_version: 13
+
+- name: mojave-chef14
+  driver:
+    box: microsoft/macos-mojave
+    version: 10.14.0
   provisioner:
     product_version: 14
 
@@ -139,3 +154,10 @@ suites:
     - keychain-creation
     - login-keychain-creation
     - default-keychain-creation
+
+- name: remote-access
+  run_list:
+  - recipe[macos_test::remote_access]
+  verifier:
+    controls:
+    - remote-control

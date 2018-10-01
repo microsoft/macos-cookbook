@@ -20,11 +20,6 @@ module MacOS
       mdutil_output.strip.include? 'disabled'
     end
 
-    def toggle_spotlight_server(flag)
-      action = flag ? 'load' : 'unload'
-      ['sudo', 'launchctl', action, '-w', '/System/Library/LaunchDaemons/com.apple.metadata.mds.plist']
-    end
-
     def volume_current_state(_volume)
       mdutil_output.split(':')[1].strip
     end
