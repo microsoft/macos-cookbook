@@ -9,14 +9,14 @@ module MacOS
       FileUtils.touch install_sentinel
       FileUtils.chown 'root', 'wheel', install_sentinel
 
-      @version = if available_command_line_tools.empty?
+      @version = if available.empty?
                    'Unavailable from Software Update Catalog'
                  else
                    available_command_line_tools.last.tr('*', '').strip
                  end
     end
 
-    def available_command_line_tools
+    def available
       softwareupdate_list.select { |product_name| product_name.include?('* Command Line Tools') }
     end
 
