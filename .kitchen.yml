@@ -115,6 +115,7 @@ suites:
   verifier:
     controls:
     - xcode-and-simulators
+    - command-line-tool-sentinel
 
 - name: xcode-beta
   run_list:
@@ -122,6 +123,7 @@ suites:
   verifier:
     controls:
     - xcode-beta
+    - command-line-tool-sentinel
 
 - name: certificate
   run_list:
