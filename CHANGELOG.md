@@ -1,7 +1,6 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [2.4.0] - 2018-08-16
 ## [2.5.0] - 2018-09-10
 ### Added
 - Added `CHANGELOG.md`, About time right? ([Issue #122](https://github.com/Microsoft/macos-cookbook/issues/122)).
