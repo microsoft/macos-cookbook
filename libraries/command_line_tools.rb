@@ -20,6 +20,10 @@ module MacOS
       softwareupdate_list.select { |product_name| product_name.include?('* Command Line Tools') }
     end
 
+    def macos_version
+      shell_out(['/usr/bin/sw_vers', '-productVersion']).stdout.chomp[/10\.\d+/]
+    end
+
     def softwareupdate_list
       shell_out(['softwareupdate', '--list']).stdout.lines
     end

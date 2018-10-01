@@ -6,6 +6,8 @@ describe MacOS::CommandLineTools do
     before do
       allow(FileUtils).to receive(:touch).and_return(true)
       allow(FileUtils).to receive(:chown).and_return(true)
+      allow_any_instance_of(MacOS::CommandLineTools).to receive(:macos_version)
+        .and_return('10.14')
       allow_any_instance_of(MacOS::CommandLineTools).to receive(:softwareupdate_list)
         .and_return(["Software Update Tool\n",
                      "\n", "Finding available software\n",
