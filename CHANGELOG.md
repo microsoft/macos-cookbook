@@ -78,4 +78,32 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Added support for other hypervisors and keep away logic.
 - Implemented `-t` option in certificate resource to allow apps to access imported key.
-- Add `utf-8` encoding type to `plist` resource to make it more robust. 
+- Add `utf-8` encoding type to `plist` resource to make it more robust.
+
+## [1.8.0] - 2018-03-12
+### Added
+- Added a `dns_domain` property to `machine_name` resource to support FQDNs.
+- Added TESTING.md documentation.
+- Changed `binary` property to `encoding` to support xml and binary plist formats.
+
+### Removed
+- Removed support for `NetBIOSName` due to macOS bugs.
+
+### Fixed
+- Fixed several bugs in `plist` resource.
+- Fixed typos in `machine_name` resource documentation.
+
+## [1.7.0] - 2018-03-05
+### Added
+- Added the `certificate` resource, this resource manages the state of a given certificate for a specified keychain.
+
+## [1.6.0] - 2018-02-20
+### Added
+- Added whitespace support for property list names and keys.
+
+### Fixed
+- Fixed some depreciation bugs in the `macos_user` resource.
+- Fixed idempotency bug in `.kitchen.yml`.
+
+## [1.5.0] - 2018-02-12
+### Added
