@@ -12,8 +12,13 @@ module MacOS
       @version = if available.empty?
                    'Unavailable from Software Update Catalog'
                  else
-                   platform_specific.last.tr('*', '').strip
+                   latest.tr('*', '').strip
                  end
+    end
+
+    def latest
+      versions = platform_specific.map { |product| Gem::Version.new xcode_version(product) }
+      platform_specific.detect { |product| product.include? versions.max.version }
     end
 
     def platform_specific
@@ -22,6 +27,10 @@ module MacOS
 
     def available
       softwareupdate_list.select { |product_name| product_name.include?('* Command Line Tools') }
+    end
+
+    def xcode_version(product)
+      product.match(/Xcode-(?<version>\d+\.\d+)/)['version']
     end
 
     def macos_version
