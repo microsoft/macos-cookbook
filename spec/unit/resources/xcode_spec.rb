@@ -95,15 +95,15 @@ describe 'xcode' do
     end
 
     recipe do
-      xcode '9.4.1'
+      xcode '10.0'
     end
 
-    it { is_expected.to run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-9.4') }
+    it { is_expected.to run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.0') }
 
-    it { is_expected.to run_execute('install Xcode 9.4.1') }
+    it { is_expected.to run_execute('install Xcode 10.0') }
     it { is_expected.to delete_link('/Applications/Xcode.app') }
 
-    it { is_expected.to run_execute('move /Applications/Xcode-9.4.1.app to /Applications/Xcode.app') }
+    it { is_expected.to run_execute('move /Applications/Xcode-10.app to /Applications/Xcode.app') }
     it { is_expected.to run_execute('switch active Xcode to /Applications/Xcode.app') }
   end
 
@@ -117,58 +117,58 @@ describe 'xcode' do
     end
 
     recipe do
-      xcode '9.4.1'
+      xcode '10.0'
     end
 
-    it { is_expected.not_to run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-9.4') }
+    it { is_expected.not_to run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.0') }
 
-    it { is_expected.to run_execute('install Xcode 9.4.1') }
+    it { is_expected.to run_execute('install Xcode 10.0') }
     it { is_expected.to delete_link('/Applications/Xcode.app') }
 
-    it { is_expected.to run_execute('move /Applications/Xcode-9.4.1.app to /Applications/Xcode.app') }
+    it { is_expected.to run_execute('move /Applications/Xcode-10.app to /Applications/Xcode.app') }
     it { is_expected.to run_execute('switch active Xcode to /Applications/Xcode.app') }
   end
 
   context 'with requested Xcode installed, and with CLT installed' do
     before(:each) do
       allow(MacOS::XCVersion).to receive(:installed_xcodes)
-        .and_return([{ '9.4.1' => '/Applications/Xcode.app' }])
+        .and_return([{ '10.0' => '/Applications/Xcode.app' }])
       allow_any_instance_of(MacOS::CommandLineTools).to receive(:installed?)
         .and_return(true)
       stub_command('test -L /Applications/Xcode.app').and_return(false)
     end
 
     recipe do
-      xcode '9.4.1'
+      xcode '10.0'
     end
 
-    it { is_expected.not_to run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-9.4') }
+    it { is_expected.not_to run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.0') }
 
-    it { is_expected.not_to run_execute('install Xcode 9.4.1') }
+    it { is_expected.not_to run_execute('install Xcode 10.0') }
     it { is_expected.not_to delete_link('/Applications/Xcode.app') }
 
-    it { is_expected.not_to run_execute('move /Applications/Xcode-9.4.1.app to /Applications/Xcode.app') }
+    it { is_expected.not_to run_execute('move /Applications/Xcode-10.app to /Applications/Xcode.app') }
     it { is_expected.to run_execute('switch active Xcode to /Applications/Xcode.app') }
   end
 
   context 'with requested Xcode installed at a different path, and with CLT present' do
     before(:each) do
       allow(MacOS::XCVersion).to receive(:installed_xcodes)
-        .and_return([{ '9.4.1' => '/Applications/Some_Weird_Path.app' }])
+        .and_return([{ '10.0' => '/Applications/Some_Weird_Path.app' }])
       allow_any_instance_of(MacOS::CommandLineTools).to receive(:installed?)
         .and_return(true)
       stub_command('test -L /Applications/Xcode.app').and_return(false)
     end
 
     recipe do
-      xcode '9.4.1' do
+      xcode '10.0' do
         path '/Applications/Chef_Managed_Xcode.app'
       end
     end
 
-    it { is_expected.not_to run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-9.4') }
+    it { is_expected.not_to run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.0') }
 
-    it { is_expected.not_to run_execute('install Xcode 9.4.1') }
+    it { is_expected.not_to run_execute('install Xcode 10.0') }
     it { is_expected.not_to delete_link('/Applications/Xcode.app') }
 
     it { is_expected.to run_execute('move /Applications/Some_Weird_Path.app to /Applications/Chef_Managed_Xcode.app') }
@@ -185,17 +185,17 @@ describe 'xcode' do
     end
 
     recipe do
-      xcode '9.4.1' do
+      xcode '10.0' do
         path '/Applications/Xcode.app'
       end
     end
 
-    it { is_expected.to run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-9.4') }
+    it { is_expected.to run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.0') }
 
-    it { is_expected.to run_execute('install Xcode 9.4.1') }
+    it { is_expected.to run_execute('install Xcode 10.0') }
     it { is_expected.to delete_link('/Applications/Xcode.app') }
 
-    it { is_expected.to run_execute('move /Applications/Xcode-9.4.1.app to /Applications/Xcode.app') }
+    it { is_expected.to run_execute('move /Applications/Xcode-10.app to /Applications/Xcode.app') }
     it { is_expected.to run_execute('switch active Xcode to /Applications/Xcode.app') }
   end
 end
