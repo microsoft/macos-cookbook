@@ -14,6 +14,10 @@ action :install_gem do
     live_stream true
   end
 
+  file '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress' do
+    action :delete
+  end
+
   chef_gem 'xcode-install' do
     options('--no-document --no-user-install')
   end
