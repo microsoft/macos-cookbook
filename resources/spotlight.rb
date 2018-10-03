@@ -26,14 +26,16 @@ action_class do
     ['/usr/bin/mdutil']
   end
 
+  def mdutil_output(volume)
+    shell_out('/usr/bin/mdutil', '-s', volume_path(volume)).stdout
+  end
+
   def desired_spotlight_state
     [state, target_volume, search]
   end
 end
 
 action :set do
-  volume = MetadataUtil.new(target_volume)
-
   macosx_service 'spotlight server' do
     service_name 'mds'
     plist '/System/Library/LaunchDaemons/com.apple.metadata.mds.plist'
@@ -42,6 +44,6 @@ action :set do
 
   execute "turn Spotlight indexing #{state} for #{target_volume}" do
     command mdutil + desired_spotlight_state.insert(0, '-i')
-    not_if { volume.status_flags == desired_spotlight_state }
+    not_if { mdutil_output(target_volume) == desired_spotlight_state }
   end
 end
