@@ -48,14 +48,14 @@ platforms:
 - name: high-sierra-chef13
   driver:
     box: microsoft/macos-high-sierra
-    version: 10.13.5
+    version: 10.13.6-v2
   provisioner:
     product_version: 13
 
 - name: high-sierra-chef14
   driver:
     box: microsoft/macos-high-sierra
-    version: 10.13.5
+    version: 10.13.6-v2
   provisioner:
     product_version: 14
 
