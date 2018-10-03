@@ -1,11 +1,19 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [2.6.0] - 2018-09-27
+## [2.6.0] - 2018-10-03
 ### Added
-- Apple increased the security for the kickstart command in macOS Mojave, which we use to configure the remote management settings. Despite Apple's warning of Remote Management not being activated, we have a test that verifies it still activates.
+- Apple has limited some kickstart command functionality in macOS Mojave, preventing screen
+control in some invocations. We verified the `ard` resource's implementations of kickstart still
+function, and added tests to validate the default actions of `ard`.
+
+- Updated Xcode default version to 10.0.
+
 - The team crossed the great Mojave Desert, collapsed from dehydration, all just to obtain its support. In other words we now support macOS Mojave.
-- Updated Xcode to support version 10.
+
+### Fixed
+- Prevented the `xcode` resource from leaving available Command Line Tools downloads
+in Software Updates.
 
 ### Deprecated
 - The `machine_name` resource has been deprecated in favor of the macOS support in the `hostname` resource in Chef 14. It will be removed in the release of v3.0 of the macOS cookbook.
