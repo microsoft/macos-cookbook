@@ -1,5 +1,7 @@
 resource_name :machine_name
 
+deprecated 'The `machine_name` resource is deprecated, and will be removed in the release of v3.0 of the macOS cookbook.'
+
 property :hostname, String, desired_state: true, coerce: proc { |name| conform_to_dns_standards(name) }, name_property: true
 property :computer_name, String, desired_state: true
 property :local_hostname, String, desired_state: true, coerce: proc { |name| conform_to_dns_standards(name) }
