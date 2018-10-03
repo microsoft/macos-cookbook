@@ -34,6 +34,9 @@ in Software Updates.
 ### Deprecated
 - The `machine_name` resource has been deprecated in favor of the macOS support in the `hostname` resource in Chef 14. It will be removed in the release of v3.0 of the macOS cookbook.
 
+### Deprecated
+- The `machine_name` resource has been deprecated in favor of the macOS support in the `hostname` resource in Chef 14. It will be removed in the release of v3.0 of the macOS cookbook.
+
 ## [2.5.0] - 2018-09-10
 ### Added
 - Added `CHANGELOG.md`, About time right? ([Issue #122](https://github.com/Microsoft/macos-cookbook/issues/122)).
