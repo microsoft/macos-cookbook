@@ -9,15 +9,32 @@ module MacOS
       FileUtils.touch install_sentinel
       FileUtils.chown 'root', 'wheel', install_sentinel
 
-      @version = if available_command_line_tools.empty?
+      @version = if available.empty?
                    'Unavailable from Software Update Catalog'
                  else
-                   available_command_line_tools.last.tr('*', '').strip
+                   latest.tr('*', '').strip
                  end
     end
 
-    def available_command_line_tools
+    def latest
+      versions = platform_specific.map { |product| Gem::Version.new xcode_version(product) }
+      platform_specific.detect { |product| product.include? versions.max.version }
+    end
+
+    def platform_specific
+      available.select { |product_name| product_name.include? macos_version }
+    end
+
+    def available
       softwareupdate_list.select { |product_name| product_name.include?('* Command Line Tools') }
+    end
+
+    def xcode_version(product)
+      product.match(/Xcode-(?<version>\d+\.\d+)/)['version']
+    end
+
+    def macos_version
+      shell_out(['/usr/bin/sw_vers', '-productVersion']).stdout.chomp[/10\.\d+/]
     end
 
     def softwareupdate_list
