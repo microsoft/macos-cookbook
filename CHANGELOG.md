@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [2.6.1] - 2018-10-04
+### Added
+- The desert took its toll, the README now declares support for Mojave!
+
 ## [2.6.0] - 2018-10-03
 ### Added
 - Apple has limited some kickstart command functionality in macOS Mojave, preventing screen
