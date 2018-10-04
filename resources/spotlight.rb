@@ -2,12 +2,12 @@ resource_name :spotlight
 default_action :set
 
 property :directory, String, name_property: true
-property :indexing, ['enabled', 'disabled'], default: 'enabled'
+property :indexing, [:enabled, :disabled], default: :enabled
 property :searchable, [true, false], default: true
 
 action_class do
   def state
-    new_resource.indexing == 'enabled' ? 'on' : 'off'
+    new_resource.indexing == :enabled ? 'on' : 'off'
   end
 
   def search
