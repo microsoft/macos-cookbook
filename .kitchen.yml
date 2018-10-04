@@ -117,14 +117,6 @@ suites:
     - xcode-and-simulators
     - command-line-tool-sentinel
 
-- name: xcode-beta
-  run_list:
-  - recipe[macos_test::xcode_beta]
-  verifier:
-    controls:
-    - xcode-beta
-    - command-line-tool-sentinel
-
 - name: certificate
   run_list:
   - recipe[macos_test::certificate]
