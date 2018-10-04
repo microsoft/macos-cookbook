@@ -8,7 +8,7 @@ command in the `metadata_util` library.
 
 [Learn more about Spotlight](https://support.apple.com/en-us/HT204014).
 
-[Learn more about `mdutil`](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/mdutil.1.html).
+[Learn more about `mdutil`](http://mirror.informatimago.com/next/developer.apple.com/documentation/Darwin/Reference/ManPages/man1/mdutil.1.html).
 
 Syntax
 ------
