@@ -2,37 +2,15 @@ resource_name :spotlight
 default_action :set
 
 property :directory, String, name_property: true
-property :indexing, [:enabled, :disabled], default: :enabled
-property :searchable, [true, false], default: true
-
-action_class do
-  def state
-    new_resource.indexing == :enabled ? 'on' : 'off'
-  end
-
-  def search
-    new_resource.searchable ? '' : '-d'
-  end
-
-  def mdutil
-    ['/usr/bin/mdutil']
-  end
-
-  def mdutil_status
-    shell_out(mdutil, '-s', new_resource.directory).stdout
-  end
-
-  def index_status
-    mdutil_status.split(':')[1]
-  end
-
-  def desired_spotlight_state
-    [state, new_resource.directory, search]
-  end
-end
+property :indexing, equal_to: [:enabled, :disabled], default: :enabled
+property :search, equal_to: [:enabled, :disabled], default: :enabled
+property :volumes, [Array, String]
 
 load_current_value do
-  indexing shell_out('/usr/bin/mdutil', '-s', directory).stdout.split(':')[1].split(' ')[1]
+  mdutil = '/usr/bin/mdutil'
+  indexing_output = shell_out("#{mdutil} -s #{directory}").stdout
+  current_status = indexing_output.split(' ').last.delete('.')
+  indexing current_status.to_sym
 end
 
 action :set do
@@ -43,8 +21,24 @@ action :set do
   end
 
   converge_if_changed :indexing do
-    execute "Spotlight indexing is #{state}" do
-      command mdutil + desired_spotlight_state.insert(0, '-i')
+    converge_by "set Spotlight indexing to #{state}" do
+      execute "#{mdutil} -i #{state} #{new_resource.directory}"
     end
+  end
+end
+
+action_class do
+  def state
+    states = { enabled: 'on', disabled: 'off' }
+    states[new_resource.indexing]
+  end
+
+  def search
+    states = { enabled: '', disabled: '-d' }
+    states[new_resource.search]
+  end
+
+  def mdutil
+    '/usr/bin/mdutil'
   end
 end
