@@ -4,8 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [2.6.0] - 2018-10-03
 ### Added
 - Apple has limited some kickstart command functionality in macOS Mojave, preventing screen
-control in some invocations. We verified the `ard` resource's implementations of kickstart still
-function, and added tests to validate the default actions of `ard`.
+control in some invocations. We verified the `ard` resource's implementation of the `kickstart` script still functions.
 
 - Updated Xcode default version to 10.0.
 
@@ -41,7 +40,7 @@ CommandLineTools libraries.
 
 ## [2.3.0] - 2018-06-28
 ### Added
-- Like a trained ninja of the night, the `macos_user` now has a hidden property, making it impossible to detect from the login screen.
+- Like a trained ninja of the night, the `macos_user` now has a `hidden` property, making it impossible to detect from the login screen.
 - Moved to a new set of internal Vagrant macOS boxes, which have much more minimal initial configuration. This ensures that our resources run from a more out-of-the-box macOS experience.
 
 ### Fixed
@@ -50,7 +49,7 @@ CommandLineTools libraries.
 
 ## [2.2.0] - 2018-05-29
 ### Added
-- FoodCritics can be pretty harsh in their critiquing of food. They also have some pretty in depth rules we need to comply with, so we updated machine_name to comply with the new FoodCritic rule FC115.
+- Foodcritics can be pretty harsh in their critiquing of food. They also have some pretty in depth rules we need to comply with, so we updated machine_name to comply with the new FoodCritic rule FC115.
 - Added guard config to automatically run relevant unit tests when a file is changed.
 - Update to InSpec control filenames to match the standard. This allows for better understanding of the tests.
 
@@ -99,7 +98,7 @@ CommandLineTools libraries.
 ## [1.9.0] - 2018-03-21
 ### Added
 - Added support for other hypervisors and keep away logic.
-- Implemented `-t` option in certificate resource to allow apps to access imported key.
+- Implemented `-t` option in `certificate` resource to allow apps to access imported key.
 - Add `utf-8` encoding type to `plist` resource to make it more robust.
 
 ## [1.8.0] - 2018-03-12
