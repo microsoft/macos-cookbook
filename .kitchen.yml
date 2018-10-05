@@ -17,20 +17,6 @@ verifier:
   - test/integration/default
 
 platforms:
-- name: el-capitan-chef13
-  driver:
-    box: microsoft/os-x-el-capitan
-    version: 10.11.6
-  provisioner:
-    product_version: 13
-
-- name: sierra-chef13
-  driver:
-    box: microsoft/macos-sierra
-    version: 10.12.6
-  provisioner:
-    product_version: 13
-
 - name: sierra-chef14
   driver:
     box: microsoft/macos-sierra
@@ -38,26 +24,12 @@ platforms:
   provisioner:
     product_version: 14
 
-- name: high-sierra-chef13
-  driver:
-    box: microsoft/macos-high-sierra
-    version: 10.13.6-v2
-  provisioner:
-    product_version: 13
-
 - name: high-sierra-chef14
   driver:
     box: microsoft/macos-high-sierra
     version: 10.13.6-v2
   provisioner:
     product_version: 14
-
-- name: mojave-chef13
-  driver:
-    box: microsoft/macos-mojave
-    version: 10.14.01
-  provisioner:
-    product_version: 13
 
 - name: mojave-chef14
   driver:
