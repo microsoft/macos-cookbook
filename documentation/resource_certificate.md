@@ -7,7 +7,7 @@ command in the `security_cmd` library.
 
 [Learn more about certificates](https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/KeyManagementAPIs/KeyManagementAPIs.html).
 
-[Learn more about `security`](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/security.1.html).
+[Learn more about `security`](http://mirror.informatimago.com/next/developer.apple.com/documentation/Darwin/Reference/ManPages/man1/security.1.html).
 
 Syntax
 ------
