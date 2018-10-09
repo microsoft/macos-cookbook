@@ -2,7 +2,6 @@ require 'chefspec'
 require 'chefspec/berkshelf'
 
 require_relative '../libraries/macos_user'
-require_relative '../libraries/machine_name'
 require_relative '../libraries/metadata_util'
 require_relative '../libraries/plist'
 require_relative '../libraries/system'
