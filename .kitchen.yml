@@ -155,3 +155,10 @@ suites:
   verifier:
     controls:
     - remote-control
+
+- name: startosinstall
+  includes:
+  - high-sierra-chef14
+  - mojave-chef14
+  run_list:
+  - recipe[macos::startosinstall]

@@ -14,7 +14,7 @@ module MacOS
       end
 
       def device_node(disk_image)
-        attach_output = `#{attach(disk_image)}`
+        attach_output = shell_out(attach(disk_image)).stdout
         attach_output.split.first
       end
 
