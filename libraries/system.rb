@@ -39,7 +39,7 @@ module MacOS
 
       def disabled?
         shell_out('defaults -currentHost read com.apple.screensaver idleTime', user: @user).stdout.chomp == '0' &&
-        shell_out('defaults -currentHost read-type com.apple.screensaver idleTime', user: @user).stdout.chomp == 'Type is integer'
+          shell_out('defaults -currentHost read-type com.apple.screensaver idleTime', user: @user).stdout.chomp == 'Type is integer'
       end
     end
   end
