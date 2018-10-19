@@ -6,7 +6,6 @@ driver:
 provisioner:
   product_name: chef
   multiple_converge: 2
-  enforce_idempotency: true
 
 verifier:
   name: inspec
