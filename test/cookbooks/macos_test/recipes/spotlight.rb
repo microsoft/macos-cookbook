@@ -8,6 +8,7 @@ test_volumes.each do |volume|
              '-size', '1g', '-format', 'UDRW',
              '-volname', volume, '-srcfolder', test_file,
              '-ov', '-attach']
+    not_if 'diskutil info test_disk1'
   end
 end
 
