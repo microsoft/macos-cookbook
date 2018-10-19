@@ -76,6 +76,8 @@ platforms:
 
 suites:
 - name: default
+  provisioner:
+    enforce_idempotency: true
   run_list:
   - recipe[macos::disable_software_updates]
   - recipe[macos_test::preferences]
@@ -86,6 +88,8 @@ suites:
     - updates-disabled
 
 - name: power-management
+  provisioner:
+    enforce_idempotency: true
   run_list:
   - recipe[macos::keep_awake]
   verifier:
@@ -109,6 +113,8 @@ suites:
     - indexing-and-searching
 
 - name: xcode
+  provisioner:
+    enforce_idempotency: true
   run_list:
   - recipe[macos_test::xcode]
   verifier:
