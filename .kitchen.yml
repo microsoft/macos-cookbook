@@ -5,6 +5,8 @@ driver:
 
 provisioner:
   product_name: chef
+  multiple_converge: 2
+  enforce_idempotency: true
 
 verifier:
   name: inspec
@@ -85,9 +87,6 @@ suites:
     - updates-disabled
 
 - name: power-management
-  provisioner:
-    multiple_converge: 2
-    enforce_idempotency: true
   run_list:
   - recipe[macos::keep_awake]
   verifier:
