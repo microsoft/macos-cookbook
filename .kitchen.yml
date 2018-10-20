@@ -17,7 +17,6 @@ verifier:
   - test/integration/default
 
 platforms:
-
 - name: el-capitan-chef13
   driver:
     box: microsoft/os-x-el-capitan
@@ -111,6 +110,9 @@ suites:
   verifier:
     controls:
     - indexing-and-searching
+  lifecycle:
+    pre_verify:
+    - sleep 20
 
 - name: xcode
   provisioner:
