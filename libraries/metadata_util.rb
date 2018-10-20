@@ -8,7 +8,8 @@ module MacOS
     def initialize(volume)
       mdutil_possible_states = { 'Indexing enabled.' => ['on', ''],
                                  'Indexing disabled.' => ['off', ''],
-                                 'Indexing and searching disabled.' => ['off', '-d'] }
+                                 'Indexing and searching disabled.' => ['off', '-d'],
+                                 'Error' => ['', ''] }
 
       @mdutil_output = shell_out('/usr/bin/mdutil', '-s', volume).stdout
       @status_flags = unless server_disabled?
