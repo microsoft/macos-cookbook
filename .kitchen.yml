@@ -5,7 +5,7 @@ driver:
 
 provisioner:
   product_name: chef
-  multiple_converge: 3
+  multiple_converge: 2
 
 verifier:
   name: inspec
