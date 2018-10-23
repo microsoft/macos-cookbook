@@ -14,6 +14,7 @@ end
 
 execute 'test' do
   command ['sudo', 'launchctl', 'unload', '-w', '/System/Library/LaunchDaemons/com.apple.metadata.mds.plist']
+  not_if 'diskutil info TDD-ROM'
 end
 
 spotlight '/'
