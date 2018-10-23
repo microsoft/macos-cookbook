@@ -12,13 +12,7 @@ module MacOS
                                  'Error' => ['', ''] }
 
       @mdutil_output = shell_out('/usr/bin/mdutil', '-s', volume).stdout
-      @status_flags = unless server_disabled?
-                        mdutil_possible_states[volume_current_state(volume)].insert(1, volume)
-                      end
-    end
-
-    def server_disabled?
-      mdutil_output.strip.include? 'disabled'
+      @status_flags = mdutil_possible_states[volume_current_state(volume)].insert(1, volume)
     end
 
     def volume_current_state(_volume)
