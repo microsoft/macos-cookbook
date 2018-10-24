@@ -17,6 +17,7 @@ property :clientopts, Array
 action :activate do
   execute BASE_COMMAND do
     command "#{BASE_COMMAND} -activate"
+    not_if { ard_already_activated? }  
   end
 end
 
