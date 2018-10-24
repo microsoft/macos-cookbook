@@ -114,8 +114,6 @@ suites:
     - indexing-and-searching
 
 - name: xcode
-  provisioner:
-    enforce_idempotency: true
   run_list:
   - recipe[macos_test::xcode]
   verifier:
