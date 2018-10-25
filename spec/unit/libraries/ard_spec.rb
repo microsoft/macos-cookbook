@@ -17,7 +17,7 @@ end
 describe MacOS::ARD, '#ard_already_configured?' do
   context 'when remote management is already configured for the defaults' do
     before do
-      allow(ARD).to receive(:remote_management_plist)
+      allow_any_instance_of(ARD).to receive(:remote_management_plist)
         .and_return 'Dict { ARD_AllLocalUsersPrivs = 1073742079
                             allowInsecureDH = true
                             ARD_AllLocalUsers = true }'
