@@ -154,6 +154,8 @@ suites:
     - default-keychain-creation
 
 - name: remote-access
+  provisioner:
+    enforce_idempotency: true
   run_list:
   - recipe[macos_test::remote_access]
   verifier:
