@@ -1,14 +1,14 @@
 ard
 ===
 
-Use the **ard** resource to manage the "Remote Management" settings, found in System
-Preferences > Sharing > Remote Management. Under the hood, an **ard** resource
+Use the [**ard**](https://github.com/Microsoft/macos-cookbook/blob/master/resources/ard.rb) resource to manage the "Remote Management" settings, found in System
+Preferences > Sharing > Remote Management. Under the hood, the **ard** resource
 executes the `kickstart` command, located in ARDAgent.app (one of macOS' "core services").
 
 Syntax
 ------
 
-An **ard** resource block declares a basic description of the command configuration
+The **ard** resource block declares a basic description of the command configuration
 and a set of properties depending on the actions executed. For example:
 
 ```ruby
