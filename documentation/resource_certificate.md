@@ -9,7 +9,7 @@ Syntax
 ------
 
 The full syntax for all of the properties available to the **certificate** resource
-is:
+are:
 
 ```ruby
 certificate 'cert name' do

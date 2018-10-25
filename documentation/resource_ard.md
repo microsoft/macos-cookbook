@@ -28,7 +28,7 @@ The default `:configure` action is equivalent to the following
 ![Sharing Preferences](sharing_preferences.png)
 
 The full syntax for all of the properties that are available to the **ard**
-resource is:
+resource are:
 
 ```ruby
 ard 'description' do
