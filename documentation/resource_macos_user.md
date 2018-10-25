@@ -1,15 +1,15 @@
 macos_user
 =========
 
-Use the **macos_user** resource to manage user creation.
-Under the hood, a **macos_user** resource executes the `sysadminctl`
+Use the [**macos_user**](https://github.com/Microsoft/macos-cookbook/blob/master/resources/macos_user.rb) resource to manage user creation.
+Under the hood, the **macos_user** resource executes the `sysadminctl`
 command.
 
 Syntax
 ------
 
 The full syntax for all of the properties available to the **macos_user** resource
-is:
+are:
 
 ```ruby
 macos_user 'user and action description' do
@@ -46,7 +46,7 @@ Actions
 `:delete`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Delete a user specified by
-the `macos_user` username property. 
+the `macos_user` username property.
 
 
 Examples

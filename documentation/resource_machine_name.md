@@ -1,7 +1,7 @@
 machine_name
 ============
 
-Use the **machine_name** resource to manage a machine's name. In theory, the
+Use the [**machine_name**](https://github.com/Microsoft/macos-cookbook/blob/master/resources/machine_name.rb) resource to manage a machine's name. In theory, the
 `machine_name` resource should yield the same results that setting the
 **Computer Name** field in System Preferences would.
 
@@ -34,7 +34,7 @@ which would set:
 - `HostName` to **Johnnys-MacBookPro**
 
 The full syntax for all of the properties that are available to the **machine_name**
-resource is:
+resource are:
 
 ```ruby
 machine_name 'description' do

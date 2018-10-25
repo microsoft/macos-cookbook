@@ -1,7 +1,7 @@
 plist
 =====
 
-Use the **plist** resource to manage property list files (plists) and their content.
+Use the [**plist**](https://github.com/Microsoft/macos-cookbook/blob/master/resources/plist.rb) resource to manage property list files (plists) and their content.
 A **plist** resource instance represents the state of a single key-value pair in
 the delared plist `path`. Since each plist resource instance represents only one
 setting, you may end up with several plist resource calls in a given recipe. Although
@@ -13,18 +13,16 @@ before changing any values. It also makes sure that the plist is in binary forma
 so that the settings can be interpreted correctly by the operating system.
 
 Prior knowledge of using commandline utilities such as
-[defaults](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/defaults.1.html),
-[plutil](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/plutil.1.html),
-and [PlistBuddy](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man8/PlistBuddy.8.html)
+`defaults`,
+`plutil`,
+and `PlistBuddy`
 will be useful when implementing the **plist** resource.
-
-Want to learn more? See the [Property List Programming Guide](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/PropertyLists/QuickStartPlist/QuickStartPlist.html#//apple_ref/doc/uid/10000048i-CH4-SW5).
 
 Syntax
 ------
 
 The full syntax for all of the properties that are available to the **plist**
-resource is:
+resource are:
 
 ```ruby
 plist 'description' do
