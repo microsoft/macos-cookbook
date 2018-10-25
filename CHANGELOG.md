@@ -1,6 +1,16 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [2.7.0] - 2018-10-26
+### Added
+- A new mandate was struck down by the idempotency police which enforces idempotence for some resources. More enforcing to come in future releases.
+
+### Removed
+- Removal of dead links in documentation for resources to allow for more up to date and clear documentation.
+
+### Fixed
+- Fixed issue in the `ard` resource where a chef run would fail during the bootstrapping process. We added idempotency to the resource to allow for better action enforcing. ([Issue #70](https://github.com/Microsoft/macos-cookbook/issues/70)). 
+
 ## [2.6.1] - 2018-10-04
 ### Added
 - The desert took its toll, the README now declares support for Mojave!
