@@ -6,10 +6,10 @@ All notable changes to this project will be documented in this file.
 - A new mandate was struck down by the idempotency police which enforces idempotence for some resources. More enforcing to come in future releases.
 
 ### Removed
-- Removal of dead links in documentation for resources to allow for more up to date and clear documentation.
+- Removal of dead links in documentation for resources to allow for more up to date and clear documentation. ([Issue #129](https://github.com/Microsoft/macos-cookbook/issues/129)).
 
 ### Fixed
-- Fixed issue in the `ard` resource where a chef run would fail during the bootstrapping process. We added idempotency to the resource to allow for better action enforcing. ([Issue #70](https://github.com/Microsoft/macos-cookbook/issues/70)). 
+- Fixed issue in the `ard` resource where a chef run would fail during the bootstrapping process. We added idempotency to the resource to allow for better action enforcing. ([Issue #70](https://github.com/Microsoft/macos-cookbook/issues/70)).
 
 ## [2.6.1] - 2018-10-04
 ### Added
