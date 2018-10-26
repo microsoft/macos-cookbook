@@ -12,7 +12,7 @@ A `dns_domain` property can be optionally specified. This will be tacked on to t
 end of the specified `hostname` property to form a fully-qualified domain name
 that the system `HostName` will be set to.
 
-When the state of the `machine_name` resource changes, an `ohai` resource is notified
+When the state of a `machine_name` resource changes, an `ohai` resource is notified
 to reload; this is so that all name changes are reflected and immediately available
 via the node's normal attributes. Additionally, regardless of the chosen `ComputerName`,
 both `HostName` and `LocalHostName` will be formatted to adhere to [RFC 1034](https://tools.ietf.org/html/rfc1034).
