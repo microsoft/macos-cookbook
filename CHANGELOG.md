@@ -3,7 +3,6 @@ All notable changes to this project will be documented in this file.
 
 ## [2.7.0] - 2018-10-26
 ### Added
-
 - Multi-converge testing added for all kitchen suites, idempotency enforced for select resources. Idempotency issues identified and resolved with the `keep_awake` recipe, the `spotlight` resource, and the `ard` resource
 as a result. More enforcing by the idempotence police to come in future releases.
 
