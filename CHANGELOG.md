@@ -11,7 +11,7 @@ as a result. More enforcing by the idempotence police to come in future releases
 - Removal of dead links in documentation for resources to allow for more up to date and clear documentation. ([Issue #129](https://github.com/Microsoft/macos-cookbook/issues/129)).
 
 ### Fixed
-- Resolved an issue with the `ard` resource where a Chef run sometimes fail due to an intermittent `kickstart` failure. Guards to the default resource actions to prevent this issue. ([Issue #70](https://github.com/Microsoft/macos-cookbook/issues/70)).
+- Resolved an issue with the `ard` resource where a Chef run sometimes fails due to an intermittent `kickstart` failure. Guards added to the default resource actions to prevent this issue. ([Issue #70](https://github.com/Microsoft/macos-cookbook/issues/70)).
 - Resolved an issue with the `spotlight` resource where `mdutil` output was improperly parsed and
 re-ran `mdutil` commands when not needed.
 
