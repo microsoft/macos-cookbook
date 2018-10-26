@@ -9,7 +9,7 @@ command in the `metadata_util` library.
 Syntax
 ------
 
-The most basic usage of the **spotlight** resource block declares a disk volume as
+The most basic usage of the **spotlight** resource declares a disk volume as
 the name property to **enable** metadata indexing:
 
 ```ruby
