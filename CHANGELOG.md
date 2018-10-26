@@ -13,7 +13,7 @@ as a result. More enforcing by the idempotence police to come in future releases
 ### Fixed
 - Resolved an issue with the `ard` resource where a Chef run sometimes fails due to an intermittent `kickstart` failure. Guards added to the default resource actions to prevent this issue. ([Issue #70](https://github.com/Microsoft/macos-cookbook/issues/70)).
 - Resolved an issue with the `spotlight` resource where `mdutil` output was improperly parsed and
-re-ran `mdutil` commands when not needed.
+`mdutil` commands were re-ran when not needed.
 
 ## [2.6.1] - 2018-10-04
 ### Added
