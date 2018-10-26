@@ -3,13 +3,17 @@ All notable changes to this project will be documented in this file.
 
 ## [2.7.0] - 2018-10-26
 ### Added
-- A new mandate was struck down by the idempotency police which enforces idempotence for some resources. More enforcing to come in future releases.
+
+- Multi-converge testing added for all kitchen suites, idempotency enforced for select resources. Idempotency issues resolved with the `keep_awake` recipe, the `spotlight` resource, and the `ard` resource
+as a result. More enforcing by the idempotence police to come in future releases.
 
 ### Removed
 - Removal of dead links in documentation for resources to allow for more up to date and clear documentation. ([Issue #129](https://github.com/Microsoft/macos-cookbook/issues/129)).
 
 ### Fixed
-- Fixed issue in the `ard` resource where a chef run would fail during the bootstrapping process. We added idempotency to the resource to allow for better action enforcing. ([Issue #70](https://github.com/Microsoft/macos-cookbook/issues/70)).
+- Resolved an issue with the `ard` resource where a Chef run sometimes fail due to an intermittent `kickstart` failure. Guards to the default resource actions to prevent this issue. ([Issue #70](https://github.com/Microsoft/macos-cookbook/issues/70)).
+- Resolved an issue with the `spotlight` resource where `mdutil` output was improperly parsed and
+re-ran `mdutil` commands when not needed.
 
 ## [2.6.1] - 2018-10-04
 ### Added
