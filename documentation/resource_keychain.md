@@ -1,15 +1,15 @@
 keychain
 =========
 
-Use the [**keychain**](https://github.com/Microsoft/macos-cookbook/blob/master/resources/keychain.rb) resource to manage keychains.
-Under the hood, the **keychain** resource executes the `security`
+Use the **keychain** resource to manage keychains.
+Under the hood, the [**keychain**](https://github.com/Microsoft/macos-cookbook/blob/master/resources/keychain.rb) resource executes the `security`
 command in the `security_cmd` library.
 
 Syntax
 ------
 
 The full syntax for all of the properties available to the **keychain** resource
-are:
+is:
 
 ```ruby
 keychain 'keychain name' do

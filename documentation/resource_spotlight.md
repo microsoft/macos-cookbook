@@ -1,9 +1,9 @@
 spotlight
 =========
 
-Use the [**spotlight**](https://github.com/Microsoft/macos-cookbook/blob/master/resources/spotlight.rb) resource to manage the metadata indexing state for disk volumes.
+Use the **spotlight** resource to manage the metadata indexing state for disk volumes.
 This will primarily affect the ability to search volume contents with the macOS
-Spotlight feature. Under the hood, the **spotlight** resource executes the `mdutil`
+Spotlight feature. Under the hood, the [**spotlight**](https://github.com/Microsoft/macos-cookbook/blob/master/resources/spotlight.rb) resource executes the `mdutil`
 command in the `metadata_util` library.
 
 Syntax
@@ -17,7 +17,7 @@ spotlight '/'
 ```
 
 The full syntax for all of the properties available to the **spotlight** resource
-are:
+is:
 
 ```ruby
 spotlight 'volume name' do

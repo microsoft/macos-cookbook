@@ -1,15 +1,15 @@
 certificate
 =========
 
-Use the [**certificate**](https://github.com/Microsoft/macos-cookbook/blob/master/resources/certificate.rb) resource to manage certificates for keychains.
-Under the hood, the **certificate** resource executes the `security`
+Use the **certificate** resource to manage certificates for keychains.
+Under the hood, the [**certificate**](https://github.com/Microsoft/macos-cookbook/blob/master/resources/certificate.rb) resource executes the `security`
 command in the `security_cmd` library.
 
 Syntax
 ------
 
 The full syntax for all of the properties available to the **certificate** resource
-are:
+is:
 
 ```ruby
 certificate 'cert name' do

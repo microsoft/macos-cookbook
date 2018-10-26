@@ -1,8 +1,8 @@
 plist
 =====
 
-Use the [**plist**](https://github.com/Microsoft/macos-cookbook/blob/master/resources/plist.rb) resource to manage property list files (plists) and their content.
-A **plist** resource instance represents the state of a single key-value pair in
+Use the **plist** resource to manage property list files (plists) and their content.
+The [**plist**](https://github.com/Microsoft/macos-cookbook/blob/master/resources/plist.rb) resource instance represents the state of a single key-value pair in
 the delared plist `path`. Since each plist resource instance represents only one
 setting, you may end up with several plist resource calls in a given recipe. Although
 this may seem like overkill, it allows us to have a fully idempotent resource with
@@ -22,7 +22,7 @@ Syntax
 ------
 
 The full syntax for all of the properties that are available to the **plist**
-resource are:
+resource is:
 
 ```ruby
 plist 'description' do
