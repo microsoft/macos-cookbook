@@ -2,12 +2,8 @@ certificate
 =========
 
 Use the **certificate** resource to manage certificates for keychains.
-Under the hood, a **certificate** resource executes the `security`
+Under the hood, the [**certificate**](https://github.com/Microsoft/macos-cookbook/blob/master/resources/certificate.rb) resource executes the `security`
 command in the `security_cmd` library.
-
-[Learn more about certificates](https://developer.apple.com/library/content/documentation/Security/Conceptual/cryptoservices/KeyManagementAPIs/KeyManagementAPIs.html).
-
-[Learn more about `security`](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/security.1.html).
 
 Syntax
 ------

@@ -6,7 +6,6 @@ control 'admin-user' do
 
   describe user('randall') do
     it { should exist }
-    its('uid') { should eq 503 }
     its('gid') { should eq 20 }
     its('home') { should eq '/Users/randall' }
     its('groups') { should include 'alpha' }
@@ -49,7 +48,6 @@ control 'standard-user' do
 
   describe user('johnny') do
     it { should exist }
-    its('uid') { should eq 504 }
     its('gid') { should eq 20 }
     its('home') { should eq '/Users/johnny' }
     its('groups') { should include 'staff' }
@@ -75,7 +73,6 @@ control 'standard-user' do
 
   describe user('paul') do
     it { should exist }
-    its('uid') { should eq 505 }
     its('groups') { should include 'staff' }
     its('groups') { should_not include  'admin' }
     its('home') { should eq '/Users/paul' }

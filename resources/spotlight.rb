@@ -32,8 +32,6 @@ action_class do
 end
 
 action :set do
-  volume = MetadataUtil.new(target_volume)
-
   macosx_service 'metadata server' do
     service_name 'com.apple.metadata.mds'
     plist '/System/Library/LaunchDaemons/com.apple.metadata.mds.plist'
@@ -42,6 +40,6 @@ action :set do
 
   execute "turn Spotlight indexing #{state} for #{target_volume}" do
     command mdutil + desired_spotlight_state.insert(0, '-i')
-    not_if { volume.status_flags == desired_spotlight_state }
+    not_if { MetadataUtil.new(target_volume).status_flags == desired_spotlight_state }
   end
 end

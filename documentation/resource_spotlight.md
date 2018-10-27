@@ -3,17 +3,13 @@ spotlight
 
 Use the **spotlight** resource to manage the metadata indexing state for disk volumes.
 This will primarily affect the ability to search volume contents with the macOS
-Spotlight feature. Under the hood, a **spotlight** resource executes the `mdutil`
+Spotlight feature. Under the hood, the [**spotlight**](https://github.com/Microsoft/macos-cookbook/blob/master/resources/spotlight.rb) resource executes the `mdutil`
 command in the `metadata_util` library.
-
-[Learn more about Spotlight](https://support.apple.com/en-us/HT204014).
-
-[Learn more about `mdutil`](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/mdutil.1.html).
 
 Syntax
 ------
 
-The most basic usage of a **spotlight** resource block declares a disk volume as
+The most basic usage of the **spotlight** resource declares a disk volume as
 the name property to **enable** metadata indexing:
 
 ```ruby

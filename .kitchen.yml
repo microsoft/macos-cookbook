@@ -5,6 +5,7 @@ driver:
 
 provisioner:
   product_name: chef
+  multiple_converge: 2
 
 verifier:
   name: inspec
@@ -16,7 +17,6 @@ verifier:
   - test/integration/default
 
 platforms:
-
 - name: el-capitan-chef13
   driver:
     box: microsoft/os-x-el-capitan
@@ -75,6 +75,8 @@ platforms:
 
 suites:
 - name: default
+  provisioner:
+    enforce_idempotency: true
   run_list:
   - recipe[macos::disable_software_updates]
   - recipe[macos_test::preferences]
@@ -86,7 +88,7 @@ suites:
 
 - name: power-management
   provisioner:
-    multiple_converge: 2
+    enforce_idempotency: true
   run_list:
   - recipe[macos::keep_awake]
   verifier:
@@ -103,6 +105,8 @@ suites:
     - nonstandard-computer-name
 
 - name: spotlight
+  provisioner:
+    enforce_idempotency: true
   run_list:
   - recipe[macos_test::spotlight]
   verifier:
@@ -150,6 +154,8 @@ suites:
     - default-keychain-creation
 
 - name: remote-access
+  provisioner:
+    enforce_idempotency: true
   run_list:
   - recipe[macos_test::remote_access]
   verifier:

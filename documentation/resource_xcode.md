@@ -2,7 +2,7 @@ xcode
 =====
 
 Use the **xcode** resource to manage a single installation of Apple's Xcode IDE.
-An **xcode** resource instance represents the state of a single Xcode installation
+The [**xcode**](https://github.com/Microsoft/macos-cookbook/blob/master/resources/xcode.rb) resource manages the state of a single Xcode installation
 and any additional iOS simulators that are declared using the `ios_simulators`
 property. The latest version of iOS simulators are always installed with Xcode.
 This resource supports beta and GM seeds from Apple if currently available via
@@ -15,7 +15,7 @@ path, overwriting an existing bundle if it is not the requested version.
 Syntax
 ------
 
-The simplest use of an **xcode** resource is:
+The simplest use of the **xcode** resource is:
 
 ```ruby
 xcode '9.4.1'

@@ -20,11 +20,8 @@ action :set do
     converge_by "set #{new_resource.preference} to #{new_resource.setting}" do
       set_pref = ['-set', new_resource.preference.to_s].join('')
       execute ['/usr/sbin/systemsetup', set_pref, new_resource.setting]
-      ruby_block 'sleep one second' do
-        block do
-          sleep 1
-        end
-      end
+      execute ['/usr/sbin/systemsetup', set_pref, new_resource.setting]
+      execute ['/usr/sbin/systemsetup', set_pref, new_resource.setting]
     end
   end
 end

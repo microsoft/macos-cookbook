@@ -2,16 +2,13 @@ ard
 ===
 
 Use the **ard** resource to manage the "Remote Management" settings, found in System
-Preferences > Sharing > Remote Management. Under the hood, an **ard** resource
+Preferences > Sharing > Remote Management. Under the hood, the [**ard**](https://github.com/Microsoft/macos-cookbook/blob/master/resources/ard.rb) resource
 executes the `kickstart` command, located in ARDAgent.app (one of macOS' "core services").
-It has some basic actions, which pertain to the simple `kickstart` subcommands.
-It also has the more complicated `:configure` action, which requires some familiarity
-with [`kickstart`](https://support.apple.com/en-us/HT201710).
 
 Syntax
 ------
 
-An **ard** resource block declares a basic description of the command configuration
+The **ard** resource block declares a basic description of the command configuration
 and a set of properties depending on the actions executed. For example:
 
 ```ruby
@@ -23,7 +20,7 @@ end
 where
 
 - `:activate` activates the ARD agent
-- `:configure` configures the agent using the `kickstart` defaut commandline arguments.
+- `:configure` configures the agent using the `kickstart` default commandline arguments.
 
 The default `:configure` action is equivalent to the following
 **System Preferences > Sharing** settings:
