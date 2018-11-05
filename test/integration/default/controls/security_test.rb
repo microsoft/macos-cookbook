@@ -1,5 +1,3 @@
-macos_version = command('/usr/bin/sw_vers -productVersion').stdout.strip
-
 title 'security'
 
 control 'certificate-install' do
