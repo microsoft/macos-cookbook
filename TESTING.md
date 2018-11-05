@@ -5,32 +5,28 @@
 - [Integration tests](#integration-tests)
 - [Rake Tasks](#rake-tasks)
 
+## Requirements
+
+- [ChefDK](https://downloads.chef.io/chefdk)
+- [Vagrant](https://www.vagrantup.com/)
+- [Packer](https://www.packer.io/)
+- A supported macOS hypervisor:
+  - [Parallels](https://www.parallels.com/landingpage/pd/general/)
+  - [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+  - [VMWare Fusion](https://www.vmware.com/products/fusion.html)
+
 ## Syntax and style
 
-### Requirements:
-
-- `cookstyle` and `foodcritic` (both are shipped with the [ChefDK](https://downloads.chef.io/chefdk))
-
-### Running the tests
+- `cookstyle` and `foodcritic`
 
 Syntax testing is pretty straight forward. At the root of the cookbook, run:
 
 ```shell
-$ cookstyle
-```
-
-and
-
-```
-$ foodcritic .
+cookstyle
+foodcritic .
 ```
 
 ## Unit tests
-
-### Requirements:
-
-- [RSpec](http://rspec.info/)
-- [ChefDK](https://downloads.chef.io/chefdk) (optional)
 
 For unit tests, we focus on testing the library files, which are written
 in pure Ruby and tested with RSpec. The library files contain most of the core
@@ -39,29 +35,19 @@ for the custom resources or contain classes that act as helpers, except with
 explicit namespacing. Some libary files are heavily unit tested, others are definitely
 missing much-needed unit test coverage.
 
-### Running the tests
-
 Clone this repo and in the root of the cookbook, run:
 
 ```shell
-$ rspec spec
+rspec spec
 ```
 
 To run the unit tests in a specific file:
 
 ```shell
-$ rspec spec/unit/libraries/xcode_spec.rb
+rspec spec/unit/libraries/xcode_spec.rb
 ```
 
 ## Integration tests
-
-###  Requirements:
-
-- [ChefDK](https://downloads.chef.io/chefdk)
-- A virtual machine provider (we use [Parallels](https://www.parallels.com/landingpage/pd/general/), but [VirtualBox](https://www.virtualbox.org/wiki/Downloads) or [VMWare Fusion](https://www.vmware.com/products/fusion.html) should be fine)
-- [Vagrant](https://www.vagrantup.com/)
-- macOS Vagrant base boxes running (we're currently testing 10.11.6, 10.12.6, and 10.13.3)
-- [Packer](https://www.packer.io/) (recommended for box building)
 
 For integration tests, we test custom resources using a test cookbook, found in
 [`test/cookbooks/macos_test`](https://github.com/Microsoft/macos-cookbook/tree/master/test/cookbooks/macos_test).
@@ -97,13 +83,13 @@ a few issues that need to be addressed before doing so.
 Once you have finished building and "adding" your box (with `vagrant box add`),
 you'll need to modify the `.kitchen.yml`. The only modifications you should
 need to make are replacing our box names with yours. For example, you would
-replace `apex/macos-10.13.3` with `my_high_sierra_box`. To double check the
+replace `apex/macos-10.13.6` with `my_high_sierra_box`. To double check the
 available boxes and their names, execute `vagrant box list`. For example:
 
 ```shell
 $ vagrant box list
 apex/macos-10.12.6 (parallels, 2.0.0)
-apex/macos-10.13.3 (parallels, 1.1.0)
+apex/macos-10.13.6 (parallels, 1.1.0)
 ```
 
 Next, make sure you're in the macOS cookbook root and run `kitchen list` to view
@@ -112,16 +98,13 @@ the available instances. It should look something like this:
 ```shell
 $ kitchen list
 Instance                      Driver   Provisioner  Verifier  Transport  Last Action    Last Error
-default-apex-macos-10133      Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
+default-apex-macos-10136      Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
 default-apex-macos-10126      Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
 xcode-apex-macos-10136        Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
-xcode-apex-macos-10133        Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
 xcode-apex-macos-10126        Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
 spotlight-apex-macos-10136    Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
-spotlight-apex-macos-10133    Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
 spotlight-apex-macos-10126    Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
 certificate-apex-macos-10136  Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
-certificate-apex-macos-10133  Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
 certificate-apex-macos-10126  Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
 ```
 
@@ -131,7 +114,7 @@ run `kitchen help COMMAND` for help on a specific subcommand. When you're ready,
 run `kitchen test`.
 
 ```shell
-$ kitchen test
+kitchen test
 ```
 
 `kitchen` supports using regular expressions to only run a specific instance.
@@ -139,8 +122,7 @@ For example:
 
 ```shell
 kitchen test xcode # test the xcode suite on all versions
-$ kitchen test xcode # test the xcode suite on all versions
-$ kitchen test default.*101[23] # only test default suites on 10.12 and 10.13
+kitchen test default.*101[23] # only test default suites on 10.12 and 10.13
 ```
 
 macOS takes a little while to boot and the suites themselves (especially Xcode)
