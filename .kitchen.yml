@@ -17,13 +17,6 @@ verifier:
   - test/integration/default
 
 platforms:
-- name: el-capitan-chef14
-  driver:
-    box: microsoft/os-x-el-capitan
-    version: 10.11.6
-  provisioner:
-    product_version: 14
-
 - name: sierra-chef14
   driver:
     box: microsoft/macos-sierra

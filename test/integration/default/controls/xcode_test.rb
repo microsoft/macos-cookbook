@@ -18,12 +18,6 @@ control 'xcode-and-simulators' do
       its('exit_status') { should eq 0 }
       its('stdout') { should include 'iOS 10.3.1 Simulator (installed)' }
     end
-
-  elsif macos_version.match? Regexp.union '10.11'
-    describe command('/opt/chef/embedded/bin/xcversion simulators') do
-      its('exit_status') { should eq 0 }
-      its('stdout') { should include 'iOS 9.3 Simulator (installed)' }
-    end
   end
 end
 

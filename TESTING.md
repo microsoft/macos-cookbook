@@ -102,7 +102,6 @@ available boxes and their names, execute `vagrant box list`. For example:
 
 ```shell
 $ vagrant box list
-apex/macos-10.11.6 (parallels, 1.0.0)
 apex/macos-10.12.6 (parallels, 2.0.0)
 apex/macos-10.13.3 (parallels, 1.1.0)
 ```
@@ -115,16 +114,15 @@ $ kitchen list
 Instance                      Driver   Provisioner  Verifier  Transport  Last Action    Last Error
 default-apex-macos-10133      Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
 default-apex-macos-10126      Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
-default-apex-macos-10116      Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
+xcode-apex-macos-10136        Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
 xcode-apex-macos-10133        Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
 xcode-apex-macos-10126        Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
-xcode-apex-macos-10116        Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
+spotlight-apex-macos-10136    Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
 spotlight-apex-macos-10133    Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
 spotlight-apex-macos-10126    Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
-spotlight-apex-macos-10116    Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
+certificate-apex-macos-10136  Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
 certificate-apex-macos-10133  Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
 certificate-apex-macos-10126  Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
-certificate-apex-macos-10116  Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
 ```
 
 The `kitchen list` command serves as a nearly-perfect way to validate the
@@ -140,7 +138,7 @@ $ kitchen test
 For example:
 
 ```shell
-$ kitchen test 1011 # test all the suites on 10.11 only
+kitchen test xcode # test the xcode suite on all versions
 $ kitchen test xcode # test the xcode suite on all versions
 $ kitchen test default.*101[23] # only test default suites on 10.12 and 10.13
 ```
