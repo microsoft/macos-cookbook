@@ -1,11 +1,11 @@
-if node['platform_version'].match? Regexp.union /10.14|10.13/
+if mac_os_x_after_sierra?
   execute 'Disable Gatekeeper' do
     command ['spctl', '--master-disable']
   end
 
   xcode node['macos']['xcode']['version']
 
-elsif node['platform_version'].match? Regexp.union '10.12'
+elsif mac_os_x_sierra?
   execute 'Disable Gatekeeper' do
     command ['spctl', '--master-disable']
   end
