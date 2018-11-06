@@ -52,7 +52,7 @@ describe MacOS::CommandLineTools do
     end
     it 'returns the latest recommended Command Line Tools product' do
       clt = MacOS::CommandLineTools.new
-      expect(clt.version).to eq 'Absent from Software Update Catalog'
+      expect(clt.version).to eq 'No Command Line Tools specific to 10.14 available from Software Update Catalog!
     end
   end
 
