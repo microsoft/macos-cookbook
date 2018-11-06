@@ -12,7 +12,7 @@ module MacOS
       @version = if available.empty?
                    'No Command Lines Tools available from Software Update Catalog!'
                  elsif platform_specific.empty?
-                   'Absent from Software Update Catalog'
+                   "No Command Line Tools specific to #{macos_version} available from Software Update Catalog!"
                  else
                    latest.tr('*', '').strip
                  end
