@@ -1,7 +1,7 @@
 macOS Cookbook
 ==============
 
-[![Build status](https://dev.azure.com/office/APEX/_apis/build/status/lab/cookbooks/macos)](https://dev.azure.com/office/APEX/_build/latest?definitionId=2143)
+[![Build status](https://dev.azure.com/office/APEX/_apis/build/status/lab/cookbooks/macos?branchName=master)](https://dev.azure.com/office/APEX/_build/latest?definitionId=2143)
 
 Chef resources and recipes for managing and provisioning macOS.
 
