@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 ## [2.8.0] - 2018-11-14
 ### Added
-- Sugar helps the code go down! We added a little Chef Sugar to utilize its helpful resources for `mac_os_x?`, `virtual?`, `mac_os_x_before_or_at_maverick?`, etc.
+- Sugar helps the code go down! We now depend on Chef Sugar for `mac_os_x?`, `virtual?`, `mac_os_x_before_or_at_maverick?`, etc.
 
 ### Fixed
 - Fixed and issue where Software Update Catalog provides an incomplete list causing some converge failures. We now check for `platform_specific.empty?` and produce appropriate errors.
