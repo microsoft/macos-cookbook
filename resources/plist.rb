@@ -4,6 +4,8 @@ property :path, String, name_property: true, desired_state: true
 property :entry, String, desired_state: true
 property :value, [TrueClass, FalseClass, String, Integer, Float], desired_state: true
 property :encoding, String, desired_state: true, default: 'binary'
+property :owner, String, desired_state: true, default: 'root'
+property :group, String, desired_state: true, default: 'wheel'
 
 load_current_value do |desired|
   current_value_does_not_exist! unless ::File.exist? desired.path
@@ -14,20 +16,21 @@ load_current_value do |desired|
 
   file_type_cmd = shell_out '/usr/bin/file', '--brief', '--mime-encoding', '--preserve-date', desired.path
   encoding file_type_cmd.stdout.chomp
+
+  file_owner_cmd = shell_out('/usr/bin/stat', '-f', '%Su', desired.path)
+  owner file_owner_cmd.stdout.chomp
+
+  file_group_cmd = shell_out('/usr/bin/stat', '-f', '%Sg', desired.path)
+  group file_group_cmd.stdout.chomp
 end
 
 action :set do
   converge_if_changed :path do
     converge_by "create new plist: '#{new_resource.path}'" do
       file new_resource.path do
-        content <<-EOF
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-</dict>
-</plist>
-EOF
+        content {}.to_plist
+        owner new_resource.owner
+        group new_resource.group
       end
     end
   end
@@ -57,6 +60,22 @@ EOF
       ) unless plutil_format_map.keys.include? new_resource.encoding
       execute ['/usr/bin/plutil', '-convert', plutil_format_map[new_resource.encoding], new_resource.path] do
         action :run
+      end
+    end
+  end
+
+  converge_if_change :owner do
+    converge_by "update owner to #{new_resource.owner}" do
+      file new_resource.path do
+        owner new_resource.owner
+      end
+    end
+  end
+
+  converge_if_change :group do
+    converge_by "update group to #{new_resource.group}" do
+      file new_resource.path do
+        group new_resource.group
       end
     end
   end
