@@ -3,8 +3,8 @@ include Chef::Mixin::ShellOut
 module MacOS
   module XCVersion
     class << self
-      def xcversion
-        '/opt/chef/embedded/bin/xcversion '.freeze
+      def xcversion_path
+        Chef::Util::PathHelper.join(Chef::Config.embedded_dir, 'bin', 'xcversion')
       end
 
       def update
