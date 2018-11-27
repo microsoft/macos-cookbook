@@ -7,24 +7,28 @@ module MacOS
         Chef::Util::PathHelper.join(Chef::Config.embedded_dir, 'bin', 'xcversion')
       end
 
+      def xcversion(command)
+        [xcversion_path, command].join(' ')
+      end
+
       def update
-        xcversion + 'update'
+        xcversion 'update'
       end
 
       def list_simulators
-        xcversion + 'simulators'
+        xcversion 'simulators'
       end
 
       def install_simulator(simulator)
-        xcversion + "simulators --install='#{simulator.version}'"
+        xcversion "simulators --install='#{simulator.version}'"
       end
 
-      def list_xcodes
-        xcversion + 'list'
+      def list_available_xcodes
+        xcversion 'list'
       end
 
       def install_xcode(xcode)
-        xcversion + "install '#{xcode.version}'"
+        xcversion "install '#{xcode.version}'"
       end
 
       def installed_xcodes
