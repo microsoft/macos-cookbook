@@ -41,7 +41,7 @@ module MacOS
       end
 
       def available_versions
-        shell_out!(XCVersion.list_xcodes).stdout.lines
+        shell_out!(XCVersion.list_available_xcodes).stdout.lines
       end
     end
   end
