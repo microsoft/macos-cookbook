@@ -23,12 +23,12 @@ module MacOS
         xcversion "simulators --install='#{simulator.version}'"
       end
 
-      def list_available_xcodes
-        xcversion 'list'
-      end
-
       def list_installed_xcodes
         xcversion 'installed'
+      end
+
+      def list_available_xcodes
+        xcversion 'list'
       end
 
       def install_xcode(xcode)
