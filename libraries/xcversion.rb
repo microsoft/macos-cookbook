@@ -27,12 +27,16 @@ module MacOS
         xcversion 'list'
       end
 
+      def list_installed_xcodes
+        xcversion 'installed'
+      end
+
       def install_xcode(xcode)
         xcversion "install '#{xcode.version}'"
       end
 
       def installed_xcodes
-        lines = shell_out(xcversion + 'installed').stdout.lines
+        lines = shell_out(XCVersion.list_installed_xcodes).stdout.lines
         lines.map { |line| { line.split.first => line.split.last.delete('()') } }
       end
 
