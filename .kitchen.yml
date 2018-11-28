@@ -121,17 +121,6 @@ suites:
     - xcode-and-simulators
     - command-line-tool-sentinel
 
-- name: xcode-chefdk
-  run_list:
-  - recipe[macos_test::xcode]
-  verifier:
-    controls:
-    - xcode-and-simulators
-    - command-line-tool-sentinel
-  provisioner:
-    product_name: chefdk
-    product_version: 3
-
 - name: certificate
   run_list:
   - recipe[macos_test::certificate]
