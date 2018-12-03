@@ -1,5 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
+## [2.8.1] - 2018-11-29
+### Fixed
+- Fixed an issue where the path for the `xcversion` utility was hard-coded when installed as a Chef gem, which caused failures when converging with ChefDK or Workstation.
+
 ## [2.8.0] - 2018-11-14
 ### Added
 - Sugar helps the code go down! We now depend on [Chef Sugar](https://supermarket.chef.io/tools/chef-sugar) for `mac_os_x?`, `virtual?`, `mac_os_x_before_or_at_maverick?`, etc.
