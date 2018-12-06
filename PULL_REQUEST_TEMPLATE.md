@@ -7,8 +7,8 @@ assignees: ''
 
 ---
 
-**Describe the Pull Request**  
+## Describe the Pull Request  
 A clear and concise description of what the Pull Request aims to do. 
 
-**Issues Resolved**  
+## Justification  
 A clear and concise description of issues the Pull Requests solves if any.
