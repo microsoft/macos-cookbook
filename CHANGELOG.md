@@ -1,5 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
+## [2.9.0] - 2018-12-06
+### Added
+- Added templates for bug reports, feature requests, and pull requests to adhere to adhere with Github's [recommended community standards](https://opensource.guide). 
+
 ## [2.8.1] - 2018-11-29
 ### Fixed
 - Fixed an issue where the path for the `xcversion` utility was hard-coded when installed as a Chef gem, which caused failures when converging with ChefDK or Workstation.
