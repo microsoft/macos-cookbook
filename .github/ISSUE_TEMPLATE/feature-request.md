@@ -7,8 +7,8 @@ assignees: ''
 
 ---
 
-**Describe the feature**
+**Describe the feature**  
 A clear and concise description of what the feature is. 
 
-**Describe the reasoning behind the feature**
+**Describe the reasoning behind the feature**  
 A clear and concise description of why the feature should be implemented.
