@@ -7,11 +7,11 @@ assignees: ''
 
 ---
 
-**Describe the Bug**  
+## Describe the Bug 
 A clear and concise description of what the bug is.
 
-**Error Message**  
+## Error Message  
 Error message(s) if any. 
 
-**Chef Exception**  
+## Chef Exception  
 Chef exception(s) if any.
