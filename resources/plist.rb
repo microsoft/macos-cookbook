@@ -72,7 +72,7 @@ action :set do
     end
   end
 
-  converge_if_change :group do
+  converge_if_changed :group do
     converge_by "update group to #{new_resource.group}" do
       file new_resource.path do
         group new_resource.group
