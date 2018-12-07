@@ -64,7 +64,7 @@ action :set do
     end
   end
 
-  converge_if_change :owner do
+  converge_if_changed :owner do
     converge_by "update owner to #{new_resource.owner}" do
       file new_resource.path do
         owner new_resource.owner
