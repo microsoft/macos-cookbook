@@ -1,5 +1,5 @@
-dock = "/Users/vagrant/Library/Preferences/com.apple.dock.plist"
-macoscookbook = "/Users/vagrant/com.microsoft.macoscookbook.plist"
+dock_plist = "/Users/vagrant/Library/Preferences/com.apple.dock.plist"
+macoscookbook_plist = "/Users/vagrant/com.microsoft.macoscookbook.plist"
 
 plist 'show hidden files' do
   path '/Users/vagrant/Library/Preferences/com.apple.finder.plist'
@@ -10,7 +10,7 @@ plist 'show hidden files' do
 end
 
 plist 'put the Dock on the left side' do
-  path dock
+  path dock_plist
   entry 'orientation'
   value 'left'
   owner 'vagrant'
@@ -18,7 +18,7 @@ plist 'put the Dock on the left side' do
 end
 
 plist 'disable window animations and Get Info animations' do
-  path dock
+  path dock_plist
   entry 'DisableAllAnimations'
   value true
   owner 'vagrant'
@@ -26,7 +26,7 @@ plist 'disable window animations and Get Info animations' do
 end
 
 plist 'create a plist that does not exist to test plist creation' do
-  path macoscookbook
+  path macoscookbook_plist
   entry 'PokeballEatenByDog'
   value true
   owner 'vagrant'
@@ -35,7 +35,7 @@ plist 'create a plist that does not exist to test plist creation' do
 end
 
 plist 'add another value to the new plist' do
-  path macoscookbook
+  path macoscookbook_plist
   entry 'CaughtEmAll'
   value false
   owner 'vagrant'
