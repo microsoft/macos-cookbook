@@ -1,5 +1,5 @@
-dock_plist = "/Users/vagrant/Library/Preferences/com.apple.dock.plist"
-macoscookbook_plist = "/Users/vagrant/com.microsoft.macoscookbook.plist"
+dock_plist = '/Users/vagrant/Library/Preferences/com.apple.dock.plist'
+macoscookbook_plist = '/Users/vagrant/com.microsoft.macoscookbook.plist'
 
 plist 'show hidden files' do
   path '/Users/vagrant/Library/Preferences/com.apple.finder.plist'
