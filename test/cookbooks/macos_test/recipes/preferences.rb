@@ -31,7 +31,7 @@ plist 'create a plist that does not exist to test plist creation' do
   value true
   owner 'vagrant'
   group 'staff'
-  encoding 'ascii'
+  encoding 'us-ascii'
 end
 
 plist 'add another value to the new plist' do
@@ -40,5 +40,5 @@ plist 'add another value to the new plist' do
   value false
   owner 'vagrant'
   group 'staff'
-  encoding 'ascii'
+  encoding 'us-ascii'
 end
