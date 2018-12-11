@@ -28,7 +28,8 @@ action :set do
   converge_if_changed :path do
     converge_by "create new plist: '#{new_resource.path}'" do
       file new_resource.path do
-        content {}.to_plist
+        empty_plist = {}.to_plist
+        content empty_plist
         owner new_resource.owner
         group new_resource.group
       end
