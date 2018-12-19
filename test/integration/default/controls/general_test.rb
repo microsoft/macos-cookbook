@@ -14,6 +14,7 @@ control 'show-all-files' do
   describe file(finder_plist) do
     its('owner') { should eq 'vagrant' }
     its('group') { should eq 'staff' }
+    its('mode') { should eq '0600' }
   end
 end
 
@@ -34,5 +35,6 @@ control 'plist-creation' do
   describe file(macos_cookbook_plist) do
     its('owner') { should eq 'vagrant' }
     its('group') { should eq 'staff' }
+    its('mode') { should eq '0600' }
   end
 end

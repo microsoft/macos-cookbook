@@ -6,6 +6,7 @@ property :value, [TrueClass, FalseClass, String, Integer, Float], desired_state:
 property :encoding, String, desired_state: true, default: 'binary'
 property :owner, String, desired_state: true, default: 'root'
 property :group, String, desired_state: true, default: 'wheel'
+property :mode, [String, Integer]
 
 load_current_value do |desired|
   current_value_does_not_exist! unless ::File.exist? desired.path
@@ -32,6 +33,7 @@ action :set do
         content empty_plist
         owner new_resource.owner
         group new_resource.group
+        mode new_resource.mode if property_is_set?(:mode)
       end
     end
   end

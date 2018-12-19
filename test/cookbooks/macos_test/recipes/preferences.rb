@@ -32,6 +32,7 @@ plist 'create a plist that does not exist to test plist creation' do
   owner 'vagrant'
   group 'staff'
   encoding 'us-ascii'
+  mode '0600'
 end
 
 plist 'add another value to the new plist' do
