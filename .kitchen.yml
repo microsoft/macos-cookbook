@@ -85,6 +85,7 @@ suites:
     - dock-appearance
     - show-all-files
     - updates-disabled
+    - plist-creation
 
 - name: power-management
   provisioner:
