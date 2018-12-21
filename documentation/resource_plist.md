@@ -33,6 +33,7 @@ plist 'description' do
   encoding                     String # defaults to 'binary' if not specified.
   owner                        String # defaults to 'root' if not specified.
   group                        String # defaults to 'wheel' if not specified.
+  mode                         String, Integer 
 end
 ```
 
