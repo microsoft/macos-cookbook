@@ -24,7 +24,7 @@ control 'plist-creation-test' do
   title 'arbitrary plist creation'
   desc 'creation and modification of a property list'
 
-  describe file(macos_cookbook_plist) do
+  describe file(macos_cookbook_test_plist) do
     its('owner') { should eq 'vagrant' }
     its('group') { should eq 'staff' }
     its('mode') { should cmp '0600' }
