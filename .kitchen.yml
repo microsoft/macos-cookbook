@@ -162,3 +162,13 @@ suites:
   verifier:
     controls:
     - remote-control
+
+- name: plist
+  provisioner:
+    enforce_idempotency: false
+  run_list:
+  - recipe[macos_test::plist]
+  verifier:
+    controls:
+    - plist-creation
+    - plist-creation-test
