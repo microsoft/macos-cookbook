@@ -1,11 +1,11 @@
-if node['platform_version'].match? Regexp.union /10.14|10.13/
+if mac_os_x_after_sierra?
   execute 'Disable Gatekeeper' do
     command ['spctl', '--master-disable']
   end
 
   xcode node['macos']['xcode']['version']
 
-elsif node['platform_version'].match? Regexp.union '10.12'
+elsif mac_os_x_sierra?
   execute 'Disable Gatekeeper' do
     command ['spctl', '--master-disable']
   end
@@ -14,8 +14,11 @@ elsif node['platform_version'].match? Regexp.union '10.12'
     ios_simulators %w(11 10)
   end
 
-elsif node['platform_version'].match? Regexp.union '10.11'
+elsif mac_os_x_el_capitan?
   xcode '8.2.1' do
     ios_simulators %w(10 9)
   end
+
+else
+  raise "#{node['platform_version']} is not supported."
 end

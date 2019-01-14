@@ -5,6 +5,7 @@ driver:
 
 provisioner:
   product_name: chef
+  multiple_converge: 2
 
 verifier:
   name: inspec
@@ -40,19 +41,21 @@ platforms:
 - name: mojave-chef13
   driver:
     box: microsoft/macos-mojave
-    version: 10.14.01
+    version: 10.14.1
   provisioner:
     product_version: 13
 
 - name: mojave-chef14
   driver:
     box: microsoft/macos-mojave
-    version: 10.14.01
+    version: 10.14.1
   provisioner:
     product_version: 14
 
 suites:
 - name: default
+  provisioner:
+    enforce_idempotency: true
   run_list:
   - recipe[macos::disable_software_updates]
   - recipe[macos_test::preferences]
@@ -61,10 +64,11 @@ suites:
     - dock-appearance
     - show-all-files
     - updates-disabled
+    - plist-creation
 
 - name: power-management
   provisioner:
-    multiple_converge: 2
+    enforce_idempotency: true
   run_list:
   - recipe[macos::keep_awake]
   verifier:
@@ -74,6 +78,8 @@ suites:
     - no-sleep
 
 - name: spotlight
+  provisioner:
+    enforce_idempotency: true
   run_list:
   - recipe[macos_test::spotlight]
   verifier:
@@ -121,6 +127,8 @@ suites:
     - default-keychain-creation
 
 - name: remote-access
+  provisioner:
+    enforce_idempotency: true
   run_list:
   - recipe[macos_test::remote_access]
   verifier:

@@ -1,7 +1,7 @@
 macOS Cookbook
 ==============
 
-![build-status-badge](https://office.visualstudio.com/_apis/public/build/definitions/59d72877-1cea-4eb6-9d06-66716573631a/2791/badge)
+[![Build status](https://dev.azure.com/office/APEX/_apis/build/status/lab/cookbooks/macos?branchName=master)](https://dev.azure.com/office/APEX/_build/latest?definitionId=2143)
 
 Chef resources and recipes for managing and provisioning macOS.
 
@@ -24,6 +24,7 @@ Supported OS Versions
 - OS X El Capitan 10.11
 - macOS Sierra 10.12
 - macOS High Sierra 10.13
+- macOS Mojave 10.14
 
 Attributes
 ----------
@@ -66,8 +67,7 @@ to always keep macOS on and available.
 
 ### Xcode
 
-Installs Xcode 9.2 and simulators for iOS 10 and iOS 11. See the
-[Xcode resource documentation](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_xcode.md) if you need
+Installs the latest Xcode the platform supports. See the [Xcode resource documentation](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_xcode.md) if you need
 more flexibility.
 
 :warning: Requires a `credentials` data bag containing an `apple_id` data bag item,

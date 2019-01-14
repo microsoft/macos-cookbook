@@ -1,5 +1,38 @@
 # Changelog
 All notable changes to this project will be documented in this file.
+## [2.9.0] - 2018-12-06
+### Added
+- Added templates for bug reports, feature requests, and pull requests to adhere with Github's [recommended community standards](https://opensource.guide).
+- Added support for owner/group in the plist resource. Allows for plist files to be created under a specific owner. Defaults to root/wheel for compatibility with earlier versions of the cookbook. ([Issue #51](https://github.com/Microsoft/macos-cookbook/issues/51))
+- Added support for setting the mode property when creating a plist using the `plist` resource. This allows control over setting the file permissions. ([Issue #51](https://github.com/Microsoft/macos-cookbook/issues/51))
+
+## [2.8.1] - 2018-11-29
+### Fixed
+- Fixed an issue where the path for the `xcversion` utility was hard-coded when installed as a Chef gem, which caused failures when converging with ChefDK or Workstation.
+
+## [2.8.0] - 2018-11-14
+### Added
+- Sugar helps the code go down! We now depend on [Chef Sugar](https://supermarket.chef.io/tools/chef-sugar) for `mac_os_x?`, `virtual?`, `mac_os_x_before_or_at_maverick?`, etc.
+
+### Fixed
+- Fixed an issue where Software Update Catalog provides an incomplete list causing some converge failures. We now check for `platform_specific.empty?` and produce appropriate errors.
+
+## [2.7.0] - 2018-10-26
+### Added
+- Multi-converge testing added for all kitchen suites, idempotency enforced for select resources. Idempotency issues identified and resolved with the `keep_awake` recipe, the `spotlight` resource, and the `ard` resource
+as a result. More enforcing by the idempotence police to come in future releases.
+
+### Removed
+- Removal of dead links in documentation for resources to allow for more up to date and clear documentation. ([Issue #129](https://github.com/Microsoft/macos-cookbook/issues/129)).
+
+### Fixed
+- Resolved an issue with the `ard` resource where a Chef run sometimes fails due to an intermittent `kickstart` failure. Guards added to the default resource actions to prevent this issue. ([Issue #70](https://github.com/Microsoft/macos-cookbook/issues/70)).
+- Resolved an issue with the `spotlight` resource where `mdutil` output was improperly parsed and
+`mdutil` commands were re-ran when not needed.
+
+## [2.6.1] - 2018-10-04
+### Added
+- The desert took its toll, the README now declares support for Mojave!
 
 ## [2.6.0] - 2018-10-03
 ### Added

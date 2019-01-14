@@ -8,11 +8,13 @@ test_volumes.each do |volume|
              '-size', '1g', '-format', 'UDRW',
              '-volname', volume, '-srcfolder', test_file,
              '-ov', '-attach']
+    not_if 'diskutil info TDD-ROM'
   end
 end
 
 execute 'test' do
   command ['sudo', 'launchctl', 'unload', '-w', '/System/Library/LaunchDaemons/com.apple.metadata.mds.plist']
+  not_if 'diskutil info TDD-ROM'
 end
 
 spotlight '/'
