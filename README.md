@@ -1,5 +1,4 @@
-macOS Cookbook
-==============
+# macOS Cookbook
 
 [![Build status](https://dev.azure.com/office/APEX/_apis/build/status/lab/cookbooks/macos?branchName=master)](https://dev.azure.com/office/APEX/_build/latest?definitionId=2143)
 
@@ -12,22 +11,19 @@ Chef resources and recipes for managing and provisioning macOS.
 - [Data Bags](#data-bags)
 - [Resources](#resources)
 
-Supported Chef Versions
------------------------
+## Supported Chef Versions
 
 - Chef 13
 - Chef 14
 
-Supported OS Versions
----------------------
+## Supported OS Versions
 
 - OS X El Capitan 10.11
 - macOS Sierra 10.12
 - macOS High Sierra 10.13
 - macOS Mojave 10.14
 
-Attributes
-----------
+## Attributes
 
 ### Admin User and Password
 
@@ -40,8 +36,7 @@ Each of these attributes defaults to vagrant since our resources are developed
 with the Vagrant paradigm. In other words, the user and password declared here
 should be an admin user with passwordless super-user rights.
 
-Recipes
--------
+## Recipes
 
 ### Disable Software Updates
 
@@ -82,8 +77,7 @@ or a user/password pair set under `node['macos']['apple_id']`.
 | `node['macos']['apple_id']['user']`                    | `nil`         |
 | `node['macos']['apple_id']['password']`                | `nil`         |
 
-Data Bags
----------
+## Data Bags
 
 The `macos::xcode` recipe can utilize a `credentials` data bag with an `apple_id`
 data bag item. The item should contain valid Apple ID credentials. For example:
@@ -98,11 +92,11 @@ data bag item. The item should contain valid Apple ID credentials. For example:
 }
 ```
 
-Resources
----------
+## Resources
 
 - [ARD (Apple Remote Desktop)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_ard.md)
 - [Certificate (security)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_certificate.md)
+- [Xcode Command Line Tools](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_command_line_tools.md)
 - [Keychain (security)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_keychain.md)
 - [Machine Name](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_machine_name.md)
 - [macOS User (sysadminctl)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_macos_user.md)
