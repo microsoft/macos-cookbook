@@ -122,6 +122,13 @@ suites:
     - xcode-and-simulators
     - command-line-tool-sentinel
 
+- name: command_line_tools
+  run_list:
+  - recipe[macos_test::command_line_tools]
+  verifier:
+    controls:
+    - command-line-tool-sentinel
+
 - name: certificate
   run_list:
   - recipe[macos_test::certificate]
