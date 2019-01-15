@@ -6,17 +6,7 @@ property :path, String, default: '/Applications/Xcode.app'
 property :ios_simulators, Array
 
 action :install_gem do
-  command_line_tools = CommandLineTools.new
-
-  execute "install #{command_line_tools.version}" do
-    command ['softwareupdate', '--install', command_line_tools.version]
-    not_if { command_line_tools.installed? }
-    live_stream true
-  end
-
-  file '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress' do
-    action :delete
-  end
+  command_line_tools 'latest'
 
   chef_gem 'xcode-install' do
     options('--no-document --no-user-install')
