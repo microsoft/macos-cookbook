@@ -47,7 +47,7 @@ describe 'command_line_tools' do
     recipe do
       command_line_tools 'no_description'
     end
-    
+
     it { is_expected.to_not run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.0') }
   end
 end
