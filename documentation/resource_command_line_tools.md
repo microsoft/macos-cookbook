@@ -6,7 +6,7 @@ The [``command_line_tools``](https://github.com/Microsoft/macos-cookbook/blob/ma
 
 ```ruby
 command_line_tools 'name' do
-  true, false # default value: false
+  compile_time true, false # defaults to false if not specified
   action Symbol # defaults to :install if not specified
 end
 ```
