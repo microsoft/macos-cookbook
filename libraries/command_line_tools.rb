@@ -42,10 +42,6 @@ module MacOS
     def softwareupdate_list
       shell_out(['softwareupdate', '--list']).stdout.lines
     end
-
-    def installed?
-      ::File.exist?('/Library/Developer/CommandLineTools/usr/lib/libxcrun.dylib')
-    end
   end
 end
 
