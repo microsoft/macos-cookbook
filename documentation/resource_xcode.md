@@ -31,6 +31,7 @@ xcode 'description' do
   version                              String # defaults to 'description' if not specified
   path                                 String # defaults to '/Applications/Xcode.app' if not specified
   ios_simulators                       Array # defaults to current iOS simulators if not specified
+  download_url                         String # defaults to empty if not specified
   action                               Symbol # defaults to [:install_gem, :install_xcode, :install_simulators] if not specified
 end
 ```
