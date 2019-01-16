@@ -42,7 +42,7 @@ module MacOS
       end
 
       def install_xcode(xcode)
-        xcversion "install #{xcode.version} #{xcode_install_options(xcode)}"
+        xcversion "install #{xcode.version} #{download_url_option(xcode)}"
       end
 
       def installed_xcodes
