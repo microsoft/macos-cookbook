@@ -82,3 +82,12 @@ elsif node['platform_version'].match?(/10\.11/)
   end
 end
 ```
+
+**Install Xcode from a local file**
+
+```ruby
+xcode '9.2' do
+  ios_simulators %w(11 10)
+  download_url 'file:///Users/johnny/Desktop/xcode_install.dmg'
+end
+```
