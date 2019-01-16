@@ -96,6 +96,11 @@ describe MacOS::Xcode do
       xcode = MacOS::Xcode.new('10.0', '/Applications/Xcode.app', 'https://www.apple.com')
       expect(XCVersion.xcode_install_options(xcode)).to eq "--url 'https://www.apple.com'"
     end
+
+    it 'returns the appropriate --url syntax' do
+      xcode = MacOS::Xcode.new('10.0', '/Applications/Xcode.app', '')
+      expect(XCVersion.xcode_install_options(xcode)).to eq ''
+    end
   end
 end
 
