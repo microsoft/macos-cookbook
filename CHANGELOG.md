@@ -1,10 +1,11 @@
 # Changelog
 
-## [2.10.0] - 2018-01-15
+## [2.10.0] - 2018-01-16
 
 ### Added
 
 - Added `command_line_tools` resource to manage Xcode Command Line Tools installation for macOS.
+- New Xcode property `download_url`. ([Issue #174](https://github.com/Microsoft/macos-cookbook/issues/174)).
 
 ### Changed
 
