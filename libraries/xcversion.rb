@@ -31,7 +31,7 @@ module MacOS
         xcversion 'list'
       end
 
-      def xcode_install_options(xcode)
+      def download_url_option(xcode)
         options = ''
 
         unless xcode.download_url.empty?
