@@ -2,7 +2,7 @@ require 'spec_helper'
 include MacOS
 
 describe MacOS::Xcode do
-  context 'when initialized with developer credentials and Xcode betas available' do
+  context 'when initialized without a download url and Xcode betas available' do
     before do
       allow(MacOS::XCVersion).to receive(:available_versions)
         .and_return(["4.3 for Lion\n",
@@ -59,23 +59,23 @@ describe MacOS::Xcode do
                    )
     end
     it 'returns the name of Xcode 10 GM when initialized with the semantic version' do
-      xcode = MacOS::Xcode.new('10.0', '/Applications/Xcode.app', 'https://www.apple.com')
-      expect(xcode.version).to eq '10.0'
+      xcode = MacOS::Xcode.new('10.0', '/Applications/Xcode.app', '')
+      expect(xcode.version).to eq '10 GM seed'
     end
     it 'returns the name of Xcode 9.4 beta when initialized with the semantic version' do
-      xcode = MacOS::Xcode.new('9.4.2', '/Applications/Xcode.app', 'https://www.apple.com')
-      expect(xcode.version).to eq '9.4.2'
+      xcode = MacOS::Xcode.new('9.4.2', '/Applications/Xcode.app', '')
+      expect(xcode.version).to eq '9.4.2 beta'
     end
     it 'returns the name of Xcode 9.3 when initialized with the semantic version' do
-      xcode = MacOS::Xcode.new('9.3', '/Applications/Xcode.app', 'https://www.apple.com')
+      xcode = MacOS::Xcode.new('9.3', '/Applications/Xcode.app', '')
       expect(xcode.version).to eq '9.3'
     end
     it 'returns the name of Xcode 9 when initialized with the semantic version' do
-      xcode = MacOS::Xcode.new('9.0', '/Applications/Xcode.app', 'https://www.apple.com')
-      expect(xcode.version).to eq '9.0'
+      xcode = MacOS::Xcode.new('9.0', '/Applications/Xcode.app', '')
+      expect(xcode.version).to eq '9'
     end
     it 'returns the name of Xcode 8.3.3 when initialized with the semantic version' do
-      xcode = MacOS::Xcode.new('8.3.3', '/Applications/Xcode.app', 'https://www.apple.com')
+      xcode = MacOS::Xcode.new('8.3.3', '/Applications/Xcode.app', '')
       expect(xcode.version).to eq '8.3.3'
     end
   end
