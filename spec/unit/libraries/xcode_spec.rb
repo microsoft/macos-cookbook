@@ -82,10 +82,9 @@ describe MacOS::Xcode do
 end
 
 describe MacOS::Xcode do
-  context 'when initialized with xcode download url' do
+  context 'when initialized with an Xcode download url and Xcode betas available' do
     before do
-      allow(MacOS::XCVersion).to receive(:available_versions)
-        .and_return(["10 GM seed\n"])
+      allow(MacOS::XCVersion).to receive(:available_versions).and_return(["10 GM seed\n"])
     end
     it 'returns the download url' do
       xcode = MacOS::Xcode.new('10.0', '/Applications/Xcode.app', 'https://www.apple.com')
@@ -96,8 +95,8 @@ describe MacOS::Xcode do
       xcode = MacOS::Xcode.new('0.0', '/Applications/Xcode.app', 'https://www.apple.com')
       expect(xcode.version).to eq '0.0'
     end
-    end
   end
+end
 
 describe MacOS::Xcode::Simulator do
   context 'when provided an available list of simulators' do
