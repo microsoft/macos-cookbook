@@ -94,7 +94,9 @@ describe 'xcode' do
     end
 
     recipe do
-      xcode '10.0'
+      xcode '10.0' do
+        version '10.0'
+      end
     end
 
     it { is_expected.to run_execute('install Xcode 10') }
@@ -119,6 +121,27 @@ describe 'xcode' do
     it { is_expected.to delete_link('/Applications/Xcode.app') }
 
     it { is_expected.to run_execute('move /Applications/Xcode-10.app to /Applications/Xcode.app') }
+    it { is_expected.to run_execute('switch active Xcode to /Applications/Xcode.app') }
+  end
+
+  context 'with no Xcodes installed, and the URL property defined' do
+    before(:each) do
+      allow(MacOS::XCVersion).to receive(:installed_xcodes)
+        .and_return([])
+      stub_command('test -L /Applications/Xcode.app').and_return(true)
+    end
+
+    recipe do
+      xcode '10.1' do
+        download_url 'https://apple.com'
+        version '0.0'
+      end
+    end
+
+    it { is_expected.to run_execute('install Xcode 0.0') }
+    it { is_expected.to delete_link('/Applications/Xcode.app') }
+
+    it { is_expected.to run_execute('move /Applications/Xcode-0.app to /Applications/Xcode.app') }
     it { is_expected.to run_execute('switch active Xcode to /Applications/Xcode.app') }
   end
 

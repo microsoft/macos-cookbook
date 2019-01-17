@@ -15,10 +15,17 @@ action :install_gem do
 end
 
 action :install_xcode do
-  developer = DeveloperAccount.new(-> { data_bag_item(:credentials, :apple_id) },
-                                    node['macos']['apple_id'])
+  developer = DeveloperAccount.new(
+    -> { data_bag_item(:credentials, :apple_id) },
+    node['macos']['apple_id'],
+    new_resource.download_url
+  )
 
-  xcode = Xcode.new(new_resource.version, new_resource.path, new_resource.download_url)
+  xcode = Xcode.new(
+    new_resource.version,
+    new_resource.path,
+    new_resource.download_url
+  )
 
   execute "install Xcode #{xcode.version}" do
     command XCVersion.install_xcode(xcode)

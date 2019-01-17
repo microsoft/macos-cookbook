@@ -35,7 +35,7 @@ module MacOS
         options = ''
 
         unless xcode.download_url.empty?
-          options = "--url '#{xcode.download_url}'"
+          options = "--url='#{xcode.download_url}'"
         end
 
         options
