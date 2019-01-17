@@ -9,7 +9,7 @@ module MacOS
     attr_reader :intended_path
     attr_reader :download_url
 
-    def initialize(semantic_version, intended_path, download_url)
+    def initialize(semantic_version, intended_path, download_url = '')
       @semantic_version = semantic_version
       @intended_path = intended_path
       @apple_version = Xcode::Version.new(@semantic_version).apple
