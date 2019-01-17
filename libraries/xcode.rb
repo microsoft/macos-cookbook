@@ -21,6 +21,12 @@ module MacOS
                  end
     end
 
+    def compatible_with_platform?(node)
+      return true if mac_os_x_after_or_at_high_sierra?(node)
+      vintage_xcode = Gem::Dependency.new('Xcode', '< 9.3')
+      vintage_xcode.match?('Xcode', @semantic_version)
+    end
+
     def xcode_index(version)
       available_xcodes.index { |available_version| available_version.apple == version }
     end
