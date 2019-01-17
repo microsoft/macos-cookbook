@@ -46,4 +46,4 @@ The ``command_line_tools`` resource has the following actions:
 command_line_tools 'random_name'
 ```
 
-If running **macOS 10.14.2**, it will install **'Command Line Tools (macOS Mojave version 10.14) for Xcode-10.14'** via the Software Update Tool.
+If running **macOS 10.14.2**, it will install **'Command Line Tools (macOS Mojave version 10.14) for Xcode-10.14'** via the `softwareupdate` utility.

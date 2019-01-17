@@ -13,7 +13,7 @@
 
 ### Fixed
 
-- `correct-horse-battery-staplesudo`
+- Resolved an issue where a unit test was not passing due to a typo.
 
 ## [2.9.0] - 2018-12-06
 
