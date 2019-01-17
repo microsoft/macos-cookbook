@@ -114,9 +114,20 @@ suites:
     controls:
     - indexing-and-searching
 
-- name: xcode
+- name: xcode_from_apple
   run_list:
-  - recipe[macos_test::xcode]
+  - recipe[macos_test::xcode_from_apple]
+  verifier:
+    controls:
+    - xcode-and-simulators
+    - command-line-tool-sentinel
+
+- name: xcode_from_url
+  run_list:
+  - recipe[macos_test::xcode_from_url]
+  attributes:
+    xcode:
+      download_url: <%= ENV['XCODE_URL'] %>
   verifier:
     controls:
     - xcode-and-simulators
