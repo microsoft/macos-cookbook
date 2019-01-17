@@ -15,7 +15,9 @@ module MacOS
       @apple_version = Xcode::Version.new(@semantic_version).apple
       @download_url = download_url
       @version = if download_url.empty?
-                   XCVersion.available_versions[xcode_index(@apple_version)].strip
+                   version_index = xcode_index @apple_version
+                   listed_version = XCVersion.available_versions[version_index]
+                   listed_version.strip
                  else
                    semantic_version
                  end
