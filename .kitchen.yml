@@ -121,6 +121,8 @@ suites:
     controls:
     - xcode-and-simulators
     - command-line-tool-sentinel
+  includes:
+  - mojave-chef14
 
 - name: xcode_from_url
   run_list:
