@@ -95,6 +95,11 @@ describe MacOS::Xcode do
       xcode = MacOS::Xcode.new('0.0', '/Applications/Xcode.app', 'https://www.apple.com')
       expect(xcode.version).to eq '0.0'
     end
+
+    it 'ignores the Apple version list and uses the provided version' do
+      xcode = MacOS::Xcode.new('2', '/Applications/Xcode.app', 'https://www.apple.com')
+      expect(xcode.version).to eq '2'
+    end
   end
 end
 
