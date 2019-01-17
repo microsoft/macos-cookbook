@@ -1,4 +1,5 @@
 include Chef::Mixin::ShellOut
+include Chef::Sugar::Platform
 include MacOS
 
 module MacOS
