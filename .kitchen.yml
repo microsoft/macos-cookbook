@@ -114,7 +114,7 @@ suites:
     controls:
     - indexing-and-searching
 
-- name: xcode_from_apple
+- name: xcode-from-apple
   run_list:
   - recipe[macos_test::xcode_from_apple]
   verifier:
@@ -124,7 +124,7 @@ suites:
   includes:
   - mojave-chef14
 
-- name: xcode_from_url
+- name: xcode-from-url
   run_list:
   - recipe[macos_test::xcode_from_url]
   attributes:
@@ -135,7 +135,7 @@ suites:
     - xcode-and-simulators
     - command-line-tool-sentinel
 
-- name: command_line_tools
+- name: command-line-tools
   run_list:
   - recipe[macos_test::command_line_tools]
   verifier:
@@ -158,7 +158,7 @@ suites:
     - standard-user
     - hidden-user
 
-- name: delete_users
+- name: delete-users
   run_list:
   - recipe[macos_test::delete_users]
   verifier:
