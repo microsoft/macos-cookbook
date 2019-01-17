@@ -92,17 +92,12 @@ describe MacOS::Xcode do
       expect(xcode.download_url).to eq 'https://www.apple.com'
     end
 
-    it 'returns the appropriate --url syntax' do
-      xcode = MacOS::Xcode.new('10.0', '/Applications/Xcode.app', 'https://www.apple.com')
-      expect(XCVersion.download_url_option(xcode)).to eq "--url='https://www.apple.com'"
+    it 'ignores the Apple version list and uses the provided version' do
+      xcode = MacOS::Xcode.new('0.0', '/Applications/Xcode.app', 'https://www.apple.com')
+      expect(xcode.version).to eq '0.0'
     end
-
-    it 'returns the appropriate --url syntax' do
-      xcode = MacOS::Xcode.new('10.0', '/Applications/Xcode.app', '')
-      expect(XCVersion.download_url_option(xcode)).to eq ''
     end
   end
-end
 
 describe MacOS::Xcode::Simulator do
   context 'when provided an available list of simulators' do
