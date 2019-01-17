@@ -59,24 +59,47 @@ describe MacOS::Xcode do
                    )
     end
     it 'returns the name of Xcode 10 GM when initialized with the semantic version' do
-      xcode = MacOS::Xcode.new('10.0', '/Applications/Xcode.app')
-      expect(xcode.version).to eq '10 GM seed'
+      xcode = MacOS::Xcode.new('10.0', '/Applications/Xcode.app', 'https://www.apple.com')
+      expect(xcode.version).to eq '10.0'
     end
     it 'returns the name of Xcode 9.4 beta when initialized with the semantic version' do
-      xcode = MacOS::Xcode.new('9.4.2', '/Applications/Xcode.app')
-      expect(xcode.version).to eq '9.4.2 beta'
+      xcode = MacOS::Xcode.new('9.4.2', '/Applications/Xcode.app', 'https://www.apple.com')
+      expect(xcode.version).to eq '9.4.2'
     end
     it 'returns the name of Xcode 9.3 when initialized with the semantic version' do
-      xcode = MacOS::Xcode.new('9.3', '/Applications/Xcode.app')
+      xcode = MacOS::Xcode.new('9.3', '/Applications/Xcode.app', 'https://www.apple.com')
       expect(xcode.version).to eq '9.3'
     end
     it 'returns the name of Xcode 9 when initialized with the semantic version' do
-      xcode = MacOS::Xcode.new('9.0', '/Applications/Xcode.app')
-      expect(xcode.version).to eq '9'
+      xcode = MacOS::Xcode.new('9.0', '/Applications/Xcode.app', 'https://www.apple.com')
+      expect(xcode.version).to eq '9.0'
     end
     it 'returns the name of Xcode 8.3.3 when initialized with the semantic version' do
-      xcode = MacOS::Xcode.new('8.3.3', '/Applications/Xcode.app')
+      xcode = MacOS::Xcode.new('8.3.3', '/Applications/Xcode.app', 'https://www.apple.com')
       expect(xcode.version).to eq '8.3.3'
+    end
+  end
+end
+
+describe MacOS::Xcode do
+  context 'when initialized with xcode download url' do
+    before do
+      allow(MacOS::XCVersion).to receive(:available_versions)
+        .and_return(["10 GM seed\n"])
+    end
+    it 'returns the download url' do
+      xcode = MacOS::Xcode.new('10.0', '/Applications/Xcode.app', 'https://www.apple.com')
+      expect(xcode.download_url).to eq 'https://www.apple.com'
+    end
+
+    it 'returns the appropriate --url syntax' do
+      xcode = MacOS::Xcode.new('10.0', '/Applications/Xcode.app', 'https://www.apple.com')
+      expect(XCVersion.download_url_option(xcode)).to eq "--url='https://www.apple.com'"
+    end
+
+    it 'returns the appropriate --url syntax' do
+      xcode = MacOS::Xcode.new('10.0', '/Applications/Xcode.app', '')
+      expect(XCVersion.download_url_option(xcode)).to eq ''
     end
   end
 end

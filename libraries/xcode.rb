@@ -6,12 +6,18 @@ module MacOS
     attr_reader :version
     attr_reader :apple_version
     attr_reader :intended_path
+    attr_reader :download_url
 
-    def initialize(semantic_version, intended_path)
+    def initialize(semantic_version, intended_path, download_url)
       @semantic_version = semantic_version
       @intended_path = intended_path
       @apple_version = Xcode::Version.new(@semantic_version).apple
-      @version = XCVersion.available_versions[xcode_index(@apple_version)].strip
+      @download_url = download_url
+      @version = if download_url.empty? || download_url.nil?
+                   XCVersion.available_versions[xcode_index(@apple_version)].strip
+                 else
+                   semantic_version
+                 end
     end
 
     def xcode_index(version)
