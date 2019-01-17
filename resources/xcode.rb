@@ -27,6 +27,12 @@ action :install_xcode do
     new_resource.download_url
   )
 
+  unless xcode.compatible_with_platform?(node)
+    ruby_block 'exception' do
+      raise("Xcode #{xcode.version} not supported before macOS High Sierra")
+    end
+  end
+
   execute "install Xcode #{xcode.version}" do
     command XCVersion.install_xcode(xcode)
     environment developer.credentials
