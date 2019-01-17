@@ -10,9 +10,9 @@ provisioner:
 verifier:
   name: inspec
   sudo: true
-  format:
+  reporter:
   - cli
-  - junit:/tmp/inspec.xml
+  - junit:/tmp/%{suite}-%{platform}-inspec.xml
   inspec_tests:
   - test/integration/default
 
