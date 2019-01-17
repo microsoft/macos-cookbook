@@ -145,6 +145,39 @@ describe 'xcode' do
     it { is_expected.to run_execute('switch active Xcode to /Applications/Xcode.app') }
   end
 
+  context 'with no Xcodes installed, and a modern Xcode requested on an older platform' do
+    automatic_attributes['platform_version'] = '10.12'
+    before(:each) do
+      allow(MacOS::XCVersion).to receive(:installed_xcodes)
+        .and_return([])
+    end
+
+    recipe do
+      xcode '10.1'
+    end
+
+    it 'raises an error' do
+      expect { subject }.to raise_error(RuntimeError, /Xcode 10\.1 beta 2 not supported before macOS High Sierra/)
+    end
+  end
+
+  context 'with no Xcodes installed, and a vintage Xcode requested on an older platform' do
+    automatic_attributes['platform_version'] = '10.12'
+    before(:each) do
+      allow(MacOS::XCVersion).to receive(:installed_xcodes)
+        .and_return([])
+      stub_command('test -L /Applications/Xcode.app').and_return(true)
+    end
+
+    recipe do
+      xcode '9.2'
+    end
+
+    it 'does not raise an error' do
+      expect { subject }.to_not raise_error
+    end
+  end
+
   context 'with requested Xcode installed' do
     before(:each) do
       allow(MacOS::XCVersion).to receive(:installed_xcodes)
