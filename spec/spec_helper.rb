@@ -1,5 +1,6 @@
 require 'chefspec'
 require 'chefspec/berkshelf'
+require 'chef/sugar'
 
 require_relative '../libraries/macos_user'
 require_relative '../libraries/machine_name'

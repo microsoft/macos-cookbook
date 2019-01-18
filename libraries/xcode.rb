@@ -1,4 +1,5 @@
 include Chef::Mixin::ShellOut
+include Chef::Sugar::Platform
 include MacOS
 
 module MacOS
@@ -6,12 +7,26 @@ module MacOS
     attr_reader :version
     attr_reader :apple_version
     attr_reader :intended_path
+    attr_reader :download_url
 
-    def initialize(semantic_version, intended_path)
+    def initialize(semantic_version, intended_path, download_url = '')
       @semantic_version = semantic_version
       @intended_path = intended_path
       @apple_version = Xcode::Version.new(@semantic_version).apple
-      @version = XCVersion.available_versions[xcode_index(@apple_version)].strip
+      @download_url = download_url
+      @version = if download_url.empty?
+                   version_index = xcode_index @apple_version
+                   listed_version = XCVersion.available_versions[version_index]
+                   listed_version.strip
+                 else
+                   semantic_version
+                 end
+    end
+
+    def compatible_with_platform?(node)
+      return true if mac_os_x_after_or_at_high_sierra?(node)
+      vintage_xcode = Gem::Dependency.new('Xcode', '< 9.3')
+      vintage_xcode.match?('Xcode', @semantic_version)
     end
 
     def xcode_index(version)

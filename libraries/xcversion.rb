@@ -31,8 +31,18 @@ module MacOS
         xcversion 'list'
       end
 
+      def download_url_option(xcode)
+        options = ''
+
+        unless xcode.download_url.empty?
+          options = "--url='#{xcode.download_url}'"
+        end
+
+        options
+      end
+
       def install_xcode(xcode)
-        xcversion "install '#{xcode.version}'"
+        xcversion "install #{xcode.version} #{download_url_option(xcode)}"
       end
 
       def installed_xcodes
