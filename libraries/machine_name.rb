@@ -10,7 +10,8 @@ module MacOS
       valid_names = %w(LocalHostName HostName ComputerName)
       Chef::Application.fatal! "Name type must be one of #{valid_names}. We got '#{name_type}'." unless valid_names.include? name_type
       command = shell_out scutil, '--get', name_type
-      command.stdout.chomp
+
+      command.nil? ? '' : command.stdout.chomp
     end
 
     def current_hostname
@@ -18,6 +19,8 @@ module MacOS
     end
 
     def current_dns_domain
+      return '' if split_hostname.empty?
+
       dns_domain = split_hostname.length - 1
       split_hostname.last(dns_domain).join '.'
     end

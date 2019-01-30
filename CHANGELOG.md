@@ -1,6 +1,11 @@
 # Changelog
 
-## [2.10.0] - 2018-01-16
+## [2.10.1] - 2019-01-29
+
+### Fixed
+- Fixed issue in which setting certain `machine_name` resource properties (`hostname`, `local_hostname`, `dns_domain`) from a previously unset state, would fail to compile. ([Issue #181](https://github.com/Microsoft/macos-cookbook/issues/181)).
+
+## [2.10.0] - 2019-01-16
 
 ### Added
 
