@@ -11,11 +11,7 @@ module MacOS
       Chef::Application.fatal! "Name type must be one of #{valid_names}. We got '#{name_type}'." unless valid_names.include? name_type
       command = shell_out scutil, '--get', name_type
 
-      if command.nil?
-        return ''
-      else
-        command.stdout.chomp
-      end
+      command.nil? ? '' : command.stdout.chomp
     end
 
     def current_hostname
