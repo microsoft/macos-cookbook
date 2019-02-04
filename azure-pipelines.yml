@@ -43,7 +43,6 @@ resources:
   - repository: templates
     type: git
     name: chef-pipelines-templates
-    ref: refs/heads/feature/common
 
 jobs:
 - template: common.yml@templates
