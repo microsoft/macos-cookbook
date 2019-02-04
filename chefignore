@@ -65,6 +65,7 @@ Rakefile
 .foodcritic
 .codeclimate.yml
 .delivery
+azure-pipelines.yml
 
 # SCM #
 #######
