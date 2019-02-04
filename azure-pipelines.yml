@@ -48,6 +48,7 @@ resources:
 jobs:
 - template: common.yml@templates
   parameters:
+    kitchenFile: kitchen.yml
     platforms:
     - sierra
     - high-sierra
