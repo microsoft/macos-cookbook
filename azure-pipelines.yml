@@ -49,13 +49,18 @@ jobs:
 - template: common.yml@templates
   parameters:
     platforms:
-    - macos-sierra
-    - macos-high-sierra
-    - macos-mojave
+    - sierra
+    - high-sierra
+    - mojave
     suites:
+    - certificate
+    - command-line-tools
     - default
+    - delete-users
     - power-management
+    - remote-access
     - spotlight
+    - users
     - xcode-from-apple
     chefVersion:
     - chef14
