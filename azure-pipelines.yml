@@ -1,0 +1,66 @@
+name: $(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - master
+    - release/*
+    - hotfix/*
+  paths:
+    exclude:
+    - documentation/*
+    - LICENSE
+    - README.md
+    - CHANGELOG.md
+    - TESTING.md
+    - CONTRIBUTING.md
+    - .mailmap
+    - .rubocop.yml
+    - .gitignore
+    - chefignore
+
+pr:
+  branches:
+    include:
+    - master
+    - release/*
+  paths:
+    exclude:
+    - documentation/*
+    - LICENSE
+    - README.md
+    - CHANGELOG.md
+    - TESTING.md
+    - CONTRIBUTING.md
+    - .mailmap
+    - .rubocop.yml
+    - .gitignore
+    - chefignore
+
+resources:
+  repositories:
+  - repository: templates
+    type: git
+    name: chef-pipelines-templates
+
+jobs:
+- template: common.yml@templates
+  parameters:
+    kitchenFile: kitchen.yml
+    platforms:
+    - sierra
+    - high-sierra
+    - mojave
+    suites:
+    - certificate
+    - command-line-tools
+    - default
+    - delete-users
+    - power-management
+    - remote-access
+    - spotlight
+    - users
+    - xcode-from-apple
+    chefVersion:
+    - chef14
