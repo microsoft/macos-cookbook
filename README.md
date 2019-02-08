@@ -36,14 +36,6 @@ should be an admin user with passwordless super-user rights.
 
 ## Recipes
 
-### Disable Software Updates
-
-Disables automatic checking and downloading of software updates.
-
-**Usage:** `include_recipe 'macos::disable_software_updates'`
-
-No attributes used in this recipe.
-
 ### Keep Awake
 
 Prevent macOS from falling asleep, disable the screensaver, reboot upon power failure,

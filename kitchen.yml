@@ -34,7 +34,7 @@ platforms:
 - name: mojave-chef14
   driver:
     box: microsoft/macos-mojave
-    version: 10.14.2
+    version: 10.14.3
   provisioner:
     product_version: 14
 
@@ -43,13 +43,11 @@ suites:
   provisioner:
     enforce_idempotency: true
   run_list:
-  - recipe[macos::disable_software_updates]
   - recipe[macos_test::preferences]
   verifier:
     controls:
     - dock-appearance
     - show-all-files
-    - updates-disabled
     - plist-creation
 
 - name: power-management
