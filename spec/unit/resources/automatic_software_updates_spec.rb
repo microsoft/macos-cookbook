@@ -8,9 +8,9 @@ describe 'automatic_software_updates' do
     automatic_software_updates 'enables automatic check and download' do
       check true
       download true
-      os true
-      app_store true
-      critical true
+      install_os true
+      install_app_store true
+      install_critical true
     end
   end
 
