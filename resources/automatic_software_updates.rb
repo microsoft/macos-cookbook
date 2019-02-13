@@ -4,11 +4,11 @@ property :check, [TrueClass, FalseClass]
 
 property :download, [TrueClass, FalseClass]
 
-property :os, [TrueClass, FalseClass]
+property :install_os, [TrueClass, FalseClass]
 
-property :app_store, [TrueClass, FalseClass]
+property :install_app_store, [TrueClass, FalseClass]
 
-property :critical, [TrueClass, FalseClass]
+property :install_critical, [TrueClass, FalseClass]
 
 action :set do
   plist '/Library/Preferences/com.apple.SoftwareUpdate.plist' do
