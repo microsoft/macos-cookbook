@@ -20,8 +20,8 @@ describe 'automatic_software_updates' do
                .with(entry: 'AutomaticDownload', value: true)
                .with(entry: 'AutomaticallyInstallMacOSUpdates', value: true)
                .with(entry: 'CriticalUpdateInstall', value: true)
-    # is_expected.to set_plist('/Library/Preferences/com.apple.commerce.plist')
-               # .with(entry: 'AutoUpdate', value: true)
+    is_expected.to set_plist('/Library/Preferences/com.apple.commerce.plist')
+               .with(entry: 'AutoUpdate', value: true)
   }
 
 end
