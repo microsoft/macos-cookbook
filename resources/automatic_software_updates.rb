@@ -15,32 +15,20 @@ action :set do
     entry 'AutomaticCheckEnabled'
     value true
   end
-end
-
-action :set do
   plist '/Library/Preferences/com.apple.SoftwareUpdate.plist' do
     entry 'AutomaticDownload'
     value true
   end
-end
-
-action :set do
   plist '/Library/Preferences/com.apple.SoftwareUpdate.plist' do
     entry 'AutomaticallyInstallMacOSUpdates'
     value true
   end
-end
-
-action :set do
   plist '/Library/Preferences/com.apple.SoftwareUpdate.plist' do
     entry 'CriticalUpdateInstall'
     value true
   end
+  plist '/Library/Preferences/com.apple.commerce.plist' do
+    entry 'AutoUpdate'
+    value true
+  end
 end
-
-# action :set do
-  # plist '/Library/Preferences/com.apple.commerce.plist' do
-    # entry 'AutoUpdate'
-    # value true
-  # end
-# end
