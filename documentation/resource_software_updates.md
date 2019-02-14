@@ -18,3 +18,11 @@ automatic_software_updates "enables automatic check, download, and install of so
   install_critical true
 end
 ```
+
+## Actions
+
+The ``automatic_software_updates`` resource has the following actions:
+
+``:set``
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default. Set `plist` attribute to true.
