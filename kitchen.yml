@@ -50,6 +50,13 @@ suites:
     - show-all-files
     - plist-creation
 
+- name: software_updates
+  run_list:
+  - recipe[macos::disable_software_updates]
+  verifier:
+    controls:
+    - updates-disabled
+
 - name: power-management
   provisioner:
     enforce_idempotency: true
