@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe 'automatic_software_updates_entirely_disabled' do
+describe 'automatic software updates entirely disabled' do
   step_into :automatic_software_updates
   platform 'mac_os_x'
 
   recipe do
-    automatic_software_updates 'disables automatic check and download' do
+    automatic_software_updates 'disable all updates' do
       check false
       download false
       install_os false
@@ -50,12 +50,12 @@ describe 'automatic_software_updates_entirely_disabled' do
   }
 end
 
-describe 'automatic_software_updates_entirely_enabled' do
+describe 'automatic software updates entirely enabled' do
   step_into :automatic_software_updates
   platform 'mac_os_x'
 
   recipe do
-    automatic_software_updates 'disables automatic check and download' do
+    automatic_software_updates 'enable automatic check, download, and install of all updates' do
       check true
       download true
       install_os true
@@ -97,5 +97,69 @@ describe 'automatic_software_updates_entirely_enabled' do
       .with(entry: 'AutoUpdate',
             value: true,
             path: '/Library/Preferences/com.apple.commerce.plist')
+  }
+end
+
+describe 'automatic software update checking disabled but other properties are enabled' do
+  step_into :automatic_software_updates
+  platform 'mac_os_x'
+
+  recipe do
+    automatic_software_updates 'download and install everything but no new updates' do
+      check false
+      download true
+      install_os true
+      install_app_store true
+      install_critical true
+    end
+  end
+
+  it 'raises an error' do
+    expect { subject }.to raise_error(RuntimeError, /No other properties of this resource can be true if 'check' is false/)
+  end
+end
+
+describe 'automatic software update downloading is disabled but installing non-critical updates is enabled' do
+  step_into :automatic_software_updates
+  platform 'mac_os_x'
+
+  recipe do
+    automatic_software_updates 'install OS and App Store updates' do
+      check true
+      download false
+      install_os true
+      install_app_store true
+    end
+  end
+
+  it 'raises an error' do
+    expect { subject }.to raise_error(RuntimeError, /OS and App Store updates cannot be enabled if 'download' is false/)
+  end
+end
+
+describe 'automatic software update downloading is disabled but installing critical updates is enabled' do
+  step_into :automatic_software_updates
+  platform 'mac_os_x'
+
+  recipe do
+    automatic_software_updates 'only install critical updates' do
+      check true
+      download false
+      install_critical true
+    end
+  end
+
+  it {
+    is_expected.to set_plist('entry for AutomaticCheckEnabled')
+      .with(entry: 'AutomaticCheckEnabled',
+            value: true,
+            path: '/Library/Preferences/com.apple.SoftwareUpdate.plist')
+  }
+
+  it {
+    is_expected.to set_plist('entry for CriticalUpdateInstall')
+      .with(entry: 'CriticalUpdateInstall',
+            value: true,
+            path: '/Library/Preferences/com.apple.SoftwareUpdate.plist')
   }
 end
