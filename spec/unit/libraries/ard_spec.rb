@@ -1,7 +1,7 @@
 require 'spec_helper'
-include MacOS::ARD
+include MacOS::RemoteManagement
 
-describe MacOS::ARD, '#ard_already_activated?' do
+describe MacOS::RemoteManagement, 'activated?' do
   context 'when remote management is already enabled' do
     before do
       allow(::File).to receive(:exist?)
@@ -14,10 +14,10 @@ describe MacOS::ARD, '#ard_already_activated?' do
   end
 end
 
-describe MacOS::ARD, '#ard_already_configured?' do
+describe MacOS::RemoteManagement, 'configured?' do
   context 'when remote management is already configured for the defaults' do
     before do
-      allow_any_instance_of(ARD).to receive(:remote_management_plist)
+      allow_any_instance_of(RemoteManagement).to receive(:plist)
         .and_return 'Dict { ARD_AllLocalUsersPrivs = 1073742079
                             allowInsecureDH = true
                             ARD_AllLocalUsers = true }'

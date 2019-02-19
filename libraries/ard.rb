@@ -1,7 +1,7 @@
 include Chef::Mixin::ShellOut
 
 module MacOS
-  module ARD
+  module RemoteManagement
     def ard_already_activated?
       ::File.exist?('/Library/Application Support/Apple/Remote Desktop/RemoteManagement.launchd')
     end
@@ -35,5 +35,5 @@ module MacOS
   end
 end
 
-Chef::Recipe.include(MacOS::ARD)
-Chef::Resource.include(MacOS::ARD)
+Chef::Recipe.include(MacOS::RemoteManagement)
+Chef::Resource.include(MacOS::RemoteManagement)
