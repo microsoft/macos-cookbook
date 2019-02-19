@@ -1,1 +1,1 @@
-ard 'activate and configure remote management for all users'
+remote_management 'activate and configure remote management for all users'
