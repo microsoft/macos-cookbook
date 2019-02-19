@@ -21,36 +21,6 @@ action :activate do
   end
 end
 
-action :deactivate do
-  execute BASE_COMMAND do
-    command "#{BASE_COMMAND} -deactivate"
-  end
-end
-
-action :install do
-  execute BASE_COMMAND do
-    command "#{BASE_COMMAND} -install #{new_resource.install_package}"
-  end
-end
-
-action :uninstall do
-  execute BASE_COMMAND do
-    command "#{BASE_COMMAND} -uninstall #{new_resource.uninstall_options.join(' ')}"
-  end
-end
-
-action :stop do
-  execute BASE_COMMAND do
-    command "#{BASE_COMMAND} -stop"
-  end
-end
-
-action :restart do
-  execute BASE_COMMAND do
-    command "#{BASE_COMMAND} -restart #{new_resource.restart_options.join(' ')}"
-  end
-end
-
 action :configure do
   configure_options = []
   if new_resource.users
