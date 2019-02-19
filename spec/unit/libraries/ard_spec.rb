@@ -9,7 +9,7 @@ describe MacOS::RemoteManagement, 'activated?' do
         .and_return(true)
     end
     it 'returns true' do
-      expect(ard_already_activated?).to be true
+      expect(activated?).to be true
     end
   end
 end
@@ -23,7 +23,7 @@ describe MacOS::RemoteManagement, 'configured?' do
                             ARD_AllLocalUsers = true }'
     end
     it 'returns true' do
-      expect(ard_already_configured?(['-allowAccessFor -allUsers', '-access -on', '-privs -all'])).to be true
+      expect(configured?(['-allowAccessFor -allUsers', '-access -on', '-privs -all'])).to be true
     end
   end
 end
