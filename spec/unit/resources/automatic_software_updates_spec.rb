@@ -128,12 +128,28 @@ describe 'automatic software update downloading is disabled but installing non-c
       check true
       download false
       install_os true
+    end
+  end
+
+  it 'raises an error' do
+    expect { subject }.to raise_error(RuntimeError, /OS or App Store updates cannot be enabled if 'download' is false/)
+  end
+end
+
+describe 'automatic software update downloading is disabled but installing non-critical updates is enabled' do
+  step_into :automatic_software_updates
+  platform 'mac_os_x'
+
+  recipe do
+    automatic_software_updates 'install OS and App Store updates' do
+      check true
+      download false
       install_app_store true
     end
   end
 
   it 'raises an error' do
-    expect { subject }.to raise_error(RuntimeError, /OS and App Store updates cannot be enabled if 'download' is false/)
+    expect { subject }.to raise_error(RuntimeError, /OS or App Store updates cannot be enabled if 'download' is false/)
   end
 end
 
