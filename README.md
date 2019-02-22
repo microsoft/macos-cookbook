@@ -36,14 +36,6 @@ should be an admin user with passwordless super-user rights.
 
 ## Recipes
 
-### Disable Software Updates
-
-Disables automatic checking and downloading of software updates.
-
-**Usage:** `include_recipe 'macos::disable_software_updates'`
-
-No attributes used in this recipe.
-
 ### Keep Awake
 
 Prevent macOS from falling asleep, disable the screensaver, reboot upon power failure,
@@ -58,42 +50,9 @@ to always keep macOS on and available.
 | `node['macos']['network_time_server']`  | `'time.windows.com'`    |
 | `node['macos']['time_zone']`            | `'America/Los_Angeles'` |
 
-### Xcode
-
-Installs the latest Xcode the platform supports. See the [Xcode resource documentation](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_xcode.md) if you need
-more flexibility.
-
-:warning: Requires a `credentials` data bag containing an `apple_id` data bag item,
-or a user/password pair set under `node['macos']['apple_id']`.
-
-**Usage:** `include_recipe 'macos::xcode'`
-
-| Attributes used                                        | Default value |
-|--------------------------------------------------------|---------------|
-| `node['macos']['xcode']['version']`                    | `'9.3'`       |
-| `node['macos']['xcode']['simulator']['major_version']` | `nil`         |
-| `node['macos']['apple_id']['user']`                    | `nil`         |
-| `node['macos']['apple_id']['password']`                | `nil`         |
-
-## Data Bags
-
-The `macos::xcode` recipe can utilize a `credentials` data bag with an `apple_id`
-data bag item. The item should contain valid Apple ID credentials. For example:
-
-**Example:**
-
-```json
-{
-  "id": "apple_id",
-  "apple_id": "farva@spurbury.gov",
-  "password": "0k@yN0cR34m"
-}
-```
-
 ## Resources
 
 - [ARD (Apple Remote Desktop)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_ard.md)
-- [Automatic Software Updates ](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_automatic_software_updates.md)
 - [Certificate (security)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_certificate.md)
 - [Xcode Command Line Tools](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_command_line_tools.md)
 - [Keychain (security)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_keychain.md)
