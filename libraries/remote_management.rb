@@ -7,8 +7,7 @@ module MacOS
         ::File.exist?('/Library/Application Support/Apple/Remote Desktop/RemoteManagement.launchd')
       end
 
-      def configured?(configure_options)
-        return false unless configure_options == ['-allowAccessFor -allUsers', '-access -on', '-privs -all']
+      def configured?
         RemoteManagement.plist.include?('ARD_AllLocalUsers = true') && RemoteManagement.plist.include?(full_privileges)
       end
 
