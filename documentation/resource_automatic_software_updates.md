@@ -62,3 +62,18 @@ Only applicable if the `check` property is enabled
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enable or disable automatic install of app store updates.
 Only applicable if the `download` property is `true`.
+
+Examples
+----------
+
+**Enable automatic checking of software updates**
+
+```ruby
+automatic_software_updates "enable automatic checking of software updates" do
+check true
+download false
+install_os false
+install_app_store false
+install_critical false
+end
+```
