@@ -53,6 +53,7 @@ to always keep macOS on and available.
 ## Resources
 
 - [ARD (Apple Remote Desktop)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_ard.md)
+- [Automatic Software Updates](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_automatic_software_updates.md)
 - [Certificate (security)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_certificate.md)
 - [Xcode Command Line Tools](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_command_line_tools.md)
 - [Keychain (security)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_keychain.md)
