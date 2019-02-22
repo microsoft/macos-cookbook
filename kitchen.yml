@@ -51,6 +51,8 @@ suites:
     - plist-creation
 
 - name: software_updates
+  provisioner:
+    enforce_idempotency: true
   run_list:
   - recipe[macos::disable_software_updates]
   verifier:
