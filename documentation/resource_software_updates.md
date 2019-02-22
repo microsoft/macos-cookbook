@@ -1,8 +1,8 @@
 automatic_software_updates
 =====
 
-# Description
-
+Use the **automatic_software_updates** resource to manage software update preferences.
+The [**automatic_software_updates**](https://github.com/Microsoft/macos-cookbook/blob/master/resources/automatic_software_updates.rb) resource manages the state of the desired software update preferences using the **plist** resource to set the values for each individual property.
 
 Syntax
 ------
@@ -26,3 +26,39 @@ The ``automatic_software_updates`` resource has the following actions:
 ``:set``
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default. Set `plist` attribute to true.
+
+Properties
+----------
+
+`check`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Ruby type:** `TrueClass, FalseClass`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enable or disable automatic checking of software updates.
+
+`download`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Ruby type:** `TrueClass, FalseClass`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enable or disable automatic download of software updates. Only applicable if the `check` property is `true`.
+
+`install_os`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Ruby type:** `TrueClass, FalseClass`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enable or disable automatic install of os updates.
+Only applicable if the `download` property is `true`.
+
+`install_critical`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Ruby type:** `TrueClass, FalseClass`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enable or disable automatic install of critical updates.
+Only applicable if the `check` property is enabled
+
+`install_app_store`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Ruby type:** `TrueClass, FalseClass`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enable or disable automatic install of app store updates.
+Only applicable if the `download` property is `true`.
