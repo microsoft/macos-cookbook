@@ -46,7 +46,7 @@ Properties
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Ruby type:** `TrueClass, FalseClass`
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enable or disable automatic install of os updates.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enable or disable automatic install of OS updates.
 Only applicable if the `download` property is `true`.
 
 `install_critical`
