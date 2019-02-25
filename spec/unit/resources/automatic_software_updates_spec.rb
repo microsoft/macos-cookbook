@@ -170,7 +170,7 @@ describe 'automatic software update downloading is disabled but installing criti
     is_expected.to set_plist('entry for AutomaticCheckEnabled')
       .with(entry: 'AutomaticCheckEnabled',
             value: true,
-            path: '/Library/Preferences/com.apple.SoftwareUpdate.plist')
+            path: software_update_plist)
   }
 
   it {
