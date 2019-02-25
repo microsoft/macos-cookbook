@@ -90,7 +90,7 @@ describe 'automatic software updates entirely enabled' do
     is_expected.to set_plist('entry for CriticalUpdateInstall')
       .with(entry: 'CriticalUpdateInstall',
             value: true,
-            path: '/Library/Preferences/com.apple.SoftwareUpdate.plist')
+            path: software_update_plist)
   }
 
   it {
