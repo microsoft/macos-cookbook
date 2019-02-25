@@ -4,7 +4,7 @@ module MacOS
   class RemoteManagement
     class << self
       def activated?
-        ::File.exist?('/Library/Application Support/Apple/Remote Desktop/RemoteManagement.launchd')
+        ::File.exist? '/Library/Application Support/Apple/Remote Desktop/RemoteManagement.launchd'
       end
 
       def configured_for_all_users_and_privileges?
