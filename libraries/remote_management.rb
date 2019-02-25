@@ -9,7 +9,6 @@ module MacOS
 
       def configured?
         RemoteManagement.plist.include?('ARD_AllLocalUsers = true') &&
-          RemoteManagement.plist.include?('ARD_AllLocalUsersPrivs = 1073742079') &&
           RemoteManagement.plist.include?(full_privileges)
       end
 
