@@ -1,8 +1,11 @@
 automatic_software_updates
 =====
 
-Use the **automatic_software_updates** resource to manage software update preferences.
+Use the **automatic_software_updates** resource to manage the Automatic Software Update preferences.
+
 The [**automatic_software_updates**](https://github.com/Microsoft/macos-cookbook/blob/master/resources/automatic_software_updates.rb) resource manages the state of the desired software update preference using the **plist** resource to set the values for each individual property.
+
+![Automatic Software Updates](automatic_software_updates.png)
 
 Syntax
 ------
@@ -70,10 +73,10 @@ Examples
 
 ```ruby
 automatic_software_updates "enable automatic checking of software updates" do
-check true
-download false
-install_os false
-install_app_store false
-install_critical false
+  check true
+  download false
+  install_os false
+  install_app_store false
+  install_critical false
 end
 ```
