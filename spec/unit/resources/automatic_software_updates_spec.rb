@@ -40,14 +40,14 @@ describe 'automatic software updates entirely disabled' do
     is_expected.to set_plist('entry for CriticalUpdateInstall')
       .with(entry: 'CriticalUpdateInstall',
             value: false,
-            path: '/Library/Preferences/com.apple.SoftwareUpdate.plist')
+            path: software_update_plist)
   }
 
   it {
     is_expected.to set_plist('entry for AutoUpdate')
       .with(entry: 'AutoUpdate',
             value: false,
-            path: '/Library/Preferences/com.apple.commerce.plist')
+            path: app_store_plist)
   }
 end
 
@@ -69,14 +69,14 @@ describe 'automatic software updates entirely enabled' do
     is_expected.to set_plist('entry for AutomaticCheckEnabled')
       .with(entry: 'AutomaticCheckEnabled',
             value: true,
-            path: '/Library/Preferences/com.apple.SoftwareUpdate.plist')
+            path: software_update_plist)
   }
 
   it {
     is_expected.to set_plist('entry for AutomaticDownload')
       .with(entry: 'AutomaticDownload',
             value: true,
-            path: '/Library/Preferences/com.apple.SoftwareUpdate.plist')
+            path: software_update_plist)
   }
 
   it {
