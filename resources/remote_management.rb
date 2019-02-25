@@ -9,7 +9,7 @@ action :enable do
   end
 
   execute "#{kickstart} -configure -allowAccessFor -allUsers -access -on -privs -all" do
-    not_if { RemoteManagement.configured? }
+    not_if { RemoteManagement.configured_for_all_users_and_privileges? }
   end
 end
 

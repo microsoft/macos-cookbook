@@ -7,7 +7,7 @@ module MacOS
         ::File.exist?('/Library/Application Support/Apple/Remote Desktop/RemoteManagement.launchd')
       end
 
-      def configured?
+      def configured_for_all_users_and_privileges?
         RemoteManagement.plist_content.include?('ARD_AllLocalUsers = true') &&
           RemoteManagement.plist_content.include?(full_privileges)
       end
