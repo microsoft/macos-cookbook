@@ -63,7 +63,7 @@ Only applicable if the `check` property is enabled
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Ruby type:** `TrueClass, FalseClass`
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enable or disable automatic install of app store updates.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enable or disable automatic install of application updates from the app store.
 Only applicable if the `download` property is `true`.
 
 Examples
