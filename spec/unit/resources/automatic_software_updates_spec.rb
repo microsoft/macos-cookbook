@@ -33,7 +33,7 @@ describe 'automatic software updates entirely disabled' do
     is_expected.to set_plist('entry for AutomaticallyInstallMacOSUpdates')
       .with(entry: 'AutomaticallyInstallMacOSUpdates',
             value: false,
-            path: '/Library/Preferences/com.apple.SoftwareUpdate.plist')
+            path: software_update_plist)
   }
 
   it {
