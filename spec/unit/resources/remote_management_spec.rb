@@ -9,7 +9,7 @@ shared_context 'with remote management enabled' do
     allow(File).to receive(:exist?)
       .with('/Library/Application Support/Apple/Remote Desktop/RemoteManagement.launchd')
       .and_return(true)
-    allow(RemoteManagement).to receive(:plist)
+    allow(RemoteManagement).to receive(:plist_content)
       .and_return 'Dict { ARD_AllLocalUsersPrivs = 1073742079
                           ARD_AllLocalUsers = true }'
   end
@@ -24,7 +24,7 @@ shared_context 'with remote management disabled' do
     allow(File).to receive(:exist?)
       .with('/Library/Application Support/Apple/Remote Desktop/RemoteManagement.launchd')
       .and_return(false)
-    allow(RemoteManagement).to receive(:plist)
+    allow(RemoteManagement).to receive(:plist_content)
       .and_return ''
   end
 end

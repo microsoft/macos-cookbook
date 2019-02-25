@@ -8,11 +8,11 @@ module MacOS
       end
 
       def configured?
-        RemoteManagement.plist.include?('ARD_AllLocalUsers = true') &&
-          RemoteManagement.plist.include?(full_privileges)
+        RemoteManagement.plist_content.include?('ARD_AllLocalUsers = true') &&
+          RemoteManagement.plist_content.include?(full_privileges)
       end
 
-      def plist
+      def plist_content
         shell_out('/usr/libexec/PlistBuddy -c Print /Library/Preferences/com.apple.RemoteManagement.plist').stdout
       end
 
