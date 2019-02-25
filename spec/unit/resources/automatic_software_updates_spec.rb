@@ -26,7 +26,7 @@ describe 'automatic software updates entirely disabled' do
     is_expected.to set_plist('entry for AutomaticDownload')
       .with(entry: 'AutomaticDownload',
             value: false,
-            path: '/Library/Preferences/com.apple.SoftwareUpdate.plist')
+            path: software_update_plist)
   }
 
   it {
