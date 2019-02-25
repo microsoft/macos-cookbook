@@ -97,7 +97,7 @@ describe 'automatic software updates entirely enabled' do
     is_expected.to set_plist('entry for AutoUpdate')
       .with(entry: 'AutoUpdate',
             value: true,
-            path: '/Library/Preferences/com.apple.commerce.plist')
+            path: app_store_plist)
   }
 end
 
