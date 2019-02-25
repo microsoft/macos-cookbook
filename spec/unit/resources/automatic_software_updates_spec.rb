@@ -19,7 +19,7 @@ describe 'automatic software updates entirely disabled' do
     is_expected.to set_plist('entry for AutomaticCheckEnabled')
       .with(entry: 'AutomaticCheckEnabled',
             value: false,
-            path: '/Library/Preferences/com.apple.SoftwareUpdate.plist')
+            path: software_update_plist)
   }
 
   it {
