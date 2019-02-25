@@ -2,7 +2,7 @@ automatic_software_updates
 =====
 
 Use the **automatic_software_updates** resource to manage software update preferences.
-The [**automatic_software_updates**](https://github.com/Microsoft/macos-cookbook/blob/master/resources/automatic_software_updates.rb) resource manages the state of the desired software update preferences using the **plist** resource to set the values for each individual property.
+The [**automatic_software_updates**](https://github.com/Microsoft/macos-cookbook/blob/master/resources/automatic_software_updates.rb) resource manages the state of the desired software update preference using the **plist** resource to set the values for each individual property.
 
 Syntax
 ------
