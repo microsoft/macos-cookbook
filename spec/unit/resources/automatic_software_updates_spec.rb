@@ -1,5 +1,6 @@
 require 'spec_helper'
-
+software_update_plist = '/Library/Preferences/com.apple.SoftwareUpdate.plist'
+app_store_plist = '/Library/Preferences/com.apple.commerce.plist'
 describe 'automatic software updates entirely disabled' do
   step_into :automatic_software_updates
   platform 'mac_os_x'
