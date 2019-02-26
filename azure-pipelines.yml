@@ -65,6 +65,5 @@ jobs:
     - users
     - xcode-from-apple
     - xcode-from-url
-      exclude: sierra
     chefVersion:
     - chef14
