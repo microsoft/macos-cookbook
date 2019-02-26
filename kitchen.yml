@@ -6,32 +6,37 @@ driver:
 provisioner:
   product_name: chef
   multiple_converge: 2
-  product_version: 14
 
 verifier:
   name: inspec
   sudo: true
   reporter:
   - cli
-  - junit:/tmp/%{platform}-%{suite}-inspec.xml
+  - junit:/tmp/%{suite}-%{platform}-inspec.xml
   inspec_tests:
   - test/integration/default
 
 platforms:
-- name: sierra
+- name: sierra-chef14
   driver:
     box: microsoft/macos-sierra
     version: 10.12.6
+  provisioner:
+    product_version: 14
 
-- name: high-sierra
+- name: high-sierra-chef14
   driver:
     box: microsoft/macos-high-sierra
     version: 10.13.6-v2
+  provisioner:
+    product_version: 14
 
-- name: mojave
+- name: mojave-chef14
   driver:
     box: microsoft/macos-mojave
     version: 10.14.3
+  provisioner:
+    product_version: 14
 
 suites:
 - name: default
