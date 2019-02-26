@@ -54,7 +54,7 @@ suites:
   provisioner:
     enforce_idempotency: true
   run_list:
-  - recipe[macos::disable_software_updates]
+  - recipe[macos_test::software_updates]
   verifier:
     controls:
     - updates-disabled
