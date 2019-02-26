@@ -65,5 +65,3 @@ jobs:
     - users
     - xcode-from-apple
     - xcode-from-url
-    chefVersion:
-    - chef14
