@@ -12,26 +12,26 @@ verifier:
   sudo: true
   reporter:
   - cli
-  - junit:/tmp/%{suite}-%{platform}-inspec.xml
+  - junit:/tmp/%{platform}-%{suite}-inspec.xml
   inspec_tests:
   - test/integration/default
 
 platforms:
-- name: sierra-chef14
+- name: sierra
   driver:
     box: microsoft/macos-sierra
     version: 10.12.6
   provisioner:
     product_version: 14
 
-- name: high-sierra-chef14
+- name: high-sierra
   driver:
     box: microsoft/macos-high-sierra
     version: 10.13.6-v2
   provisioner:
     product_version: 14
 
-- name: mojave-chef14
+- name: mojave
   driver:
     box: microsoft/macos-mojave
     version: 10.14.3
