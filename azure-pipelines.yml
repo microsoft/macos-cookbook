@@ -62,5 +62,6 @@ jobs:
     - spotlight
     - users
     - xcode-from-apple
+    - software-updates
     chefVersion:
     - chef14
