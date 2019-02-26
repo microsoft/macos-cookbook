@@ -1,5 +1,23 @@
 # Changelog
 
+## [3.0.0] - 2019-02-25
+
+### Added
+- Added `automatic_software_updates` resource to enable or disable the automatic checking, downloading, and installing of software udpates.
+- Added `azure-pipelines.yml` to allow for managing builds as code.
+
+### Changed
+- Changed the `ard` resource to `remote_management` and updates applicable tests and documentation. The new `remote_management` resource greatly simplifies syntax and reduces the needed macOS domain knowledge around `kickstart` options. However, it has less functionality than `ard` and is a significant breaking change.
+
+### Fixed
+- Fixed .mailmap file to accurately track contributor emails.
+
+### Removed
+- Officially removed support for Chef 13 and macOS El Capitan.
+- Removed `Xcode` recipe along with respective tests and documentation in favor of `command_line_tools` resource which was released in 2.10.0.
+- Removed `disable_software_updates` recipe along with respective tests and documentation in favor of `automatic_software_updates` resource.
+- Removed `default` recipe along with respective tests and documentation in favor of `defaults` resource.
+
 ## [2.10.1] - 2019-01-29
 
 ### Fixed
