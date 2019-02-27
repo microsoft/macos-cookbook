@@ -44,15 +44,7 @@ resources:
     type: git
     name: chef-pipelines-templates
 
-variables:
-  group: Xcode URLs
-
 jobs:
-${{ if eq(platform, 'sierra') }}
-  - script: echo '##vso[task.setvariable variable=XCODE_URL]$(XCODE_STORAGE)/Xcode_9.3.dmg'
-${{ if ne(platform, 'sierra') }}
-  - script: echo '##vso[task.setvariable variable=XCODE_URL]$(XCODE_STORAGE)/Xcode_10.1.dmg'
-
 - template: common.yml@templates
   parameters:
     kitchenFile: kitchen.yml
