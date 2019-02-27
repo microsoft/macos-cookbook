@@ -97,8 +97,6 @@ suites:
     controls:
     - xcode-and-simulators
     - command-line-tool-sentinel
-  excludes:
-  - sierra-chef14
 
 - name: command-line-tools
   run_list:
