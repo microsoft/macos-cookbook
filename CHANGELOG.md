@@ -3,7 +3,7 @@
 ## [3.0.0] - 2019-02-25
 
 ### Added
-- Added `automatic_software_updates` resource to enable or disable the automatic checking, downloading, and installing of software udpates.
+- Added `automatic_software_updates` resource to enable or disable the automatic checking, downloading, and installing of software updates.
 - Added `azure-pipelines.yml` to allow for managing builds as code.
 
 ### Changed
