@@ -5,6 +5,7 @@
 ### Added
 - Added `automatic_software_updates` resource to enable or disable the automatic checking, downloading, and installing of software updates.
 - Added `azure-pipelines.yml` to allow for managing builds as code.
+- Added some resource unit tests for `spotlight` to complement the existing `metadata_util` tests.
 
 ### Changed
 - Changed the `ard` resource to `remote_management` and updates applicable tests and documentation. The new `remote_management` resource greatly simplifies syntax and reduces the needed macOS domain knowledge around `kickstart` options. However, it has less functionality than `ard` and is a significant breaking change.
