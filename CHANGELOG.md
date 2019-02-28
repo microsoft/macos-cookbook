@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.0.0] - 2019-02-25
+## [3.0.0] - 2019-02-28
 
 ### Added
 - Added `automatic_software_updates` resource to enable or disable the automatic checking, downloading, and installing of software updates.
@@ -15,6 +15,7 @@
 
 ### Removed
 - Officially removed support for Chef 13 and macOS El Capitan.
+- Removed `machine_name` resource along with respective tests and documentation in favor of the `hostname` resource in Chef 14.
 - Removed `Xcode` recipe along with respective tests and documentation in favor of `command_line_tools` resource which was released in 2.10.0.
 - Removed `disable_software_updates` recipe along with respective tests and documentation in favor of `automatic_software_updates` resource.
 - Removed `default` recipe along with respective tests and documentation in favor of `defaults` resource.
