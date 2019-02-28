@@ -33,7 +33,9 @@ in pure Ruby and tested with RSpec. The library files contain most of the core
 business logic for each of the custom resources and are used as either mixins
 for the custom resources or contain classes that act as helpers, except with
 explicit namespacing. Some libary files are heavily unit tested, others are definitely
-missing much-needed unit test coverage.
+missing much-needed unit test coverage. The following command syntax assumes
+you've made the ChefDK `rspec` your default by running `chef shell-init bash`
+(https://docs.chef.io/ctl_chef.html#chef-shell-init)
 
 Clone this repo and in the root of the cookbook, run:
 
