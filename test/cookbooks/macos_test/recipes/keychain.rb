@@ -17,7 +17,7 @@ macos_user 'create admin user' do
   action :create
 end
 
-kcfile = '/Users/testuser/Library/Keychains/login.keychain-db'
+kcfile = '/Users/testuser/Library/Keychains/login.keychain'
 
 keychain 'create login keychain' do
   kc_file kcfile

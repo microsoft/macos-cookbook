@@ -57,11 +57,13 @@ jobs:
     - command-line-tools
     - default
     - delete-users
+    - keychain
     - power-management
     - remote-access
+    - software-updates
     - spotlight
     - users
     - xcode-from-apple
-    - software-updates
+    - xcode-from-url
     chefVersion:
     - chef14
