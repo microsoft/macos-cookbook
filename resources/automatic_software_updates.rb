@@ -1,13 +1,9 @@
 resource_name :automatic_software_updates
 
 property :check, [TrueClass, FalseClass]
-
 property :download, [TrueClass, FalseClass]
-
 property :install_os, [TrueClass, FalseClass]
-
 property :install_app_store, [TrueClass, FalseClass]
-
 property :install_critical, [TrueClass, FalseClass]
 
 software_update_plist = '/Library/Preferences/com.apple.SoftwareUpdate.plist'
