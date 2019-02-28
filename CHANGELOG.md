@@ -11,6 +11,7 @@
 
 ### Fixed
 - Fixed .mailmap file to accurately track contributor emails.
+- Fixed guard in the `keychain` resource for the `:create` action.
 
 ### Removed
 - Officially removed support for Chef 13 and macOS El Capitan.
