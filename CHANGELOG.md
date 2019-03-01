@@ -15,7 +15,7 @@
 - Fixed guard in the `keychain` resource for the `:create` action.
 
 ### Removed
-- Removed support for Chef 13 and macOS El Capitan.
+- Adiós, Captain! We no longer support OS X El Capitan or Chef 13.
 - Removed `machine_name` resource along with respective tests and documentation in favor of the `hostname` resource in Chef 14.
 - Removed `xcode` recipe along with respective tests, documentation and node attributes in favor of `command_line_tools` resource which was released in 2.10.0.
 - Removed `disable_software_updates` recipe along with respective tests and documentation in favor of `automatic_software_updates` resource.
