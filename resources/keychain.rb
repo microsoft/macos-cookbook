@@ -15,7 +15,7 @@ action :create do
 
   execute 'create a keychain' do
     command [*keyc.create_keychain(new_resource.kc_passwd)]
-    not_if { ::File.exist?(keychain) }
+    not_if { ::File.exist? keychain + '-db' }
   end
 end
 

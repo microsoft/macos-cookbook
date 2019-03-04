@@ -1,5 +1,5 @@
 if mac_os_x_after_sierra?
-  xcode node['macos']['xcode']['version']
+  xcode '10.1'
 
 elsif mac_os_x_sierra?
   xcode '9.2' do
