@@ -76,13 +76,13 @@ The `xcode` resource can utilize a `credentials` data bag with an `apple_id` dat
 }
 ```
 
-The `xcode` resource can also utilize an AppleID set (preferably at run-time for security) under the node attributes `node['macos']['apple_id']['apple_id']` and `node['macos']['apple_id']['password']`.
+The `xcode` resource can also utilize an AppleID set (preferably at run-time for security) under the node attributes `node['macos']['apple_id']['user']` and `node['macos']['apple_id']['password']`.
 
 **Example:**
 
 ```ruby
-node['macos']['apple_id']['apple_id'] = 'farva@spurbury.gov'
-node['macos']['apple_id']['password'] = '0k@yN0cR34m'
+node.normal['macos']['apple_id']['user'] = 'farva@spurbury.gov'
+node.normal['macos']['apple_id']['password'] = '0k@yN0cR34m'
 ```
 
 Examples
