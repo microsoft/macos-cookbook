@@ -31,7 +31,7 @@ end
 system_preference 'restart after a power failure' do
   preference :restartpowerfailure
   setting 'On'
-  not_if { environment.vm? }
+  not_if { environment.vm? || form_factor.portable? }
 end
 
 system_preference 'pressing power button does not sleep computer' do
