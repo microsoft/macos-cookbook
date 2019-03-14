@@ -42,9 +42,9 @@ shared_context 'when running on bare metal MacBook Pro' do
       expect(chef_run).to set_system_preference('wake the computer when accessed using a network connection')
     end
 
-    it 'sets restart after a power failure' do
+    it 'does not set restart after a power failure' do
       chef_run.converge(described_recipe)
-      expect(chef_run).to set_system_preference('restart after a power failure')
+      expect(chef_run).to_not set_system_preference('restart after a power failure')
     end
 
     it 'converges successfully on bare metal' do
