@@ -2,10 +2,11 @@
 
 ## [3.0.1] - 2019-03-15
 
+Thanks to @jkronborg for these two fixes!
+
 ### Fixed
 - Fixed a guard in `keep_awake` for use on portables. 
 - Fixed incorrect attribute key in the Xcode resource documentation, and added a security suggestion. 
-
 ## [3.0.0] - 2019-02-28
 
 ### Added
