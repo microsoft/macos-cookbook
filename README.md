@@ -1,7 +1,6 @@
-macOS Cookbook
-==============
+# macOS Cookbook
 
-[![Build status](https://dev.azure.com/office/APEX/_apis/build/status/lab/cookbooks/macos?branchName=master)](https://dev.azure.com/office/APEX/_build/latest?definitionId=2143)
+[![Build Status](https://dev.azure.com/office/OE/_apis/build/status/Microsoft.macos-cookbook?branchName=master)](https://dev.azure.com/office/OE/_build/latest?definitionId=5072&branchName=master)
 
 Chef resources and recipes for managing and provisioning macOS.
 
@@ -12,22 +11,17 @@ Chef resources and recipes for managing and provisioning macOS.
 - [Data Bags](#data-bags)
 - [Resources](#resources)
 
-Supported Chef Versions
------------------------
+## Supported Chef Versions
 
-- Chef 13
 - Chef 14
 
-Supported OS Versions
----------------------
+## Supported OS Versions
 
-- OS X El Capitan 10.11
 - macOS Sierra 10.12
 - macOS High Sierra 10.13
 - macOS Mojave 10.14
 
-Attributes
-----------
+## Attributes
 
 ### Admin User and Password
 
@@ -40,16 +34,7 @@ Each of these attributes defaults to vagrant since our resources are developed
 with the Vagrant paradigm. In other words, the user and password declared here
 should be an admin user with passwordless super-user rights.
 
-Recipes
--------
-
-### Disable Software Updates
-
-Disables automatic checking and downloading of software updates.
-
-**Usage:** `include_recipe 'macos::disable_software_updates'`
-
-No attributes used in this recipe.
+## Recipes
 
 ### Keep Awake
 
@@ -65,47 +50,14 @@ to always keep macOS on and available.
 | `node['macos']['network_time_server']`  | `'time.windows.com'`    |
 | `node['macos']['time_zone']`            | `'America/Los_Angeles'` |
 
-### Xcode
+## Resources
 
-Installs the latest Xcode the platform supports. See the [Xcode resource documentation](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_xcode.md) if you need
-more flexibility.
-
-:warning: Requires a `credentials` data bag containing an `apple_id` data bag item,
-or a user/password pair set under `node['macos']['apple_id']`.
-
-**Usage:** `include_recipe 'macos::xcode'`
-
-| Attributes used                                        | Default value |
-|--------------------------------------------------------|---------------|
-| `node['macos']['xcode']['version']`                    | `'9.3'`       |
-| `node['macos']['xcode']['simulator']['major_version']` | `nil`         |
-| `node['macos']['apple_id']['user']`                    | `nil`         |
-| `node['macos']['apple_id']['password']`                | `nil`         |
-
-Data Bags
----------
-
-The `macos::xcode` recipe can utilize a `credentials` data bag with an `apple_id`
-data bag item. The item should contain valid Apple ID credentials. For example:
-
-**Example:**
-
-```json
-{
-  "id": "apple_id",
-  "apple_id": "farva@spurbury.gov",
-  "password": "0k@yN0cR34m"
-}
-```
-
-Resources
----------
-
-- [ARD (Apple Remote Desktop)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_ard.md)
-- [Certificate (security)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_certificate.md)
-- [Keychain (security)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_keychain.md)
-- [Machine Name](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_machine_name.md)
-- [macOS User (sysadminctl)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_macos_user.md)
-- [Plist](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_plist.md)
-- [Spotlight (mdutil)](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_spotlight.md)
-- [Xcode](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_xcode.md)
+- [`automatic_software_updates`](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_automatic_software_updates.md)
+- [`certificate`](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_certificate.md)
+- [`command_line_tools`](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_command_line_tools.md)
+- [`keychain`](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_keychain.md)
+- [`macos_user`](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_macos_user.md)
+- [`plist`](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_plist.md)
+- [`remote_management`](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_remote_management.md)
+- [`spotlight`](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_spotlight.md)
+- [`xcode`](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_xcode.md)

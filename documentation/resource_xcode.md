@@ -31,6 +31,7 @@ xcode 'description' do
   version                              String # defaults to 'description' if not specified
   path                                 String # defaults to '/Applications/Xcode.app' if not specified
   ios_simulators                       Array # defaults to current iOS simulators if not specified
+  download_url                         String # defaults to empty if not specified
   action                               Symbol # defaults to [:install_gem, :install_xcode, :install_simulators] if not specified
 end
 ```
@@ -59,6 +60,31 @@ directory for the node.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Download and install latest major version
 of iOS simulators declared in `ios_simulators`.
 
+## Authentication with Apple
+
+In order to install Xcode directly from Apple, you'll need to provide a AppleID for an active developer account. There are two methods to do so:
+
+The `xcode` resource can utilize a `credentials` data bag with an `apple_id` data bag item.
+
+**Example:**
+
+```json
+{
+  "id": "apple_id",
+  "apple_id": "farva@spurbury.gov",
+  "password": "0k@yN0cR34m"
+}
+```
+
+The `xcode` resource can also utilize an AppleID set (preferably at run-time for security) under the node attributes `node['macos']['apple_id']['apple_id']` and `node['macos']['apple_id']['password']`.
+
+**Example:**
+
+```ruby
+node['macos']['apple_id']['apple_id'] = 'farva@spurbury.gov'
+node['macos']['apple_id']['password'] = '0k@yN0cR34m'
+```
+
 Examples
 --------
 
@@ -79,5 +105,14 @@ elsif node['platform_version'].match?(/10\.11/)
   xcode '8.2.1' do
     ios_simulators %w(10 9)
   end
+end
+```
+
+**Install Xcode from a local file**
+
+```ruby
+xcode '9.2' do
+  ios_simulators %w(11 10)
+  download_url 'file:///Users/johnny/Desktop/xcode_install.dmg'
 end
 ```

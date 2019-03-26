@@ -86,20 +86,18 @@ describe 'xcode' do
     allow(FileUtils).to receive(:chown).and_return(true)
   end
 
-  context 'with no Xcodes installed, and no CLT installed' do
+  context 'with no Xcodes installed' do
     before(:each) do
       allow(MacOS::XCVersion).to receive(:installed_xcodes)
         .and_return([])
-      allow_any_instance_of(MacOS::CommandLineTools).to receive(:installed?)
-        .and_return(false)
       stub_command('test -L /Applications/Xcode.app').and_return(true)
     end
 
     recipe do
-      xcode '10.0'
+      xcode '10.0' do
+        version '10.0'
+      end
     end
-
-    it { is_expected.to run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.0') }
 
     it { is_expected.to run_execute('install Xcode 10') }
     it { is_expected.to delete_link('/Applications/Xcode.app') }
@@ -108,20 +106,16 @@ describe 'xcode' do
     it { is_expected.to run_execute('switch active Xcode to /Applications/Xcode.app') }
   end
 
-  context 'with no Xcodes installed, and with CLT installed' do
+  context 'with no Xcodes installed' do
     before(:each) do
       allow(MacOS::XCVersion).to receive(:installed_xcodes)
         .and_return([])
-      allow_any_instance_of(MacOS::CommandLineTools).to receive(:installed?)
-        .and_return(true)
       stub_command('test -L /Applications/Xcode.app').and_return(true)
     end
 
     recipe do
       xcode '10.0'
     end
-
-    it { is_expected.not_to run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.0') }
 
     it { is_expected.to run_execute('install Xcode 10') }
     it { is_expected.to delete_link('/Applications/Xcode.app') }
@@ -130,20 +124,70 @@ describe 'xcode' do
     it { is_expected.to run_execute('switch active Xcode to /Applications/Xcode.app') }
   end
 
-  context 'with requested Xcode installed, and with CLT installed' do
+  context 'with no Xcodes installed, and the URL property defined' do
+    before(:each) do
+      allow(MacOS::XCVersion).to receive(:installed_xcodes)
+        .and_return([])
+      stub_command('test -L /Applications/Xcode.app').and_return(true)
+    end
+
+    recipe do
+      xcode '10.1' do
+        download_url 'https://apple.com'
+        version '0.0'
+      end
+    end
+
+    it { is_expected.to run_execute('install Xcode 0.0') }
+    it { is_expected.to delete_link('/Applications/Xcode.app') }
+
+    it { is_expected.to run_execute('move /Applications/Xcode-0.app to /Applications/Xcode.app') }
+    it { is_expected.to run_execute('switch active Xcode to /Applications/Xcode.app') }
+  end
+
+  context 'with no Xcodes installed, and a modern Xcode requested on an older platform' do
+    automatic_attributes['platform_version'] = '10.12'
+    before(:each) do
+      allow(MacOS::XCVersion).to receive(:installed_xcodes)
+        .and_return([])
+    end
+
+    recipe do
+      xcode '10.1'
+    end
+
+    it 'raises an error' do
+      expect { subject }.to raise_error(RuntimeError, /Xcode 10\.1 beta 2 not supported before macOS High Sierra/)
+    end
+  end
+
+  context 'with no Xcodes installed, and a vintage Xcode requested on an older platform' do
+    automatic_attributes['platform_version'] = '10.12'
+    before(:each) do
+      allow(MacOS::XCVersion).to receive(:installed_xcodes)
+        .and_return([])
+      stub_command('test -L /Applications/Xcode.app').and_return(true)
+    end
+
+    recipe do
+      xcode '9.2'
+    end
+
+    it 'does not raise an error' do
+      expect { subject }.to_not raise_error
+    end
+  end
+
+  context 'with requested Xcode installed' do
     before(:each) do
       allow(MacOS::XCVersion).to receive(:installed_xcodes)
         .and_return([{ '10.0' => '/Applications/Xcode.app' }])
-      allow_any_instance_of(MacOS::CommandLineTools).to receive(:installed?)
-        .and_return(true)
       stub_command('test -L /Applications/Xcode.app').and_return(false)
     end
 
     recipe do
       xcode '10.0'
     end
-
-    it { is_expected.not_to run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.0') }
 
     it { is_expected.not_to run_execute('install Xcode 10') }
     it { is_expected.not_to delete_link('/Applications/Xcode.app') }
@@ -152,12 +196,10 @@ describe 'xcode' do
     it { is_expected.to run_execute('switch active Xcode to /Applications/Xcode.app') }
   end
 
-  context 'with requested Xcode installed at a different path, and with CLT present' do
+  context 'with requested Xcode installed at a different path' do
     before(:each) do
       allow(MacOS::XCVersion).to receive(:installed_xcodes)
         .and_return([{ '10.0' => '/Applications/Some_Weird_Path.app' }])
-      allow_any_instance_of(MacOS::CommandLineTools).to receive(:installed?)
-        .and_return(true)
       stub_command('test -L /Applications/Xcode.app').and_return(false)
     end
 
@@ -166,8 +208,6 @@ describe 'xcode' do
         path '/Applications/Chef_Managed_Xcode.app'
       end
     end
-
-    it { is_expected.not_to run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.0') }
 
     it { is_expected.not_to run_execute('install Xcode 10') }
     it { is_expected.not_to delete_link('/Applications/Xcode.app') }
@@ -180,8 +220,6 @@ describe 'xcode' do
     before(:each) do
       allow(MacOS::XCVersion).to receive(:installed_xcodes)
         .and_return([{ '9.3' => '/Applications/Xcode.app' }])
-      allow_any_instance_of(MacOS::CommandLineTools).to receive(:installed?)
-        .and_return(false)
       stub_command('test -L /Applications/Xcode.app').and_return(true)
     end
 
@@ -190,8 +228,6 @@ describe 'xcode' do
         path '/Applications/Xcode.app'
       end
     end
-
-    it { is_expected.to run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.0') }
 
     it { is_expected.to run_execute('install Xcode 10') }
     it { is_expected.to delete_link('/Applications/Xcode.app') }

@@ -4,19 +4,10 @@ default_action %i(install_gem install_xcode install_simulators)
 property :version, String, name_property: true
 property :path, String, default: '/Applications/Xcode.app'
 property :ios_simulators, Array
+property :download_url, String, default: ''
 
 action :install_gem do
-  command_line_tools = CommandLineTools.new
-
-  execute "install #{command_line_tools.version}" do
-    command ['softwareupdate', '--install', command_line_tools.version]
-    not_if { command_line_tools.installed? }
-    live_stream true
-  end
-
-  file '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress' do
-    action :delete
-  end
+  command_line_tools 'latest'
 
   chef_gem 'xcode-install' do
     options('--no-document --no-user-install')
@@ -24,10 +15,23 @@ action :install_gem do
 end
 
 action :install_xcode do
-  developer = DeveloperAccount.new(-> { data_bag_item(:credentials, :apple_id) },
-                                    node['macos']['apple_id'])
+  developer = DeveloperAccount.new(
+    -> { data_bag_item(:credentials, :apple_id) },
+    node['macos']['apple_id'],
+    new_resource.download_url
+  )
 
-  xcode = Xcode.new(new_resource.version, new_resource.path)
+  xcode = Xcode.new(
+    new_resource.version,
+    new_resource.path,
+    new_resource.download_url
+  )
+
+  unless xcode.compatible_with_platform?(node)
+    ruby_block 'exception' do
+      raise("Xcode #{xcode.version} not supported before macOS High Sierra")
+    end
+  end
 
   execute "install Xcode #{xcode.version}" do
     command XCVersion.install_xcode(xcode)

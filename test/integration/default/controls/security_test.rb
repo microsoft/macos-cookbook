@@ -1,5 +1,3 @@
-macos_version = command('/usr/bin/sw_vers -productVersion').stdout.strip
-
 title 'security'
 
 control 'certificate-install' do
@@ -25,15 +23,8 @@ control 'keychain-creation' do
     Verify that a test keychain is able to be created and discoverable based
     on macOS version and file name.
     '
-  if macos_version == '10.11.6'
-    describe file('/Users/vagrant/Library/Keychains/test.keychain') do
-      it { should exist }
-    end
-
-  else
-    describe file('/Users/vagrant/Library/Keychains/test.keychain-db') do
-      it { should exist }
-    end
+  describe file('/Users/vagrant/Library/Keychains/test.keychain-db') do
+    it { should exist }
   end
 end
 

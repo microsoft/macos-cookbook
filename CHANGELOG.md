@@ -1,24 +1,74 @@
 # Changelog
-All notable changes to this project will be documented in this file.
-## [2.9.0] - 2018-12-06
+
+## [3.0.0] - 2019-02-28
+
 ### Added
+- Added `automatic_software_updates` resource to enable or disable the automatic checking, downloading, and installing of software updates.
+- Added `azure-pipelines.yml` to allow for managing builds as code.
+- Added some resource unit tests for `spotlight` to complement the existing `metadata_util` tests.
+
+### Changed
+- Changed the `ard` resource to `remote_management` and updates applicable tests and documentation. The new `remote_management` resource greatly simplifies syntax and reduces the needed macOS domain knowledge around `kickstart` options. However, it has less functionality than `ard` and is a significant breaking change.
+
+### Fixed
+- Fixed .mailmap file to accurately track contributor emails.
+- Fixed guard in the `keychain` resource for the `:create` action.
+
+### Removed
+- Adiós, Captain! We no longer support OS X El Capitan or Chef 13.
+- Removed `machine_name` resource along with respective tests and documentation in favor of the `hostname` resource in Chef 14.
+- Removed `xcode` recipe along with respective tests, documentation and node attributes in favor of `command_line_tools` resource which was released in 2.10.0.
+- Removed `disable_software_updates` recipe along with respective tests and documentation in favor of `automatic_software_updates` resource.
+- Removed `default` recipe - it was empty anyway. 
+
+## [2.10.1] - 2019-01-29
+
+### Fixed
+- Fixed issue in which setting certain `machine_name` resource properties (`hostname`, `local_hostname`, `dns_domain`) from a previously unset state, would fail to compile. ([Issue #181](https://github.com/Microsoft/macos-cookbook/issues/181)).
+
+## [2.10.0] - 2019-01-16
+
+### Added
+
+- Added `command_line_tools` resource to manage Xcode Command Line Tools installation for macOS.
+- New Xcode property `download_url`. ([Issue #174](https://github.com/Microsoft/macos-cookbook/issues/174)).
+
+### Changed
+
+- Bump Xcode to 10.1 in default attributes file.
+
+### Fixed
+
+- Resolved an issue where a unit test was not passing due to a typo.
+
+## [2.9.0] - 2018-12-06
+
+### Added
+
 - Added templates for bug reports, feature requests, and pull requests to adhere with Github's [recommended community standards](https://opensource.guide).
 - Added support for owner/group in the plist resource. Allows for plist files to be created under a specific owner. Defaults to root/wheel for compatibility with earlier versions of the cookbook. ([Issue #51](https://github.com/Microsoft/macos-cookbook/issues/51))
 - Added support for setting the mode property when creating a plist using the `plist` resource. This allows control over setting the file permissions. ([Issue #51](https://github.com/Microsoft/macos-cookbook/issues/51))
 
 ## [2.8.1] - 2018-11-29
+
 ### Fixed
+
 - Fixed an issue where the path for the `xcversion` utility was hard-coded when installed as a Chef gem, which caused failures when converging with ChefDK or Workstation.
 
 ## [2.8.0] - 2018-11-14
+
 ### Added
+
 - Sugar helps the code go down! We now depend on [Chef Sugar](https://supermarket.chef.io/tools/chef-sugar) for `mac_os_x?`, `virtual?`, `mac_os_x_before_or_at_maverick?`, etc.
 
 ### Fixed
+
 - Fixed an issue where Software Update Catalog provides an incomplete list causing some converge failures. We now check for `platform_specific.empty?` and produce appropriate errors.
 
 ## [2.7.0] - 2018-10-26
+
 ### Added
+
 - Multi-converge testing added for all kitchen suites, idempotency enforced for select resources. Idempotency issues identified and resolved with the `keep_awake` recipe, the `spotlight` resource, and the `ard` resource
 as a result. More enforcing by the idempotence police to come in future releases.
 

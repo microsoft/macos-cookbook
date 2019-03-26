@@ -10,20 +10,13 @@ provisioner:
 verifier:
   name: inspec
   sudo: true
-  format:
+  reporter:
   - cli
-  - junit:/tmp/inspec.xml
+  - junit:/tmp/%{suite}-%{platform}-inspec.xml
   inspec_tests:
   - test/integration/default
 
 platforms:
-- name: el-capitan-chef14
-  driver:
-    box: microsoft/os-x-el-capitan
-    version: 10.11.6
-  provisioner:
-    product_version: 14
-
 - name: sierra-chef14
   driver:
     box: microsoft/macos-sierra
@@ -38,17 +31,10 @@ platforms:
   provisioner:
     product_version: 14
 
-- name: mojave-chef13
-  driver:
-    box: microsoft/macos-mojave
-    version: 10.14.1
-  provisioner:
-    product_version: 13
-
 - name: mojave-chef14
   driver:
     box: microsoft/macos-mojave
-    version: 10.14.1
+    version: 10.14.3
   provisioner:
     product_version: 14
 
@@ -57,14 +43,21 @@ suites:
   provisioner:
     enforce_idempotency: true
   run_list:
-  - recipe[macos::disable_software_updates]
   - recipe[macos_test::preferences]
   verifier:
     controls:
     - dock-appearance
     - show-all-files
-    - updates-disabled
     - plist-creation
+
+- name: software-updates
+  provisioner:
+    enforce_idempotency: true
+  run_list:
+  - recipe[macos_test::disable_software_updates]
+  verifier:
+    controls:
+    - updates-disabled
 
 - name: power-management
   provisioner:
@@ -86,12 +79,30 @@ suites:
     controls:
     - indexing-and-searching
 
-- name: xcode
+- name: xcode-from-apple
   run_list:
-  - recipe[macos_test::xcode]
+  - recipe[macos_test::xcode_from_apple]
   verifier:
     controls:
     - xcode-and-simulators
+    - command-line-tool-sentinel
+
+- name: xcode-from-url
+  run_list:
+  - recipe[macos_test::xcode_from_url]
+  attributes:
+    xcode:
+      download_url: <%= ENV['XCODE_URL'] %>
+  verifier:
+    controls:
+    - xcode-and-simulators
+    - command-line-tool-sentinel
+
+- name: command-line-tools
+  run_list:
+  - recipe[macos_test::command_line_tools]
+  verifier:
+    controls:
     - command-line-tool-sentinel
 
 - name: certificate
@@ -110,7 +121,7 @@ suites:
     - standard-user
     - hidden-user
 
-- name: delete_users
+- name: delete-users
   run_list:
   - recipe[macos_test::delete_users]
   verifier:
