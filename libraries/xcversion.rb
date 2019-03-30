@@ -3,37 +3,55 @@ include Chef::Mixin::ShellOut
 module MacOS
   module XCVersion
     class << self
-      def xcversion
-        '/opt/chef/embedded/bin/xcversion '.freeze
+      def xcversion_path
+        Chef::Util::PathHelper.join(Chef::Config.embedded_dir, 'bin', 'xcversion')
+      end
+
+      def xcversion(command)
+        [xcversion_path, command].join(' ')
       end
 
       def update
-        xcversion + 'update'
+        xcversion 'update'
       end
 
       def list_simulators
-        xcversion + 'simulators'
+        xcversion 'simulators'
       end
 
       def install_simulator(simulator)
-        xcversion + "simulators --install='#{simulator.version}'"
+        xcversion "simulators --install='#{simulator.version}'"
       end
 
-      def list_xcodes
-        xcversion + 'list'
+      def list_installed_xcodes
+        xcversion 'installed'
+      end
+
+      def list_available_xcodes
+        xcversion 'list'
+      end
+
+      def download_url_option(xcode)
+        options = ''
+
+        unless xcode.download_url.empty?
+          options = "--url='#{xcode.download_url}'"
+        end
+
+        options
       end
 
       def install_xcode(xcode)
-        xcversion + "install '#{xcode.version}'"
+        xcversion "install #{xcode.version} #{download_url_option(xcode)}"
       end
 
       def installed_xcodes
-        lines = shell_out(xcversion + 'installed').stdout.lines
+        lines = shell_out(XCVersion.list_installed_xcodes).stdout.lines
         lines.map { |line| { line.split.first => line.split.last.delete('()') } }
       end
 
       def available_versions
-        shell_out!(XCVersion.list_xcodes).stdout.lines
+        shell_out!(XCVersion.list_available_xcodes).stdout.lines
       end
     end
   end

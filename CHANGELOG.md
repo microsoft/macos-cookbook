@@ -1,11 +1,108 @@
 # Changelog
-All notable changes to this project will be documented in this file.
 
-## [2.6.0] - 2018-09-27
+## [3.0.1] - 2019-03-15
+
+Thanks to @jkronborg for these two fixes!
+
+### Fixed
+- Fixed a guard in `keep_awake` for use on portables. 
+- Fixed incorrect attribute key in the Xcode resource documentation, and added a security suggestion. 
+## [3.0.0] - 2019-02-28
+
 ### Added
-- Apple increased the security for the kickstart command in macOS Mojave, which we use to configure the remote management settings. Despite Apple's warning of Remote Management not being activated, we have a test that verifies it still activates.
+- Added `automatic_software_updates` resource to enable or disable the automatic checking, downloading, and installing of software updates.
+- Added `azure-pipelines.yml` to allow for managing builds as code.
+- Added some resource unit tests for `spotlight` to complement the existing `metadata_util` tests.
+
+### Changed
+- Changed the `ard` resource to `remote_management` and updates applicable tests and documentation. The new `remote_management` resource greatly simplifies syntax and reduces the needed macOS domain knowledge around `kickstart` options. However, it has less functionality than `ard` and is a significant breaking change.
+
+### Fixed
+- Fixed .mailmap file to accurately track contributor emails.
+- Fixed guard in the `keychain` resource for the `:create` action.
+
+### Removed
+- Adiós, Captain! We no longer support OS X El Capitan or Chef 13.
+- Removed `machine_name` resource along with respective tests and documentation in favor of the `hostname` resource in Chef 14.
+- Removed `xcode` recipe along with respective tests, documentation and node attributes in favor of `command_line_tools` resource which was released in 2.10.0.
+- Removed `disable_software_updates` recipe along with respective tests and documentation in favor of `automatic_software_updates` resource.
+- Removed `default` recipe - it was empty anyway. 
+
+## [2.10.1] - 2019-01-29
+
+### Fixed
+- Fixed issue in which setting certain `machine_name` resource properties (`hostname`, `local_hostname`, `dns_domain`) from a previously unset state, would fail to compile. ([Issue #181](https://github.com/Microsoft/macos-cookbook/issues/181)).
+
+## [2.10.0] - 2019-01-16
+
+### Added
+
+- Added `command_line_tools` resource to manage Xcode Command Line Tools installation for macOS.
+- New Xcode property `download_url`. ([Issue #174](https://github.com/Microsoft/macos-cookbook/issues/174)).
+
+### Changed
+
+- Bump Xcode to 10.1 in default attributes file.
+
+### Fixed
+
+- Resolved an issue where a unit test was not passing due to a typo.
+
+## [2.9.0] - 2018-12-06
+
+### Added
+
+- Added templates for bug reports, feature requests, and pull requests to adhere with Github's [recommended community standards](https://opensource.guide).
+- Added support for owner/group in the plist resource. Allows for plist files to be created under a specific owner. Defaults to root/wheel for compatibility with earlier versions of the cookbook. ([Issue #51](https://github.com/Microsoft/macos-cookbook/issues/51))
+- Added support for setting the mode property when creating a plist using the `plist` resource. This allows control over setting the file permissions. ([Issue #51](https://github.com/Microsoft/macos-cookbook/issues/51))
+
+## [2.8.1] - 2018-11-29
+
+### Fixed
+
+- Fixed an issue where the path for the `xcversion` utility was hard-coded when installed as a Chef gem, which caused failures when converging with ChefDK or Workstation.
+
+## [2.8.0] - 2018-11-14
+
+### Added
+
+- Sugar helps the code go down! We now depend on [Chef Sugar](https://supermarket.chef.io/tools/chef-sugar) for `mac_os_x?`, `virtual?`, `mac_os_x_before_or_at_maverick?`, etc.
+
+### Fixed
+
+- Fixed an issue where Software Update Catalog provides an incomplete list causing some converge failures. We now check for `platform_specific.empty?` and produce appropriate errors.
+
+## [2.7.0] - 2018-10-26
+
+### Added
+
+- Multi-converge testing added for all kitchen suites, idempotency enforced for select resources. Idempotency issues identified and resolved with the `keep_awake` recipe, the `spotlight` resource, and the `ard` resource
+as a result. More enforcing by the idempotence police to come in future releases.
+
+### Removed
+- Removal of dead links in documentation for resources to allow for more up to date and clear documentation. ([Issue #129](https://github.com/Microsoft/macos-cookbook/issues/129)).
+
+### Fixed
+- Resolved an issue with the `ard` resource where a Chef run sometimes fails due to an intermittent `kickstart` failure. Guards added to the default resource actions to prevent this issue. ([Issue #70](https://github.com/Microsoft/macos-cookbook/issues/70)).
+- Resolved an issue with the `spotlight` resource where `mdutil` output was improperly parsed and
+`mdutil` commands were re-ran when not needed.
+
+## [2.6.1] - 2018-10-04
+### Added
+- The desert took its toll, the README now declares support for Mojave!
+
+## [2.6.0] - 2018-10-03
+### Added
+- Apple has limited some kickstart command functionality in macOS Mojave, preventing screen
+control in some invocations. We verified the `ard` resource's implementation of the `kickstart` script still functions.
+
+- Updated Xcode default version to 10.0.
+
 - The team crossed the great Mojave Desert, collapsed from dehydration, all just to obtain its support. In other words we now support macOS Mojave.
-- Updated Xcode to support version 10.
+
+### Fixed
+- Prevented the `xcode` resource from leaving available Command Line Tools downloads
+in Software Updates.
 
 ### Deprecated
 - The `machine_name` resource has been deprecated in favor of the macOS support in the `hostname` resource in Chef 14. It will be removed in the release of v3.0 of the macOS cookbook.
@@ -33,7 +130,7 @@ CommandLineTools libraries.
 
 ## [2.3.0] - 2018-06-28
 ### Added
-- Like a trained ninja of the night, the `macos_user` now has a hidden property, making it impossible to detect from the login screen.
+- Like a trained ninja of the night, the `macos_user` now has a `hidden` property, making it impossible to detect from the login screen.
 - Moved to a new set of internal Vagrant macOS boxes, which have much more minimal initial configuration. This ensures that our resources run from a more out-of-the-box macOS experience.
 
 ### Fixed
@@ -42,7 +139,7 @@ CommandLineTools libraries.
 
 ## [2.2.0] - 2018-05-29
 ### Added
-- FoodCritics can be pretty harsh in their critiquing of food. They also have some pretty in depth rules we need to comply with, so we updated machine_name to comply with the new FoodCritic rule FC115.
+- Foodcritics can be pretty harsh in their critiquing of food. They also have some pretty in depth rules we need to comply with, so we updated machine_name to comply with the new FoodCritic rule FC115.
 - Added guard config to automatically run relevant unit tests when a file is changed.
 - Update to InSpec control filenames to match the standard. This allows for better understanding of the tests.
 
@@ -91,7 +188,7 @@ CommandLineTools libraries.
 ## [1.9.0] - 2018-03-21
 ### Added
 - Added support for other hypervisors and keep away logic.
-- Implemented `-t` option in certificate resource to allow apps to access imported key.
+- Implemented `-t` option in `certificate` resource to allow apps to access imported key.
 - Add `utf-8` encoding type to `plist` resource to make it more robust.
 
 ## [1.8.0] - 2018-03-12

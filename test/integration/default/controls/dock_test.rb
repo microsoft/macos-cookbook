@@ -13,4 +13,9 @@ control 'dock-appearance' do
   describe command("/usr/libexec/PlistBuddy -c 'Print :DisableAllAnimations' #{user_home}/Library/Preferences/com.apple.dock.plist") do
     its('stdout') { should match 'true' }
   end
+
+  describe file("#{user_home}/Library/Preferences/com.apple.dock.plist") do
+    its('owner') { should eq 'vagrant' }
+    its('group') { should eq 'staff' }
+  end
 end
