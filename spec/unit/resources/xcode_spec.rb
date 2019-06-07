@@ -123,7 +123,7 @@ describe 'xcode' do
     it { is_expected.to run_execute('install Xcode 9.4.2 beta') }
     it { is_expected.to delete_link('/Applications/Xcode.app') }
 
-    it { is_expected.to run_execute('move /Applications/Xcode-beta.app to /Applications/Xcode.app') }
+    it { is_expected.to run_execute('move /Applications/Xcode-beta.app to /Applications/Xcode.app').with(command: ['mv', '/Applications/Xcode-beta.app', '/Applications/Xcode.app']) }
     it { is_expected.to run_execute('switch active Xcode to /Applications/Xcode.app') }
   end
 
