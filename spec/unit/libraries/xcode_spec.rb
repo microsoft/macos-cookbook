@@ -4,6 +4,7 @@ include MacOS
 describe MacOS::Xcode do
   context 'when initialized without a download url and Xcode betas available' do
     before do
+      allow_any_instance_of(MacOS::Xcode).to receive(:installed_path).and_return nil
       allow(MacOS::XCVersion).to receive(:available_versions)
         .and_return(["4.3 for Lion\n",
                      "4.3.1 for Lion\n",
@@ -65,6 +66,10 @@ describe MacOS::Xcode do
     it 'returns the name of Xcode 9.4 beta when initialized with the semantic version' do
       xcode = MacOS::Xcode.new('9.4.2', '/Applications/Xcode.app')
       expect(xcode.version).to eq '9.4.2 beta'
+    end
+    it 'returns the temporary beta path set by xcversion when initialized with the semantic version' do
+      xcode = MacOS::Xcode.new('9.4.2', '/Applications/Xcode.app')
+      expect(xcode.current_path).to eq '/Applications/Xcode-beta.app'
     end
     it 'returns the name of Xcode 9.3 when initialized with the semantic version' do
       xcode = MacOS::Xcode.new('9.3', '/Applications/Xcode.app')
