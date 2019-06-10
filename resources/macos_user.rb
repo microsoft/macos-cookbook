@@ -3,35 +3,47 @@ default_action :create
 
 property :username, String, name_property: true
 property :password, String, default: 'password'
-property :autologin, [TrueClass]
-property :admin, [TrueClass]
+property :autologin, true
+property :admin, true
 property :fullname, String
+property :skip_setup_assistant, [true, false], default: true
 property :groups, [Array, String]
 property :hidden, [true, false], default: false
+property :home
+property :hint
+property :picture
+property :shell_out
+property :uid
+
+load_current_value do |desired|
+  username desired if user_already_exists?
+  hidden user_is_hidden?
+end
 
 action_class do
   def user_home
-    ::File.join('/', 'Users', new_resource.username)
+    ::File.join '/', 'Users', new_resource.username
   end
 
   def user_hidden_home
-    ::File.join('/', 'var', new_resource.username)
+    ::File.join '/', 'var', new_resource.username
   end
 
   def user_sharepoints
-    ::File.join('/', 'SharePoints', new_resource.username)
+    ::File.join '/', 'SharePoints', new_resource.username
   end
 
   def setup_assistant_plist
-    ::File.join(user_home, 'Library', 'Preferences', 'com.apple.SetupAssistant.plist')
+    ::File.join user_home, 'Library', 'Preferences', 'com.apple.SetupAssistant.plist'
   end
 
   def login_window_plist
-    ::File.join('/', 'Library', 'Preferences', 'com.apple.loginwindow.plist')
+    ::File.join '/', 'Library', 'Preferences', 'com.apple.loginwindow.plist'
   end
 
   def setup_assistant_keypair_values
-    { 'DidSeeCloudSetup' => true,
+    {
+      'DidSeeCloudSetup' => true,
       'DidSeeSiriSetup' => true,
       'DidSeePrivacy' => true,
       'LastSeenCloudProductVersion' => node['platform_version'],
@@ -40,7 +52,8 @@ action_class do
   end
 
   def login_window_keypair_values
-    { 'autoLoginUser' => new_resource.username,
+    {
+      'autoLoginUser' => new_resource.username,
       'lastUser' => 'loggedIn',
     }
   end
@@ -54,44 +67,52 @@ action_class do
   end
 
   def user_fullname
-    new_resource.property_is_set?(:fullname) ? ['-fullName', new_resource.fullname] : ''
+    new_resource.property_is_set?(:fullname) ? ['-fullName', new_resource.fullname] : new_resource.username.upcase
   end
 
   def admin_credentials
-    Gem::Version.new(node['platform_version']) >= Gem::Version.new('10.13') ? ['-adminUser', node['macos']['admin_user'], '-adminPassword', node['macos']['admin_password']] : ''
+    admin_credentials = ['-adminUser', node['macos']['admin_user'], '-adminPassword', node['macos']['admin_password']]
+    mac_os_x_after_or_at_high_sierra? ? admin_credentials : ''
   end
 
   def admin_user
-    if new_resource.property_is_set?(:admin)
-      '-admin'
-    else
-      ''
-    end
+    new_resource.property_is_set?(:admin) ? '-admin' : ''
+  end
+
+  def installer_configuration_file_content
+    {
+      'Users': [
+        {
+          admin: new_resource.admin,
+          autologin: new_resource.autologin,
+          skipMiniBuddy: new_resource.skip_setup_assistant,
+          fullName: new_resource.fullname,
+          shortName: new_resource.username,
+          password: new_resource.password,
+        },
+      ],
+    }.to_plist
   end
 
   def user_already_exists?
-    users_output = shell_out!('/usr/bin/dscl', '.', '-list', '/users').stdout
-    users_output.split("\n").include?(new_resource.username)
+    dscl_list_users_cmd = shell_out '/usr/bin/dscl . -list /users'
+    all_users = dscl_list_users_cmd.stdout.lines
+    all_users.include?(new_resource.username) && ::File.exist?(user_home)
   end
 end
 
 action :create do
-  execute "add user #{new_resource.username}" do
-    command [sysadminctl, *admin_credentials, '-addUser', new_resource.username, *user_fullname, '-password', new_resource.password, admin_user]
-    not_if { ::File.exist?(user_home) && user_already_exists? }
+  converge_if_changed :username do
+    file '/var/db/.InstallerConfiguration' do
+      content installer_configuration_file_content
+      not_if { ::File.exist? '/var/db/.AppleSetupDone' }
+    end
+
+    execute [sysadminctl, *admin_credentials, '-addUser', new_resource.username, *user_fullname, '-password', new_resource.password, admin_user]
   end
 
-  sleep(0.5)
-
-  if new_resource.hidden == true
-    execute "hide user #{new_resource.username}" do
-      key = 'IsHidden'
-      desired_value = '1'
-      read_command = shell_out(dscl, '.', 'read', user_home, key)
-      current_value = read_command.stdout.empty? ? 0 : read_command.stdout.split(':').last.strip
-      command [dscl, '.', 'create', user_home, key, desired_value]
-      not_if { current_value.eql? desired_value }
-    end
+  converge_if_changed :hidden do
+    execute [dscl, '.', 'create', user_home, 'IsHidden', '1']
 
     ruby_block "hide user #{new_resource.username} home directory #{user_home}" do
       block do

@@ -10,6 +10,11 @@ module MacOS
       obfuscated.pack('C*')
     end
 
+    def user_is_hidden?
+      read_command = shell_out dscl, '.', 'read', user_home, key
+      current_value = read_command.stdout.empty? ? 0 : read_command.stdout.split(':').last.strip
+    end
+
     private
 
     def magic_bits
