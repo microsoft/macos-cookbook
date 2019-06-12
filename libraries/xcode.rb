@@ -45,7 +45,7 @@ module MacOS
       if installed_path.nil? && @version.match?(/beta/i)
         "/Applications/Xcode-#{@apple_version}.Beta.app"
       elsif installed_path.nil? && !@version.match?(/beta/i)
-        "/Applications/Xcode-#{@apple_version}.app" 
+        "/Applications/Xcode-#{@apple_version}.app"
       else
         installed_path[@semantic_version]
       end

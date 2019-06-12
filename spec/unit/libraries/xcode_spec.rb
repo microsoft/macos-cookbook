@@ -143,7 +143,7 @@ describe MacOS::Xcode::Simulator do
                     tvOS 11.1 Simulator (not installed)
                     watchOS 4.1 Simulator (not installed)
                     iOS 11.1 Simulator (not installed)
-                    XCVERSION_OUTPUT
+        XCVERSION_OUTPUT
                    )
     end
     it 'returns the latest semantic version of iOS 11' do
@@ -183,7 +183,7 @@ describe MacOS::Xcode::Simulator do
 
                     watchOS Simulator SDKs:
                             Simulator - watchOS 4.2       	-sdk watchsimulator4.2
-                    XCODEBUILD_OUTPUT
+          XCODEBUILD_OUTPUT
                      )
       end
       it 'determines that iOS 11 is included with this Xcode' do

@@ -1,4 +1,3 @@
-
 cookbook_file '/Users/vagrant/Test.p12' do
   action :create
   source 'Test.p12'
