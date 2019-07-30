@@ -80,7 +80,7 @@ describe 'xcode' do
                    "9.3.1\n",
                    "9.4\n",
                    "9.4.1\n",
-                   "9.4.2 beta\n"]
+                   "9.4.2 beta 2\n"]
                  )
     allow(File).to receive(:exist?).and_call_original
     allow(FileUtils).to receive(:touch).and_return(true)
