@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.0.2] - 2019-06-03
+## [3.0.8] - 2019-07-31
 
 ### Fixed
 - Fixed an issue where Xcode versions containing whitespace were not properly quoted in command execution. Regression from version 2.10 release.
