@@ -49,8 +49,8 @@ jobs:
   parameters:
     kitchenFile: kitchen.yml
     platforms:
-    - high-sierra
-    - mojave
+    - high-sierra-chef14
+    - mojave-chef14
     suites:
     - certificate
     - command-line-tools
@@ -64,5 +64,3 @@ jobs:
     - users
     - xcode-from-apple
     - xcode-from-url
-    chefVersion:
-    - chef14
