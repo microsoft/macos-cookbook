@@ -49,7 +49,6 @@ jobs:
   parameters:
     kitchenFile: kitchen.yml
     platforms:
-    - sierra
     - high-sierra
     - mojave
     suites:
