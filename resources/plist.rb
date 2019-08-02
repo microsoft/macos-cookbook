@@ -60,7 +60,7 @@ action :set do
     converge_by 'change format' do
       Chef::Application.fatal!(
         "Option encoding must be equal to one of: #{plutil_format_map.keys}!  You passed \"#{new_resource.encoding}\"."
-      ) unless plutil_format_map.keys.include? new_resource.encoding
+      ) unless plutil_format_map.key?(new_resource.encoding)
       execute ['/usr/bin/plutil', '-convert', plutil_format_map[new_resource.encoding], new_resource.path] do
         action :run
       end

@@ -79,7 +79,8 @@ describe 'xcode' do
                    "9.3\n",
                    "9.3.1\n",
                    "9.4\n",
-                   "9.4.1\n"]
+                   "9.4.1\n",
+                   "9.4.2 beta 2\n"]
                  )
     allow(File).to receive(:exist?).and_call_original
     allow(FileUtils).to receive(:touch).and_return(true)
@@ -106,7 +107,7 @@ describe 'xcode' do
     it { is_expected.to run_execute('switch active Xcode to /Applications/Xcode.app') }
   end
 
-  context 'with no Xcodes installed' do
+  context 'with no Xcodes installed, and a beta Xcode requested' do
     before(:each) do
       allow(MacOS::XCVersion).to receive(:installed_xcodes)
         .and_return([])
@@ -114,13 +115,15 @@ describe 'xcode' do
     end
 
     recipe do
-      xcode '10.0'
+      xcode 'betamax!' do
+        version '9.4.2'
+      end
     end
 
-    it { is_expected.to run_execute('install Xcode 10') }
+    it { is_expected.to run_execute('install Xcode 9.4.2 beta 2') }
     it { is_expected.to delete_link('/Applications/Xcode.app') }
 
-    it { is_expected.to run_execute('move /Applications/Xcode-10.app to /Applications/Xcode.app') }
+    it { is_expected.to run_execute('move /Applications/Xcode-9.4.2.Beta.2.app to /Applications/Xcode.app').with(command: ['mv', '/Applications/Xcode-9.4.2.Beta.2.app', '/Applications/Xcode.app']) }
     it { is_expected.to run_execute('switch active Xcode to /Applications/Xcode.app') }
   end
 

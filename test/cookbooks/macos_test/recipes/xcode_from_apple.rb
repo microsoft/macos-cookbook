@@ -1,8 +1,8 @@
-if mac_os_x_after_sierra?
-  xcode '10.1'
+if mac_os_x_after_high_sierra?
+  xcode '11.0'
 
-elsif mac_os_x_sierra?
-  xcode '9.2' do
-    ios_simulators %w(11 10)
+elsif mac_os_x_high_sierra?
+  xcode '10.1' do
+    ios_simulators %w(12 11)
   end
 end

@@ -4,6 +4,7 @@ include MacOS
 describe MacOS::Xcode do
   context 'when initialized without a download url and Xcode betas available' do
     before do
+      allow_any_instance_of(MacOS::Xcode).to receive(:installed_path).and_return nil
       allow(MacOS::XCVersion).to receive(:available_versions)
         .and_return(["4.3 for Lion\n",
                      "4.3.1 for Lion\n",
@@ -54,7 +55,7 @@ describe MacOS::Xcode do
                      "9.3\n",
                      "9.4\n",
                      "9.4.1\n",
-                     "9.4.2 beta\n",
+                     "9.4.2 beta 2\n",
                      "10 GM seed\n"]
                    )
     end
@@ -64,7 +65,11 @@ describe MacOS::Xcode do
     end
     it 'returns the name of Xcode 9.4 beta when initialized with the semantic version' do
       xcode = MacOS::Xcode.new('9.4.2', '/Applications/Xcode.app')
-      expect(xcode.version).to eq '9.4.2 beta'
+      expect(xcode.version).to eq '9.4.2 beta 2'
+    end
+    it 'returns the temporary beta path set by xcversion when initialized with the semantic version' do
+      xcode = MacOS::Xcode.new('9.4.2', '/Applications/Xcode.app')
+      expect(xcode.current_path).to eq '/Applications/Xcode-9.4.2.Beta.2.app'
     end
     it 'returns the name of Xcode 9.3 when initialized with the semantic version' do
       xcode = MacOS::Xcode.new('9.3', '/Applications/Xcode.app')
@@ -138,7 +143,7 @@ describe MacOS::Xcode::Simulator do
                     tvOS 11.1 Simulator (not installed)
                     watchOS 4.1 Simulator (not installed)
                     iOS 11.1 Simulator (not installed)
-                    XCVERSION_OUTPUT
+        XCVERSION_OUTPUT
                    )
     end
     it 'returns the latest semantic version of iOS 11' do
@@ -178,7 +183,7 @@ describe MacOS::Xcode::Simulator do
 
                     watchOS Simulator SDKs:
                             Simulator - watchOS 4.2       	-sdk watchsimulator4.2
-                    XCODEBUILD_OUTPUT
+          XCODEBUILD_OUTPUT
                      )
       end
       it 'determines that iOS 11 is included with this Xcode' do

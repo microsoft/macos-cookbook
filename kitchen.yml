@@ -20,21 +20,21 @@ platforms:
 - name: sierra-chef14
   driver:
     box: microsoft/macos-sierra
-    version: 10.12.6
+    box_version: 10.12.6
   provisioner:
     product_version: 14
 
 - name: high-sierra-chef14
   driver:
     box: microsoft/macos-high-sierra
-    version: 10.13.6-v2
+    box_version: 10.13.6
   provisioner:
     product_version: 14
 
 - name: mojave-chef14
   driver:
     box: microsoft/macos-mojave
-    version: 10.14.3
+    box_version: 10.14.6
   provisioner:
     product_version: 14
 

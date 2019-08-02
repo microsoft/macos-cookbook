@@ -5,8 +5,6 @@ trigger:
   branches:
     include:
     - master
-    - release/*
-    - hotfix/*
   paths:
     exclude:
     - documentation/*
@@ -45,25 +43,23 @@ resources:
     name: chef-pipelines-templates
 
 jobs:
-- template: common.yml@templates
+- template: chefspec-cookstyle-foodcritic.yml@templates
+- template: test-kitchen.yml@templates
   parameters:
-    kitchenFile: kitchen.yml
     platforms:
-    - sierra
-    - high-sierra
-    - mojave
+    - high-sierra-chef14
+    - mojave-chef14
     suites:
-    - certificate
-    - command-line-tools
     - default
-    - delete-users
-    - keychain
-    - power-management
-    - remote-access
     - software-updates
+    - power-management
     - spotlight
-    - users
     - xcode-from-apple
     - xcode-from-url
-    chefVersion:
-    - chef14
+    - command-line-tools
+    - certificate
+    - users
+    - delete-users
+    - keychain
+    - remote-access
+    kitchenFile: kitchen.yml
