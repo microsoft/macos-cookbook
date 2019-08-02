@@ -43,7 +43,7 @@ resources:
     name: chef-pipelines-templates
 
 jobs:
-- template: common.yml@templates
+- template: test-kitchen.yml@templates
   parameters:
     kitchenFile: kitchen.yml
     platforms:
