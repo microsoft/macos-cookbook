@@ -10,4 +10,3 @@ elsif mac_os_x_high_sierra?
     version '10.1'
   end
 end
-
