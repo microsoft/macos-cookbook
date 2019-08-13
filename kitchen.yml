@@ -38,6 +38,27 @@ platforms:
   provisioner:
     product_version: 14
 
+- name: sierra-chef15
+  driver:
+    box: microsoft/macos-sierra
+    box_version: 10.12.6
+  provisioner:
+    product_version: 15
+
+- name: high-sierra-chef15
+  driver:
+    box: microsoft/macos-high-sierra
+    box_version: 10.13.6
+  provisioner:
+    product_version: 15
+
+- name: mojave-chef15
+  driver:
+    box: microsoft/macos-mojave
+    box_version: 10.14.6
+  provisioner:
+    product_version: 15
+
 suites:
 - name: default
   provisioner:
