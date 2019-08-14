@@ -106,7 +106,6 @@ suites:
   verifier:
     controls:
     - xcode-and-simulators
-    - command-line-tool-sentinel
 
 - name: xcode-from-url
   run_list:
@@ -117,7 +116,6 @@ suites:
   verifier:
     controls:
     - xcode-and-simulators
-    - command-line-tool-sentinel
 
 - name: command-line-tools
   run_list:
