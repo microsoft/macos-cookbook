@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.1.0] - 2019-08-14
+
+### Added
+
+- Added Chef 15 suites to the matrix. We now support Chef 15.
+
+### Fixed
+
+- Chef 15 introduced an issue with the updated Ruby library where `xcode-install` gem required a gem that needed to be compiled,
+  and failed compilation due to a circular dependency on `gmake` which is only available with Xcode being installed on the system.
+
 ## [3.0.8] - 2019-07-31
 
 ### Fixed
@@ -10,8 +21,8 @@
 Thanks to @jkronborg for these two fixes!
 
 ### Fixed
-- Fixed a guard in `keep_awake` for use on portables. 
-- Fixed incorrect attribute key in the Xcode resource documentation, and added a security suggestion. 
+- Fixed a guard in `keep_awake` for use on portables.
+- Fixed incorrect attribute key in the Xcode resource documentation, and added a security suggestion.
 
 ## [3.0.0] - 2019-02-28
 
@@ -32,7 +43,7 @@ Thanks to @jkronborg for these two fixes!
 - Removed `machine_name` resource along with respective tests and documentation in favor of the `hostname` resource in Chef 14.
 - Removed `xcode` recipe along with respective tests, documentation and node attributes in favor of `command_line_tools` resource which was released in 2.10.0.
 - Removed `disable_software_updates` recipe along with respective tests and documentation in favor of `automatic_software_updates` resource.
-- Removed `default` recipe - it was empty anyway. 
+- Removed `default` recipe - it was empty anyway.
 
 ## [2.10.1] - 2019-01-29
 
