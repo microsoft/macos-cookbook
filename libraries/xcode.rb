@@ -42,11 +42,8 @@ module MacOS
     end
 
     def current_path
-      if installed_path.nil? && @version.match?(/beta/i)
-        beta_revision = @version.match(/beta\s(.)/i)[1]
-        "/Applications/Xcode-#{@apple_version}.Beta.#{beta_revision}.app"
-      elsif installed_path.nil? && !@version.match?(/beta/i)
-        "/Applications/Xcode-#{@apple_version}.app"
+      if installed_path.nil?
+        "/Applications/Xcode-#{@version.tr(' ', '.')}.app"
       else
         installed_path[@semantic_version]
       end
