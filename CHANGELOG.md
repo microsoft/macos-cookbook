@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.9] - 2019-09-11
+
+### Fixed
+
+Fixed an issue where the Xcode resource cannot find the Xcode 11 GM bundle path to move it to the declared path in the resource.
+
+It removes a logic tree in favor of matching the behavior of the xcode-install gem: https://github.com/xcpretty/xcode-install/blob/74b89805462d6795d964935239f78e6d2790a52d/lib/xcode/install.rb#L282, which is to replace spaces in the version listed by Apple with a period.
+
 ## [3.0.8] - 2019-07-31
 
 ### Fixed
