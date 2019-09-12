@@ -2,6 +2,9 @@
 driver:
   name: vagrant
   provider: parallels
+  customize:
+    cpus: 8
+    memory: 16384
 
 provisioner:
   product_name: chef

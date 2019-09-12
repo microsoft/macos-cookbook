@@ -1,5 +1,5 @@
 if mac_os_x_after_high_sierra?
-  xcode '11.0'
+  xcode '10.3'
 
 elsif mac_os_x_high_sierra?
   xcode '10.1' do
