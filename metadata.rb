@@ -11,5 +11,3 @@ source_url 'https://github.com/Microsoft/macos-cookbook'
 issues_url 'https://github.com/Microsoft/macos-cookbook/issues'
 
 supports 'mac_os_x'
-
-depends 'chef-sugar', '~> 5.0'
