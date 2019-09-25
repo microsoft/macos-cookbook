@@ -1,12 +1,11 @@
-if mac_os_x_after_high_sierra?
+if node['platform_version'] >= '10.14.4'
   xcode 'installs 11.0' do
     download_url node['xcode']['download_url']
     version '11.0'
   end
-
-elsif mac_os_x_high_sierra?
-  xcode 'installs 10.1' do
+else
+  xcode 'installs 9.4.1' do
     download_url node['xcode']['download_url']
-    version '10.1'
+    version '9.4.1'
   end
 end
