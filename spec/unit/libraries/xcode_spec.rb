@@ -122,14 +122,23 @@ describe MacOS::Xcode do
       expect(xcode.compatible_with_platform?('10.12.6')).to be false
       expect(xcode.compatible_with_platform?('0')).to be false
     end
-    it 'correctly determines platform compatibility for Xcode 9.2' do
+    it 'correctly determines platform compatibility for a vintage Xcode' do
       xcode = MacOS::Xcode.new('9.2', '/Applications/Xcode.app')
       expect(xcode.compatible_with_platform?('10.14.4')).to be true
       expect(xcode.compatible_with_platform?('10.14.3')).to be true
       expect(xcode.compatible_with_platform?('10.13.6')).to be true
       expect(xcode.compatible_with_platform?('10.13.2')).to be true
       expect(xcode.compatible_with_platform?('10.12.6')).to be true
-      expect(xcode.compatible_with_platform?('0')).to be true # not enforcing compatibility on vintage Xcodes
+      expect(xcode.compatible_with_platform?('0')).to be true # not enforcing compatibilty for vintage or obsolete Xcodes
+    end
+    it 'correctly determines platform compatibility for an obsolete Xcode' do
+      xcode = MacOS::Xcode.new('8.2.1', '/Applications/Xcode.app')
+      expect(xcode.compatible_with_platform?('10.14.4')).to be true
+      expect(xcode.compatible_with_platform?('10.14.3')).to be true
+      expect(xcode.compatible_with_platform?('10.13.6')).to be true
+      expect(xcode.compatible_with_platform?('10.13.2')).to be true
+      expect(xcode.compatible_with_platform?('10.12.6')).to be true
+      expect(xcode.compatible_with_platform?('0')).to be true # not enforcing compatibilty for vintage or obsolete Xcodes
     end
   end
 end
