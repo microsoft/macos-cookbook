@@ -27,7 +27,7 @@ module MacOS
     end
 
     def minimum_required_os
-      return '>= 10.12.6' if Gem::Dependency.new('Xcode', '<= 9.2').match?('Xcode', @semantic_version)
+      return '>= 0' if Gem::Dependency.new('Xcode', '<= 9.2').match?('Xcode', @semantic_version)
       return '>= 10.13.2' if Gem::Dependency.new('Xcode', '>= 9.3', '<= 9.4.1').match?('Xcode', @semantic_version)
       return '>= 10.13.6' if Gem::Dependency.new('Xcode', '>= 10.0', '<= 10.1').match?('Xcode', @semantic_version)
       return '>= 10.14.3' if Gem::Dependency.new('Xcode', '>= 10.2', '<= 10.3').match?('Xcode', @semantic_version)

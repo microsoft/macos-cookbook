@@ -143,7 +143,7 @@ describe 'xcode' do
     end
 
     it 'raises an error' do
-      expect { subject }.to raise_error(RuntimeError, /Xcode 10\.1 beta 2 not supported before macOS High Sierra/)
+      expect { subject }.to raise_error(RuntimeError, /Xcode 10\.1 beta 2 not supported on 10.12/)
     end
   end
 

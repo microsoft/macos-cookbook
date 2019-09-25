@@ -16,5 +16,5 @@ require_relative '../libraries/remote_management'
 
 RSpec.configure do |config|
   config.platform = 'mac_os_x'
-  config.version = '10.13'
+  config.version = '10.14'
 end

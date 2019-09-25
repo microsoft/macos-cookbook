@@ -38,7 +38,7 @@ action :install_xcode do
 
   unless xcode.compatible_with_platform?(node['platform_version'])
     ruby_block 'exception' do
-      raise("Xcode #{xcode.version} not supported before macOS High Sierra")
+      raise("Xcode #{xcode.version} not supported on #{node['platform_version']}")
     end
   end
 
