@@ -1,5 +1,4 @@
 include Chef::Mixin::ShellOut
-include Chef::Sugar::Platform
 include MacOS
 
 module MacOS
@@ -23,10 +22,16 @@ module MacOS
                  end
     end
 
-    def compatible_with_platform?(node)
-      return true if mac_os_x_after_or_at_high_sierra?(node)
-      vintage_xcode = Gem::Dependency.new('Xcode', '< 9.3')
-      vintage_xcode.match?('Xcode', @semantic_version)
+    def compatible_with_platform?(macos_version)
+      Gem::Dependency.new('macOS', minimum_required_os).match?('macOS', macos_version)
+    end
+
+    def minimum_required_os
+      return '>= 10.12.6' if Gem::Dependency.new('Xcode', '<= 9.2').match?('Xcode', @semantic_version)
+      return '>= 10.13.2' if Gem::Dependency.new('Xcode', '>= 9.3', '<= 9.4.1').match?('Xcode', @semantic_version)
+      return '>= 10.13.6' if Gem::Dependency.new('Xcode', '>= 10.0', '<= 10.1').match?('Xcode', @semantic_version)
+      return '>= 10.14.3' if Gem::Dependency.new('Xcode', '>= 10.2', '<= 10.3').match?('Xcode', @semantic_version)
+      return '>= 10.14.4' if Gem::Dependency.new('Xcode', '>= 11.0').match?('Xcode', @semantic_version)
     end
 
     def xcode_index(version)

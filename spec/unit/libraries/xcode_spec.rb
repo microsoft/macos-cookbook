@@ -56,7 +56,10 @@ describe MacOS::Xcode do
                      "9.4\n",
                      "9.4.1\n",
                      "9.4.2 beta 2\n",
-                     "10 GM seed\n"]
+                     "10 GM seed\n",
+                     "10.1\n",
+                     "10.3\n",
+                     "11.0\n"]
                    )
     end
     it 'returns the name of Xcode 10 GM when initialized with the semantic version' do
@@ -82,6 +85,46 @@ describe MacOS::Xcode do
     it 'returns the name of Xcode 8.3.3 when initialized with the semantic version' do
       xcode = MacOS::Xcode.new('8.3.3', '/Applications/Xcode.app')
       expect(xcode.version).to eq '8.3.3'
+    end
+    it 'correctly determines platform compatibility for Xcode 11' do
+      xcode = MacOS::Xcode.new('11.0', '/Applications/Xcode.app')
+      expect(xcode.compatible_with_platform?('10.14.4')).to be true
+      expect(xcode.compatible_with_platform?('10.14.3')).to be false
+      expect(xcode.compatible_with_platform?('10.13.6')).to be false
+      expect(xcode.compatible_with_platform?('10.13.2')).to be false
+      expect(xcode.compatible_with_platform?('10.12.6')).to be false
+    end
+    it 'correctly determines platform compatibility for Xcode 10.3' do
+      xcode = MacOS::Xcode.new('10.3', '/Applications/Xcode.app')
+      expect(xcode.compatible_with_platform?('10.14.4')).to be true
+      expect(xcode.compatible_with_platform?('10.14.3')).to be true
+      expect(xcode.compatible_with_platform?('10.13.6')).to be false
+      expect(xcode.compatible_with_platform?('10.13.2')).to be false
+      expect(xcode.compatible_with_platform?('10.12.6')).to be false
+    end
+    it 'correctly determines platform compatibility for Xcode 10.1' do
+      xcode = MacOS::Xcode.new('10.1', '/Applications/Xcode.app')
+      expect(xcode.compatible_with_platform?('10.14.4')).to be true
+      expect(xcode.compatible_with_platform?('10.14.3')).to be true
+      expect(xcode.compatible_with_platform?('10.13.6')).to be true
+      expect(xcode.compatible_with_platform?('10.13.2')).to be false
+      expect(xcode.compatible_with_platform?('10.12.6')).to be false
+    end
+    it 'correctly determines platform compatibility for Xcode 9.4.1' do
+      xcode = MacOS::Xcode.new('9.4.1', '/Applications/Xcode.app')
+      expect(xcode.compatible_with_platform?('10.14.4')).to be true
+      expect(xcode.compatible_with_platform?('10.14.3')).to be true
+      expect(xcode.compatible_with_platform?('10.13.6')).to be true
+      expect(xcode.compatible_with_platform?('10.13.2')).to be true
+      expect(xcode.compatible_with_platform?('10.12.6')).to be false
+    end
+    it 'correctly determines platform compatibility for Xcode 9.2' do
+      xcode = MacOS::Xcode.new('9.2', '/Applications/Xcode.app')
+      expect(xcode.compatible_with_platform?('10.14.4')).to be true
+      expect(xcode.compatible_with_platform?('10.14.3')).to be true
+      expect(xcode.compatible_with_platform?('10.13.6')).to be true
+      expect(xcode.compatible_with_platform?('10.13.2')).to be true
+      expect(xcode.compatible_with_platform?('10.12.6')).to be true
     end
   end
 end
