@@ -46,6 +46,7 @@ action :install_xcode do
     command XCVersion.install_xcode(xcode)
     environment developer.credentials
     not_if { xcode.installed? }
+    live_stream true
     timeout 7200
   end
 
