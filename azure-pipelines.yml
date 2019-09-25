@@ -47,10 +47,9 @@ jobs:
 - template: test-kitchen.yml@templates
   parameters:
     platforms:
-    - high-sierra-chef14
-    - mojave-chef14
     - high-sierra-chef15
     - mojave-chef15
+    - catalina-chef15
     suites:
     - default
     - software-updates
