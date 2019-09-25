@@ -13,6 +13,7 @@ require_relative '../libraries/command_line_tools'
 require_relative '../libraries/security_cmd'
 require_relative '../libraries/software_updates'
 require_relative '../libraries/remote_management'
+require_relative '../libraries/paths'
 
 RSpec.configure do |config|
   config.platform = 'mac_os_x'
