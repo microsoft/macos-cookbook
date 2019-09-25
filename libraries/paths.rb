@@ -1,8 +1,8 @@
-module LabCore
+module MacOS
   class UserPath
     class << self
       def home(user)
-        SysPath.directory('Users', user)
+        SystemPath.directory('Users', user)
       end
 
       def directory(user, *dirs)
@@ -23,7 +23,7 @@ module LabCore
     end
   end
 
-  class SysPath
+  class SystemPath
     class << self
       def directory(*dirs)
         ::File.join(root, dirs)
