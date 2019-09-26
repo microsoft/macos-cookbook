@@ -36,9 +36,9 @@ action :install_xcode do
     new_resource.download_url
   )
 
-  unless xcode.compatible_with_platform?(node)
+  unless xcode.compatible_with_platform?(node['platform_version'])
     ruby_block 'exception' do
-      raise("Xcode #{xcode.version} not supported before macOS High Sierra")
+      raise("Xcode #{xcode.version} not supported on #{node['platform_version']}")
     end
   end
 
@@ -46,6 +46,7 @@ action :install_xcode do
     command XCVersion.install_xcode(xcode)
     environment developer.credentials
     not_if { xcode.installed? }
+    live_stream true
     timeout 7200
   end
 
