@@ -17,10 +17,6 @@ action :install_gem do
           BASH
     not_if { ::File.exist? '/opt/chef/embedded/bin/xcversion' }
   end
-
-  chef_gem 'xcode-install' do
-    options('--no-document --no-user-install')
-  end
 end
 
 action :install_xcode do
@@ -45,6 +41,7 @@ action :install_xcode do
   execute "install Xcode #{xcode.version}" do
     command XCVersion.install_xcode(xcode)
     environment developer.credentials
+    cwd '/Users/Shared'
     not_if { xcode.installed? }
     live_stream true
     timeout 7200

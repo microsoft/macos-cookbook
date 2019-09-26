@@ -72,7 +72,7 @@ describe MacOS::Xcode do
     end
     it 'returns the temporary beta path set by xcversion when initialized with the semantic version' do
       xcode = MacOS::Xcode.new('9.4.2', '/Applications/Xcode.app')
-      expect(xcode.current_path).to eq '/Applications/Xcode-9.4.2.Beta.2.app'
+      expect(xcode.current_path).to eq '/Applications/Xcode-9.4.2.beta.2.app'
     end
     it 'returns the name of Xcode 9.3 when initialized with the semantic version' do
       xcode = MacOS::Xcode.new('9.3', '/Applications/Xcode.app')
