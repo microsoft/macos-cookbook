@@ -1,4 +1,4 @@
-test_file = 'test.txt'
+test_file = '/Users/Shared/test.txt'
 test_volumes = ['test_disk1', 'TDD2', 'Macintosh TD', 'TDD-ROM']
 
 file test_file
