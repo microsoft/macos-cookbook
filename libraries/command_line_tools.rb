@@ -5,17 +5,23 @@ module MacOS
     attr_reader :version
 
     def initialize
-      install_sentinel = '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
-      FileUtils.touch install_sentinel
-      FileUtils.chown 'root', 'wheel', install_sentinel
+      softwareupdate_history = shell_out(['softwareupdate', '--history']).stdout
+      history_entry = softwareupdate_history.lines.select { |line| line.include?('Command Line Tools') }
 
-      @version = if available.empty?
-                   'No Command Lines Tools available from Software Update Catalog!'
-                 elsif platform_specific.empty?
-                   "No Command Line Tools specific to #{macos_version} available from Software Update Catalog!"
-                 else
-                   latest.tr('*', '').strip
-                 end
+      if history_entry.nil?
+        install_sentinel = '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
+        FileUtils.touch install_sentinel
+        FileUtils.chown 'root', 'wheel', install_sentinel
+        @version = if available.empty?
+                     'No Command Lines Tools available from Software Update Catalog!'
+                   elsif platform_specific.empty?
+                     "No Command Line Tools specific to #{macos_version} available from Software Update Catalog!"
+                   else
+                     latest.tr('*', '').strip
+                   end
+      else
+        @version = history_entry.first.split('  ').first
+      end
     end
 
     def latest
