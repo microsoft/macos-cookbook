@@ -7,6 +7,6 @@ certificate 'install a PFX format certificate file' do
   certfile '/Users/vagrant/Test.p12'
   cert_password 'test'
   keychain '/Users/vagrant/Library/Keychains/login.keychain'
-  apps ['/System/Applications/Mail.app', '/System/Applications/App Store.app']
+  apps ['/Applications/Safari.app']
   action :install
 end
