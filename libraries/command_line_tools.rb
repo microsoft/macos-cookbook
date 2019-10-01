@@ -33,7 +33,7 @@ module MacOS
     end
 
     def available
-      softwareupdate_list.select { |product_name| product_name.include?('* Command Line Tools') }
+      softwareupdate_list.select { |product_name| product_name.include?('Command Line Tools') }
     end
 
     def xcode_version(product)
