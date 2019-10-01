@@ -7,8 +7,7 @@ module MacOS
     def initialize
       softwareupdate_history = shell_out(['softwareupdate', '--history']).stdout
       history_entry = softwareupdate_history.lines.select { |line| line.include?('Command Line Tools') }
-
-      if history_entry.nil?
+      if history_entry.empty?
         install_sentinel = '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
         FileUtils.touch install_sentinel
         FileUtils.chown 'root', 'wheel', install_sentinel
