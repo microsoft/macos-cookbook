@@ -8,6 +8,7 @@ test_volumes.each do |volume|
              '-size', '1g', '-format', 'UDRW',
              '-volname', volume, '-srcfolder', test_file,
              '-ov', '-attach']
+    cwd '/Users/Shared'
     not_if 'diskutil info TDD-ROM'
   end
 end
