@@ -12,7 +12,7 @@ module MacOS
         FileUtils.touch install_sentinel
         FileUtils.chown 'root', 'wheel', install_sentinel
         @version = if available.empty?
-                     'No Command Lines Tools available from Software Update Catalog!'
+                     'No Command Line Tools available from Software Update Catalog!'
                    elsif platform_specific.empty?
                      "No Command Line Tools specific to #{macos_version} available from Software Update Catalog!"
                    else
