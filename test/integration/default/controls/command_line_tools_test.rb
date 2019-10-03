@@ -14,3 +14,11 @@ control 'command-line-tool-sentinel' do
     its('stdout') { should_not include 'Command Line Tools' }
   end
 end
+
+control 'xcrun' do
+  title 'xcrun binary installed by Command Line Tools'
+
+  describe file('/Library/Developer/CommandLineTools/usr/lib/libxcrun.dylib') do
+    it { should exist }
+  end
+end

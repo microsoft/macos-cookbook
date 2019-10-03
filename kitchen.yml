@@ -102,6 +102,7 @@ suites:
   verifier:
     controls:
     - command-line-tool-sentinel
+    - xcrun
 
 - name: certificate
   run_list:
