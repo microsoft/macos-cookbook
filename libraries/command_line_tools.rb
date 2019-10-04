@@ -18,7 +18,7 @@ module MacOS
       install_history = File.open('/Library/Receipts/InstallHistory.plist', 'r')
       packages = Plist.parse_xml(install_history)
       packages.select { |package| package['displayName'].match? 'Command Line Tools' }
-    ends
+    end
 
     def latest_installed
       [installed.last['displayName'], installed.last['displayVersion']].join '-'
