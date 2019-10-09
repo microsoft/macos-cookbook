@@ -15,8 +15,7 @@ module MacOS
     end
 
     def installed
-      install_history = File.open('/Library/Receipts/InstallHistory.plist', 'r')
-      packages = Plist.parse_xml(install_history)
+      packages = Plist.parse_xml(install_history_plist)
       packages.select { |package| package['displayName'].match? 'Command Line Tools' }
     end
 
@@ -67,6 +66,10 @@ module MacOS
 
     def softwareupdate_list
       shell_out(['softwareupdate', '--list']).stdout.lines
+    end
+
+    def install_history_plist
+      File.open('/Library/Receipts/InstallHistory.plist', 'r')
     end
   end
 end
