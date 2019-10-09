@@ -8,7 +8,7 @@ module MacOS
     def initialize
       if installed.empty?
         enable_install_on_demand
-        @version = lastest_from_catalog
+        @version = latest_from_catalog
       else
         @version = latest_installed
       end
