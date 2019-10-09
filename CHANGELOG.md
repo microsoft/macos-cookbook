@@ -1,15 +1,24 @@
 # Changelog
 
-## [3.1.0] - 2019-08-14
+## [3.1.0] - 2019-10-09
 
 ### Added
 
-- Added Chef 15 suites to the matrix. We now support Chef 15.
+- Added support for macOS Catalina
+- Added support for Chef 15
+- Added `UserPath` and `SystemPath` libraries to simplify calls to macOS filepaths
 
 ### Fixed
 
-- Chef 15 introduced an issue with the updated Ruby library where `xcode-install` gem required a gem that needed to be compiled,
-  and failed compilation due to a circular dependency on `gmake` which is only available with Xcode being installed on the system.
+- Fixed an issue parsing new `softwareupdate` output on macOS Catalina
+- Fixed a dependency issue with `xcode-install` on Chef 15
+- Fixed and updated the `xcode` resource platform compatibilty check (thanks to xcodereleases.com for tracking this)
+
+### Removed
+
+- Removed testing on macOS Sierra
+- Removed testing on Chef 14
+- Removed dependency on `chef-sugar`
 
 ## [3.0.9] - 2019-09-11
 
