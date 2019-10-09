@@ -4,8 +4,8 @@ include MacOS::System
 
 shared_context 'running on bare metal Mac Mini' do
   before(:each) do
-    chef_run.node.normal['virtualization']['systems'] = { 'vbox' => 'host', 'Parallels' => 'host' }
-    chef_run.node.normal['hardware']['machine_model'] = 'Macmini7,1'
+    chef_run.node.automatic['virtualization']['systems'] = { 'vbox' => 'host', 'Parallels' => 'host' }
+    chef_run.node.automatic['hardware']['machine_model'] = 'Macmini7,1'
   end
 
   shared_examples 'including metal-specific power preferences' do
@@ -32,8 +32,8 @@ end
 
 shared_context 'when running on bare metal MacBook Pro' do
   before(:each) do
-    chef_run.node.normal['virtualization']['systems'] = { 'vbox' => 'host', 'Parallels' => 'host' }
-    chef_run.node.normal['hardware']['machine_model'] = 'MacBookPro14,3'
+    chef_run.node.automatic['virtualization']['systems'] = { 'vbox' => 'host', 'Parallels' => 'host' }
+    chef_run.node.automatic['hardware']['machine_model'] = 'MacBookPro14,3'
   end
 
   shared_examples 'including metal-specific power preferences for portables' do
@@ -55,8 +55,8 @@ end
 
 shared_context 'running in a Parallels virtual machine' do
   before(:each) do
-    chef_run.node.normal['virtualization']['systems'] = { 'Parallels' => 'guest' }
-    chef_run.node.normal['hardware']['machine_model'] = 'Parallels13,1'
+    chef_run.node.automatic['virtualization']['systems'] = { 'Parallels' => 'guest' }
+    chef_run.node.automatic['hardware']['machine_model'] = 'Parallels13,1'
   end
 
   shared_examples 'ignoring metal-specific power preferences' do
@@ -82,8 +82,8 @@ end
 
 shared_context 'running in an undetermined virtualization system' do
   before(:each) do
-    chef_run.node.normal['virtualization']['systems'] = {}
-    chef_run.node.normal['hardware']['machine_model'] = ''
+    chef_run.node.automatic['virtualization']['systems'] = {}
+    chef_run.node.automatic['hardware']['machine_model'] = ''
   end
 
   shared_examples 'ignoring metal-specific power preferences' do
