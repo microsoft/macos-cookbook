@@ -13,13 +13,13 @@ Chef resources and recipes for managing and provisioning macOS.
 
 ## Supported Chef Versions
 
-- Chef 14
+- Chef 15
 
 ## Supported OS Versions
 
-- macOS Sierra 10.12
 - macOS High Sierra 10.13
 - macOS Mojave 10.14
+- macOS Catalina 10.15
 
 ## Attributes
 
