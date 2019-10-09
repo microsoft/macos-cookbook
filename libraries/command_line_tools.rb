@@ -24,7 +24,7 @@ module MacOS
     end
 
     def latest_from_catalog
-      if available.empty?
+      if all_available.empty?
         Chef::Log.warn 'No Command Line Tools available from Software Update Catalog!'
       else
         catalog_recommendation_label.tr('*', '').gsub('Label: ', '').strip
@@ -34,20 +34,24 @@ module MacOS
     def catalog_recommendation_label
       if platform_specific.empty?
         Chef::Log.info "No Command Line Tools specific to #{macos_version} available from Software Update Catalog, selecting by maximum Xcode version."
-        versions = available.map { |product| Gem::Version.new xcode_version(product) }
-        available.detect { |product| product.include? versions.max.version }
+        Chef::Log.info 'Command Line Tools version will be selected using maximum Xcode version.'
+        recommend_version(all_available)
       else
-        versions = platform_specific.map { |product| Gem::Version.new xcode_version(product) }
-        platform_specific.detect { |product| product.include? versions.max.version }
+        recommend_version(platform_specific)
       end
     end
 
-    def available
+    def recommend_version(software_update_package_list)
+      versions = software_update_package_list.map { |product| Gem::Version.new xcode_version(product) }
+      software_update_package_list.detect { |product| product.include? versions.max.version }
+    end
+
+    def all_available
       softwareupdate_list.select { |product_name| product_name.match /\*.{1,8}Command Line Tools/ }
     end
 
     def platform_specific
-      available.select { |product_name| product_name.include? macos_version }
+      all_available.select { |product_name| product_name.include? macos_version }
     end
 
     def enable_install_on_demand
