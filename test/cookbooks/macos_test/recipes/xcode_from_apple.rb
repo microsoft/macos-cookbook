@@ -1,8 +1,7 @@
-if mac_os_x_after_high_sierra?
+if node['platform_version'] >= '10.14.4'
   xcode '11.0'
-
-elsif mac_os_x_high_sierra?
-  xcode '10.1' do
-    ios_simulators %w(12 11)
+else
+  xcode '9.4.1' do
+    ios_simulators %w(11 10)
   end
 end

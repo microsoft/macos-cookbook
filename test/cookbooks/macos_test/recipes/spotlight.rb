@@ -1,4 +1,4 @@
-test_file = 'test.txt'
+test_file = '/Users/Shared/test.txt'
 test_volumes = ['test_disk1', 'TDD2', 'Macintosh TD', 'TDD-ROM']
 
 file test_file
@@ -8,6 +8,7 @@ test_volumes.each do |volume|
              '-size', '1g', '-format', 'UDRW',
              '-volname', volume, '-srcfolder', test_file,
              '-ov', '-attach']
+    cwd '/Users/Shared'
     not_if 'diskutil info TDD-ROM'
   end
 end

@@ -1,5 +1,25 @@
 # Changelog
 
+## [3.1.0] - 2019-10-09
+
+### Added
+
+- Added support for macOS Catalina
+- Added support for Chef 15
+- Added `UserPath` and `SystemPath` libraries to simplify calls to macOS filepaths
+
+### Fixed
+
+- Fixed an issue parsing new `softwareupdate` output on macOS Catalina
+- Fixed a dependency issue with `xcode-install` on Chef 15
+- Fixed and updated the `xcode` resource platform compatibilty check (thanks to xcodereleases.com for tracking this)
+
+### Removed
+
+- Removed testing on macOS Sierra
+- Removed testing on Chef 14
+- Removed dependency on `chef-sugar`
+
 ## [3.0.9] - 2019-09-11
 
 ### Fixed
@@ -19,8 +39,8 @@
 Thanks to @jkronborg for these two fixes!
 
 ### Fixed
-- Fixed a guard in `keep_awake` for use on portables. 
-- Fixed incorrect attribute key in the Xcode resource documentation, and added a security suggestion. 
+- Fixed a guard in `keep_awake` for use on portables.
+- Fixed incorrect attribute key in the Xcode resource documentation, and added a security suggestion.
 
 ## [3.0.0] - 2019-02-28
 
@@ -41,7 +61,7 @@ Thanks to @jkronborg for these two fixes!
 - Removed `machine_name` resource along with respective tests and documentation in favor of the `hostname` resource in Chef 14.
 - Removed `xcode` recipe along with respective tests, documentation and node attributes in favor of `command_line_tools` resource which was released in 2.10.0.
 - Removed `disable_software_updates` recipe along with respective tests and documentation in favor of `automatic_software_updates` resource.
-- Removed `default` recipe - it was empty anyway. 
+- Removed `default` recipe - it was empty anyway.
 
 ## [2.10.1] - 2019-01-29
 
