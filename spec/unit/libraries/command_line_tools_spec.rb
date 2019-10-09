@@ -23,14 +23,14 @@ shared_context 'on macOS Catalina' do
 end
 
 shared_context 'with no CLT previously installed' do
-  before  do
+  before do
     allow_any_instance_of(MacOS::CommandLineTools).to receive(:install_history_plist)
       .and_return('spec/unit/libraries/data/InstallHistory_without_CLT.plist')
   end
 end
 
 shared_context 'with CLT previously installed' do
-  before  do
+  before do
     allow_any_instance_of(MacOS::CommandLineTools).to receive(:install_history_plist)
       .and_return('spec/unit/libraries/data/InstallHistory_with_CLT.plist')
   end
@@ -40,7 +40,7 @@ describe MacOS::CommandLineTools do
   context 'when there are several products for one Xcode version but several macOS versions' do
     include_context 'able to create on-demand installation sentinel'
     include_context 'on macOS Mojave'
-    include_context 'with no CLT previously installed' 
+    include_context 'with no CLT previously installed'
     before do
       allow_any_instance_of(MacOS::CommandLineTools).to receive(:softwareupdate_list)
         .and_return(["Software Update Tool\n",
@@ -61,7 +61,7 @@ describe MacOS::CommandLineTools do
   context 'when there are no products for the current macOS version' do
     include_context 'able to create on-demand installation sentinel'
     include_context 'on macOS Mojave'
-    include_context 'with no CLT previously installed' 
+    include_context 'with no CLT previously installed'
     before do
       allow_any_instance_of(MacOS::CommandLineTools).to receive(:softwareupdate_list)
         .and_return(["Software Update Tool\n",
@@ -81,7 +81,7 @@ describe MacOS::CommandLineTools do
   context 'when provided an available list of software update products in Catalina' do
     include_context 'able to create on-demand installation sentinel'
     include_context 'on macOS Catalina'
-    include_context 'with no CLT previously installed' 
+    include_context 'with no CLT previously installed'
     before do
       allow_any_instance_of(MacOS::CommandLineTools).to receive(:softwareupdate_list)
         .and_return(["Software Update Tool\n",
@@ -99,7 +99,7 @@ describe MacOS::CommandLineTools do
   context 'when provided an available list of software update products in Catalina' do
     include_context 'able to create on-demand installation sentinel'
     include_context 'on macOS Catalina'
-    include_context 'with CLT previously installed' 
+    include_context 'with CLT previously installed'
     before do
       allow_any_instance_of(MacOS::CommandLineTools).to receive(:softwareupdate_list)
         .and_return(["Software Update Tool\n",
@@ -112,7 +112,6 @@ describe MacOS::CommandLineTools do
       clt = MacOS::CommandLineTools.new
       expect(clt.version).to eq 'Command Line Tools for Xcode-11.0'
       expect(clt.version).to_not eq 'Command Line Tools for Xcode-22.0'
-    end 
+    end
   end
 end
-
