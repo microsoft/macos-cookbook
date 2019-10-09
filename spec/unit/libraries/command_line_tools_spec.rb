@@ -2,12 +2,10 @@ require 'spec_helper'
 include MacOS
 
 describe MacOS::CommandLineTools do
+  shared_context 'able to create on-demand installation sentinel'
+  shared_context 'on macOS Mojave'
   context 'when provided an available list of software update products in Mojave, and no previous installation' do
-    before do
-      allow(FileUtils).to receive(:touch).and_return(true)
-      allow(FileUtils).to receive(:chown).and_return(true)
-      allow_any_instance_of(MacOS::CommandLineTools).to receive(:macos_version)
-        .and_return('10.14')
+
       allow_any_instance_of(MacOS::CommandLineTools).to receive(:softwareupdate_list)
         .and_return(["Software Update Tool\n",
                      "\n", "Finding available software\n",
@@ -34,12 +32,10 @@ describe MacOS::CommandLineTools do
     end
   end
 
+  shared_context 'able to create on-demand installation sentinel'
+  shared_context 'on macOS Mojave'
   context 'when provided an incomplete list of software update products in Mojave, and no previous installation' do
     before do
-      allow(FileUtils).to receive(:touch).and_return(true)
-      allow(FileUtils).to receive(:chown).and_return(true)
-      allow_any_instance_of(MacOS::CommandLineTools).to receive(:macos_version)
-        .and_return('10.14')
       allow_any_instance_of(MacOS::CommandLineTools).to receive(:softwareupdate_list)
         .and_return(["Software Update Tool\n",
                      "\n", "Finding available software\n",
@@ -64,12 +60,10 @@ describe MacOS::CommandLineTools do
     end
   end
 
+  shared_context 'able to create on-demand installation sentinel'
+  shared_context 'on macOS High Sierra'
   context 'when provided an available list of software update products in High Sierra, and no previous installation' do
     before do
-      allow(FileUtils).to receive(:touch).and_return(true)
-      allow(FileUtils).to receive(:chown).and_return(true)
-      allow_any_instance_of(MacOS::CommandLineTools).to receive(:macos_version)
-        .and_return('10.13')
       allow_any_instance_of(MacOS::CommandLineTools).to receive(:softwareupdate_list)
         .and_return(["Software Update Tool\n",
                      "\n", "Finding available software\n",
@@ -94,12 +88,10 @@ describe MacOS::CommandLineTools do
     end
   end
 
+  shared_context 'able to create on-demand installation sentinel'
+  shared_context 'on macOS Catalina'
   context 'when provided an available list of software update products in Catalina, and no previous installation' do
     before do
-      allow(FileUtils).to receive(:touch).and_return(true)
-      allow(FileUtils).to receive(:chown).and_return(true)
-      allow_any_instance_of(MacOS::CommandLineTools).to receive(:macos_version)
-        .and_return('10.15')
       allow_any_instance_of(MacOS::CommandLineTools).to receive(:softwareupdate_list)
         .and_return(["Software Update Tool\n",
                      "\n", "Finding available software\n",
@@ -118,12 +110,10 @@ describe MacOS::CommandLineTools do
     end
   end
 
+  shared_context 'able to create on-demand installation sentinel'
+  shared_context 'on macOS Catalina'
   context 'when provided an available list of software update products in Catalina, and version 11 already installed' do
     before do
-      allow(FileUtils).to receive(:touch).and_return(true)
-      allow(FileUtils).to receive(:chown).and_return(true)
-      allow_any_instance_of(MacOS::CommandLineTools).to receive(:macos_version)
-        .and_return('10.15')
       allow_any_instance_of(MacOS::CommandLineTools).to receive(:softwareupdate_list)
         .and_return(["Software Update Tool\n",
                      "\n", "Finding available software\n",
@@ -143,5 +133,34 @@ describe MacOS::CommandLineTools do
       expect(clt.version).to eq 'Command Line Tools for Xcode-11.0'
       expect(clt.version).to_not eq 'Command Line Tools for Xcode-22.0'
     end
+  end
+end
+
+
+shared_context 'able to create on-demand installation sentinel' do
+  before do
+    allow(FileUtils).to receive(:touch).and_return(true)
+    allow(FileUtils).to receive(:chown).and_return(true)
+  end
+end
+
+shared_context 'on macOS High Sierra' do
+  before do
+    allow_any_instance_of(MacOS::CommandLineTools).to receive(:macos_version)
+      .and_return('10.13')
+  end
+end
+
+shared_context 'on macOS Mojave' do
+  before do
+    allow_any_instance_of(MacOS::CommandLineTools).to receive(:macos_version)
+      .and_return('10.14')
+  end
+end
+
+shared_context 'on macOS Catalina' do
+  before do
+    allow_any_instance_of(MacOS::CommandLineTools).to receive(:macos_version)
+      .and_return('10.15')
   end
 end
