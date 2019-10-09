@@ -34,7 +34,7 @@ platforms:
 - name: catalina-chef15
   driver:
     box: microsoft/macos-catalina
-    box_version: 10.15.0-19A582a
+    box_version: 10.15.0
   provisioner:
     product_version: 15
 
