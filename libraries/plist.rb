@@ -3,9 +3,9 @@ module MacOS
     def convert_to_data_type_from_string(type, value)
       case type
       when 'boolean'
-         # Since we've determined this is a boolean data type, we can assume that:
-         # If the value as an int is 1, return true
-         # If the value as an int is 0 (not 1), return false
+        # Since we've determined this is a boolean data type, we can assume that:
+        # If the value as an int is 1, return true
+        # If the value as an int is 0 (not 1), return false
         value.to_i == 1
       when 'integer'
         value.to_i
@@ -20,14 +20,6 @@ module MacOS
       else
         raise "Unknown or unsupported data type: #{type.class}"
       end
-    end
-
-    def parse_plist_xml(defaults_output)
-      Plist.parse_xml(defaults_output)
-    end
-
-    def convert_plist_dict_to_xml(entry, path)
-      shell_out(plutil_executable, '-extract', entry, 'xml1', '-o', '-', path).stdout.chomp
     end
 
     def convert_to_string_from_data_type(value)
@@ -96,8 +88,15 @@ module MacOS
 
     def setting_from_plist(entry, path)
       defaults_read_type_output = shell_out(defaults_executable, 'read-type', path, entry).stdout
-      defaults_read_output = shell_out(defaults_executable, 'read', path, entry).stdout
-      { key_type: defaults_read_type_output.split.last, key_value: defaults_read_output.strip }
+      data_type = defaults_read_type_output.split.last
+
+      if value.class == Hash
+        plutil_output = shell_out(plutil_executable, '-extract', entry, 'xml1', '-o', '-', path).stdout.chomp
+        { key_type: data_type, key_value: Plist.parse_xml(plutil_output) }
+      else
+        defaults_read_output = shell_out(defaults_executable, 'read', path, entry).stdout
+        { key_type: data_type, key_value: defaults_read_output.strip }
+      end
     end
 
     def plutil_format_map

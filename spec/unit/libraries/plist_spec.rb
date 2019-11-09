@@ -25,7 +25,7 @@ describe MacOS::PlistHelpers, '#plist_command' do
     end
 
     it 'the command to set a dictionary data type is formatted properly' do
-      expect(plistbuddy_command(:set, 'AppleFirstWeekday', 'path/to/file.plist', {gregorian: 4})).to eq "/usr/libexec/PlistBuddy -c 'Set :\"AppleFirstWeekday\":gregorian 4' \"path/to/file.plist\""
+      expect(plistbuddy_command(:set, 'AppleFirstWeekday', 'path/to/file.plist', gregorian: 4)).to eq "/usr/libexec/PlistBuddy -c 'Set :\"AppleFirstWeekday\":gregorian 4' \"path/to/file.plist\""
     end
   end
 
@@ -140,24 +140,6 @@ describe MacOS::PlistHelpers, '#convert_to_string_from_data_type' do
 
     it 'returns the required float entry' do
       expect(convert_to_string_from_data_type(1.0)).to eq 'float 1.0'
-    end
-  end
-end
-
-describe MacOS::PlistHelpers, '#parse_plist_xml' do
-  context 'When reading a dictionary data type' do
-    it 'returns a Ruby hash data type' do
-      defaults_output = <<~DEFAULTS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-      <dict>
-      \t<key>gregorian</key>
-      \t<string>2</string>
-      </dict>
-      </plist>
-      DEFAULTS
-      expect(parse_plist_xml(defaults_output)).to eq('gregorian' => '2')
     end
   end
 end
