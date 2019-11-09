@@ -2,7 +2,7 @@ resource_name :plist
 
 property :path, String, name_property: true, desired_state: true
 property :entry, String, desired_state: true
-property :value, [TrueClass, FalseClass, String, Integer, Float], desired_state: true
+property :value, [TrueClass, FalseClass, String, Integer, Float, Hash], desired_state: true
 property :encoding, String, desired_state: true, default: 'binary'
 property :owner, String, desired_state: true, default: 'root'
 property :group, String, desired_state: true, default: 'wheel'
@@ -61,7 +61,7 @@ action :set do
       Chef::Application.fatal!(
         "Option encoding must be equal to one of: #{plutil_format_map.keys}!  You passed \"#{new_resource.encoding}\"."
       ) unless plutil_format_map.key?(new_resource.encoding)
-      execute ['/usr/bin/plutil', '-convert', plutil_format_map[new_resource.encoding], new_resource.path] do
+      execute [plutil_executable, '-convert', plutil_format_map[new_resource.encoding], new_resource.path] do
         action :run
       end
     end

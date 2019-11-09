@@ -7,11 +7,11 @@ describe 'setting the first day of the week to monday' do
 
   recipe do
     plist 'make Monday the first DOW' do
-        path '/Users/somebody/Library/Preferences/.GlobalPreferences.plist'
-        entry 'AppleFirstWeekday'
-        value "{ 'gregorian' => 2;}"
-        owner 'somebody'
-        group 'staff'
+      path '/Users/somebody/Library/Preferences/.GlobalPreferences.plist'
+      entry 'AppleFirstWeekday'
+      value(gregorian: 4)
+      owner 'somebody'
+      group 'staff'
     end
   end
 
