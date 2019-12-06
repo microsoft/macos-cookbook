@@ -20,11 +20,6 @@ action :install do
 end
 
 action :upgrade do
-  file 'sentinel to request on-demand install' do
-    path '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
-    action :create
-  end
-
   command_line_tools = CommandLineTools.new
 
   execute "upgrade #{command_line_tools.version}" do
