@@ -13,7 +13,28 @@ action :install do
     live_stream true
   end
 
-  file '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress' do
+  file 'sentinel to request on-demand install' do
+    path '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
+    action :delete
+  end
+end
+
+action :upgrade do
+  file 'sentinel to request on-demand install' do
+    path '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
+    action :create
+  end
+
+  command_line_tools = CommandLineTools.new
+
+  execute "upgrade #{command_line_tools.version}" do
+    command ['softwareupdate', '--install', command_line_tools.latest_from_catalog]
+    not_if { command_line_tools.version == command_line_tools.latest_from_catalog }
+    live_stream true
+  end
+
+  file 'sentinel to request on-demand install' do
+    path '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
     action :delete
   end
 end
