@@ -4,7 +4,7 @@ maintainer_email 'chef@microsoft.com'
 license 'MIT'
 description 'Resources for configuring and provisioning macOS'
 chef_version '>= 14.0'
-version '3.1.0'
+version '3.2.0'
 
 source_url 'https://github.com/Microsoft/macos-cookbook'
 issues_url 'https://github.com/Microsoft/macos-cookbook/issues'
