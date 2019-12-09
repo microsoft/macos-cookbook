@@ -24,7 +24,11 @@ The ``command_line_tools`` resource has the following actions:
 
 ``:install``
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default. Install the latest Xcode Command Line Tools.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default. Install Command Line Tools from Apple. Takes no action if any version has previously been installed on the system. 
+
+``:upgrade``
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check for an updated version of Command Line Tools and install them if available. 
 
 ``:nothing``
 
