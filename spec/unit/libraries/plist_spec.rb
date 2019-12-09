@@ -23,6 +23,10 @@ describe MacOS::PlistHelpers, '#plist_command' do
     it 'the print command is formatted properly' do
       expect(plistbuddy_command(:print, 'QuxEntry', 'path/to/file.plist')).to eq "/usr/libexec/PlistBuddy -c 'Print :\"QuxEntry\"' \"path/to/file.plist\""
     end
+
+    it 'the command to set a dictionary data type is formatted properly' do
+      expect(plistbuddy_command(:set, 'AppleFirstWeekday', 'path/to/file.plist', gregorian: 4)).to eq "/usr/libexec/PlistBuddy -c 'Set :\"AppleFirstWeekday\":gregorian 4' \"path/to/file.plist\""
+    end
   end
 
   context 'The value provided contains spaces' do
