@@ -10,7 +10,7 @@ property :mode, [String, Integer]
 
 load_current_value do |desired|
   current_value_does_not_exist! unless ::File.exist? desired.path
-  entry desired.entry if print_entry_value desired.entry, desired.path
+  entry desired.entry if entry_in_plist? desired.entry, desired.path
 
   setting = setting_from_plist desired.entry, desired.path
   value convert_to_data_type_from_string(setting[:key_type], setting[:key_value])
