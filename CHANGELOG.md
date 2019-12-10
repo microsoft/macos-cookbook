@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.0] - 2019-12-09
+
+### Added
+
+- Added an `:upgrade` action to the `command_line_tools` resource
+- Added support for dictionaries to the `plist` resource
+
 ## [3.1.0] - 2019-10-09
 
 ### Added

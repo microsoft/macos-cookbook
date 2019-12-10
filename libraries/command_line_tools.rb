@@ -6,12 +6,11 @@ module MacOS
     attr_reader :version
 
     def initialize
-      if installed.empty?
-        enable_install_on_demand
-        @version = latest_from_catalog
-      else
-        @version = latest_installed
-      end
+      @version = if installed.empty?
+                   latest_from_catalog
+                 else
+                   latest_installed
+                 end
     end
 
     def installed
@@ -69,6 +68,7 @@ module MacOS
     end
 
     def softwareupdate_list
+      enable_install_on_demand
       shell_out(['softwareupdate', '--list']).stdout.lines
     end
 

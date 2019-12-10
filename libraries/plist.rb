@@ -3,12 +3,17 @@ module MacOS
     def convert_to_data_type_from_string(type, value)
       case type
       when 'boolean'
+        # Since we've determined this is a boolean data type, we can assume that:
+        # If the value as an int is 1, return true
+        # If the value as an int is 0 (not 1), return false
         value.to_i == 1
       when 'integer'
         value.to_i
       when 'float'
         value.to_f
       when 'string'
+        value
+      when 'dictionary'
         value
       when nil
         ''
@@ -49,8 +54,9 @@ module MacOS
       end
     end
 
-    def print_entry_value(entry, path)
-      cmd = shell_out(plistbuddy_command(:print, entry, path))
+    def entry_in_plist?(entry, path)
+      print_entry = plistbuddy_command :print, entry, path
+      cmd = shell_out print_entry
       cmd.exitstatus == 0
     end
 
@@ -61,23 +67,36 @@ module MacOS
     end
 
     def plistbuddy_command(subcommand, entry, path, value = nil)
+      sep = ' '
       arg = case subcommand.to_s
             when 'add'
               type_to_commandline_string(value)
-            when 'print'
-              ''
+            when 'set'
+              if value.class == Hash
+                sep = ':'
+                value.map { |k, v| "#{k} #{v}" }
+              else
+                value
+              end
             else
-              value
+              ''
             end
-      entry_with_arg = ["\"#{entry}\"", arg].join(' ').strip
+      entry_with_arg = ["\"#{entry}\"", arg].join(sep).strip
       subcommand = "#{subcommand.capitalize} :#{entry_with_arg}"
       [plistbuddy_executable, '-c', "\'#{subcommand}\'", "\"#{path}\""].join(' ')
     end
 
     def setting_from_plist(entry, path)
       defaults_read_type_output = shell_out(defaults_executable, 'read-type', path, entry).stdout
-      defaults_read_output = shell_out(defaults_executable, 'read', path, entry).stdout
-      { key_type: defaults_read_type_output.split.last, key_value: defaults_read_output.strip }
+      data_type = defaults_read_type_output.split.last
+
+      if value.class == Hash
+        plutil_output = shell_out(plutil_executable, '-extract', entry, 'xml1', '-o', '-', path).stdout.chomp
+        { key_type: data_type, key_value: Plist.parse_xml(plutil_output) }
+      else
+        defaults_read_output = shell_out(defaults_executable, 'read', path, entry).stdout
+        { key_type: data_type, key_value: defaults_read_output.strip }
+      end
     end
 
     def plutil_format_map
@@ -88,6 +107,10 @@ module MacOS
     end
 
     private
+
+    def plutil_executable
+      '/usr/bin/plutil'
+    end
 
     def defaults_executable
       '/usr/bin/defaults'
