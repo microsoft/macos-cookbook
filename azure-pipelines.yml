@@ -43,7 +43,7 @@ resources:
     name: chef-pipelines-templates
 
 jobs:
-- template: chefspec-cookstyle-foodcritic.yml@templates
+- template: chefspec-cookstyle.yml@templates
 - template: test-kitchen.yml@templates
   parameters:
     platforms:
