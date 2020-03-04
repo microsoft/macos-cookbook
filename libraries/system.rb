@@ -26,7 +26,7 @@ module MacOS
       end
 
       def vm?
-        @virtualization_systems.value?('guest') ? true : false
+        @virtualization_systems.value?('guest')
       end
     end
 
