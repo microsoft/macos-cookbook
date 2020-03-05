@@ -1,7 +1,7 @@
 resource_name :system_preference
 
 property :preference, Symbol, required: true, desired_state: false
-property :setting, String, required: true, desired_state: true
+property :setting, String, required: true
 
 load_current_value do |desired|
   get_setting = ['-get', desired.preference.to_s].join('')

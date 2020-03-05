@@ -1,11 +1,11 @@
 resource_name :plist
 
-property :path, String, name_property: true, desired_state: true
-property :entry, String, desired_state: true
-property :value, [TrueClass, FalseClass, String, Integer, Float, Hash], desired_state: true
-property :encoding, String, desired_state: true, default: 'binary'
-property :owner, String, desired_state: true, default: 'root'
-property :group, String, desired_state: true, default: 'wheel'
+property :path, String, name_property: true
+property :entry, String
+property :value, [TrueClass, FalseClass, String, Integer, Float, Hash]
+property :encoding, String, default: 'binary'
+property :owner, String, default: 'root'
+property :group, String, default: 'wheel'
 property :mode, [String, Integer]
 
 load_current_value do |desired|
