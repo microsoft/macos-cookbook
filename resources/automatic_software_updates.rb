@@ -1,10 +1,10 @@
 resource_name :automatic_software_updates
 
-property :check, [TrueClass, FalseClass]
-property :download, [TrueClass, FalseClass]
-property :install_os, [TrueClass, FalseClass]
-property :install_app_store, [TrueClass, FalseClass]
-property :install_critical, [TrueClass, FalseClass]
+property :check, [true, false]
+property :download, [true, false]
+property :install_os, [true, false]
+property :install_app_store, [true, false]
+property :install_critical, [true, false]
 
 software_update_plist = '/Library/Preferences/com.apple.SoftwareUpdate.plist'
 app_store_plist = '/Library/Preferences/com.apple.commerce.plist'
