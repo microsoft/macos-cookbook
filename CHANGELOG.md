@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.2.1] - 2020-03-03
+
+### Fixed
+
+- Fixed an issue with the `system` library where a system without hypervisor 
+software installed could be mistakenly identified as a VM and not have certain
+platform-specific power preferences set. 
+
 ## [3.2.0] - 2019-12-09
 
 ### Added

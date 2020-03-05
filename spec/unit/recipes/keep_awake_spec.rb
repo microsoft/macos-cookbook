@@ -80,44 +80,11 @@ shared_context 'running in a Parallels virtual machine' do
   end
 end
 
-shared_context 'running in an undetermined virtualization system' do
-  before(:each) do
-    chef_run.node.automatic['virtualization']['systems'] = {}
-    chef_run.node.automatic['hardware']['machine_model'] = ''
-  end
-
-  shared_examples 'ignoring metal-specific power preferences' do
-    it 'does not set wake on lan' do
-      chef_run.converge(described_recipe)
-      expect(chef_run).to_not set_system_preference('wake the computer when accessed using a network connection')
-    end
-
-    it 'skips disabling power button sleep' do
-      chef_run.converge(described_recipe)
-      expect(chef_run).to_not set_system_preference('pressing power button does not sleep computer')
-    end
-
-    it 'does not set restart after a power failure' do
-      chef_run.converge(described_recipe)
-      expect(chef_run).to_not set_system_preference('restart after a power failure')
-    end
-
-    it 'converges successfully in a vm' do
-      expect { chef_run }.to_not raise_error
-    end
-  end
-end
-
 describe 'macos::keep_awake' do
   let(:chef_run) { ChefSpec::SoloRunner.new }
 
   describe 'keep_awake in a Parallels VM' do
     include_context 'running in a Parallels virtual machine'
-    it_behaves_like 'ignoring metal-specific power preferences'
-  end
-
-  describe 'keep_awake in an undetermined virtualization system' do
-    include_context 'running in an undetermined virtualization system'
     it_behaves_like 'ignoring metal-specific power preferences'
   end
 
