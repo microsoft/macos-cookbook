@@ -63,7 +63,7 @@ describe MacOS::System::Environment do
   context 'setting virtualization_systems to empty' do
     it 'returns running in a vm' do
       env = MacOS::System::Environment.new({})
-      expect(env.vm?).to eq true
+      expect(env.vm?).to eq false
     end
   end
 
