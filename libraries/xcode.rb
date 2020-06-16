@@ -31,7 +31,8 @@ module MacOS
       return '>= 10.13.2' if Gem::Dependency.new('Xcode', '>= 9.3', '<= 9.4.1').match?('Xcode', @semantic_version)
       return '>= 10.13.6' if Gem::Dependency.new('Xcode', '>= 10.0', '<= 10.1').match?('Xcode', @semantic_version)
       return '>= 10.14.3' if Gem::Dependency.new('Xcode', '>= 10.2', '<= 10.3').match?('Xcode', @semantic_version)
-      return '>= 10.14.4' if Gem::Dependency.new('Xcode', '>= 11.0').match?('Xcode', @semantic_version)
+      return '>= 10.14.4' if Gem::Dependency.new('Xcode', '>= 11.0', '<= 11.3.1').match?('Xcode', @semantic_version)
+      return '>= 10.15.2' if Gem::Dependency.new('Xcode', '>= 11.4').match?('Xcode', @semantic_version)
     end
 
     def xcode_index(version)
