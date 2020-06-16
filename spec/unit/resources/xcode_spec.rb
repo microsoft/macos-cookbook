@@ -11,62 +11,80 @@ describe 'xcode' do
     allow_any_instance_of(MacOS::DeveloperAccount).to receive(:authenticate_with_apple)
       .and_return(true)
     allow(MacOS::XCVersion).to receive(:available_versions)
-      .and_return(["4.3 for Lion\n",
-                   "4.3.1 for Lion\n",
-                   "4.3.2 for Lion\n",
-                   "4.3.3 for Lion\n",
-                   "4.4\n",
-                   "4.4.1\n",
-                   "4.5\n",
-                   "4.5.1\n",
-                   "4.5.2\n",
-                   "4.6\n",
-                   "4.6.1\n",
-                   "4.6.2\n",
-                   "4.6.3\n",
-                   "5\n",
-                   "5.0.1\n",
-                   "5.0.2\n",
-                   "5.1\n",
-                   "5.1.1\n",
-                   "6.0.1\n",
-                   "6.1\n",
-                   "6.1.1\n",
-                   "6.2\n",
-                   "6.3\n",
-                   "6.3.1\n",
-                   "6.3.2\n",
-                   "6.4\n",
-                   "7\n",
-                   "7.0.1\n",
-                   "7.1\n",
-                   "7.1.1\n",
-                   "7.2\n",
-                   "7.2.1\n",
-                   "7.3\n",
-                   "7.3.1\n",
-                   "8\n",
-                   "8.1\n",
-                   "8.2\n",
-                   "8.2.1\n",
-                   "8.3\n",
-                   "8.3.1\n",
-                   "8.3.2\n",
-                   "8.3.3\n",
-                   "9\n",
-                   "9.0.1\n",
-                   "9.1\n",
-                   "9.2\n",
-                   "9.3\n",
-                   "9.4\n",
-                   "9.4.1\n",
-                   "9.4.2\n",
-                   "9.4.2 beta 2\n",
-                   "10\n",
-                   "10 GM seed\n",
-                   "10.1\n",
-                   "10.3\n",
-                   "11.0\n"]
+    .and_return(["4.3 for Lion\n",
+      "4.3.1 for Lion\n",
+      "4.3.2 for Lion\n",
+      "4.3.3 for Lion\n",
+      "4.4\n",
+      "4.4.1\n",
+      "4.5\n",
+      "4.5.1\n",
+      "4.5.2\n",
+      "4.6\n",
+      "4.6.1\n",
+      "4.6.2\n",
+      "4.6.3\n",
+      "5\n",
+      "5.0.1\n",
+      "5.0.2\n",
+      "5.1\n",
+      "5.1.1\n",
+      "6.0.1\n",
+      "6.1\n",
+      "6.1.1\n",
+      "6.2\n",
+      "6.3\n",
+      "6.3.1\n",
+      "6.3.2\n",
+      "6.4\n",
+      "7\n",
+      "7.0.1\n",
+      "7.1\n",
+      "7.1.1\n",
+      "7.2\n",
+      "7.2.1\n",
+      "7.3\n",
+      "7.3.1\n",
+      "8\n",
+      "8.1\n",
+      "8.2\n",
+      "8.2.1\n",
+      "8.3\n",
+      "8.3.1\n",
+      "8.3.2\n",
+      "8.3.3\n",
+      "9\n",
+      "9.0.1\n",
+      "9.1\n",
+      "9.2\n",
+      "9.3\n",
+      "9.4.1\n",
+      "9.4.2 beta 2\n",
+      "9.4.2\n",
+      "10 beta 1\n", 
+      "10 GM seed\n",
+      "10\n",
+      "10.1\n",
+      "10.2.1\n",
+      "10.2\n",
+      "10.3\n",
+      "11\n",
+      "11.1\n",
+      "11.2\n",
+      "11.2.1\n",
+      "11.3 beta\n",
+      "11.3\n",
+      "11.3.1\n",
+      "11.4 beta\n",
+      "11.4\n",
+      "11.4 beta 3\n",
+      "11.4 beta 2\n",
+      "11.4.1\n",
+      "11.5 beta\n",
+      "11.5\n",
+      "11.5 GM Seed\n",
+      "11.5 beta 2\n",
+      "11.6 beta\n"]
                  )
     allow(File).to receive(:exist?).and_call_original
     allow(FileUtils).to receive(:touch).and_return(true)
@@ -102,14 +120,14 @@ describe 'xcode' do
 
     recipe do
       xcode 'betamax!' do
-        version '9.4.2'
+        version '11.6'
       end
     end
 
-    it { is_expected.to run_execute('install Xcode 9.4.2 beta 2') }
+    it { is_expected.to run_execute('install Xcode 11.6 beta') }
     it { is_expected.to delete_link('/Applications/Xcode.app') }
 
-    it { is_expected.to run_execute('move /Applications/Xcode-9.4.2.beta.2.app to /Applications/Xcode.app').with(command: ['mv', '/Applications/Xcode-9.4.2.beta.2.app', '/Applications/Xcode.app']) }
+    it { is_expected.to run_execute('move /Applications/Xcode-11.6.beta.app to /Applications/Xcode.app').with(command: ['mv', '/Applications/Xcode-11.6.beta.app', '/Applications/Xcode.app']) }
     it { is_expected.to run_execute('switch active Xcode to /Applications/Xcode.app') }
   end
 
@@ -146,7 +164,7 @@ describe 'xcode' do
     end
 
     it 'raises an error' do
-      expect { subject }.to raise_error(RuntimeError, /Xcode 10\.1 beta 2 not supported on 10.12/)
+      expect { subject }.to raise_error(RuntimeError, /Xcode 10\.1 not supported on 10.12/)
     end
   end
 
