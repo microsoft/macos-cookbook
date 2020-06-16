@@ -31,12 +31,12 @@ platforms:
   provisioner:
     product_version: 15
 
-- name: catalina-chef15
+- name: catalina-chef16
   driver:
     box: microsoft/macos-catalina
     box_version: 10.15.5
   provisioner:
-    product_version: 15
+    product_version: 16
 
 suites:
 - name: default
