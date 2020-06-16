@@ -15,7 +15,7 @@ module MacOS
       @download_url = download_url
       @version = if download_url.empty?
                    version_index = xcode_index @apple_version
-                   listed_version = XCVersion.available_versions[version_index]
+                   listed_version = sorted_versions[version_index]
                    listed_version.strip
                  else
                    semantic_version
@@ -40,7 +40,11 @@ module MacOS
     end
 
     def available_xcodes
-      XCVersion.available_versions.map { |v| Xcode::Version.new v.split.first }
+      sorted_versions.map { |v| Xcode::Version.new v.split.first }
+    end
+
+    def sorted_versions
+      XCVersion.available_versions.sort
     end
 
     def installed_path
