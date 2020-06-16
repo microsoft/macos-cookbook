@@ -17,5 +17,5 @@ require_relative '../libraries/paths'
 
 RSpec.configure do |config|
   config.platform = 'mac_os_x'
-  config.version = '10.14'
+  config.version = '10.15'
 end
