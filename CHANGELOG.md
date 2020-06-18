@@ -1,12 +1,21 @@
 # Changelog
 
-## [3.2.2] - 2020-06-18
+## [3.3.0] - 2020-06-18
+
+### Added
+
+- Support for Chef 16
 
 ### Fixed
+
 - Fixed an issue where the beta version of Xcode would be installed over the GM
 version if both were still available from Apple. 
 - Updated the Xcode OS platform compatibility logic. Thanks @nickdowell!
 - Numerous cookstyle fixes.
+
+### Removed
+
+- Rspec dependency on `chef-sugar`
 
 ## [3.2.1] - 2020-03-03
 

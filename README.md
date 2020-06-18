@@ -11,9 +11,9 @@ Chef resources and recipes for managing and provisioning macOS.
 - [Data Bags](#data-bags)
 - [Resources](#resources)
 
-## Supported Chef Versions
+## Officially Supported Chef Versions
 
-- Chef 15
+- Chef 16
 
 ## Supported OS Versions
 
