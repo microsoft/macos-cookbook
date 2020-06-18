@@ -1,4 +1,4 @@
-if node['platform_version'] >= '10.14.4'
+if node['platform_version'] >= '10.15.2'
   xcode '11.5'
 else
   xcode '9.4.1' do
