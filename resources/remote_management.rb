@@ -1,4 +1,4 @@
-resource_name :remote_management
+provides :remote_management
 default_action :enable
 
 kickstart = '/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart'

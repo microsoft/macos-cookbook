@@ -1,4 +1,4 @@
-resource_name :command_line_tools
+provides :command_line_tools
 
 property :compile_time, [true, false],
   description: 'Install the Xcode Command Line Tools at compile time.',

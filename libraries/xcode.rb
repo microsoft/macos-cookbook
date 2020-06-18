@@ -73,7 +73,7 @@ module MacOS
           sleep 10
         end
         if latest_semantic_version(major_version).nil?
-          Chef::Application.fatal!("iOS #{major_version} Simulator no longer available from Apple!")
+          raise("iOS #{major_version} Simulator no longer available from Apple!")
         else
           @version = latest_semantic_version(major_version).join(' ')
         end

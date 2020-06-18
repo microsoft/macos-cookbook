@@ -1,4 +1,4 @@
-resource_name :macos_user
+provides :macos_user
 default_action :create
 
 property :username, String, name_property: true

@@ -30,7 +30,7 @@ module MacOS
         data_bag_retrieval.call
       end
     rescue Net::HTTPServerException
-      Chef::Application.fatal!('Developer credentials not supplied, and a URL was not provided for Xcode!')
+      raise('Developer credentials not supplied, and a URL was not provided for Xcode!')
     end
   end
 end

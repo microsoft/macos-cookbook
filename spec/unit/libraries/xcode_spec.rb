@@ -56,7 +56,7 @@ describe MacOS::Xcode do
                      "9.4.1\n",
                      "9.4.2 beta 2\n",
                      "9.4.2\n",
-                     "10 beta 1\n", 
+                     "10 beta 1\n",
                      "10 GM seed\n",
                      "10\n",
                      "10.1\n",

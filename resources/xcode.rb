@@ -1,4 +1,4 @@
-resource_name :xcode
+provides :xcode
 default_action %i(install_gem install_xcode install_simulators)
 
 property :version, String, name_property: true

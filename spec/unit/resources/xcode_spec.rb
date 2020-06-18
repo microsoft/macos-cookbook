@@ -11,7 +11,7 @@ describe 'xcode' do
     allow_any_instance_of(MacOS::DeveloperAccount).to receive(:authenticate_with_apple)
       .and_return(true)
     allow(MacOS::XCVersion).to receive(:available_versions)
-    .and_return(["4.3 for Lion\n",
+      .and_return(["4.3 for Lion\n",
       "4.3.1 for Lion\n",
       "4.3.2 for Lion\n",
       "4.3.3 for Lion\n",
@@ -61,7 +61,7 @@ describe 'xcode' do
       "9.4.1\n",
       "9.4.2 beta 2\n",
       "9.4.2\n",
-      "10 beta 1\n", 
+      "10 beta 1\n",
       "10 GM seed\n",
       "10\n",
       "10.1\n",

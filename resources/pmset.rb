@@ -1,4 +1,4 @@
-resource_name :pmset
+provides :pmset
 default_action :run
 
 BASE_COMMAND = '/usr/bin/pmset'.freeze
