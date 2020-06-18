@@ -22,21 +22,21 @@ platforms:
     box: microsoft/macos-high-sierra
     box_version: 10.13.6
   provisioner:
-    product_version: 15
+    product_version: 16
 
 - name: mojave-chef15
   driver:
     box: microsoft/macos-mojave
     box_version: 10.14.6
   provisioner:
-    product_version: 15
+    product_version: 16
 
 - name: catalina-chef15
   driver:
     box: microsoft/macos-catalina
     box_version: 10.15.5
   provisioner:
-    product_version: 15
+    product_version: 16
 
 suites:
 - name: default
