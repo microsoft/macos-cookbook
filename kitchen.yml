@@ -17,21 +17,21 @@ verifier:
   - test/integration/default
 
 platforms:
-- name: high-sierra-chef15
+- name: high-sierra-chef16
   driver:
     box: microsoft/macos-high-sierra
     box_version: 10.13.6
   provisioner:
     product_version: 16
 
-- name: mojave-chef15
+- name: mojave-chef16
   driver:
     box: microsoft/macos-mojave
     box_version: 10.14.6
   provisioner:
     product_version: 16
 
-- name: catalina-chef15
+- name: catalina-chef16
   driver:
     box: microsoft/macos-catalina
     box_version: 10.15.5
