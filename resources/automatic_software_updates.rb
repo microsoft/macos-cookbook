@@ -1,4 +1,4 @@
-resource_name :automatic_software_updates
+provides :automatic_software_updates
 
 property :check, [true, false]
 property :download, [true, false]

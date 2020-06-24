@@ -51,7 +51,8 @@ module MacOS
       end
 
       def available_versions
-        shell_out!(XCVersion.list_available_xcodes).stdout.lines
+        lines = shell_out!(XCVersion.list_available_xcodes).stdout.lines
+        lines.reject { |line| line.start_with?(/\D/) }
       end
     end
   end

@@ -53,26 +53,56 @@ describe MacOS::Xcode do
                      "9.1\n",
                      "9.2\n",
                      "9.3\n",
-                     "9.4\n",
                      "9.4.1\n",
                      "9.4.2 beta 2\n",
+                     "9.4.2\n",
+                     "10 beta 1\n",
                      "10 GM seed\n",
+                     "10\n",
                      "10.1\n",
+                     "10.2.1\n",
+                     "10.2\n",
                      "10.3\n",
-                     "11.0\n"]
+                     "11\n",
+                     "11.1\n",
+                     "11.2\n",
+                     "11.2.1\n",
+                     "11.3 beta\n",
+                     "11.3\n",
+                     "11.3.1\n",
+                     "11.4 beta\n",
+                     "11.4\n",
+                     "11.4 beta 3\n",
+                     "11.4 beta 2\n",
+                     "11.4.1\n",
+                     "11.5 beta\n",
+                     "11.5\n",
+                     "11.5 GM Seed\n",
+                     "11.5 beta 2\n",
+                     "11.6 beta\n"]
                    )
     end
-    it 'returns the name of Xcode 10 GM when initialized with the semantic version' do
-      xcode = MacOS::Xcode.new('10.0', '/Applications/Xcode.app')
-      expect(xcode.version).to eq '10 GM seed'
+    it 'returns the name of Xcode 11.5 official when initialized with the semantic version' do
+      xcode = MacOS::Xcode.new('11.5', '/Applications/Xcode.app')
+      expect(xcode.version).to eq '11.5'
+      expect(xcode.version).to_not eq '11.5 beta'
+      expect(xcode.version).to_not eq '11.5 GM Seed'
     end
-    it 'returns the name of Xcode 9.4 beta when initialized with the semantic version' do
+    it 'returns the name of Xcode 10 official when initialized with the semantic version' do
+      xcode = MacOS::Xcode.new('10.0', '/Applications/Xcode.app')
+      expect(xcode.version).to eq '10'
+      expect(xcode.version).to_not eq '10 GM seed'
+      expect(xcode.version).to_not eq '10 beta 1'
+    end
+    it 'returns the name of Xcode 9.4.2 official when initialized with the semantic version' do
       xcode = MacOS::Xcode.new('9.4.2', '/Applications/Xcode.app')
-      expect(xcode.version).to eq '9.4.2 beta 2'
+      expect(xcode.version).to eq '9.4.2'
+      expect(xcode.version).to_not eq '9.4.2 beta 2'
+      expect(xcode.version).to_not eq '9.4.2 beta 3'
     end
     it 'returns the temporary beta path set by xcversion when initialized with the semantic version' do
       xcode = MacOS::Xcode.new('9.4.2', '/Applications/Xcode.app')
-      expect(xcode.current_path).to eq '/Applications/Xcode-9.4.2.beta.2.app'
+      expect(xcode.current_path).to eq '/Applications/Xcode-9.4.2.app'
     end
     it 'returns the name of Xcode 9.3 when initialized with the semantic version' do
       xcode = MacOS::Xcode.new('9.3', '/Applications/Xcode.app')

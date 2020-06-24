@@ -1,4 +1,4 @@
-resource_name :spotlight
+provides :spotlight
 default_action :set
 
 property :volume, String, name_property: true

@@ -1,4 +1,4 @@
-resource_name :certificate
+provides :certificate
 
 property :certfile, String
 property :cert_password, String

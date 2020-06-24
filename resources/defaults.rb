@@ -1,4 +1,4 @@
-resource_name :defaults
+provides :defaults
 
 property :domain, String, name_property: true
 property :option, String, default: 'write'
