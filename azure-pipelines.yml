@@ -50,6 +50,7 @@ jobs:
     - high-sierra-chef16
     - mojave-chef16
     - catalina-chef16
+    - big-sur-chef16
     suites:
     - default
     - software-updates
