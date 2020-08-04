@@ -12,7 +12,7 @@ module MacOS
       @intended_path = intended_path
       @download_url = download_url
       @version = if download_url.empty?
-                   latest_xcode_revision(Xcode::Version.new(@semantic_version)).apple
+                   latest_xcode_revision(Xcode::Version.new(@semantic_version))
                  else
                    semantic_version
                  end
@@ -38,7 +38,12 @@ module MacOS
 
     def latest_xcode_revision(xcode_version)
       requirement = Gem::Dependency.new('Xcode', "~> #{xcode_version}")
-      available_xcodes.select { |v| requirement.match? v.release }.max
+      latest = available_xcodes.select { |v| requirement.match? v.release }.max
+      if latest <= xcode_version
+        latest.apple
+      else
+        available_xcodes.select { |v| v == xcode_version }[0].apple
+      end
     end
 
     def installed_path
@@ -138,6 +143,10 @@ module MacOS
         patch != 0
       end
 
+      def beta?
+        major_beta_release? || minor_beta_release?
+      end
+
       def major_beta_release?
         minor == 'beta'
       end
@@ -148,13 +157,13 @@ module MacOS
 
       def apple
         if major_release?
-          major
+          major.to_s
         elsif major_beta_release?
           version.gsub('.', ' ')
         elsif minor_beta_release?
           major.to_s + '.' + minor.to_s + (revision.nil? ? ' beta' : ' beta ') + revision.to_s
         else
-          version
+          version.to_s
         end
       end
     end
