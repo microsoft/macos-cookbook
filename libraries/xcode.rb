@@ -155,10 +155,14 @@ module MacOS
         patch == 'beta'
       end
 
+      def gm_seed_release?
+        minor == 'GM'
+      end
+
       def apple
         if major_release?
           major.to_s
-        elsif major_beta_release?
+        elsif major_beta_release? || gm_seed_release?
           version.gsub('.', ' ')
         elsif minor_beta_release?
           major.to_s + '.' + minor.to_s + (revision.nil? ? ' beta' : ' beta ') + revision.to_s
