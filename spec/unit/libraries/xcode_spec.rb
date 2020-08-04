@@ -79,7 +79,13 @@ describe MacOS::Xcode do
                      "11.5\n",
                      "11.5 GM Seed\n",
                      "11.5 beta 2\n",
-                     "11.6 beta\n"]
+                     "11.6 beta\n",
+                     "12 beta 4\n",
+                     "12 for macOS Universal Apps beta\n",
+                     "12 beta 3\n",
+                     "12 beta 2\n",
+                     "12 for macOS Universal Apps beta 2\n",
+                     "12 beta\n"]
                    )
     end
     it 'returns the name of Xcode 11.5 official when initialized with the semantic version' do
