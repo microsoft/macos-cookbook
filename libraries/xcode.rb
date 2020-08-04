@@ -40,9 +40,9 @@ module MacOS
       requirement = Gem::Dependency.new('Xcode', "~> #{xcode_version}")
       latest = available_xcodes.select { |v| requirement.match? v.release }.max
       if latest <= xcode_version
-        latest.apple
+        latest.xcode_list_title
       else
-        available_xcodes.select { |v| v == xcode_version }[0].apple
+        available_xcodes.select { |v| v == xcode_version }[0].xcode_list_title
       end
     end
 
@@ -159,7 +159,7 @@ module MacOS
         minor == 'GM'
       end
 
-      def apple
+      def xcode_list_title
         if major_release?
           major.to_s
         elsif major_beta_release? || gm_seed_release?
