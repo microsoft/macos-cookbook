@@ -9,8 +9,15 @@ property :download_url, String, default: ''
 action :install_gem do
   command_line_tools 'latest'
 
-  chef_gem 'xcode-install' do
-    options('--no-document --no-user-install')
+  execute 'install xcode gem' do
+    cwd '/tmp'
+    command <<~BASH
+          curl -sL -O https://github.com/neonichu/ruby-domain_name/releases/download/v0.5.99999999/domain_name-0.5.99999999.gem && \
+          /opt/chef/embedded/bin/gem install --no-document domain_name-0.5.99999999.gem && \
+          /opt/chef/embedded/bin/gem install --no-document --conservative xcode-install && \
+          rm -f domain_name-0.5.99999999.gem
+          BASH
+    not_if { ::File.exist? '/opt/chef/embedded/bin/xcversion' }
   end
 end
 
