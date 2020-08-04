@@ -4,19 +4,15 @@ include MacOS
 module MacOS
   class Xcode
     attr_reader :version
-    attr_reader :apple_version
     attr_reader :intended_path
     attr_reader :download_url
 
     def initialize(semantic_version, intended_path, download_url = '')
       @semantic_version = semantic_version
       @intended_path = intended_path
-      @apple_version = Xcode::Version.new(@semantic_version).apple
       @download_url = download_url
       @version = if download_url.empty?
-                   version_index = xcode_index @apple_version
-                   listed_version = sorted_versions[version_index]
-                   listed_version.strip
+                   latest_xcode_revision(Xcode::Version.new(@semantic_version)).apple
                  else
                    semantic_version
                  end
@@ -35,16 +31,14 @@ module MacOS
       return '>= 10.15.2' if Gem::Dependency.new('Xcode', '>= 11.4').match?('Xcode', @semantic_version)
     end
 
-    def xcode_index(version)
-      available_xcodes.index { |available_version| available_version.apple == version }
-    end
-
     def available_xcodes
-      sorted_versions.map { |v| Xcode::Version.new v.split.first }
+      full_versions = XCVersion.available_versions.reject { |v| v.include? 'Universal' }
+      full_versions.map { |v| Xcode::Version.new v.gsub(' ', '.') }
     end
 
-    def sorted_versions
-      XCVersion.available_versions.sort
+    def latest_xcode_revision(xcode_version)
+      requirement = Gem::Dependency.new('Xcode', "~> #{xcode_version}")
+      available_xcodes.select { |v| requirement.match? v.release }.max
     end
 
     def installed_path
@@ -108,6 +102,10 @@ module MacOS
     end
 
     class Version < Gem::Version
+      def name
+        'Xcode'
+      end
+
       def major
         _segments.first
       end
@@ -118,6 +116,14 @@ module MacOS
 
       def patch
         _segments[2] || 0
+      end
+
+      def revision
+        if major_beta_release?
+          _segments[2]
+        elsif minor_beta_release?
+          _segments[3]
+        end
       end
 
       def major_release?
@@ -132,9 +138,21 @@ module MacOS
         patch != 0
       end
 
+      def major_beta_release?
+        minor == 'beta'
+      end
+
+      def minor_beta_release?
+        patch == 'beta'
+      end
+
       def apple
         if major_release?
           major
+        elsif major_beta_release?
+          version.gsub('.', ' ')
+        elsif minor_beta_release?
+          major.to_s + '.' + minor.to_s + (revision.nil? ? ' beta' : ' beta ') + revision.to_s
         else
           version
         end
