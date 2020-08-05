@@ -1,5 +1,24 @@
 # Changelog
 
+## [3.4.0] - 2020-08-05
+
+### Added
+
+- Support and testing for Big Sur. Due to a bug in the `kickstart` script in Big Sur, the `remote_management`
+resource is not functional on any system that reports `11.0` instead of `10.16`, which is the case
+on 20A5323l (beta 3) or later. This will be resolved at a later date. 
+
+### Fixed
+
+- The `xcode` resource now installs the latest available beta revision or GM seed of Xcode if there 
+is not an official release of the requested version. Note that installing the early "Xcode 12 for macOS 
+Universal Apps" betas is not supported since Apple has already unified these into the core Xcode
+bundles as of 12A8169g (beta 3).
+
+- The `command_line_tools` OS version parsing regex has been fixed for macOS 11.0
+
+- Integration test matching for the `automatic_software_updates` resource has been fixed for macOS 11.0
+
 ## [3.3.0] - 2020-06-18
 
 ### Added
