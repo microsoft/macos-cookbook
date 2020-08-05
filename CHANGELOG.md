@@ -21,7 +21,7 @@ bundles as of 12A8169g (beta 3).
 
 - The `command_line_tools` OS version parsing regex has been fixed for macOS 11.0
 
-- Integration test matching for the `automatic_software_updates` resource has been fixed for macOS 11.0
+- The `automatic_software_updates` resource tests have been fixed for macOS 11.0
 
 ## [3.3.0] - 2020-06-18
 
