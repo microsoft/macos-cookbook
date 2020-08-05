@@ -15,6 +15,8 @@ is not an official release of the requested version. Note that installing the ea
 Universal Apps" betas is not supported since Apple has already unified these into the core Xcode
 bundles as of 12A8169g (beta 3).
 
+- The `macos_user` resource now prevents the screen from re-locking at boot when auto-login is enabled.
+
 - The `command_line_tools` OS version parsing regex has been fixed for macOS 11.0
 
 - Integration test matching for the `automatic_software_updates` resource has been fixed for macOS 11.0
