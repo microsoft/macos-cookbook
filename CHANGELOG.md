@@ -8,6 +8,8 @@
 resource is not functional on any system that reports `11.0` instead of `10.16`, which is the case
 on 20A5323l (beta 3) or later. This will be resolved at a later date. 
 
+- Deprecation notice for `macos::keep_awake`.
+
 ### Fixed
 
 - The `xcode` resource now installs the latest available beta revision or GM seed of Xcode if there 
