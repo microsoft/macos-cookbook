@@ -12,37 +12,24 @@ module MacOS
       @intended_path = intended_path
       @download_url = download_url
       @version = if download_url.empty?
-                   latest_xcode_revision(Xcode::Version.new(@semantic_version))
+                   latest_xcode_revision(Xcode::Version.new(semantic_version))
                  else
                    semantic_version
                  end
     end
 
-    def compatible_with_platform?(macos_version)
-      Gem::Dependency.new('macOS', minimum_required_os).match?('macOS', macos_version)
-    end
-
-    def minimum_required_os
-      return '>= 0' if Gem::Dependency.new('Xcode', '<= 9.2').match?('Xcode', @semantic_version)
-      return '>= 10.13.2' if Gem::Dependency.new('Xcode', '>= 9.3', '<= 9.4.1').match?('Xcode', @semantic_version)
-      return '>= 10.13.6' if Gem::Dependency.new('Xcode', '>= 10.0', '<= 10.1').match?('Xcode', @semantic_version)
-      return '>= 10.14.3' if Gem::Dependency.new('Xcode', '>= 10.2', '<= 10.3').match?('Xcode', @semantic_version)
-      return '>= 10.14.4' if Gem::Dependency.new('Xcode', '>= 11.0', '<= 11.3.1').match?('Xcode', @semantic_version)
-      return '>= 10.15.2' if Gem::Dependency.new('Xcode', '>= 11.4').match?('Xcode', @semantic_version)
-    end
-
-    def available_xcodes
+    def available_xcode_versions
       full_versions = XCVersion.available_versions.reject { |v| v.include? 'Universal' }
       full_versions.map { |v| Xcode::Version.new v.gsub(' ', '.') }
     end
 
     def latest_xcode_revision(xcode_version)
-      requirement = Gem::Dependency.new('Xcode', "~> #{xcode_version}")
-      latest = available_xcodes.select { |v| requirement.match? v.release }.max
-      if latest <= xcode_version
-        latest.xcode_list_title
+      minimum_requirement = Gem::Dependency.new('Xcode', "~> #{xcode_version}")
+      latest_revision = available_xcode_versions.select { |v| minimum_requirement.match? v.release }.max
+      if latest_revision <= xcode_version
+        latest_revision.xcode_list_title
       else
-        available_xcodes.select { |v| v == xcode_version }[0].xcode_list_title
+        available_xcode_versions.select { |v| v == xcode_version }.first.xcode_list_title
       end
     end
 
@@ -60,9 +47,22 @@ module MacOS
 
     def installed?
       return false if installed_path.nil?
+
       installed_path.any?
     end
 
+    def compatible_with_platform?(macos_version)
+      Gem::Dependency.new('macOS', minimum_required_os).match?('macOS', macos_version)
+    end
+
+    def minimum_required_os
+      return '>= 0' if Gem::Dependency.new('Xcode', '<= 9.2').match?('Xcode', @semantic_version)
+      return '>= 10.13.2' if Gem::Dependency.new('Xcode', '>= 9.3', '<= 9.4.1').match?('Xcode', @semantic_version)
+      return '>= 10.13.6' if Gem::Dependency.new('Xcode', '>= 10.0', '<= 10.1').match?('Xcode', @semantic_version)
+      return '>= 10.14.3' if Gem::Dependency.new('Xcode', '>= 10.2', '<= 10.3').match?('Xcode', @semantic_version)
+      return '>= 10.14.4' if Gem::Dependency.new('Xcode', '>= 11.0', '<= 11.3.1').match?('Xcode', @semantic_version)
+      return '>= 10.15.2' if Gem::Dependency.new('Xcode', '>= 11.4').match?('Xcode', @semantic_version)
+    end
     class Simulator
       attr_reader :version
 
