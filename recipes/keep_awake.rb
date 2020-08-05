@@ -1,4 +1,4 @@
-Chef.deprecated :generic
+Chef.deprecated(:generic, 'macos::keep_awake is deprecated and will be removed in a future release')
 
 form_factor = MacOS::System::FormFactor.new(node['hardware'])
 environment = MacOS::System::Environment.new(node['virtualization']['systems'])
