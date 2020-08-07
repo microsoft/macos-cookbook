@@ -21,6 +21,7 @@ control 'remote-control' do
   desc "ensure that the Remote Management plist grants local users access, that
         all privileges are granted based on the mask #{all_privileges}, and that
         remote control is enabled"
+  only_if { os.release < '20' } # remove prior to Big Sur public release
 
   describe command('/usr/libexec/PlistBuddy -c Print /Library/Preferences/com.apple.RemoteManagement.plist') do
     its('stdout') { should match 'ARD_AllLocalUsers = true' }

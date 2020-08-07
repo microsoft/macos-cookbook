@@ -64,7 +64,7 @@ module MacOS
     end
 
     def macos_version
-      shell_out(['/usr/bin/sw_vers', '-productVersion']).stdout.chomp[/10\.\d+/]
+      shell_out(['/usr/bin/sw_vers', '-productVersion']).stdout.chomp[/1[01]\.\d+/]
     end
 
     def softwareupdate_list

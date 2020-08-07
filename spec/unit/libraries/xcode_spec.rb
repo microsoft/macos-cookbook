@@ -67,8 +67,8 @@ describe MacOS::Xcode do
                      "11.1\n",
                      "11.2\n",
                      "11.2.1\n",
-                     "11.3 beta\n",
                      "11.3\n",
+                     "11.3 beta\n",
                      "11.3.1\n",
                      "11.4 beta\n",
                      "11.4\n",
@@ -79,8 +79,27 @@ describe MacOS::Xcode do
                      "11.5\n",
                      "11.5 GM Seed\n",
                      "11.5 beta 2\n",
-                     "11.6 beta\n"]
+                     "11.6 beta\n",
+                     "11.6 beta 2\n",
+                     "12 beta 4\n",
+                     "12 for macOS Universal Apps beta\n",
+                     "12 beta 3\n",
+                     "12 beta 2\n",
+                     "12 for macOS Universal Apps beta 2\n",
+                     "12 beta\n"]
                    )
+    end
+    it 'returns the name of the latest Xcode 12 beta when initialized with the semantic version' do
+      xcode = MacOS::Xcode.new('12.0', '/Applications/Xcode.app')
+      expect(xcode.version).to eq '12 beta 4'
+      expect(xcode.version).to_not eq '12 beta'
+      expect(xcode.version).to_not eq '12 for macOS Universal Apps beta'
+    end
+    it 'returns the name of the latest Xcode 11.6 beta when initialized with the semantic version' do
+      xcode = MacOS::Xcode.new('11.6', '/Applications/Xcode.app')
+      expect(xcode.version).to eq '11.6 beta 2'
+      expect(xcode.version).to_not eq '11.6 beta'
+      expect(xcode.version).to_not eq '11.6 beta2'
     end
     it 'returns the name of Xcode 11.5 official when initialized with the semantic version' do
       xcode = MacOS::Xcode.new('11.5', '/Applications/Xcode.app')

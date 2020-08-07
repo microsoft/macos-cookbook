@@ -7,6 +7,8 @@ property :ios_simulators, Array
 property :download_url, String, default: ''
 
 action :install_gem do
+  command_line_tools 'latest'
+
   execute 'install xcode gem' do
     cwd '/tmp'
     command <<~BASH

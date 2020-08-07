@@ -20,6 +20,7 @@ Chef resources and recipes for managing and provisioning macOS.
 - macOS High Sierra 10.13
 - macOS Mojave 10.14
 - macOS Catalina 10.15
+- macOS Big Sur 11.0
 
 ## Attributes
 
@@ -35,6 +36,8 @@ with the Vagrant paradigm. In other words, the user and password declared here
 should be an admin user with passwordless super-user rights.
 
 ## Recipes
+
+#### ***All macos-cookbook recipes are deprecated and will be removed in a future release.***
 
 ### Keep Awake
 

@@ -4,47 +4,33 @@ include MacOS
 module MacOS
   class Xcode
     attr_reader :version
-    attr_reader :apple_version
     attr_reader :intended_path
     attr_reader :download_url
 
     def initialize(semantic_version, intended_path, download_url = '')
       @semantic_version = semantic_version
       @intended_path = intended_path
-      @apple_version = Xcode::Version.new(@semantic_version).apple
       @download_url = download_url
       @version = if download_url.empty?
-                   version_index = xcode_index @apple_version
-                   listed_version = sorted_versions[version_index]
-                   listed_version.strip
+                   latest_xcode_revision(Xcode::Version.new(semantic_version))
                  else
                    semantic_version
                  end
     end
 
-    def compatible_with_platform?(macos_version)
-      Gem::Dependency.new('macOS', minimum_required_os).match?('macOS', macos_version)
+    def available_xcode_versions
+      full_versions = XCVersion.available_versions.reject { |v| v.include? 'Universal' }
+      full_versions.map { |v| Xcode::Version.new v.gsub(' ', '.') }
     end
 
-    def minimum_required_os
-      return '>= 0' if Gem::Dependency.new('Xcode', '<= 9.2').match?('Xcode', @semantic_version)
-      return '>= 10.13.2' if Gem::Dependency.new('Xcode', '>= 9.3', '<= 9.4.1').match?('Xcode', @semantic_version)
-      return '>= 10.13.6' if Gem::Dependency.new('Xcode', '>= 10.0', '<= 10.1').match?('Xcode', @semantic_version)
-      return '>= 10.14.3' if Gem::Dependency.new('Xcode', '>= 10.2', '<= 10.3').match?('Xcode', @semantic_version)
-      return '>= 10.14.4' if Gem::Dependency.new('Xcode', '>= 11.0', '<= 11.3.1').match?('Xcode', @semantic_version)
-      return '>= 10.15.2' if Gem::Dependency.new('Xcode', '>= 11.4').match?('Xcode', @semantic_version)
-    end
-
-    def xcode_index(version)
-      available_xcodes.index { |available_version| available_version.apple == version }
-    end
-
-    def available_xcodes
-      sorted_versions.map { |v| Xcode::Version.new v.split.first }
-    end
-
-    def sorted_versions
-      XCVersion.available_versions.sort
+    def latest_xcode_revision(xcode_version)
+      minimum_requirement = Gem::Dependency.new('Xcode', "~> #{xcode_version}")
+      latest_revision = available_xcode_versions.select { |v| minimum_requirement.match? v.release }.max
+      if latest_revision <= xcode_version
+        latest_revision.xcode_list_title
+      else
+        available_xcode_versions.select { |v| v == xcode_version }.first.xcode_list_title
+      end
     end
 
     def installed_path
@@ -61,9 +47,22 @@ module MacOS
 
     def installed?
       return false if installed_path.nil?
+
       installed_path.any?
     end
 
+    def compatible_with_platform?(macos_version)
+      Gem::Dependency.new('macOS', minimum_required_os).match?('macOS', macos_version)
+    end
+
+    def minimum_required_os
+      return '>= 0' if Gem::Dependency.new('Xcode', '<= 9.2').match?('Xcode', @semantic_version)
+      return '>= 10.13.2' if Gem::Dependency.new('Xcode', '>= 9.3', '<= 9.4.1').match?('Xcode', @semantic_version)
+      return '>= 10.13.6' if Gem::Dependency.new('Xcode', '>= 10.0', '<= 10.1').match?('Xcode', @semantic_version)
+      return '>= 10.14.3' if Gem::Dependency.new('Xcode', '>= 10.2', '<= 10.3').match?('Xcode', @semantic_version)
+      return '>= 10.14.4' if Gem::Dependency.new('Xcode', '>= 11.0', '<= 11.3.1').match?('Xcode', @semantic_version)
+      return '>= 10.15.2' if Gem::Dependency.new('Xcode', '>= 11.4').match?('Xcode', @semantic_version)
+    end
     class Simulator
       attr_reader :version
 
@@ -108,6 +107,10 @@ module MacOS
     end
 
     class Version < Gem::Version
+      def name
+        'Xcode'
+      end
+
       def major
         _segments.first
       end
@@ -118,6 +121,14 @@ module MacOS
 
       def patch
         _segments[2] || 0
+      end
+
+      def revision
+        if major_beta_release?
+          _segments[2]
+        elsif minor_beta_release?
+          _segments[3]
+        end
       end
 
       def major_release?
@@ -132,11 +143,31 @@ module MacOS
         patch != 0
       end
 
-      def apple
+      def beta?
+        major_beta_release? || minor_beta_release?
+      end
+
+      def major_beta_release?
+        minor == 'beta'
+      end
+
+      def minor_beta_release?
+        patch == 'beta'
+      end
+
+      def gm_seed_release?
+        minor == 'GM'
+      end
+
+      def xcode_list_title
         if major_release?
-          major
+          major.to_s
+        elsif major_beta_release? || gm_seed_release?
+          version.gsub('.', ' ')
+        elsif minor_beta_release?
+          major.to_s + '.' + minor.to_s + (revision.nil? ? ' beta' : ' beta ') + revision.to_s
         else
-          version
+          version.to_s
         end
       end
     end

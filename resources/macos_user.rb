@@ -42,6 +42,7 @@ action_class do
   def login_window_keypair_values
     { 'autoLoginUser' => new_resource.username,
       'lastUser' => 'loggedIn',
+      'autoLoginUserScreenLocked' => false,
     }
   end
 
@@ -116,6 +117,8 @@ action :create do
       plist setup_assistant_plist do
         entry e
         value v
+        owner new_resource.username
+        group 'staff'
       end
     end
 

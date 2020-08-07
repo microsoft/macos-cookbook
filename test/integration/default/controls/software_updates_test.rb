@@ -73,6 +73,6 @@ control 'updates-disabled' do
   end
 
   describe command('/usr/sbin/softwareupdate --schedule') do
-    its('stdout') { should match 'Automatic check is off' }
+    its('stdout') { should match 'off' }
   end
 end
