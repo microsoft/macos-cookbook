@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.4.1] - 2020-09-25
+
+### Added
+
+- Added `plist` method to `SystemPath` library to match the methods in `UserPath`. 
+
 ## [3.4.0] - 2020-08-05
 
 ### Added
