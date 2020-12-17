@@ -44,5 +44,9 @@ describe MacOS::SystemPath, 'SystemPath library helper functions' do
     it 'preferences creates the correct system preferences path' do
       expect(SystemPath.preferences).to eq '/Library/Preferences'
     end
+
+    it 'plist creates the correct system preferences plist path' do
+      expect(SystemPath.plist('com.apple.screensaver.plist')).to eq '/Library/Preferences/com.apple.screensaver.plist'
+    end
   end
 end

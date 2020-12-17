@@ -40,6 +40,10 @@ module MacOS
       def preferences
         ::File.join(library, 'Preferences')
       end
+
+      def plist(plist)
+        ::File.join(preferences, plist)
+      end
     end
   end
 end
