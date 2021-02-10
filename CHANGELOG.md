@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.4.2] - 2020-02-10
+
+### Fixed
+
+- Fixed `xcversion` library `list` output to not include "(installed)" status, since this is determined separately in the `xcode` resource. The additional string content was breaking parsing that prevents installation on non-complete Xcode bundles such as `12 for macOS Universal Apps`.
+
+- Fixes for Cookstyle version: 7.7.2
+
 ## [3.4.1] - 2020-09-25
 
 ### Added
