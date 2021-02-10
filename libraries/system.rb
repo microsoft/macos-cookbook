@@ -44,7 +44,5 @@ module MacOS
     end
   end
 end
-
-Chef::Recipe.include(MacOS::System)
 Chef::Resource.include(MacOS::System)
 Chef::DSL::Recipe.include(MacOS::System)

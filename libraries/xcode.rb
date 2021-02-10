@@ -63,6 +63,7 @@ module MacOS
       return '>= 10.14.4' if Gem::Dependency.new('Xcode', '>= 11.0', '<= 11.3.1').match?('Xcode', @semantic_version)
       return '>= 10.15.2' if Gem::Dependency.new('Xcode', '>= 11.4').match?('Xcode', @semantic_version)
     end
+
     class Simulator
       attr_reader :version
 
@@ -174,5 +175,5 @@ module MacOS
   end
 end
 
-Chef::Recipe.include(MacOS)
+Chef::DSL::Recipe.include(MacOS)
 Chef::Resource.include(MacOS)
