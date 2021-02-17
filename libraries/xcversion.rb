@@ -52,11 +52,12 @@ module MacOS
 
       def available_versions
         lines = shell_out!(XCVersion.list_available_xcodes).stdout.lines
-        lines.reject { |line| line.start_with?(/\D/) }
+        lines.reject! { |line| line.start_with?(/\D/) }
+        lines.map { |line| line.chomp('(installed)').strip }
       end
     end
   end
 end
 
-Chef::Recipe.include(MacOS)
+Chef::DSL::Recipe.include(MacOS)
 Chef::Resource.include(MacOS)

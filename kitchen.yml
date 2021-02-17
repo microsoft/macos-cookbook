@@ -34,14 +34,14 @@ platforms:
 - name: catalina-chef16
   driver:
     box: microsoft/macos-catalina
-    box_version: 10.15.6
+    box_version: 10.15.7
   provisioner:
     product_version: 16
 
 - name: big-sur-chef16
   driver:
     box: microsoft/macos-big-sur
-    box_version: 11.0.0-20A5343i
+    box_version: 11.2.1
   provisioner:
     product_version: 16
 

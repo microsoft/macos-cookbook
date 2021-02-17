@@ -4,7 +4,7 @@ describe 'macos::spotlight' do
   step_into :spotlight
 
   context 'Spotlight resource converges successfully' do
-    platform 'mac_os_x', 10.13
+    platform 'mac_os_x', 10.15
 
     recipe do
       spotlight 'test' do

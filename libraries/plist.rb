@@ -121,7 +121,5 @@ module MacOS
     end
   end
 end
-
-Chef::Recipe.include MacOS::PlistHelpers
 Chef::Resource.include MacOS::PlistHelpers
 Chef::DSL::Recipe.include MacOS::PlistHelpers

@@ -32,5 +32,5 @@ module MacOS
   end
 end
 
-Chef::Recipe.include(MacOS::MacOSUserHelpers)
+Chef::DSL::Recipe.include(MacOS::MacOSUserHelpers)
 Chef::Resource.include(MacOS::MacOSUserHelpers)

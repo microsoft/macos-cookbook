@@ -15,10 +15,10 @@ action :install do
   cert = SecurityCommand.new(new_resource.certfile, keychain)
 
   execute 'unlock keychain' do
-    command [*cert.unlock_keychain(node['macos']['admin_password'])]
+    command Array(cert.unlock_keychain(node['macos']['admin_password']))
   end
 
   execute 'install-certificate' do
-    command [*cert.install_certificate(new_resource.cert_password, new_resource.apps)]
+    command Array(cert.install_certificate(new_resource.cert_password, new_resource.apps))
   end
 end

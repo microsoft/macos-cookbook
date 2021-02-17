@@ -17,5 +17,5 @@ module MacOS
   end
 end
 
-Chef::Recipe.include(MacOS::SoftwareUpdates)
+Chef::DSL::Recipe.include(MacOS::SoftwareUpdates)
 Chef::Resource.include(MacOS::SoftwareUpdates)
