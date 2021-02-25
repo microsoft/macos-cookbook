@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.4.3] - 2020-02-25
+
+### Fixed
+
+- Updated `XCVersion` library `available_versions` output to *actually* not include "(installed)" status, as well as chomp newline characters.
+
+- Updated unit tests to match new `XCVersion.available_versions` output.
+
 ## [3.4.2] - 2020-02-10
 
 ### Fixed
