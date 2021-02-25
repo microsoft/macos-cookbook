@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.0.0] - 2020-02-25
+
+### Removed
+
+- Deleted last deprecated recipe `macos::keep_awake` and associated tests.
+
 ## [3.4.3] - 2020-02-25
 
 ### Fixed
