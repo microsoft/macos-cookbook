@@ -54,7 +54,6 @@ jobs:
     suites:
     - default
     - software-updates
-    - power-management
     - spotlight
     - xcode-from-apple
     - xcode-from-url
