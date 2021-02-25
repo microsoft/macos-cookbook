@@ -67,17 +67,6 @@ suites:
     controls:
     - updates-disabled
 
-- name: power-management
-  provisioner:
-    enforce_idempotency: true
-  run_list:
-  - recipe[macos::keep_awake]
-  verifier:
-    controls:
-    - screensaver-disabled
-    - remote-administration
-    - no-sleep
-
 - name: spotlight
   provisioner:
     enforce_idempotency: true
