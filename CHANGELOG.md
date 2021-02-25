@@ -10,7 +10,7 @@
 
 ### Fixed
 
-- Updated `XCVersion` library `available_versions` output to *actually* not include "(installed)" status, as well as chomp newline characters.
+- Updated `XCVersion` library `available_versions` output to _actually_ not include "(installed)" status, as well as chomp newline characters.
 
 - Updated unit tests to match new `XCVersion.available_versions` output.
 
