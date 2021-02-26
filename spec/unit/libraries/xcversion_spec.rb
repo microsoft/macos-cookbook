@@ -11,7 +11,7 @@ describe MacOS::XCVersion do
 
   context 'when given an Xcode object without a download url' do
     before do
-      allow(MacOS::XCVersion).to receive(:available_versions).and_return(["10 GM seed\n"])
+      allow(MacOS::XCVersion).to receive(:available_versions).and_return(['10 GM seed'])
       allow(MacOS::XCVersion).to receive(:xcversion_path).and_return('/foo/bar/bin/xcversion')
     end
 

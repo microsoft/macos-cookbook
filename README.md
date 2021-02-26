@@ -35,24 +35,6 @@ Each of these attributes defaults to vagrant since our resources are developed
 with the Vagrant paradigm. In other words, the user and password declared here
 should be an admin user with passwordless super-user rights.
 
-## Recipes
-
-#### ***All macos-cookbook recipes are deprecated and will be removed in a future release.***
-
-### Keep Awake
-
-Prevent macOS from falling asleep, disable the screensaver, reboot upon power failure,
-enable wake on LAN, enable remote login (SSH) and adjust several other settings
-to always keep macOS on and available.
-
-**Usage:** `include_recipe 'macos::keep_awake'`
-
-| Attributes used                         | Default value           |
-|-----------------------------------------|-------------------------|
-| `node['macos']['remote_login_enabled']` | `true`                  |
-| `node['macos']['network_time_server']`  | `'time.windows.com'`    |
-| `node['macos']['time_zone']`            | `'America/Los_Angeles'` |
-
 ## Resources
 
 - [`automatic_software_updates`](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_automatic_software_updates.md)
