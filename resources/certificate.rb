@@ -2,23 +2,28 @@ provides :certificate
 
 property :certfile, String
 property :cert_password, String
-property :keychain, String
+property :keychain, String, default: ''
 property :apps, Array
-
-action_class do
-  def keychain
-    new_resource.property_is_set?(:keychain) ? new_resource.keychain : ''
-  end
-end
+property :source_type, String, equal_to: [:cookbook_file, :filesytem], default: :filesystem
 
 action :install do
-  cert = SecurityCommand.new(new_resource.certfile, keychain)
+  if new_resource.source_type == :cookbook_file
+    new_resource.certfile = ::File.join Chef::Config[:file_cache_path], new_resource.certfile
 
-  execute 'unlock keychain' do
-    command Array(cert.unlock_keychain(node['macos']['admin_password']))
+    cookbook_file destination do
+      source new_resource.certfile
+      action :create
+    end
+  end
+
+  cert = SecurityCommand.new(new_resource.certfile, new_resource.keychain)
+
+  execute "unlock #{new_resource.keychain}" do
+    admin_password = node['macos']['admin_password']
+    command cert.unlock_keychain(admin_password)
   end
 
   execute 'install-certificate' do
-    command Array(cert.install_certificate(new_resource.cert_password, new_resource.apps))
+    command cert.install_certificate(new_resource.cert_password, new_resource.apps)
   end
 end
