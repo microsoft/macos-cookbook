@@ -8,6 +8,7 @@ property :admin, [TrueClass]
 property :fullname, String
 property :groups, [Array, String]
 property :hidden, [true, false], default: false
+property :secure_token_enabled, [TrueClass]
 
 action_class do
   def user_home
@@ -83,6 +84,10 @@ action :create do
   end
 
   sleep(0.5)
+
+  if new_resource.property_is_set?(:secure_token_enabled)
+    command [sysadminctl, *admin_credentials, '-secureTokenOn', new_resource.username, '-password', new_resource.password]
+  end
 
   if new_resource.hidden == true
     execute "hide user #{new_resource.username}" do
