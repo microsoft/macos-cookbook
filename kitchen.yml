@@ -24,26 +24,26 @@ platforms:
   provisioner:
     product_version: 16
 
-- name: mojave-chef16
+- name: mojave-chef17
   driver:
     box: microsoft/macos-mojave
     box_version: 10.14.6
   provisioner:
-    product_version: 16
+    product_version: 17
 
-- name: catalina-chef16
+- name: catalina-chef17
   driver:
     box: microsoft/macos-catalina
     box_version: 10.15.7
   provisioner:
-    product_version: 16
+    product_version: 17
 
-- name: big-sur-chef16
+- name: big-sur-chef17
   driver:
     box: microsoft/macos-big-sur
     box_version: 11.2.1
   provisioner:
-    product_version: 16
+    product_version: 17
 
 suites:
 - name: default
