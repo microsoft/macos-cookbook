@@ -1,3 +1,5 @@
+unified_mode true
+
 provides :defaults
 
 property :domain, String, name_property: true

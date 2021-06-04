@@ -1,3 +1,5 @@
+unified_mode true
+
 provides :system_preference
 
 property :preference, Symbol, required: true, desired_state: false

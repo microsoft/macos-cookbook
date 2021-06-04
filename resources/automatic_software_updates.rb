@@ -1,3 +1,5 @@
+unified_mode true
+
 provides :automatic_software_updates
 
 property :check, [true, false]

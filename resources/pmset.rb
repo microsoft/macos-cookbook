@@ -1,3 +1,5 @@
+unified_mode true
+
 provides :pmset
 default_action :run
 

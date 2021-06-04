@@ -1,3 +1,5 @@
+unified_mode true
+
 provides :command_line_tools
 
 property :compile_time, [true, false],
