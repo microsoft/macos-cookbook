@@ -1,3 +1,5 @@
+unified_mode true
+
 provides :plist
 
 property :path, String, name_property: true

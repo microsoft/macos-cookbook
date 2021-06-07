@@ -1,3 +1,5 @@
+unified_mode true
+
 provides :xcode
 default_action %i(install_gem install_xcode install_simulators)
 

@@ -1,3 +1,5 @@
+unified_mode true
+
 provides :spotlight
 default_action :set
 
