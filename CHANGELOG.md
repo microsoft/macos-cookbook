@@ -1,15 +1,11 @@
 # Changelog
 
-## [4.0.1] - 2020-06-04
-
-### Changed
-
-- Bump all suites except macOS High Sierra to Chef 17
+## [4.1.0] - 2020-06-07
 
 ### Added
 
-- Added `unified_mode true` to all resources. See [Unified Mode in Custom Resources][unified-mode-in-custom-resources]
-  for more information.
+- Added support for [Chef 17](https://docs.chef.io/release_notes_client/#whats-new-in-170). macOS High Sierra test suites will still be utilizing Chef 16.
+- Added `unified_mode true` to all resources. See [Unified Mode in Custom Resources][unified-mode-in-custom-resources] for more information.
 
 ## [4.0.0] - 2020-02-25
 
