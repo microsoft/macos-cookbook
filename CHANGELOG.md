@@ -1,5 +1,10 @@
 # Changelog
 
+## [4.1.0] - 2020-06-07
+
+### Added
+- Added support for [Chef 17](https://docs.chef.io/release_notes_client/#whats-new-in-170). macOS High Sierra test suites will still be utilizing Chef 16. 
+
 ## [4.0.0] - 2020-02-25
 
 ### Removed
