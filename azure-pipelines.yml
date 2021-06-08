@@ -48,9 +48,9 @@ jobs:
   parameters:
     platforms:
     - high-sierra-chef16
-    - mojave-chef16
-    - catalina-chef16
-    - big-sur-chef16
+    - mojave-chef17
+    - catalina-chef17
+    - big-sur-chef17
     suites:
     - default
     - software-updates

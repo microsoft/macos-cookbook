@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.1.0] - 2020-06-07
+
+### Added
+
+- Added support for [Chef 17](https://docs.chef.io/release_notes_client/#whats-new-in-170). macOS High Sierra test suites will still be utilizing Chef 16.
+- Added `unified_mode true` to all resources. See [Unified Mode in Custom Resources][unified-mode-in-custom-resources] for more information.
+
 ## [4.0.0] - 2020-02-25
 
 ### Removed
@@ -429,3 +436,5 @@ Thanks to @jkronborg for these two fixes!
 - Added `spotlight` resource.
 - Added `machine_name` resource.
 - Added `macos_user` resource.
+
+[unified-mode-in-custom-resources]: https://docs.chef.io/release_notes_client/#unified-mode-in-custom-resources

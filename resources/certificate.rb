@@ -1,3 +1,5 @@
+unified_mode true
+
 provides :certificate
 
 property :certfile, String

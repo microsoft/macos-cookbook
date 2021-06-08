@@ -1,3 +1,5 @@
+unified_mode true
+
 provides :keychain
 default_action :create
 

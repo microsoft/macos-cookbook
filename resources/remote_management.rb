@@ -1,3 +1,5 @@
+unified_mode true
+
 provides :remote_management
 default_action :enable
 

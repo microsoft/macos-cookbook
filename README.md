@@ -14,6 +14,7 @@ Chef resources and recipes for managing and provisioning macOS.
 ## Officially Supported Chef Versions
 
 - Chef 16
+- Chef 17
 
 ## Supported OS Versions
 

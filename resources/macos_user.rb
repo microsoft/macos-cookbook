@@ -1,3 +1,5 @@
+unified_mode true
+
 provides :macos_user
 default_action :create
 
