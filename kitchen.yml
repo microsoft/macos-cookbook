@@ -17,13 +17,6 @@ verifier:
   - test/integration/default
 
 platforms:
-- name: high-sierra-chef16
-  driver:
-    box: microsoft/macos-high-sierra
-    box_version: 10.13.6
-  provisioner:
-    product_version: 16
-
 - name: mojave-chef17
   driver:
     box: microsoft/macos-mojave
@@ -41,7 +34,14 @@ platforms:
 - name: big-sur-chef17
   driver:
     box: microsoft/macos-big-sur
-    box_version: 11.2.1
+    box_version: 11.4
+  provisioner:
+    product_version: 17
+
+- name: monterey-chef17
+    driver:
+      box: microsoft/macos-big-sur
+      box_version: 12.0-21A5248p
   provisioner:
     product_version: 17
 
