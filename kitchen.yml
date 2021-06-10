@@ -40,7 +40,7 @@ platforms:
 
 - name: monterey-chef17
   driver:
-    box: microsoft/macos-big-sur
+    box: microsoft/macos-monterey
     box_version: 12.0-21A5248p
   provisioner:
     product_version: 17
