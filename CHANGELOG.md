@@ -1,5 +1,20 @@
 # Changelog
 
+## [4.2.0] - 2020-06-09
+
+### Added
+
+- Added basic support and testing for macOS Monterey.
+
+### Removed
+
+- Removed testing and official support for macOS High Sierra.
+- Removed testing and official support for Chef 16.
+
+### Fixed
+
+- The `command_line_tools` OS version parsing regex has been fixed for the new macOS versioning scheme.
+
 ## [4.1.0] - 2020-06-07
 
 ### Added
