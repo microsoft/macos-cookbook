@@ -57,6 +57,11 @@ action :install_xcode do
     only_if 'test -L /Applications/Xcode.app'
   end
 
+  directory "clear previous Xcode bundle at #{new_resource.path}" do
+    path new_resource.path
+    action :delete
+  end
+
   execute "move #{xcode.current_path} to #{new_resource.path}" do
     command ['mv', xcode.current_path, xcode.intended_path]
     not_if { xcode.current_path == xcode.intended_path }
