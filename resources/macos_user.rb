@@ -4,7 +4,7 @@ provides :macos_user
 default_action :create
 
 property :username, String, name_property: true
-property :password, String, default: 'password'
+property :password, String
 property :autologin, [TrueClass]
 property :admin, [TrueClass]
 property :fullname, String
@@ -33,7 +33,8 @@ action_class do
   end
 
   def setup_assistant_keypair_values
-    { 'DidSeeCloudSetup' => true,
+    {
+      'DidSeeCloudSetup' => true,
       'DidSeeSiriSetup' => true,
       'DidSeePrivacy' => true,
       'LastSeenCloudProductVersion' => node['platform_version'],
@@ -42,7 +43,8 @@ action_class do
   end
 
   def login_window_keypair_values
-    { 'autoLoginUser' => new_resource.username,
+    {
+      'autoLoginUser' => new_resource.username,
       'lastUser' => 'loggedIn',
       'autoLoginUserScreenLocked' => false,
     }
@@ -136,6 +138,7 @@ action :create do
       owner 'root'
       group 'wheel'
       mode '0600'
+      action :create_if_missing
     end
   end
 
