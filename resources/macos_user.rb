@@ -10,6 +10,8 @@ property :admin, [TrueClass]
 property :fullname, String
 property :groups, [Array, String]
 property :hidden, [true, false], default: false
+property :auth_admin, String
+property :auth_password, String
 
 action_class do
   def user_home
@@ -63,7 +65,11 @@ action_class do
   end
 
   def admin_credentials
-    Gem::Version.new(node['platform_version']) >= Gem::Version.new('10.13') ? ['-adminUser', node['macos']['admin_user'], '-adminPassword', node['macos']['admin_password']] : ''
+    if property_is_set?(new_resource.auth_admin) && property_is_set?(new_resource.auth_password)
+      ['-adminUser', new_resource.auth_admin, '-adminPassword', new_resource.auth_password]
+    else
+      ['-adminUser', node['macos']['admin_user'], '-adminPassword', node['macos']['admin_password']]
+    end
   end
 
   def admin_user
