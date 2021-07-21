@@ -7,6 +7,8 @@ property :version, String, name_property: true
 property :path, String, default: '/Applications/Xcode.app'
 property :ios_simulators, Array
 property :download_url, String, default: ''
+property :apple_id, String
+property :password, String
 
 action :install_gem do
   command_line_tools 'latest'
@@ -24,17 +26,20 @@ action :install_gem do
 end
 
 action :install_xcode do
-  developer = DeveloperAccount.new(
-    -> { data_bag_item(:credentials, :apple_id) },
-    node['macos']['apple_id'],
-    new_resource.download_url
-  )
-
   xcode = Xcode.new(
     new_resource.version,
     new_resource.path,
     new_resource.download_url
   )
+
+  unless xcode.installed?
+    developer = DeveloperAccount.new(
+      -> { data_bag_item(:credentials, :apple_id) },
+      node['macos']['apple_id'],
+      { user: new_resource.apple_id, password: new_resource.password },
+      new_resource.download_url
+    )
+  end
 
   unless xcode.compatible_with_platform?(node['platform_version'])
     ruby_block 'exception' do
@@ -44,7 +49,7 @@ action :install_xcode do
 
   execute "install Xcode #{xcode.version}" do
     command XCVersion.install_xcode(xcode)
-    environment developer.credentials
+    environment lazy { developer.credentials }
     cwd '/Users/Shared'
     not_if { xcode.installed? }
     live_stream true

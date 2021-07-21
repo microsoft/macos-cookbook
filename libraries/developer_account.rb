@@ -5,7 +5,7 @@ module MacOS
   class DeveloperAccount
     attr_reader :credentials
 
-    def initialize(data_bag_retrieval, node_credential_attributes, download_url)
+    def initialize(data_bag_retrieval, node_credential_attributes, _property_credentials, download_url)
       if download_url.empty?
         developer_id = find_apple_id(data_bag_retrieval, node_credential_attributes)
         @credentials = {
@@ -25,6 +25,11 @@ module MacOS
         {
           'apple_id' => node_credential_attributes['user'],
           'password' => node_credential_attributes['password'],
+        }
+      elsif property_credentials.values.all?
+        {
+          'apple_id' => property_credentials['user'],
+          'password' => property_credentials['password'],
         }
       else
         data_bag_retrieval.call
