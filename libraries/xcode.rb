@@ -157,7 +157,7 @@ module MacOS
       end
 
       def gm_seed_release?
-        minor == 'GM'
+        minor == 'Release'
       end
 
       def xcode_list_title
