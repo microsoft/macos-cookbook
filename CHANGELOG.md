@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.2.1] - 2020-09-14
+
+### Fixed
+
+- Updated `xcode` library download catalog matching to Apple's new 'Release Candidate' naming scheme.
+
 ## [4.2.0] - 2020-06-09
 
 ### Added
