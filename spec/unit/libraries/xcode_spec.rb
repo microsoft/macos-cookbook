@@ -57,7 +57,7 @@ describe MacOS::Xcode do
                      '9.4.2 beta 2',
                      '9.4.2',
                      '10 beta 1',
-                     '10 GM seed',
+                     '10 Release Candidate',
                      '10',
                      '10.1',
                      '10.2.1',
@@ -77,7 +77,7 @@ describe MacOS::Xcode do
                      '11.4.1',
                      '11.5 beta',
                      '11.5',
-                     '11.5 GM Seed',
+                     '11.5 Release Candidate',
                      '11.5 beta 2',
                      '11.6 beta',
                      '11.6 beta 2',
@@ -104,12 +104,12 @@ describe MacOS::Xcode do
       xcode = MacOS::Xcode.new('11.5', '/Applications/Xcode.app')
       expect(xcode.version).to eq '11.5'
       expect(xcode.version).to_not eq '11.5 beta'
-      expect(xcode.version).to_not eq '11.5 GM Seed'
+      expect(xcode.version).to_not eq '11.5 Release Candidate'
     end
     it 'returns the name of Xcode 10 official when initialized with the semantic version' do
       xcode = MacOS::Xcode.new('10.0', '/Applications/Xcode.app')
       expect(xcode.version).to eq '10'
-      expect(xcode.version).to_not eq '10 GM seed'
+      expect(xcode.version).to_not eq '10 Release Candidate'
       expect(xcode.version).to_not eq '10 beta 1'
     end
     it 'returns the name of Xcode 9.4.2 official when initialized with the semantic version' do
@@ -194,7 +194,7 @@ end
 describe MacOS::Xcode do
   context 'when initialized with an Xcode download url and Xcode betas available' do
     before do
-      allow(MacOS::XCVersion).to receive(:available_versions).and_return(['10 GM seed'])
+      allow(MacOS::XCVersion).to receive(:available_versions).and_return(['10 Release Candidate'])
     end
     it 'returns the download url' do
       xcode = MacOS::Xcode.new('10.0', '/Applications/Xcode.app', 'https://www.apple.com')
