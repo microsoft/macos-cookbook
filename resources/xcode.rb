@@ -49,10 +49,10 @@ action :install_xcode do
     not_if { xcode.installed? }
     live_stream true
     timeout 7200
-    notifies :delete, "existing Xcode bundle at #{new_resource.path}", :before
+    notifies :delete, "directory[Xcode bundle at #{new_resource.path}]", :before
   end
 
-  directory "existing Xcode bundle at #{new_resource.path}" do
+  directory "Xcode bundle at #{new_resource.path}" do
     path new_resource.path
     recursive true
     action :nothing
