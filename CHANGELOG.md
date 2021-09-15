@@ -5,6 +5,7 @@
 ### Fixed
 
 - Updated `xcode` library download catalog matching to Apple's new 'Release Candidate' naming scheme.
+- Updated `xcode` resource behavior to delete any existing Xcode bundles if they exist at the requested path.
 
 ## [4.2.0] - 2020-06-09
 
