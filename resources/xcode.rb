@@ -49,17 +49,19 @@ action :install_xcode do
     not_if { xcode.installed? }
     live_stream true
     timeout 7200
+    notifies :delete, "existing Xcode bundle at #{new_resource.path}", :before
+  end
+
+  directory "existing Xcode bundle at #{new_resource.path}" do
+    path new_resource.path
+    recursive true
+    action :nothing
   end
 
   link 'delete symlink created by xcversion gem' do
     target_file '/Applications/Xcode.app'
     action :delete
     only_if 'test -L /Applications/Xcode.app'
-  end
-
-  directory "clear previous Xcode bundle at #{new_resource.path}" do
-    path new_resource.path
-    action :delete
   end
 
   execute "move #{xcode.current_path} to #{new_resource.path}" do
