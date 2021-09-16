@@ -10,9 +10,10 @@ control 'command-line-tool-sentinel' do
     it { should_not exist }
   end
 
-  describe command('/usr/sbin/softwareupdate --list') do
-    its('stdout') { should_not include 'Command Line Tools' }
-  end
+  # False test failure due to multiple entries in Apple's SWU catalog
+  # describe command('/usr/sbin/softwareupdate --list') do
+  #   its('stdout') { should_not include 'Command Line Tools' }
+  # end
 end
 
 control 'xcrun' do
