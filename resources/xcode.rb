@@ -42,6 +42,13 @@ action :install_xcode do
     end
   end
 
+  directory "outdated Xcode bundle at #{new_resource.path}" do
+    path new_resource.path
+    recursive true
+    action :delete
+    not_if { xcode.installed? }
+  end
+
   execute "install Xcode #{xcode.version}" do
     command XCVersion.install_xcode(xcode)
     environment developer.credentials
