@@ -127,19 +127,35 @@ end
 describe MacOS::PlistHelpers, '#convert_to_string_from_data_type' do
   context 'When given a certain data type' do
     it 'returns the required boolean entry' do
-      expect(convert_to_string_from_data_type(true)).to eq 'bool true'
+      expect(convert_to_string_from_data_type(true)).to eq '-bool true'
     end
 
     it 'returns the required string entry' do
-      expect(convert_to_string_from_data_type('quux')).to eq 'string quux'
+      expect(convert_to_string_from_data_type('qu ux')).to eq '-string qu\ ux'
+    end
+
+    it 'returns the required string entry with embedded quotes' do
+      expect(convert_to_string_from_data_type('qu "ux"')).to eq '-string qu\ \"ux\"'
     end
 
     it 'returns the required integer entry' do
-      expect(convert_to_string_from_data_type(1)).to eq 'integer 1'
+      expect(convert_to_string_from_data_type(1)).to eq '-integer 1'
     end
 
     it 'returns the required float entry' do
-      expect(convert_to_string_from_data_type(1.0)).to eq 'float 1.0'
+      expect(convert_to_string_from_data_type(1.0)).to eq '-float 1.0'
+    end
+
+    it 'returns the required array entry' do
+      expect(convert_to_string_from_data_type(['a', 'b', 'c'])).to eq '-array -string a -string b -string c'
+    end
+
+    it 'returns the required array entry with embedded quotes' do
+      expect(convert_to_string_from_data_type(['a', 'b "quotes"', 'c'])).to eq '-array -string a -string b\ \"quotes\" -string c'
+    end
+
+    it 'returns the required array entry with integer data' do
+      expect(convert_to_string_from_data_type(['a', 'b "quotes"', 3])).to eq '-array -string a -string b\ \"quotes\" -integer 3'
     end
   end
 end
