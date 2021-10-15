@@ -39,7 +39,7 @@ module MacOS
       when TrueClass
         "-bool #{value}"
       when Hash
-        "-dict #{value}"
+        "-dict #{value.map { |key,value| Shellwords.shellescape(key) + ' ' + convert_to_string_from_data_type(value)}.join(' ')}"
       when String
         "-string #{Shellwords.shellescape(value)}"
       when Float
