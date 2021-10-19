@@ -1,3 +1,5 @@
+require 'shellwords'
+
 module MacOS
   module PlistHelpers
     def convert_to_data_type_from_string(type, value)
@@ -22,15 +24,29 @@ module MacOS
       end
     end
 
+    def convert_array_to_string(value)
+     
+    end
+
     def convert_to_string_from_data_type(value)
-      data_type_cases = { Array => "array #{value}",
-                          Integer => "integer #{value}",
-                          TrueClass => "bool #{value}",
-                          FalseClass => "bool #{value}",
-                          Hash => "dict #{value}",
-                          String => "string #{value}",
-                          Float => "float #{value}" }
-      data_type_cases[value.class]
+      case value
+      when Array
+        "-array #{value.map { |x| convert_to_string_from_data_type(x) }.join(' ')}"
+      when Integer
+        "-integer #{value}"
+      when FalseClass
+        "-bool #{value}"
+      when TrueClass
+        "-bool #{value}"
+      when Hash
+        "-dict #{value.map { |key,value| Shellwords.shellescape(key) + ' ' + convert_to_string_from_data_type(value)}.join(' ')}"
+      when String
+        "-string #{Shellwords.shellescape(value)}"
+      when Float
+        "-float #{value}" 
+      else
+        raise "Unknown or unsupported data type: #{value} of #{value.class}"
+      end
     end
 
     def type_to_commandline_string(value)

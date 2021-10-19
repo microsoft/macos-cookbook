@@ -1,13 +1,21 @@
 # Changelog
 
-## [4.2.1] - 2020-09-14
+## [4.2.2] - 2021-10-18
+
+### Fixed
+
+- `defaults` data conversion now handles spaces in strings, arrays, and dictionaries.
+- The original data conversion code converted Ruby data types naively into strings. Unfortunately, this format isn't in the format that defaults expects.
+- This change modifies the data conversion process to correctly output the expected data in a format acceptable to defaults, while also adding in additional tests to verify the output of the conversion process.
+
+## [4.2.1] - 2021-09-14
 
 ### Fixed
 
 - Updated `xcode` library download catalog matching to Apple's new 'Release Candidate' naming scheme.
 - Updated `xcode` resource behavior to delete any existing Xcode bundles if they exist at the requested path.
 
-## [4.2.0] - 2020-06-09
+## [4.2.0] - 2021-06-09
 
 ### Added
 
@@ -22,20 +30,20 @@
 
 - The `command_line_tools` OS version parsing regex has been fixed for the new macOS versioning scheme.
 
-## [4.1.0] - 2020-06-07
+## [4.1.0] - 2021-06-07
 
 ### Added
 
 - Added support for [Chef 17](https://docs.chef.io/release_notes_client/#whats-new-in-170). macOS High Sierra test suites will still be utilizing Chef 16.
 - Added `unified_mode true` to all resources. See [Unified Mode in Custom Resources][unified-mode-in-custom-resources] for more information.
 
-## [4.0.0] - 2020-02-25
+## [4.0.0] - 2021-02-25
 
 ### Removed
 
 - Deleted last deprecated recipe `macos::keep_awake` and associated tests.
 
-## [3.4.3] - 2020-02-25
+## [3.4.3] - 2021-02-25
 
 ### Fixed
 
@@ -43,7 +51,7 @@
 
 - Updated unit tests to match new `XCVersion.available_versions` output.
 
-## [3.4.2] - 2020-02-10
+## [3.4.2] - 2021-02-10
 
 ### Fixed
 
