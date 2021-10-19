@@ -6,7 +6,7 @@
 
 - `defaults` data conversion now handles spaces in strings, arrays, and dictionaries.
 - The original data conversion code converted Ruby data types naively into strings. Unfortunately, this format isn't in the format that defaults expects.
-This change modifies the data conversion process to correctly output the expected data in a format acceptable to defaults, while also adding in additional tests to verify the output of the conversion process.
+- This change modifies the data conversion process to correctly output the expected data in a format acceptable to defaults, while also adding in additional tests to verify the output of the conversion process.
 
 ## [4.2.1] - 2021-09-14
 
