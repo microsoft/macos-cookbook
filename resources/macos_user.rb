@@ -4,7 +4,7 @@ provides :macos_user
 default_action :create
 
 property :username, String, name_property: true
-property :password, String, default: 'password'
+property :password, String, sensitive: true
 property :autologin, [TrueClass]
 property :admin, [TrueClass]
 property :fullname, String
@@ -81,6 +81,7 @@ end
 action :create do
   execute "add user #{new_resource.username}" do
     command [sysadminctl, *admin_credentials, '-addUser', new_resource.username, *user_fullname, '-password', new_resource.password, admin_user]
+    sensitive true
     not_if { ::File.exist?(user_home) && user_already_exists? }
   end
 
@@ -136,6 +137,7 @@ action :create do
       owner 'root'
       group 'wheel'
       mode '0600'
+      sensitive true
     end
   end
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.2.3] - 2022-02-03
+
+### Fixed
+
+- Enforce sensitivity for the `macos_user` resource `password` property as a security measure. This prevents downstream users from needing to declare `sensitive true` on the resource call.
+
 ## [4.2.2] - 2021-10-18
 
 ### Fixed
