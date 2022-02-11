@@ -33,7 +33,7 @@ module MacOS
     end
 
     def add_certificates
-      @keychain.empty? ? [@security_cmd, 'add-certificates', @cert] : [@security_cmd, 'add-certificates', @cert, '-k', @keychain]
+      @keychain.empty? ? [@security_cmd, 'add-certificates', @cert] : [@security_cmd, 'add-certificates', '-k', @keychain, @cert]
     end
 
     def import(cert_passwd, apps)
