@@ -27,6 +27,7 @@ end
 certificate 'install a .cer format certificate file' do
   certfile foobar_cer_path
   keychain '/Users/vagrant/Library/Keychains/login.keychain'
+  kc_passwd node['macos']['admin_password']
   apps ['/Applications/Numbers.app']
   action :install
 end
@@ -35,6 +36,7 @@ certificate 'install a PFX format certificate file' do
   certfile '/Users/vagrant/Test.p12'
   cert_password 'test'
   keychain '/Users/vagrant/Library/Keychains/test.keychain'
+  kc_passwd node['macos']['admin_password']
   apps ['/Applications/Safari.app']
   action :install
 end
