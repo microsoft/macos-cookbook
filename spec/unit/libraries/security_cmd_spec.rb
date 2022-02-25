@@ -63,7 +63,7 @@ describe MacOS::SecurityCommand, 'certificate creation commands' do
 
   context 'adding a certificate (.cer) to a certain keychain' do
     it 'adds a specified .cer certificate file' do
-      expect(cer_cert_kc.add_certificates).to eq ['/usr/bin/security', 'add-certificates', '/Users/vagrant/Test.cer', '-k', 'test.keychain']
+      expect(cer_cert_kc.add_certificates).to eq ['/usr/bin/security', 'add-certificates', '-k', 'test.keychain', '/Users/vagrant/Test.cer']
     end
   end
 

@@ -102,6 +102,8 @@ suites:
     - xcrun
 
 - name: certificate
+  provisioner:
+    multiple_converge: 1
   run_list:
   - recipe[macos_test::certificate]
   verifier:
