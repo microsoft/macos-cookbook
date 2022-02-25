@@ -41,7 +41,7 @@ platforms:
 - name: monterey-chef17
   driver:
     box: microsoft/macos-monterey
-    box_version: 12.0-21A5506j
+    box_version: 12.2
   provisioner:
     product_version: 17
 
@@ -102,8 +102,6 @@ suites:
     - xcrun
 
 - name: certificate
-  provisioner:
-    multiple_converge: 1
   run_list:
   - recipe[macos_test::certificate]
   verifier:
