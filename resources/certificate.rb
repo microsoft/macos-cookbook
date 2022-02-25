@@ -5,6 +5,7 @@ provides :certificate
 property :certfile, String
 property :cert_password, String
 property :keychain, String
+property :kc_passwd, String
 property :apps, Array
 
 action_class do
@@ -17,7 +18,7 @@ action :install do
   cert = SecurityCommand.new(new_resource.certfile, keychain)
 
   execute 'unlock keychain' do
-    command Array(cert.unlock_keychain(node['macos']['admin_password']))
+    command Array(cert.unlock_keychain(new_resource.kc_passwd))
   end
 
   execute 'install-certificate' do
