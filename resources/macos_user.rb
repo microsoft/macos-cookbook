@@ -10,6 +10,8 @@ property :admin, [TrueClass]
 property :fullname, String
 property :groups, [Array, String]
 property :hidden, [true, false], default: false
+property :secure_token, [true, false], default: false
+property :existing_token_auth, Hash
 
 action_class do
   def user_home
@@ -57,11 +59,23 @@ action_class do
   end
 
   def user_fullname
-    new_resource.property_is_set?(:fullname) ? ['-fullName', new_resource.fullname] : ''
+    if new_resource.property_is_set?(:fullname)
+      ['-fullName', new_resource.fullname]
+    else
+      ''
+    end
   end
 
-  def admin_credentials
-    Gem::Version.new(node['platform_version']) >= Gem::Version.new('10.13') ? ['-adminUser', node['macos']['admin_user'], '-adminPassword', node['macos']['admin_password']] : ''
+  def token_credentials
+    if new_resource.property_is_set?(:secure_token)
+      ['-adminUser', new_resource.existing_token_auth['username'], '-adminPassword', new_resource.existing_token_auth['password']]
+    else
+      ''
+    end
+  end
+
+  def secure_token_enabled?
+    shell_out!([sysadminctl, '-secureTokenStatus', new_resource.username]).stdout.include?('ENABLED')
   end
 
   def admin_user
@@ -79,13 +93,29 @@ action_class do
 end
 
 action :create do
+  if property_is_set?(:secure_token) && !property_is_set?(:existing_token_auth)
+    raise "You must provide a existing_token_auth hash for an existing secure token user if you want to enable one for #{new_resource.username}"
+  end
+
   execute "add user #{new_resource.username}" do
-    command [sysadminctl, *admin_credentials, '-addUser', new_resource.username, *user_fullname, '-password', new_resource.password, admin_user]
+    command [sysadminctl, *token_credentials, '-addUser', new_resource.username, *user_fullname, '-password', new_resource.password, admin_user]
     sensitive true
     not_if { ::File.exist?(user_home) && user_already_exists? }
   end
 
-  sleep(0.5)
+  if new_resource.secure_token && !secure_token_enabled?
+    execute "enable secure token for #{new_resource.username}" do
+      command [sysadminctl, *token_credentials, '-secureTokenOn', new_resource.username]
+      sensitive true
+    end
+  end
+
+  if !new_resource.secure_token && secure_token_enabled?
+    execute "disable secure token for #{new_resource.username}" do
+      command [sysadminctl, *token_credentials, '-secureTokenOff', new_resource.username]
+      sensitive true
+    end
+  end
 
   if new_resource.hidden == true
     execute "hide user #{new_resource.username}" do
