@@ -1,21 +1,16 @@
 unified_mode true
 
 provides :certificate
+default_action :install
 
 property :certfile, String
 property :cert_password, String, sensitive: true
-property :keychain, String
+property :keychain, String, required: true
 property :kc_passwd, String, sensitive: true
 property :apps, Array
 
-action_class do
-  def keychain
-    new_resource.property_is_set?(:keychain) ? new_resource.keychain : ''
-  end
-end
-
 action :install do
-  cert = SecurityCommand.new(new_resource.certfile, keychain)
+  cert = SecurityCommand.new(new_resource.certfile, new_resource.keychain)
 
   execute 'unlock keychain' do
     password = new_resource.property_is_set?(:kc_passwd) ? new_resource.kc_passwd : node['macos']['admin_password']
