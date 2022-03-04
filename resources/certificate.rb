@@ -6,15 +6,14 @@ default_action :install
 property :certfile, String
 property :cert_password, String, sensitive: true
 property :keychain, String, required: true
-property :kc_passwd, String, sensitive: true
+property :kc_passwd, String, required: true, sensitive: true
 property :apps, Array
 
 action :install do
   cert = SecurityCommand.new(new_resource.certfile, new_resource.keychain)
 
   execute 'unlock keychain' do
-    password = new_resource.property_is_set?(:kc_passwd) ? new_resource.kc_passwd : node['macos']['admin_password']
-    command Array(cert.unlock_keychain(password))
+    command Array(cert.unlock_keychain(new_resource.kc_passwd))
   end
 
   cert_shasum = shell_out("shasum #{new_resource.certfile}").stdout.upcase.gsub(/\s.+/, '')
