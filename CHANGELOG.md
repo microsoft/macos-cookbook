@@ -3,10 +3,12 @@
 ## [4.3.0] - 2022-02-18
 
 ### Fixed
-- Reversed order of arguments for certificate installation to address [Bug 244](https://github.com/microsoft/macos-cookbook/issues/244). 
+
+- Reversed order of arguments for certificate installation to address [Bug 244](https://github.com/microsoft/macos-cookbook/issues/244).
 
 ### Added
-- New test suites and recipe change to account for `.cer` files. 
+
+- New test suites and recipe change to account for `.cer` files.
 
 ## [4.2.3] - 2022-02-03
 
