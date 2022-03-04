@@ -36,7 +36,7 @@ certificate 'install a PFX format certificate file' do
   certfile '/Users/vagrant/Test.p12'
   cert_password 'test'
   keychain '/Users/vagrant/Library/Keychains/test.keychain'
-  kc_passwd node['macos']['admin_password']
+  kc_passwd 'test'
   apps ['/Applications/Safari.app']
   action :install
 end
