@@ -1,6 +1,6 @@
 # Changelog
 
-## [4.3.0] - 2022-02-18
+## [4.3.0] - 2022-03-04
 
 ### Fixed
 
@@ -8,7 +8,15 @@
 
 ### Added
 
-- New test suites and recipe change to account for `.cer` files.
+- New test suites and recipe change to account for `.cer` files. 
+- New certificate resource property: `kc_passwd` which allows setting of keychain password. 
+- Check for certificate existence within the keychain before installing a new one to ensure idempotency. 
+- Made password properties sensitive. 
+- Updated certificate resource documentation.
+
+### Changed
+
+- Removed dependency on using the `default['macos']['admin_password']` attribute for setting the keychain password when using the certificate resource. 
 
 ## [4.2.3] - 2022-02-03
 
