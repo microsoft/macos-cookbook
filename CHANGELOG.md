@@ -1,14 +1,17 @@
 # Changelog
 
-## [4.3.0] - 2022-02-25
+## [4.3.0] - 2022-03-04
 
 ### Fixed
 - Reversed order of arguments for certificate installation to address [Bug 244](https://github.com/microsoft/macos-cookbook/issues/244). 
 
 ### Added
 - New test suites and recipe change to account for `.cer` files. 
-- New certificate resource property: kc_passwd which allows setting of keychain password. 
-- Updated certificate resource documentation
+- New certificate resource property: kc_passwd which allows setting of keychain password. Not putting in a password will revert back to using 
+  the `['macos']['admin_password']` attribute. 
+- Check for certificate existence within the keychain before installing a new one to ensure idempotency. 
+- Made password properties sensitive. 
+- Updated certificate resource documentation.
 
 ### Changed
 - Removed dependency on using the `default['macos']['admin_password']` attribute for setting the keychain password when using the certificate resource. 
