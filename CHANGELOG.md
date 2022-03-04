@@ -7,8 +7,7 @@
 
 ### Added
 - New test suites and recipe change to account for `.cer` files. 
-- New certificate resource property: kc_passwd which allows setting of keychain password. Not putting in a password will revert back to using 
-  the `['macos']['admin_password']` attribute. 
+- New certificate resource property: `kc_passwd` which allows setting of keychain password. 
 - Check for certificate existence within the keychain before installing a new one to ensure idempotency. 
 - Made password properties sensitive. 
 - Updated certificate resource documentation.
