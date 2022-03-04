@@ -103,7 +103,7 @@ describe MacOS::PlistHelpers, '#type_to_commandline_string' do
     end
 
     it 'returns the required array entry type as a string' do
-      expect(type_to_commandline_string(%w(foo bar))).to eq 'array'
+      expect(type_to_commandline_string(['foo', 'bar'])).to eq 'array'
     end
 
     it 'returns the required dictionary entry type as a string' do

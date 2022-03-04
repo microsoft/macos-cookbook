@@ -10,7 +10,7 @@ macos_user 'create non-admin user with groups' do
   username 'johnny'
   fullname 'Johnny Appleseed'
   password 'yang-yolked-cordon-karate'
-  groups %w(alpha beta)
+  groups ['alpha', 'beta']
 end
 
 macos_user 'create non-admin without groups' do
