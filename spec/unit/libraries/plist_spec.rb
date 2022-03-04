@@ -147,11 +147,11 @@ describe MacOS::PlistHelpers, '#convert_to_string_from_data_type' do
     end
 
     it 'returns the required dictionary entry' do
-      expect(convert_to_string_from_data_type({'a' => 'b', 'c' => 'd'})).to eq '-dict a -string b c -string d'
+      expect(convert_to_string_from_data_type({ 'a' => 'b', 'c' => 'd' })).to eq '-dict a -string b c -string d'
     end
 
     it 'returns the required dictionary entry with embedded quotes and numbers' do
-      expect(convert_to_string_from_data_type({'a' => 3, 'c' => '"d"'})).to eq '-dict a -integer 3 c -string \"d\"'
+      expect(convert_to_string_from_data_type({ 'a' => 3, 'c' => '"d"' })).to eq '-dict a -integer 3 c -string \"d\"'
     end
 
     it 'returns the required array entry' do
