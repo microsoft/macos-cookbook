@@ -25,7 +25,6 @@ module MacOS
     end
 
     def convert_array_to_string(value)
-     
     end
 
     def convert_to_string_from_data_type(value)
@@ -39,11 +38,11 @@ module MacOS
       when TrueClass
         "-bool #{value}"
       when Hash
-        "-dict #{value.map { |key,value| Shellwords.shellescape(key) + ' ' + convert_to_string_from_data_type(value)}.join(' ')}"
+        "-dict #{value.map { |key, value| Shellwords.shellescape(key) + ' ' + convert_to_string_from_data_type(value) }.join(' ')}"
       when String
         "-string #{Shellwords.shellescape(value)}"
       when Float
-        "-float #{value}" 
+        "-float #{value}"
       else
         raise "Unknown or unsupported data type: #{value} of #{value.class}"
       end
