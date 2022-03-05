@@ -65,7 +65,7 @@ action_class do
       ''
     end
   end
-  
+
   def validate_secure_token_modification
     if !new_resource.property_is_set?(:existing_token_auth) || !new_resource.property_is_set?(:password)
       raise "Both an existing_token_auth hash and the user password for #{new_resource.username} must be provided to modify secure token!"
@@ -118,10 +118,10 @@ action :create do
   end
 
   if !new_resource.secure_token && secure_token_enabled?
-    validate_secure_token_modification  
+    validate_secure_token_modification
     execute "disable secure token for #{new_resource.username}" do
-        command [sysadminctl, *token_credentials, '-secureTokenOff', new_resource.username, '-password', new_resource.password]
-        live_stream true
+      command [sysadminctl, *token_credentials, '-secureTokenOff', new_resource.username, '-password', new_resource.password]
+      live_stream true
     end
   end
 
