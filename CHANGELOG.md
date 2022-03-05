@@ -12,6 +12,17 @@
 - Secure token support for `macos_user` resource via new properties `secure_token` and `existing_token_auth`.
 - New unit and integration tests for `macos_user` resource.
 
+## Changed
+
+- Unified `macos_user` test suites
+- Updated `macos_user` resource to use not utilize default attributes for authorization.
+
+## Removed
+
+- Removed last default cookbook attributes:
+  - `node['macos']['admin_user']`
+  - `node['macos']['admin_password']`
+
 ## [4.2.3] - 2022-02-03
 
 ### Fixed
