@@ -100,7 +100,7 @@ end
 
 action :create do
   if new_resource.secure_token && !property_is_set?(:existing_token_auth)
-    raise "You must provide a existing_token_auth hash for an existing secure token user if you want to enable one for #{new_resource.username}"
+    raise "An existing_token_auth hash must be provided if you want a secure token for #{new_resource.username}!"
   end
 
   execute "add user #{new_resource.username}" do
