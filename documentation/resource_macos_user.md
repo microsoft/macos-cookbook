@@ -20,7 +20,7 @@ macos_user 'user and action description' do
   groups               Array, String   # list of groups the user is in
   secure_token         TrueClass       # secure token status of user
   existing_token_auth  Hash            # the username and password of an existing secure token user
-  end
+end
 ```
 
 Whenever modifying or creating a secure token user, the `existing_token_auth` property must be provided a Hash in the format of: `{ username: 'username', password: 'password' }`. This should not be the user being modified or created, but an existing user on the system who has a secure token, or the owner account of the system.

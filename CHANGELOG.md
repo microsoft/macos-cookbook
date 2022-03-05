@@ -19,7 +19,7 @@
 
 ### Changed
 
-- Removed dependency on using the `default['macos']['admin_password']` attribute for setting the keychain password when using the certificate resource.
+- Removed dependency on using the `default['macos']['admin_password']` attribute for setting the keychain password when using the certificate resource. 
 - Unified `macos_user` test suites.
 - Updated `macos_user` resource to use not utilize default attributes for authorization.
 
