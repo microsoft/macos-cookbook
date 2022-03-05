@@ -9,12 +9,12 @@ module MacOS
 
       def desktop?
         return false if @machine_model.nil?
-        @machine_model.match? Regexp.union %w(Macmini MacPro iMac)
+        @machine_model.match? Regexp.union ['Macmini', 'MacPro', 'iMac']
       end
 
       def portable?
         return false if @machine_model.nil?
-        @machine_model.match? Regexp.union %w(MacBook)
+        @machine_model.match? Regexp.union ['MacBook']
       end
     end
 
