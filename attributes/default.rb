@@ -1,1 +1,1 @@
-default['macos'] = nil
+default['macos']['apple_id'] = nil
