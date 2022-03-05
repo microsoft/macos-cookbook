@@ -66,6 +66,10 @@ action_class do
     end
   end
 
+  def exec_sysadminctl(args)
+    shell_out!(sysadminctl, args).stderr
+  end
+
   def validate_secure_token_modification
     if !new_resource.property_is_set?(:existing_token_auth) || !new_resource.property_is_set?(:password)
       raise "Both an existing_token_auth hash and the user password for #{new_resource.username} must be provided to modify secure token!"
@@ -81,7 +85,7 @@ action_class do
   end
 
   def secure_token_enabled?
-    shell_out(sysadminctl, '-secureTokenStatus', new_resource.username).stderr.include?('ENABLED')
+    shell_out!(sysadminctl, '-secureTokenStatus', new_resource.username).stderr.include?('ENABLED')
   end
 
   def admin_user
@@ -103,25 +107,29 @@ action :create do
     raise "An existing_token_auth hash must be provided if you want a secure token for #{new_resource.username}!"
   end
 
-  execute "add user #{new_resource.username}" do
-    command [sysadminctl, *token_credentials, '-addUser', new_resource.username, *user_fullname, '-password', new_resource.password, admin_user]
-    sensitive true
-    not_if { ::File.exist?(user_home) && user_already_exists? }
+  unless ::File.exist?(user_home) && user_already_exists?
+    command = [*token_credentials, '-addUser', new_resource.username, *user_fullname, '-password', new_resource.password, admin_user]
+    output = exec_sysadminctl(command)
+    unless /creating user/.match?(output.downcase)
+      raise "error when creating user: #{output}"
+    end
   end
 
   if new_resource.secure_token && !secure_token_enabled?
     validate_secure_token_modification
-    execute "enable secure token for #{new_resource.username}" do
-      command [sysadminctl, *token_credentials, '-secureTokenOn', new_resource.username, '-password', new_resource.password]
-      sensitive true
+    command = [*token_credentials, '-secureTokenOn', new_resource.username, '-password', new_resource.password]
+    output = exec_sysadminctl(command)
+    unless /done/.match?(output.downcase)
+      raise "error when modifying SecureToken: #{output}"
     end
   end
 
   if !new_resource.secure_token && secure_token_enabled?
     validate_secure_token_modification
-    execute "disable secure token for #{new_resource.username}" do
-      command [sysadminctl, *token_credentials, '-secureTokenOff', new_resource.username, '-password', new_resource.password]
-      sensitive true
+    command = [*token_credentials, '-secureTokenOff', new_resource.username, '-password', new_resource.password]
+    output = exec_sysadminctl(command)
+    unless /done/.match?(output.downcase)
+      raise "error when modifying SecureToken: #{output}"
     end
   end
 
@@ -205,8 +213,11 @@ action :delete do
     only_if { ::File.exist? user_home }
   end
 
-  execute "delete user: #{new_resource.username}" do
-    command [sysadminctl, '-deleteUser', new_resource.username]
-    only_if { user_already_exists? }
+  if user_already_exists?
+    command = ['-deleteUser', new_resource.username]
+    output = exec_sysadminctl(command)
+    unless /deleting record|not found/.match?(output.downcase)
+      raise "error deleting user: #{output}"
+    end
   end
 end
