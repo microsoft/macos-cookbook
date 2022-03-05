@@ -108,32 +108,32 @@ action :create do
   end
 
   unless ::File.exist?(user_home) && user_already_exists?
-    command = [*token_credentials, '-addUser', new_resource.username, *user_fullname, '-password', new_resource.password, admin_user]
-    output = exec_sysadminctl(command)
+    cmd = [*token_credentials, '-addUser', new_resource.username, *user_fullname, '-password', new_resource.password, admin_user]
+    output = exec_sysadminctl(cmd)
     unless /creating user/.match?(output.downcase)
-      raise "error when creating user: #{output}"
+      raise "error while creating user: #{output}"
     end
   end
 
   if new_resource.secure_token && !secure_token_enabled?
     validate_secure_token_modification
-    command = [*token_credentials, '-secureTokenOn', new_resource.username, '-password', new_resource.password]
-    output = exec_sysadminctl(command)
+    cmd = [*token_credentials, '-secureTokenOn', new_resource.username, '-password', new_resource.password]
+    output = exec_sysadminctl(cmd)
     unless /done/.match?(output.downcase)
-      raise "error when modifying SecureToken: #{output}"
+      raise "error while modifying SecureToken: #{output}"
     end
   end
 
   if !new_resource.secure_token && secure_token_enabled?
     validate_secure_token_modification
-    command = [*token_credentials, '-secureTokenOff', new_resource.username, '-password', new_resource.password]
-    output = exec_sysadminctl(command)
+    cmd = [*token_credentials, '-secureTokenOff', new_resource.username, '-password', new_resource.password]
+    output = exec_sysadminctl(cmd)
     unless /done/.match?(output.downcase)
-      raise "error when modifying SecureToken: #{output}"
+      raise "error while modifying SecureToken: #{output}"
     end
   end
 
-  if new_resource.hidden == true
+  if new_resource.hidden
     execute "hide user #{new_resource.username}" do
       key = 'IsHidden'
       desired_value = '1'
@@ -214,8 +214,8 @@ action :delete do
   end
 
   if user_already_exists?
-    command = ['-deleteUser', new_resource.username]
-    output = exec_sysadminctl(command)
+    cmd = ['-deleteUser', new_resource.username]
+    output = exec_sysadminctl(cmd)
     unless /deleting record|not found/.match?(output.downcase)
       raise "error deleting user: #{output}"
     end

@@ -34,7 +34,7 @@ macos_user 'create hidden user' do
 end
 
 macos_user 'create user with secure token' do
-  username 'jung'
+  username 'carl'
   password 'philemon'
   secure_token true
   existing_token_auth({ username: 'vagrant', password: 'vagrant' })

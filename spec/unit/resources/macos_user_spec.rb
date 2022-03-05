@@ -1,0 +1,81 @@
+require 'spec_helper'
+
+describe 'macos_user hidden with a securetoken' do
+  step_into :macos_user
+
+  platform 'mac_os_x', '11'
+
+  before do
+    stubs_for_provider('macos_user[create user with secure token]') do |provider|
+      allow(provider).to receive_shell_out('/usr/sbin/sysadminctl', '-adminUser', 'vagrant', '-adminPassword',
+                                           'vagrant', '-addUser', 'carl', '', '-password', 'philemon', '',
+                                           stderr: 'Creating user record…', exitstatus: 0)
+      allow(provider).to receive_shell_out('/usr/sbin/sysadminctl', '-secureTokenStatus', 'carl',
+                                           stderr: 'Secure token is ENABLED for user carl', exitstatus: 0)
+    end
+    stubs_for_resource('execute[hide user carl]') do |resource|
+      allow(resource).to receive_shell_out('/usr/bin/dscl', '.', 'read', '/Users/carl', 'IsHidden')
+    end
+  end
+
+  recipe do
+    macos_user 'create user with secure token' do
+      username 'carl'
+      password 'philemon'
+      hidden true
+      secure_token true
+      existing_token_auth({ username: 'vagrant', password: 'vagrant' })
+    end
+  end
+
+  it { is_expected.to create_macos_user('create user with secure token') }
+  it { is_expected.to run_execute('hide user carl') }
+end
+
+describe 'macos_user with a weak password on machine with a password policy' do
+  step_into :macos_user
+
+  platform 'mac_os_x', '11'
+
+  before do
+    stubs_for_provider('macos_user[create user with a weak password]') do |provider|
+      allow(provider).to receive_shell_out('/usr/sbin/sysadminctl', '', '-addUser', 'new', '', '-password', '123', '',
+                                           stderr: 'New account password error', exitstatus: 0)
+    end
+  end
+
+  recipe do
+    macos_user 'create user with a weak password' do
+      username 'new'
+      password '123'
+    end
+  end
+
+  it 'raises an error' do
+    expect { subject }.to raise_error(RuntimeError, /New account password error/)
+  end
+end
+
+describe 'macos_user attempting to delete the last secure token user' do
+  step_into :macos_user
+
+  platform 'mac_os_x', '11'
+
+  before do
+    stubs_for_provider('macos_user[owner]') do |provider|
+      allow(provider).to receive(:user_already_exists?).and_return(true)
+      allow(provider).to receive_shell_out('/usr/sbin/sysadminctl', '-deleteUser', 'owner',
+                                           stderr: "User owner can not be deleted (it's either last admin user or last secure token user neither of which can be deleted)", exitstatus: 0)
+    end
+  end
+
+  recipe do
+    macos_user 'owner' do
+      action :delete
+    end
+  end
+
+  it 'raises an error' do
+    expect { subject }.to raise_error(RuntimeError, /can not be deleted/)
+  end
+end

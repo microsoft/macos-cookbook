@@ -114,11 +114,11 @@ control 'secure-token-user' do
   title 'added with a secure token but then removed'
   desc 'Verify the user initially added with a secure token does not have one'
 
-  describe user('jung') do
+  describe user('carl') do
     it { should exist }
   end
 
-  describe command('sysadminctl -secureTokenStatus jung') do
+  describe command('sysadminctl -secureTokenStatus carl') do
     its('stderr') { should include 'ENABLED' }
   end
 
