@@ -105,7 +105,7 @@ action :create do
 
   execute "add user #{new_resource.username}" do
     command [sysadminctl, *token_credentials, '-addUser', new_resource.username, *user_fullname, '-password', new_resource.password, admin_user]
-    live_stream true
+    sensitive true
     not_if { ::File.exist?(user_home) && user_already_exists? }
   end
 
@@ -113,7 +113,7 @@ action :create do
     validate_secure_token_modification
     execute "enable secure token for #{new_resource.username}" do
       command [sysadminctl, *token_credentials, '-secureTokenOn', new_resource.username, '-password', new_resource.password]
-      live_stream true
+      sensitive true
     end
   end
 
@@ -121,7 +121,7 @@ action :create do
     validate_secure_token_modification
     execute "disable secure token for #{new_resource.username}" do
       command [sysadminctl, *token_credentials, '-secureTokenOff', new_resource.username, '-password', new_resource.password]
-      live_stream true
+      sensitive true
     end
   end
 
