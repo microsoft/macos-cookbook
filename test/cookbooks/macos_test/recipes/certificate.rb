@@ -27,7 +27,7 @@ end
 certificate 'install a .cer format certificate file' do
   certfile foobar_cer_path
   keychain '/Users/vagrant/Library/Keychains/login.keychain'
-  kc_passwd 'test'
+  kc_passwd 'vagrant'
   apps ['/Applications/Numbers.app']
   action :install
 end
