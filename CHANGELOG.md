@@ -9,16 +9,22 @@
 
 ### Added
 
+- New test suites and recipe change to account for `.cer` files. 
+- New certificate resource property: `kc_passwd` which allows setting of keychain password. 
+- Check for certificate existence within the keychain before installing a new one to ensure idempotency. 
+- Made password properties sensitive. 
+- Updated certificate resource documentation.
 - Secure token support for `macos_user` resource via new properties `secure_token` and `existing_token_auth`.
 - New unit and integration tests for `macos_user` resource.
 
-## Changed
+### Changed
 
-- Unified `macos_user` test suites
+- Unified `macos_user` test suites.
 - Updated `macos_user` resource to use not utilize default attributes for authorization.
 
-## Removed
+### Removed
 
+- Removed dependency on using the `default['macos']['admin_password']` attribute for setting the keychain password when using the certificate resource.
 - Removed last default cookbook attributes:
   - `node['macos']['admin_user']`
   - `node['macos']['admin_password']`
