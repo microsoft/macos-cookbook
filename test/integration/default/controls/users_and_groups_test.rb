@@ -119,7 +119,7 @@ control 'secure-token-user' do
   end
 
   describe command('sysadminctl -secureTokenStatus jung') do
-    its('stdout') { should include 'ENABLED' }
+    its('stderr') { should include 'ENABLED' }
   end
 
   describe user('ray') do
@@ -127,6 +127,6 @@ control 'secure-token-user' do
   end
 
   describe command('sysadminctl -secureTokenStatus ray') do
-    its('stdout') { should include 'DISABLED' }
+    its('stderr') { should include 'DISABLED' }
   end
 end

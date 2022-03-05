@@ -40,14 +40,7 @@ macos_user 'create user with secure token' do
   existing_token_auth({ username: 'vagrant', password: 'vagrant' })
 end
 
-macos_user 'create user with secure token' do
-  username 'jung'
-  password 'philemon'
-  secure_token true
-  existing_token_auth({ username: 'vagrant', password: 'vagrant' })
-end
-
-macos_user 'create user with secure token' do
+macos_user 'create user initially with secure token' do
   username 'ray'
   password 'leah'
   secure_token true
@@ -56,5 +49,7 @@ end
 
 macos_user "remove existing user's secure token" do
   username 'ray'
+  password 'leah'
   secure_token false
+  existing_token_auth({ username: 'vagrant', password: 'vagrant' })
 end
