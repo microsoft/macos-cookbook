@@ -17,6 +17,7 @@ certificate 'cert name' do
   cert_passwd                   String # password for PFX format certificate file
   keychain                      String # keychain to install certificate to
   apps                          Array  # list of apps that may access the imported key
+  sensitive                     Boolean # run execute resource with sensitive
 end
 ```
 
