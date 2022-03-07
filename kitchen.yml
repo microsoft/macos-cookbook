@@ -81,8 +81,8 @@ suites:
   - recipe[macos_test::xcode_from_apple]
   lifecycle:
     pre_converge:
-    - remote: export "APPLEID_USERNAME=<%= ENV['APPLEID_USERNAME'] %>".shellescape
-    - remote: export "APPLEID_PASSWORD=<%= ENV['APPLEID_PASSWORD'] %>".shellescape
+    - remote: echo -n '<%= ENV['APPLEID_USERNAME'] %>' > ~/username
+    - remote: echo -n '<%= ENV['APPLEID_PASSWORD'] %>' > ~/password
   verifier:
     controls:
     - xcode-and-simulators
@@ -92,7 +92,7 @@ suites:
   - recipe[macos_test::xcode_from_url]
   lifecycle:
     pre_converge:
-    - remote: export "XCODE_URL=<%= ENV['XCODE_URL'] %>".shellescape
+    - remote: echo -n '<%= ENV['XCODE_URL'] %>' > ~/xcode
   verifier:
     controls:
     - xcode-and-simulators
