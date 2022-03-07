@@ -7,6 +7,7 @@ property :version, String, name_property: true
 property :path, String, default: '/Applications/Xcode.app'
 property :ios_simulators, Array
 property :download_url, String, default: ''
+property :apple_id, Hash
 
 action :install_gem do
   command_line_tools 'latest'
@@ -24,12 +25,6 @@ action :install_gem do
 end
 
 action :install_xcode do
-  developer = DeveloperAccount.new(
-    -> { data_bag_item(:credentials, :apple_id) },
-    node['macos']['apple_id'],
-    new_resource.download_url
-  )
-
   xcode = Xcode.new(
     new_resource.version,
     new_resource.path,
@@ -50,6 +45,7 @@ action :install_xcode do
   end
 
   execute "install Xcode #{xcode.version}" do
+    developer = DeveloperAccount.new(new_resource.apple_id, new_resource.download_url)
     command XCVersion.install_xcode(xcode)
     environment developer.credentials
     cwd '/Users/Shared'

@@ -79,6 +79,10 @@ suites:
 - name: xcode-from-apple
   run_list:
   - recipe[macos_test::xcode_from_apple]
+  lifecycle:
+    pre_converge:
+    - remote: export APPLEID_USERNAME=<%= ENV['APPLEID_USERNAME'] %>
+    - remote: export APPLEID_PASSWORD=<%= ENV['APPLEID_PASSWORD'] %>
   verifier:
     controls:
     - xcode-and-simulators
@@ -86,9 +90,9 @@ suites:
 - name: xcode-from-url
   run_list:
   - recipe[macos_test::xcode_from_url]
-  attributes:
-    xcode:
-      download_url: <%= ENV['XCODE_URL'] %>
+  lifecycle:
+    pre_converge:
+    - remote: export XCODE_URL=<%= ENV['XCODE_URL'] %>
   verifier:
     controls:
     - xcode-and-simulators
