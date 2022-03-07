@@ -18,6 +18,7 @@ certificate 'cert name' do
   keychain                      String # keychain to install certificate to
   kc_passwd                     String # keychain password
   apps                          Array  # list of apps that may access the imported key
+  sensitive                     Boolean # run execute resource with sensitive
 end
 ```
 
