@@ -5,7 +5,7 @@ provides :certificate
 property :certfile, String
 property :cert_password, String, sensitive: true
 property :keychain, String
-property :apps, Array
+property :apps, Array, default: []
 property :sensitive, [true, false], default: false
 
 action_class do
