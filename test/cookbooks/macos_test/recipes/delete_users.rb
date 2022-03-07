@@ -3,7 +3,6 @@ user_home = File.join('/', 'Users', user)
 
 if Gem::Version.new(node['platform_version']) >= Gem::Version.new('10.13')
   admin_credentials = ['-adminUser', node['macos']['admin_user'], '-adminPassword', node['macos']['admin_password']]
-else ''
 end
 
 execute "add user #{user}" do

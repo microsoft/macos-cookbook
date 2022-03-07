@@ -3,7 +3,7 @@ certificate
 
 Use the **certificate** resource to manage certificates for keychains.
 Under the hood, the [**certificate**](https://github.com/Microsoft/macos-cookbook/blob/master/resources/certificate.rb) resource executes the `security`
-command in the `security_cmd` library.
+command in the [**security_cmd**](https://github.com/Microsoft/macos-cookbook/blob/master/libraries/security_cmd.rb) library.
 
 Syntax
 ------
@@ -16,7 +16,7 @@ certificate 'cert name' do
   certfile                      String # certificate in .p12(PFX) or .cer(SSl certificate file) format
   cert_password                 String # password for PFX format certificate file
   keychain                      String # keychain to install certificate to
-  kc_passwd                     String # password for keychain
+  kc_passwd                     String # keychain password
   apps                          Array  # list of apps that may access the imported key
   sensitive                     Boolean # run execute resource with sensitive
 end
@@ -50,7 +50,7 @@ certificate 'cert name' do
   certfile '/User/edward/Documents/cert.p12'
   cert_password 'teach'
   keychain '/User/edward/Library/Keychains/florida.keychain'
-  kc_passwd 'keypass'
+  kc_passwd 'test'
 end
 ```
 
@@ -68,7 +68,7 @@ end
 certificate 'cert name' do
   certfile '/User/edward/Documents/cert.p12'
   keychain '/User/edward/Library/Keychains/florida.keychain'
-  kc_passwd 'keypass'
+  kc_passwd 'test'
 end
 ```
 

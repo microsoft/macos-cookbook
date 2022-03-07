@@ -1,7 +1,7 @@
 unified_mode true
 
 provides :xcode
-default_action %i(install_gem install_xcode install_simulators)
+default_action [:install_gem, :install_xcode, :install_simulators]
 
 property :version, String, name_property: true
 property :path, String, default: '/Applications/Xcode.app'
