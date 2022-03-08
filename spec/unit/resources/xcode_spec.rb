@@ -108,7 +108,7 @@ describe 'xcode' do
       end
     end
 
-    it { is_expected.to run_execute('install Xcode 10') }
+    it { is_expected.to run_execute('install Xcode 10.0') }
     it { is_expected.to delete_link('/Applications/Xcode.app') }
 
     it { is_expected.to run_execute('move /Applications/Xcode-10.app to /Applications/Xcode.app') }
@@ -128,7 +128,7 @@ describe 'xcode' do
       end
     end
 
-    it { is_expected.to run_execute('install Xcode 11.6 beta') }
+    it { is_expected.to run_execute('install Xcode 11.6') }
     it { is_expected.to delete_link('/Applications/Xcode.app') }
 
     it {
@@ -223,7 +223,7 @@ describe 'xcode' do
       end
     end
 
-    it { is_expected.not_to run_execute('install Xcode 10') }
+    it { is_expected.not_to run_execute('install Xcode 10.0') }
     it { is_expected.not_to delete_link('/Applications/Xcode.app') }
 
     it { is_expected.to run_execute('move /Applications/Some_Weird_Path.app to /Applications/Chef_Managed_Xcode.app') }
@@ -243,7 +243,7 @@ describe 'xcode' do
       end
     end
 
-    it { is_expected.to run_execute('install Xcode 10') }
+    it { is_expected.to run_execute('install Xcode 10.0') }
     it { is_expected.to delete_link('/Applications/Xcode.app') }
 
     it { is_expected.to run_execute('move /Applications/Xcode-10.app to /Applications/Xcode.app') }
