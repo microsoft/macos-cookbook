@@ -9,7 +9,7 @@ module MacOS
       @semantic_version = semantic_version
       @intended_path = intended_path
       @download_url = download_url
-      @version = -> { determine_version }.call
+      @version = -> { determine_version }
     end
 
     def determine_version

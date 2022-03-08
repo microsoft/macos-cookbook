@@ -33,7 +33,7 @@ action :install_xcode do
 
   unless xcode.compatible_with_platform?(node['platform_version'])
     ruby_block 'exception' do
-      raise("Xcode #{xcode.version} not supported on #{node['platform_version']}")
+      raise("Xcode #{new_resource.version} not supported on #{node['platform_version']}")
     end
   end
 
@@ -44,7 +44,7 @@ action :install_xcode do
     not_if { xcode.installed? }
   end
 
-  execute "install Xcode #{xcode.version}" do
+  execute "install Xcode #{new_resource.version}" do
     developer = DeveloperAccount.new(new_resource.apple_id, new_resource.download_url)
     command XCVersion.install_xcode(xcode)
     environment developer.credentials
