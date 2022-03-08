@@ -10,6 +10,8 @@ property :admin, [TrueClass]
 property :fullname, String
 property :groups, [Array, String]
 property :hidden, [true, false], default: false
+property :secure_token, [true, false], default: false
+property :existing_token_auth, Hash
 
 action_class do
   def user_home
@@ -57,11 +59,33 @@ action_class do
   end
 
   def user_fullname
-    new_resource.property_is_set?(:fullname) ? ['-fullName', new_resource.fullname] : ''
+    if new_resource.property_is_set?(:fullname)
+      ['-fullName', new_resource.fullname]
+    else
+      ''
+    end
   end
 
-  def admin_credentials
-    Gem::Version.new(node['platform_version']) >= Gem::Version.new('10.13') ? ['-adminUser', node['macos']['admin_user'], '-adminPassword', node['macos']['admin_password']] : ''
+  def exec_sysadminctl(args)
+    shell_out!(sysadminctl, args).stderr
+  end
+
+  def validate_secure_token_modification
+    if !new_resource.property_is_set?(:existing_token_auth) || !new_resource.property_is_set?(:password)
+      raise "Both an existing_token_auth hash and the user password for #{new_resource.username} must be provided to modify secure token!"
+    end
+  end
+
+  def token_credentials
+    if new_resource.property_is_set?(:existing_token_auth)
+      ['-adminUser', new_resource.existing_token_auth[:username], '-adminPassword', new_resource.existing_token_auth[:password]]
+    else
+      ''
+    end
+  end
+
+  def secure_token_enabled?
+    shell_out!(sysadminctl, '-secureTokenStatus', new_resource.username).stderr.include?('ENABLED')
   end
 
   def admin_user
@@ -79,15 +103,37 @@ action_class do
 end
 
 action :create do
-  execute "add user #{new_resource.username}" do
-    command [sysadminctl, *admin_credentials, '-addUser', new_resource.username, *user_fullname, '-password', new_resource.password, admin_user]
-    sensitive true
-    not_if { ::File.exist?(user_home) && user_already_exists? }
+  if new_resource.secure_token && !property_is_set?(:existing_token_auth)
+    raise "An existing_token_auth hash must be provided if you want a secure token for #{new_resource.username}!"
   end
 
-  sleep(0.5)
+  unless ::File.exist?(user_home) && user_already_exists?
+    cmd = [*token_credentials, '-addUser', new_resource.username, *user_fullname, '-password', new_resource.password, admin_user]
+    output = exec_sysadminctl(cmd)
+    unless /creating user/.match?(output.downcase)
+      raise "error while creating user: #{output}"
+    end
+  end
 
-  if new_resource.hidden == true
+  if new_resource.secure_token && !secure_token_enabled?
+    validate_secure_token_modification
+    cmd = [*token_credentials, '-secureTokenOn', new_resource.username, '-password', new_resource.password]
+    output = exec_sysadminctl(cmd)
+    unless /done/.match?(output.downcase)
+      raise "error while modifying SecureToken: #{output}"
+    end
+  end
+
+  if !new_resource.secure_token && secure_token_enabled?
+    validate_secure_token_modification
+    cmd = [*token_credentials, '-secureTokenOff', new_resource.username, '-password', new_resource.password]
+    output = exec_sysadminctl(cmd)
+    unless /done/.match?(output.downcase)
+      raise "error while modifying SecureToken: #{output}"
+    end
+  end
+
+  if new_resource.hidden
     execute "hide user #{new_resource.username}" do
       key = 'IsHidden'
       desired_value = '1'
@@ -167,8 +213,11 @@ action :delete do
     only_if { ::File.exist? user_home }
   end
 
-  execute "delete user: #{new_resource.username}" do
-    command [sysadminctl, '-deleteUser', new_resource.username]
-    only_if { user_already_exists? }
+  if user_already_exists?
+    cmd = ['-deleteUser', new_resource.username]
+    output = exec_sysadminctl(cmd)
+    unless /deleting record|not found/.match?(output.downcase)
+      raise "error deleting user: #{output}"
+    end
   end
 end

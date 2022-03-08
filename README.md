@@ -23,19 +23,6 @@ Chef resources and recipes for managing and provisioning macOS.
 - macOS Catalina 10.15
 - macOS Big Sur 11.0
 
-## Attributes
-
-### Admin User and Password
-
-```ruby
-node['macos']['admin_user'] = 'vagrant'
-node['macos']['admin_password'] = 'vagrant'
-```
-
-Each of these attributes defaults to vagrant since our resources are developed
-with the Vagrant paradigm. In other words, the user and password declared here
-should be an admin user with passwordless super-user rights.
-
 ## Resources
 
 - [`automatic_software_updates`](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_automatic_software_updates.md)

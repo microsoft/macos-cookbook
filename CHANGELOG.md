@@ -1,9 +1,10 @@
 # Changelog
 
-## [4.3.0] - 2022-03-04
+## [5.0.0] - 2022-03-08
 
 ### Fixed
 
+- Enabled `macos_user` resource to parse `sysadminctl` stderr, resolving[Bug 197](https://github.com/microsoft/macos-cookbook/issues/197).
 - Reversed order of arguments for certificate installation to address [Bug 244](https://github.com/microsoft/macos-cookbook/issues/244).
 
 ### Added
@@ -13,10 +14,20 @@
 - Check for certificate existence within the keychain before installing a new one to ensure idempotency. 
 - Made password properties sensitive. 
 - Updated certificate resource documentation.
+- Secure token support for `macos_user` resource via new properties `secure_token` and `existing_token_auth`.
+- New unit and integration tests for `macos_user` resource.
 
 ### Changed
 
 - Removed dependency on using the `default['macos']['admin_password']` attribute for setting the keychain password when using the certificate resource. 
+- Unified `macos_user` test suites.
+- Updated `macos_user` resource to use not utilize default attributes for authorization.
+
+### Removed
+
+- Removed last default cookbook attributes:
+  - `node['macos']['admin_user']`
+  - `node['macos']['admin_password']`
 
 ## [4.2.3] - 2022-02-03
 
