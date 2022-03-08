@@ -4,10 +4,9 @@ describe 'xcode' do
   step_into :xcode
   platform 'mac_os_x'
 
-  default_attributes['macos']['apple_id']['user'] = 'developer@apple.com'
-  default_attributes['macos']['apple_id']['password'] = 'apple_id_password'
-
   before(:each) do
+    allow_any_instance_of(MacOS::DeveloperAccount).to receive(:validate_apple_id)
+      .and_return({ username: 'user@example', password: 'placeholder' })
     allow_any_instance_of(MacOS::DeveloperAccount).to receive(:authenticate_with_apple)
       .and_return(true)
     allow(MacOS::XCVersion).to receive(:available_versions)

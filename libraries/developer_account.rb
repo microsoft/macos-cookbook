@@ -9,7 +9,7 @@ module MacOS
       if download_url.empty?
         developer_id = validate_apple_id(apple_id_hash)
         @credentials = {
-          XCODE_INSTALL_USER: developer_id[:apple_id],
+          XCODE_INSTALL_USER: developer_id[:username],
           XCODE_INSTALL_PASSWORD: developer_id[:password],
         }
         authenticate_with_apple(@credentials)
@@ -19,12 +19,12 @@ module MacOS
     def validate_apple_id(apple_id_hash)
       if apple_id_hash.values.any?
         {
-          apple_id: apple_id_hash[:username],
+          username: apple_id_hash[:username],
           password: apple_id_hash[:password],
         }
       elsif ENV['XCODE_INSTALL_USER'] && ENV['XCODE_INSTALL_PASSWORD']
         {
-          apple_id: ENV['XCODE_INSTALL_USER'],
+          username: ENV['XCODE_INSTALL_USER'],
           password: ENV['XCODE_INSTALL_PASSWORD'],
         }
       else
