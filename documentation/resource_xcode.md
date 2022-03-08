@@ -1,5 +1,4 @@
-xcode
-=====
+# xcode
 
 Use the **xcode** resource to manage a single installation of Apple's Xcode IDE.
 The [**xcode**](https://github.com/Microsoft/macos-cookbook/blob/master/resources/xcode.rb) resource manages the state of a single Xcode installation
@@ -11,17 +10,17 @@ your developer credentials. Be sure to only provide the semantic version (e.g.
 `path` will move an existing Xcode installation of the requested version to that
 path, overwriting an existing bundle if it is not the requested version.
 
-
-Syntax
-------
+## Syntax
 
 The simplest use of the **xcode** resource is:
 
 ```ruby
-xcode '9.4.1'
+xcode '9.4.1' do
+  apple_id({ username: 'user@example', password: 'placeholder' })
+end
 ```
 
-which would install Xcode 9.4.1 with the included iOS simulators.
+which would install Xcode 9.4.1 directly from Apple with the included iOS simulators.
 
 The full syntax for all of the properties that are available to the **xcode**
 resource is:
@@ -30,14 +29,15 @@ resource is:
 xcode 'description' do
   version                              String # defaults to 'description' if not specified
   path                                 String # defaults to '/Applications/Xcode.app' if not specified
-  ios_simulators                       Array # defaults to current iOS simulators if not specified
+  apple_id                             Hash # required unless a `download_url` is provided
   download_url                         String # defaults to empty if not specified
+  ios_simulators                       Array # defaults to current iOS simulators if not specified
   action                               Symbol # defaults to [:install_gem, :install_xcode, :install_simulators] if not specified
 end
 ```
 
-Actions
--------
+## Actions
+
 It is recommended to use the default action of all three actions, since the
 `xcode-install` gem is required to use the resource. Only use actions independently
 if you're going to manage this dependency on your own.
@@ -64,39 +64,17 @@ of iOS simulators declared in `ios_simulators`.
 
 In order to install Xcode directly from Apple, you'll need to provide a AppleID for an active developer account. There are two methods to do so:
 
-The `xcode` resource can utilize a `credentials` data bag with an `apple_id` data bag item.
-
-**Example:**
-
-```json
-{
-  "id": "apple_id",
-  "apple_id": "farva@spurbury.gov",
-  "password": "0k@yN0cR34m"
-}
-```
-
-The `xcode` resource can also utilize an AppleID set (preferably at run-time for
-security, and unset after use) under the node attributes
-`node['macos']['apple_id']['user']` and `node['macos']['apple_id']['password']`.
+The `xcode` `apple_id` property can take a hash in the form of `{ username: 'user@example', password: 'placeholder' }`. This will use the user and password to authenticate with Apple. We recommend interpolating these values into your recipe using your secret management system of choice. If you would prefer to utilize environment variables on the system, set 'XCODE_INSTALL_USER' and 'XCODE_INSTALL_PASSWORD' instead.
 
 **Example:**
 
 ```ruby
-node.normal['macos']['apple_id']['user'] = 'farva@spurbury.gov'
-node.normal['macos']['apple_id']['password'] = '0k@yN0cR34m'
-
-xcode '10.1'
-
-ruby_block 'Remove AppleID password attribute' do
-  block do
-    node.rm('macos', 'apple_id', 'password')
-  end
+xcode '9.4.1' do
+  apple_id({ username: 'user@example', password: 'placeholder' })
 end
 ```
 
-Examples
---------
+## Examples
 
 **Install different versions of Xcode based on platform version node attributes**
 

@@ -4,30 +4,34 @@
 
 ### Fixed
 
-- Enabled `macos_user` resource to parse `sysadminctl` stderr, resolving[Bug 197](https://github.com/microsoft/macos-cookbook/issues/197).
-- Reversed order of arguments for certificate installation to address [Bug 244](https://github.com/microsoft/macos-cookbook/issues/244).
+- Extracted authentication with Apple via `xcode` resource away `xcode` object instantiation, resolving [Bug #234](https://github.com/microsoft/macos-cookbook/issues/234).
+- Enabled `macos_user` resource to parse `sysadminctl` stderr, resolving [Bug 197](https://github.com/microsoft/macos-cookbook/issues/197).
+- Reversed order of arguments for certificate installation, resolving [Bug 244](https://github.com/microsoft/macos-cookbook/issues/244).
 
 ### Added
 
-- New test suites and recipe change to account for `.cer` files. 
-- New certificate resource property: `kc_passwd` which allows setting of keychain password. 
-- Check for certificate existence within the keychain before installing a new one to ensure idempotency. 
-- Made password properties sensitive. 
+- Added `apple_id` property to `xcode` resource to remove dependency on attributes or data bags for authentication.
+- New test suites and recipe change to account for `.cer` files.
+- New certificate resource property: `kc_passwd` which allows setting of keychain password.
+- Check for certificate existence within the keychain before installing a new one to ensure idempotency.
+- Made password properties sensitive.
 - Updated certificate resource documentation.
 - Secure token support for `macos_user` resource via new properties `secure_token` and `existing_token_auth`.
 - New unit and integration tests for `macos_user` resource.
 
 ### Changed
 
-- Removed dependency on using the `default['macos']['admin_password']` attribute for setting the keychain password when using the certificate resource. 
 - Unified `macos_user` test suites.
 - Updated `macos_user` resource to use not utilize default attributes for authorization.
 
 ### Removed
 
+- Removed the ability to authenticate with Apple for `xcode` downloads via node attributes or data bags.
+- Removed dependency on using the `default['macos']['admin_password']` attribute for setting the keychain password when using the certificate resource.
 - Removed last default cookbook attributes:
   - `node['macos']['admin_user']`
   - `node['macos']['admin_password']`
+  - `node['macos']['apple_id']`
 
 ## [4.2.3] - 2022-02-03
 
