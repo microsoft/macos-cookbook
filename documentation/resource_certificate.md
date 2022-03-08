@@ -14,7 +14,7 @@ is:
 ```ruby
 certificate 'cert name' do
   certfile                      String # certificate in .p12(PFX) or .cer(SSl certificate file) format
-  cert_passwd                   String # password for PFX format certificate file
+  cert_password                 String # password for PFX format certificate file
   keychain                      String # keychain to install certificate to
   kc_passwd                     String # keychain password
   apps                          Array  # list of apps that may access the imported key
@@ -39,7 +39,7 @@ Examples
 ```ruby
 certificate 'cert name' do
   certfile '/User/edward/Documents/cert.p12'
-  cert_passwd 'teach'
+  cert_password 'teach'
 end
 ```
 
@@ -48,7 +48,7 @@ end
 ```ruby
 certificate 'cert name' do
   certfile '/User/edward/Documents/cert.p12'
-  cert_passwd 'teach'
+  cert_password 'teach'
   keychain '/User/edward/Library/Keychains/florida.keychain'
   kc_passwd 'test'
 end
@@ -68,6 +68,7 @@ end
 certificate 'cert name' do
   certfile '/User/edward/Documents/cert.p12'
   keychain '/User/edward/Library/Keychains/florida.keychain'
+  kc_passwd 'test'
 end
 ```
 
@@ -75,7 +76,7 @@ end
 ```ruby
 certificate 'cert name' do
   certfile '/User/edward/Documents/cert.p12'
-  cert_passwd 'teach'
+  cert_password 'teach'
   apps ['/Applications/Maps.app', '/Applications/Time Machine.app']
 end
 ```

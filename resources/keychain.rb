@@ -42,7 +42,8 @@ action :lock do
 end
 
 action :unlock do
-  keyc = SecurityCommand.new('', keychain) do
+  keyc = SecurityCommand.new('', keychain)
+  execute 'unlock selected keychain' do
     command Array(keyc.unlock_keychain(new_resource.kc_passwd))
     sensitive new_resource.sensitive
     only_if { ::File.exist?(keychain) }
