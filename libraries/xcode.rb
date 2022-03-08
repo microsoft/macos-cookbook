@@ -9,13 +9,14 @@ module MacOS
       @semantic_version = semantic_version
       @intended_path = intended_path
       @download_url = download_url
+      @version = -> { determine_version }.call
     end
 
     def determine_version
-      @version = if download_url.empty?
-                   latest_xcode_revision(Xcode::Version.new(semantic_version))
+      @version = if @download_url.empty?
+                   latest_xcode_revision(Xcode::Version.new(@semantic_version))
                  else
-                   semantic_version
+                   @semantic_version
                  end
     end
 
