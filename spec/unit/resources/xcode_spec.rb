@@ -4,10 +4,9 @@ describe 'xcode' do
   step_into :xcode
   platform 'mac_os_x'
 
-  default_attributes['macos']['apple_id']['user'] = 'developer@apple.com'
-  default_attributes['macos']['apple_id']['password'] = 'apple_id_password'
-
   before(:each) do
+    allow_any_instance_of(MacOS::DeveloperAccount).to receive(:validate_apple_id)
+      .and_return({ username: 'user@example', password: 'placeholder' })
     allow_any_instance_of(MacOS::DeveloperAccount).to receive(:authenticate_with_apple)
       .and_return(true)
     allow(MacOS::XCVersion).to receive(:available_versions)
@@ -109,7 +108,7 @@ describe 'xcode' do
       end
     end
 
-    it { is_expected.to run_execute('install Xcode 10') }
+    it { is_expected.to run_execute('install Xcode 10.0') }
     it { is_expected.to delete_link('/Applications/Xcode.app') }
 
     it { is_expected.to run_execute('move /Applications/Xcode-10.app to /Applications/Xcode.app') }
@@ -129,7 +128,7 @@ describe 'xcode' do
       end
     end
 
-    it { is_expected.to run_execute('install Xcode 11.6 beta') }
+    it { is_expected.to run_execute('install Xcode 11.6') }
     it { is_expected.to delete_link('/Applications/Xcode.app') }
 
     it {
@@ -224,7 +223,7 @@ describe 'xcode' do
       end
     end
 
-    it { is_expected.not_to run_execute('install Xcode 10') }
+    it { is_expected.not_to run_execute('install Xcode 10.0') }
     it { is_expected.not_to delete_link('/Applications/Xcode.app') }
 
     it { is_expected.to run_execute('move /Applications/Some_Weird_Path.app to /Applications/Chef_Managed_Xcode.app') }
@@ -244,7 +243,7 @@ describe 'xcode' do
       end
     end
 
-    it { is_expected.to run_execute('install Xcode 10') }
+    it { is_expected.to run_execute('install Xcode 10.0') }
     it { is_expected.to delete_link('/Applications/Xcode.app') }
 
     it { is_expected.to run_execute('move /Applications/Xcode-10.app to /Applications/Xcode.app') }

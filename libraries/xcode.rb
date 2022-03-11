@@ -3,18 +3,20 @@ include MacOS
 
 module MacOS
   class Xcode
-    attr_reader :version
-    attr_reader :intended_path
-    attr_reader :download_url
+    attr_reader :version, :intended_path, :download_url
 
     def initialize(semantic_version, intended_path, download_url = '')
       @semantic_version = semantic_version
       @intended_path = intended_path
       @download_url = download_url
-      @version = if download_url.empty?
-                   latest_xcode_revision(Xcode::Version.new(semantic_version))
+      @version = -> { determine_version }
+    end
+
+    def determine_version
+      @version = if @download_url.empty?
+                   latest_xcode_revision(Xcode::Version.new(@semantic_version))
                  else
-                   semantic_version
+                   @semantic_version
                  end
     end
 
