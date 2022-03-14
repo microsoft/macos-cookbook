@@ -5,6 +5,7 @@ default_action :create
 
 property :kc_file, String
 property :kc_passwd, String, sensitive: true
+property :user, String
 property :sensitive, [true, false], default: false
 
 action_class do
@@ -18,6 +19,7 @@ action :create do
 
   execute 'create a keychain' do
     command Array(keyc.create_keychain(new_resource.kc_passwd))
+    user new_resource.user
     sensitive new_resource.sensitive
     not_if { ::File.exist? keychain + '-db' }
   end
@@ -27,6 +29,7 @@ action :delete do
   keyc = SecurityCommand.new('', keychain)
   execute 'delete selected keychain' do
     command Array(keyc.delete_keychain)
+    user new_resource.user
     sensitive new_resource.sensitive
     only_if { ::File.exist?(keychain) }
   end
@@ -36,6 +39,7 @@ action :lock do
   keyc = SecurityCommand.new('', keychain)
   execute 'lock selected keychain' do
     command Array(keyc.lock_keychain)
+    user new_resource.user
     sensitive new_resource.sensitive
     only_if { ::File.exist?(keychain) }
   end
@@ -45,6 +49,7 @@ action :unlock do
   keyc = SecurityCommand.new('', keychain)
   execute 'unlock selected keychain' do
     command Array(keyc.unlock_keychain(new_resource.kc_passwd))
+    user new_resource.user
     sensitive new_resource.sensitive
     only_if { ::File.exist?(keychain) }
   end
