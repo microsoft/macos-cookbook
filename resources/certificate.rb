@@ -16,7 +16,7 @@ action :install do
   execute 'unlock keychain' do
     command Array(cert.unlock_keychain(new_resource.kc_passwd))
     user new_resource.user
-    sensitive new_resource.sensitive
+    sensitive true
   end
 
   cert_shasum = shell_out("shasum #{new_resource.certfile}").stdout.upcase.gsub(/\s.+/, '')
@@ -25,7 +25,7 @@ action :install do
   execute 'install-certificate' do
     command Array(cert.install_certificate(new_resource.cert_password, new_resource.apps))
     user new_resource.user
-    sensitive new_resource.sensitive
+    sensitive true
     not_if { find_cert_output.include? cert_shasum }
   end
 end

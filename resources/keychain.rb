@@ -19,7 +19,7 @@ action :create do
   execute 'create a keychain' do
     command Array(keyc.create_keychain(new_resource.kc_passwd))
     user new_resource.user
-    sensitive new_resource.sensitive
+    sensitive true
     not_if { ::File.exist? keychain + '-db' }
   end
 end
@@ -29,7 +29,7 @@ action :delete do
   execute 'delete selected keychain' do
     command Array(keyc.delete_keychain)
     user new_resource.user
-    sensitive new_resource.sensitive
+    sensitive true
     only_if { ::File.exist?(keychain) }
   end
 end
@@ -39,7 +39,7 @@ action :lock do
   execute 'lock selected keychain' do
     command Array(keyc.lock_keychain)
     user new_resource.user
-    sensitive new_resource.sensitive
+    sensitive true
     only_if { ::File.exist?(keychain) }
   end
 end
@@ -49,7 +49,7 @@ action :unlock do
   execute 'unlock selected keychain' do
     command Array(keyc.unlock_keychain(new_resource.kc_passwd))
     user new_resource.user
-    sensitive new_resource.sensitive
+    sensitive true
     only_if { ::File.exist?(keychain) }
   end
 end
