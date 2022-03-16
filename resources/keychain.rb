@@ -6,7 +6,6 @@ default_action :create
 property :kc_file, String
 property :kc_passwd, String, sensitive: true
 property :user, String
-property :sensitive, [true, false], default: false
 
 action_class do
   def keychain

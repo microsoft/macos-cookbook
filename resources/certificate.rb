@@ -9,7 +9,6 @@ property :keychain, String, required: true
 property :kc_passwd, String, required: true, sensitive: true
 property :apps, Array, default: []
 property :user, String
-property :sensitive, [true, false], default: false
 
 action :install do
   cert = SecurityCommand.new(new_resource.certfile, new_resource.keychain)
