@@ -1,6 +1,6 @@
 # Changelog
 
-## [5.0.0] - 2022-03-08
+## [5.0.0] - 2022-03-16
 
 ### Fixed
 
@@ -18,11 +18,14 @@
 - Updated certificate resource documentation.
 - Secure token support for `macos_user` resource via new properties `secure_token` and `existing_token_auth`.
 - New unit and integration tests for `macos_user` resource.
+- Updated our README to include Monterey support. 
+- Added the documentation directory to chefignore as we don't need to upload all our docs to the Chef Infra Server. 
 
 ### Changed
 
 - Unified `macos_user` test suites.
 - Updated `macos_user` resource to use not utilize default attributes for authorization.
+- Updated all deprecated tool names, shell outputs, and URLs in `TESTING.md`
 
 ### Removed
 

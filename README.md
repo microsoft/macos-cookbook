@@ -4,7 +4,7 @@
 
 Chef resources and recipes for managing and provisioning macOS.
 
-- [Chef Requirements](#chef-requirements)
+- [Chef Requirements](#officially-supported-chef-versions)
 - [Supported OS Versions](#supported-os-versions)
 - [Attributes](#attributes)
 - [Recipes](#recipes)
@@ -22,6 +22,7 @@ Chef resources and recipes for managing and provisioning macOS.
 - macOS Mojave 10.14
 - macOS Catalina 10.15
 - macOS Big Sur 11.0
+- macOS Monterey 12.0
 
 ## Resources
 
