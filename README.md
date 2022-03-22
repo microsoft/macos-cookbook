@@ -1,6 +1,6 @@
 # macOS Cookbook
 
-[![Build Status](https://dev.azure.com/office/OE/_apis/build/status/Microsoft.macos-cookbook?branchName=master)](https://dev.azure.com/office/OE/_build/latest?definitionId=5072&branchName=master)
+[![Build Status](https://dev.azure.com/office/OE/_apis/build/status/microsoft.macos-cookbook?repoName=microsoft%2Fmacos-cookbook&branchName=master)](https://dev.azure.com/office/OE/_build/latest?definitionId=17314&repoName=microsoft%2Fmacos-cookbook&branchName=master)
 
 Chef resources and recipes for managing and provisioning macOS.
 
