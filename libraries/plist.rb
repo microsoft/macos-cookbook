@@ -136,19 +136,18 @@ module MacOS
   end
 end
 
-class MacOS::Deprecated
+module Chef::Deprecated
   class Base
     BASE_URL = 'https://github.com/microsoft/macos-cookbook/blob/master/README.md'.freeze
   end
 
-  class PlistResource < Base
-    target nil
-
+  class Plistresource < Base
     def to_s
       'The plist resource is deprecated and will be removed in the next major release of macos-cookbook. Please use the plist resource included with Chef Client >=16.'
     end
   end
+end
 
-Chef::Deprecated.include MacOS::Deprecated
+Chef::Deprecated.include Chef::Deprecated
 Chef::Resource.include MacOS::PlistHelpers
 Chef::DSL::Recipe.include MacOS::PlistHelpers
