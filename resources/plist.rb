@@ -28,6 +28,8 @@ load_current_value do |desired|
 end
 
 action :set do
+  Chef.deprecated(:plistresource, 'test message')
+
   converge_if_changed :path do
     converge_by "create new plist: '#{new_resource.path}'" do
       file new_resource.path do
