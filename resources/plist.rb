@@ -28,6 +28,11 @@ load_current_value do |desired|
 end
 
 action :set do
+  deprecation_warning = 'The plist resource is deprecated and will be removed in the next major release of macos-cookbook. Please use the plist resource included with Chef Client >=16'
+
+  Chef.deprecated :plistresource, deprecation_warning
+  Chef::Log.warn deprecation_warning
+
   converge_if_changed :path do
     converge_by "create new plist: '#{new_resource.path}'" do
       file new_resource.path do

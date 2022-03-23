@@ -135,5 +135,15 @@ module MacOS
     end
   end
 end
+
+class Chef::Deprecated
+  class Base
+    BASE_URL = 'https://github.com/microsoft/macos-cookbook/blob/master/README.md'.freeze
+  end
+
+  class Plistresource < Base
+  end
+end
+
 Chef::Resource.include MacOS::PlistHelpers
 Chef::DSL::Recipe.include MacOS::PlistHelpers

@@ -23,6 +23,7 @@
 
 ### Changed
 
+- Deprecated `plist` resource in favor of the `plist` resource included with Chef Client >=16.
 - Unified `macos_user` test suites.
 - Updated `macos_user` resource to use not utilize default attributes for authorization.
 - Updated all deprecated tool names, shell outputs, and URLs in `TESTING.md`
