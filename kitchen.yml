@@ -34,14 +34,14 @@ platforms:
 - name: big-sur-chef17
   driver:
     box: microsoft/macos-big-sur
-    box_version: 11.6
+    box_version: 11.6.5
   provisioner:
     product_version: 17
 
 - name: monterey-chef17
   driver:
     box: microsoft/macos-monterey
-    box_version: 12.2
+    box_version: 12.3
   provisioner:
     product_version: 17
 
