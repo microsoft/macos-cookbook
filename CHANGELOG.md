@@ -11,11 +11,12 @@
 ### Added
 
 - Added `apple_id` property to `xcode` resource to remove dependency on attributes or data bags for authentication.
-- New test suites and recipe change to account for `.cer` files.
 - New certificate resource property: `kc_passwd` which allows setting of keychain password.
+- New test suites and recipe change to account for `.cer` files.
 - Check for certificate existence within the keychain before installing a new one to ensure idempotency.
-- Made password properties sensitive.
+- Made certificate password properties sensitive.
 - Updated certificate resource documentation.
+- Support for Mac Studio in `FormFactor` class. 
 - Secure token support for `macos_user` resource via new properties `secure_token` and `existing_token_auth`.
 - New unit and integration tests for `macos_user` resource.
 - Updated our README to include Monterey support. 
