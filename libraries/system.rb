@@ -9,7 +9,7 @@ module MacOS
 
       def desktop?
         return false if @machine_model.nil?
-        @machine_model.match? Regexp.union ['Macmini', 'MacPro', 'iMac']
+        @machine_model.match? Regexp.union ['Macmini', 'MacPro', 'iMac', 'Mac']
       end
 
       def portable?
