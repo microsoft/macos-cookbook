@@ -7,8 +7,8 @@ cookbook_file '/Users/vagrant/Test.p12' do
 end
 
 keychain 'test' do
-  kc_file '/Users/vagrant/Library/Keychains/test.keychain'
-  kc_passwd 'test'
+  path '/Users/vagrant/Library/Keychains/test.keychain'
+  password 'test'
   action :create
 end
 
@@ -25,18 +25,18 @@ execute 'convert .pem certificate to .cer certificate' do
 end
 
 certificate 'install a .cer format certificate file' do
-  certfile foobar_cer_path
+  path foobar_cer_path
   keychain '/Users/vagrant/Library/Keychains/login.keychain'
-  kc_passwd 'vagrant'
+  keychain_password 'vagrant'
   apps ['/Applications/Numbers.app']
   action :install
 end
 
 certificate 'install a PFX format certificate file' do
-  certfile '/Users/vagrant/Test.p12'
-  cert_password 'test'
+  path '/Users/vagrant/Test.p12'
+  password 'test'
   keychain '/Users/vagrant/Library/Keychains/test.keychain'
-  kc_passwd 'test'
+  keychain_password 'test'
   apps ['/Applications/Safari.app']
   action :install
 end

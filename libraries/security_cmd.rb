@@ -25,15 +25,15 @@ module MacOS
     end
 
     def lock_keychain
-      @keychain.empty? ? [@security_cmd, 'lock-keychain'] : [@security_cmd, 'lock-keychain', @keychain]
+      @keychain.nil? ? [@security_cmd, 'lock-keychain'] : [@security_cmd, 'lock-keychain', @keychain]
     end
 
-    def unlock_keychain(kc_passwd)
-      @keychain.empty? ? [@security_cmd, 'unlock-keychain', '-p', kc_passwd] : [@security_cmd, 'unlock-keychain', '-p', kc_passwd, @keychain]
+    def unlock_keychain(password)
+      @keychain.nil? ? [@security_cmd, 'unlock-keychain', '-p', password] : [@security_cmd, 'unlock-keychain', '-p', password, @keychain]
     end
 
     def add_certificates
-      @keychain.empty? ? [@security_cmd, 'add-certificates', @cert] : [@security_cmd, 'add-certificates', '-k', @keychain, @cert]
+      @keychain.nil? ? [@security_cmd, 'add-certificates', @cert] : [@security_cmd, 'add-certificates', '-k', @keychain, @cert]
     end
 
     def import(cert_passwd, apps)
@@ -43,7 +43,12 @@ module MacOS
         app_array.push('-T')
         app_array.push(app)
       end
-      @keychain == '' ? [@security_cmd, 'import', @cert, '-P', cert_passwd, *app_array] : [@security_cmd, 'import', @cert, '-P', cert_passwd, '-k', @keychain, *app_array]
+
+      if @keychain.nil?
+        [@security_cmd, 'import', @cert, '-P', cert_passwd, *app_array]
+      else
+        [@security_cmd, 'import', @cert, '-P', cert_passwd, '-k', @keychain, *app_array]
+      end
     end
 
     def install_certificate(cert_passwd, apps)
