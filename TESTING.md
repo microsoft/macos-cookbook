@@ -33,8 +33,8 @@ business logic for each of the custom resources and are used as either mixins
 for the custom resources or contain classes that act as helpers, except with
 explicit namespacing. Some libary files are heavily unit tested, others are definitely
 missing much-needed unit test coverage. The following command syntax assumes
-you've made the Chef Workstation `rspec` your default by running `chef shell-init bash`
-(https://docs.chef.io/workstation/ctl_chef/#chef-shell-init)
+you've made the Chef Workstation `rspec` your default by running the appropriate
+`chef shell-init` for your shell. (https://docs.chef.io/workstation/ctl_chef/#chef-shell-init)
 
 Clone this repo and in the root of the cookbook, run:
 
