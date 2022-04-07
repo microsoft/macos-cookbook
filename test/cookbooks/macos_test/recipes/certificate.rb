@@ -19,12 +19,12 @@ openssl_x509_certificate foobar_pem_path do
   country 'US'
 end
 
-execute 'convert .pem certificate to .cer certificate' do
+execute 'convert certificate to binary format' do
   command ['/usr/bin/openssl', 'x509', '-inform', 'PEM', '-in', foobar_pem_path, '-outform', 'DER', '-out', foobar_cer_path]
   only_if { ::File.exist? foobar_pem_path }
 end
 
-certificate 'install a .cer format certificate file' do
+certificate 'install a binary-formatted certificate' do
   path foobar_cer_path
   keychain '/Users/vagrant/Library/Keychains/login.keychain'
   keychain_password 'vagrant'
