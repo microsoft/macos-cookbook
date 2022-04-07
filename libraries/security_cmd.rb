@@ -2,20 +2,16 @@ include Chef::Mixin::ShellOut
 
 module MacOS
   class SecurityCommand
-    attr_reader :cert
-    attr_reader :keychain
-    attr_reader :security_cmd
+    attr_reader :cert, :keychain, :security_cmd
 
-    def initialize(cert, keychain)
+    def initialize(cert: nil, keychain: nil)
       @cert = cert
       @keychain = keychain
       @security_cmd = '/usr/bin/security'
     end
 
     def create_keychain(kc_pass)
-      if kc_pass.empty?
-        Chef::Exception.fatal('New keychains require a password.')
-      end
+      Chef::Exception.fatal('New keychains require a password.') if kc_pass.empty?
 
       [@security_cmd, 'create-keychain', '-p', kc_pass, @keychain]
     end
@@ -25,15 +21,28 @@ module MacOS
     end
 
     def lock_keychain
-      @keychain.nil? ? [@security_cmd, 'lock-keychain'] : [@security_cmd, 'lock-keychain', @keychain]
+      if @keychain.nil?
+        [@security_cmd, 'lock-keychain']
+      else
+        [@security_cmd, 'lock-keychain', @keychain]
+      end
     end
 
     def unlock_keychain(password)
-      @keychain.nil? ? [@security_cmd, 'unlock-keychain', '-p', password] : [@security_cmd, 'unlock-keychain', '-p', password, @keychain]
+      if @keychain.nil?
+        [@security_cmd, 'unlock-keychain', '-p', password]
+      else
+        [@security_cmd, 'unlock-keychain', '-p', password, @keychain]
+      end
     end
 
     def add_certificates
-      @keychain.nil? ? [@security_cmd, 'add-certificates', @cert] : [@security_cmd, 'add-certificates', '-k', @keychain, @cert]
+      if @keychain.nil?
+        [@security_cmd, 'add-certificates',
+         @cert]
+      else
+        [@security_cmd, 'add-certificates', '-k', @keychain, @cert]
+      end
     end
 
     def import(cert_passwd, apps)
@@ -56,9 +65,7 @@ module MacOS
       valid_certs = ['.der', '.crt', '.cer']
 
       apps.each do |app|
-        unless app.is_a? String
-          Chef::Exception.fatal("Invalid application: #{@app}.")
-        end
+        Chef::Exception.fatal("Invalid application: #{@app}.") unless app.is_a? String
       end
 
       if valid_pkcs12.any? { |extension| ::File.extname(@cert).match? extension }

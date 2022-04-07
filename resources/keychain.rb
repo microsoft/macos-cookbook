@@ -9,7 +9,7 @@ property :user, String
 
 action_class do
   def security
-    SecurityCommand.new('', new_resource.path)
+    SecurityCommand.new(**{ keychain: new_resource.path})
   end
 end
 
