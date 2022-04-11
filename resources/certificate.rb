@@ -11,7 +11,7 @@ property :apps, Array, default: []
 property :user, String
 
 action :install do
-  cert = SecurityCommand.new(**{ cert: new_resource.path, keychain: new_resource.keychain_path})
+  cert = SecurityCommand.new(**{ cert: new_resource.path, keychain: new_resource.keychain_path })
 
   execute 'unlock keychain' do
     command Array(cert.unlock_keychain(new_resource.keychain_password))
