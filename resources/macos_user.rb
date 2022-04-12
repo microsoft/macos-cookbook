@@ -38,7 +38,11 @@ action_class do
     { 'DidSeeCloudSetup' => true,
       'DidSeeSiriSetup' => true,
       'DidSeePrivacy' => true,
+      'DidSeeAccessibility' => true,
+      'DidSeeAppearance' => true,
       'LastSeenCloudProductVersion' => node['platform_version'],
+      'LastPreLoginTasksPerformedVersion' => node['platform_version'],
+      'LastPreLoginTasksPerformedBuild' => node['platform_build'],
       'LastSeenBuddyBuildVersion' => node['platform_build'],
     }
   end
