@@ -7,6 +7,7 @@
 - Extracted authentication with Apple via `xcode` resource away `xcode` object instantiation, resolving [Bug #234](https://github.com/microsoft/macos-cookbook/issues/234).
 - Enabled `macos_user` resource to parse `sysadminctl` stderr, resolving [Bug 197](https://github.com/microsoft/macos-cookbook/issues/197).
 - Reversed order of arguments for certificate installation, resolving [Bug 244](https://github.com/microsoft/macos-cookbook/issues/244).
+- Fixed `macos_user` resource `autologin` functionality to dismiss Welcome "buddy" screens after updating to 11.6.5 via `softwareupdate`.
 
 ### Added
 
