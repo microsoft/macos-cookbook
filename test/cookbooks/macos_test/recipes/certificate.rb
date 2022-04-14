@@ -26,7 +26,7 @@ end
 
 certificate 'install a binary-formatted certificate' do
   path foobar_cer_path
-  keychain '/Users/vagrant/Library/Keychains/login.keychain'
+  keychain_path '/Users/vagrant/Library/Keychains/login.keychain'
   keychain_password 'vagrant'
   apps ['/Applications/Numbers.app']
   action :install
@@ -35,7 +35,7 @@ end
 certificate 'install a PFX format certificate file' do
   path '/Users/vagrant/Test.p12'
   password 'test'
-  keychain '/Users/vagrant/Library/Keychains/test.keychain'
+  keychain_path '/Users/vagrant/Library/Keychains/test.keychain'
   keychain_password 'test'
   apps ['/Applications/Safari.app']
   action :install
