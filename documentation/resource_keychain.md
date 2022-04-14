@@ -13,9 +13,9 @@ is:
 
 ```ruby
 keychain 'keychain name' do
-  path                       String # path to selected keychain, defaults to 'name' if not specified
-  password                     String # password for selected keychain
-  sensitive                     Boolean # run execute resource with sensitive
+  path                      String # path to selected keychain, defaults to 'name' if not specified
+  password                  String # password for selected keychain
+  sensitive                 Boolean # run execute resource with sensitive
 end
 ```
 

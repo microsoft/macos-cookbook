@@ -13,12 +13,12 @@ is:
 
 ```ruby
 certificate 'cert name' do
-  path                      String # certificate in .p12(PFX) or .cer(SSl certificate file) format. defaults to 'name' if not specified
+  path                     String # certificate in .p12(PFX) or .cer(SSl certificate file) format. defaults to 'name' if not specified
   password                 String # password for PFX format certificate file
-  keychain_path                      String # keychain to install certificate to
-  keychain_password                     String # keychain password
-  apps                          Array  # list of apps that may access the imported key
-  sensitive                     Boolean # run execute resource with sensitive
+  keychain_path            String # keychain to install certificate to
+  keychain_password        String # keychain password
+  apps                     Array  # list of apps that may access the imported key
+  sensitive                Boolean # run execute resource with sensitive
 end
 ```
 
