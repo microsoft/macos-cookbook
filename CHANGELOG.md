@@ -11,19 +11,26 @@
 ### Added
 
 - Added `apple_id` property to `xcode` resource to remove dependency on attributes or data bags for authentication.
-- New certificate resource property: `kc_passwd` which allows setting of keychain password.
+- New `certificate` resource property: `keychain_password` which allows specification of the keychain password.
+- New `keychain` resource property: `user` which allows specification of an executing user.
 - New test suites and recipe change to account for `.cer` files.
 - Check for certificate existence within the keychain before installing a new one to ensure idempotency.
-- Made certificate password properties sensitive.
-- Updated certificate resource documentation.
 - Support for Mac Studio in `FormFactor` class. 
 - Secure token support for `macos_user` resource via new properties `secure_token` and `existing_token_auth`.
 - New unit and integration tests for `macos_user` resource.
 - Updated our README to include Monterey support. 
-- Added the documentation directory to chefignore as we don't need to upload all our docs to the Chef Infra Server. 
+- Added the documentation directory to chefignore as we don't need to upload all our docs to Chef Infra Servers. 
 
 ### Changed
 
+- Changed `certificate` property names to be more clear within resource scope and consistent with `keychain` resource:
+  - `certfile` is now `path`
+  - `cert_passwd` is now `password`
+  - `keychain` is now `keychain_path`
+- Changed `keychain` property names to be more clear within resource scope and consistent with `certificate` resource:
+  - `kc_file` is now `path`
+  - `kc_passwd` is now `password`
+- Made certificate password properties sensitive.
 - Deprecated `plist` resource in favor of the `plist` resource included with Chef Client >=16.
 - Unified `macos_user` test suites.
 - Updated `macos_user` resource to use not utilize default attributes for authorization.
