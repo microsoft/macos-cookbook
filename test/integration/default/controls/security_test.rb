@@ -15,11 +15,11 @@ control 'certificate-install' do
     it { should exist }
   end
 
-  describe command('/usr/bin/security find-certificate /Users/vagrant/Library/Keychains/test.keychain') do
+  describe command('/usr/bin/security find-certificate -a -c "Test" /Users/vagrant/Library/Keychains/test.keychain') do
     its('stdout') { should include 'Test' }
   end
 
-  describe command('/usr/bin/security find-certificate /Users/vagrant/Library/Keychains/login.keychain') do
+  describe command('/usr/bin/security find-certificate -a -c "f00bar" /Users/vagrant/Library/Keychains/login.keychain') do
     its('stdout') { should include 'f00bar' }
   end
 end
