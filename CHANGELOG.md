@@ -16,11 +16,11 @@
 - New `keychain` resource property: `user` which allows specification of an executing user.
 - New test suites and recipe change to account for `.cer` files.
 - Check for certificate existence within the keychain before installing a new one to ensure idempotency.
-- Support for Mac Studio in `FormFactor` class. 
+- Support for Mac Studio in `FormFactor` class.
 - Secure token support for `macos_user` resource via new properties `secure_token` and `existing_token_auth`.
 - New unit and integration tests for `macos_user` resource.
-- Updated our README to include Monterey support. 
-- Added the documentation directory to chefignore as we don't need to upload all our docs to Chef Infra Servers. 
+- Updated our README to include Monterey support.
+- Added the documentation directory to chefignore as we don't need to upload all our docs to Chef Infra Servers.
 
 ### Changed
 
