@@ -7,8 +7,8 @@ cookbook_file '/Users/vagrant/Test.p12' do
 end
 
 keychain 'test' do
-  kc_file '/Users/vagrant/Library/Keychains/test.keychain'
-  kc_passwd 'test'
+  path '/Users/vagrant/Library/Keychains/test.keychain'
+  password 'test'
   action :create
 end
 
@@ -19,24 +19,24 @@ openssl_x509_certificate foobar_pem_path do
   country 'US'
 end
 
-execute 'convert .pem certificate to .cer certificate' do
+execute 'convert certificate to binary format' do
   command ['/usr/bin/openssl', 'x509', '-inform', 'PEM', '-in', foobar_pem_path, '-outform', 'DER', '-out', foobar_cer_path]
   only_if { ::File.exist? foobar_pem_path }
 end
 
-certificate 'install a .cer format certificate file' do
-  certfile foobar_cer_path
-  keychain '/Users/vagrant/Library/Keychains/login.keychain'
-  kc_passwd 'vagrant'
+certificate 'install a binary-formatted certificate' do
+  path foobar_cer_path
+  keychain_path '/Users/vagrant/Library/Keychains/login.keychain'
+  keychain_password 'vagrant'
   apps ['/Applications/Numbers.app']
   action :install
 end
 
 certificate 'install a PFX format certificate file' do
-  certfile '/Users/vagrant/Test.p12'
-  cert_password 'test'
-  keychain '/Users/vagrant/Library/Keychains/test.keychain'
-  kc_passwd 'test'
+  path '/Users/vagrant/Test.p12'
+  password 'test'
+  keychain_path '/Users/vagrant/Library/Keychains/test.keychain'
+  keychain_password 'test'
   apps ['/Applications/Safari.app']
   action :install
 end

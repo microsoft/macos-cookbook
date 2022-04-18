@@ -3,53 +3,48 @@ unified_mode true
 provides :keychain
 default_action :create
 
-property :kc_file, String
-property :kc_passwd, String, sensitive: true
+property :path, String, name_property: true
+property :password, String, sensitive: true
 property :user, String
 
 action_class do
-  def keychain
-    new_resource.property_is_set?(:kc_file) ? new_resource.kc_file : nil
+  def security
+    SecurityCommand.new(**{ keychain: new_resource.path })
   end
 end
 
 action :create do
-  keyc = SecurityCommand.new('', keychain)
-
   execute 'create a keychain' do
-    command Array(keyc.create_keychain(new_resource.kc_passwd))
+    command Array(security.create_keychain(new_resource.password))
     user new_resource.user
     sensitive true
-    not_if { ::File.exist? keychain + '-db' }
+    not_if { ::File.exist? new_resource.path + '-db' }
   end
 end
 
 action :delete do
-  keyc = SecurityCommand.new('', keychain)
   execute 'delete selected keychain' do
-    command Array(keyc.delete_keychain)
+    command Array(security.delete_keychain)
     user new_resource.user
     sensitive true
-    only_if { ::File.exist?(keychain) }
+    only_if { ::File.exist?(new_resource.path) }
   end
 end
 
 action :lock do
-  keyc = SecurityCommand.new('', keychain)
   execute 'lock selected keychain' do
-    command Array(keyc.lock_keychain)
+    command Array(security.lock_keychain)
     user new_resource.user
     sensitive true
-    only_if { ::File.exist?(keychain) }
+    only_if { ::File.exist?(new_resource.path) }
   end
 end
 
 action :unlock do
-  keyc = SecurityCommand.new('', keychain)
   execute 'unlock selected keychain' do
-    command Array(keyc.unlock_keychain(new_resource.kc_passwd))
+    command Array(security.unlock_keychain(new_resource.password))
     user new_resource.user
     sensitive true
-    only_if { ::File.exist?(keychain) }
+    only_if { ::File.exist?(new_resource.path) }
   end
 end

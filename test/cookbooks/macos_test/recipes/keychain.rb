@@ -1,12 +1,12 @@
 keychain 'create test keychain' do
-  kc_file '/Users/vagrant/Library/Keychains/test.keychain'
-  kc_passwd 'test'
+  path '/Users/vagrant/Library/Keychains/test.keychain'
+  password 'test'
   action :create
 end
 
 keychain 'unlock test keychain' do
-  kc_file '/Users/vagrant/Library/Keychains/test.keychain'
-  kc_passwd 'test'
+  path '/Users/vagrant/Library/Keychains/test.keychain'
+  password 'test'
   action :unlock
 end
 
@@ -20,7 +20,7 @@ end
 kcfile = '/Users/testuser/Library/Keychains/login.keychain'
 
 keychain 'create login keychain' do
-  kc_file kcfile
-  kc_passwd 'testuser'
+  path kcfile
+  password 'testuser'
   action :create
 end

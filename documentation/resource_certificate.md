@@ -13,12 +13,12 @@ is:
 
 ```ruby
 certificate 'cert name' do
-  certfile                      String # certificate in .p12(PFX) or .cer(SSl certificate file) format
-  cert_password                 String # password for PFX format certificate file
-  keychain                      String # keychain to install certificate to
-  kc_passwd                     String # keychain password
-  apps                          Array  # list of apps that may access the imported key
-  sensitive                     Boolean # run execute resource with sensitive
+  path                     String # certificate in .p12(PFX) or .cer(SSl certificate file) format. defaults to 'name' if not specified
+  password                 String # password for PFX format certificate file
+  keychain_path            String # keychain to install certificate to
+  keychain_password        String # keychain password
+  apps                     Array  # list of apps that may access the imported key
+  sensitive                Boolean # run execute resource with sensitive
 end
 ```
 
@@ -28,7 +28,7 @@ Actions
 `:install`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Install the certificate as specified by
-the `certfile` property. This is the only, and default, action.
+the `path` property. This is the only, and default, action.
 
 
 Examples
@@ -38,8 +38,8 @@ Examples
 
 ```ruby
 certificate 'cert name' do
-  certfile '/User/edward/Documents/cert.p12'
-  cert_password 'teach'
+  path '/User/edward/Documents/cert.p12'
+  password 'teach'
 end
 ```
 
@@ -47,10 +47,10 @@ end
 
 ```ruby
 certificate 'cert name' do
-  certfile '/User/edward/Documents/cert.p12'
-  cert_password 'teach'
-  keychain '/User/edward/Library/Keychains/florida.keychain'
-  kc_passwd 'test'
+  path '/User/edward/Documents/cert.p12'
+  password 'teach'
+  keychain_path '/User/edward/Library/Keychains/florida.keychain'
+  keychain_password 'test'
 end
 ```
 
@@ -58,7 +58,7 @@ end
 
 ```ruby
 certificate 'cert name' do
-  certfile '/User/edward/Documents/cert.p12'
+  path '/User/edward/Documents/cert.p12'
 end
 ```
 
@@ -66,17 +66,17 @@ end
 
 ```ruby
 certificate 'cert name' do
-  certfile '/User/edward/Documents/cert.p12'
-  keychain '/User/edward/Library/Keychains/florida.keychain'
-  kc_passwd 'test'
+  path '/User/edward/Documents/cert.p12'
+  keychain_path '/User/edward/Library/Keychains/florida.keychain'
+  keychain_password 'test'
 end
 ```
 
 **Install PFX format certificate to default keychain, accessible by certain app**
 ```ruby
 certificate 'cert name' do
-  certfile '/User/edward/Documents/cert.p12'
-  cert_password 'teach'
+  path '/User/edward/Documents/cert.p12'
+  password 'teach'
   apps ['/Applications/Maps.app', '/Applications/Time Machine.app']
 end
 ```
