@@ -5,32 +5,35 @@ module MacOS
   class DeveloperAccount
     attr_reader :credentials
 
-    def initialize(data_bag_retrieval, node_credential_attributes, download_url)
+    def initialize(apple_id_hash, download_url)
       if download_url.empty?
-        developer_id = find_apple_id(data_bag_retrieval, node_credential_attributes)
+        developer_id = validate_apple_id(apple_id_hash)
         @credentials = {
-          XCODE_INSTALL_USER: developer_id['apple_id'],
-          XCODE_INSTALL_PASSWORD: developer_id['password'],
+          XCODE_INSTALL_USER: developer_id[:username],
+          XCODE_INSTALL_PASSWORD: developer_id[:password],
         }
         authenticate_with_apple(@credentials)
       end
     end
 
-    def authenticate_with_apple(credentials)
-      shell_out!(XCVersion.update, env: credentials)
-    end
-
-    def find_apple_id(data_bag_retrieval, node_credential_attributes)
-      if node_credential_attributes
+    def validate_apple_id(apple_id_hash)
+      if apple_id_hash.values.any?
         {
-          'apple_id' => node_credential_attributes['user'],
-          'password' => node_credential_attributes['password'],
+          username: apple_id_hash[:username],
+          password: apple_id_hash[:password],
+        }
+      elsif ENV['XCODE_INSTALL_USER'] && ENV['XCODE_INSTALL_PASSWORD']
+        {
+          username: ENV['XCODE_INSTALL_USER'],
+          password: ENV['XCODE_INSTALL_PASSWORD'],
         }
       else
-        data_bag_retrieval.call
+        raise('Developer credentials not supplied, and a URL was not provided for Xcode!')
       end
-    rescue Net::HTTPServerException
-      raise('Developer credentials not supplied, and a URL was not provided for Xcode!')
+    end
+
+    def authenticate_with_apple(credentials)
+      shell_out!(XCVersion.update, env: credentials)
     end
   end
 end

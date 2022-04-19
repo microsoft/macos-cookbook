@@ -7,23 +7,22 @@
 
 ## Requirements
 
-- [ChefDK](https://downloads.chef.io/chefdk)
+- [Chef Workstation](https://www.chef.io/downloads/tools/workstation)
 - [Vagrant](https://www.vagrantup.com/)
 - [Packer](https://www.packer.io/)
 - A supported macOS hypervisor:
-  - [Parallels](https://www.parallels.com/landingpage/pd/general/)
+  - [Parallels](https://www.parallels.com/pd/general/)
   - [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
   - [VMWare Fusion](https://www.vmware.com/products/fusion.html)
 
 ## Syntax and style
 
-- `cookstyle` and `foodcritic`
+- `cookstyle`
 
 Syntax testing is pretty straight forward. At the root of the cookbook, run:
 
 ```shell
 cookstyle
-foodcritic .
 ```
 
 ## Unit tests
@@ -34,8 +33,8 @@ business logic for each of the custom resources and are used as either mixins
 for the custom resources or contain classes that act as helpers, except with
 explicit namespacing. Some libary files are heavily unit tested, others are definitely
 missing much-needed unit test coverage. The following command syntax assumes
-you've made the ChefDK `rspec` your default by running `chef shell-init bash`
-(https://docs.chef.io/ctl_chef.html#chef-shell-init)
+you've made the Chef Workstation `rspec` your default by running the appropriate
+`chef shell-init` for your shell. (https://docs.chef.io/workstation/ctl_chef/#chef-shell-init)
 
 Clone this repo and in the root of the cookbook, run:
 
@@ -85,13 +84,16 @@ a few issues that need to be addressed before doing so.
 Once you have finished building and "adding" your box (with `vagrant box add`),
 you'll need to modify the `.kitchen.yml`. The only modifications you should
 need to make are replacing our box names with yours. For example, you would
-replace `apex/macos-10.13.6` with `my_high_sierra_box`. To double check the
+replace `microsoft/macos-monterey` with `my_macos_box`. To double check the
 available boxes and their names, execute `vagrant box list`. For example:
 
 ```shell
 $ vagrant box list
-apex/macos-10.12.6 (parallels, 2.0.0)
-apex/macos-10.13.6 (parallels, 1.1.0)
+microsoft/macos-big-sur     (parallels, 11.6.1)
+microsoft/macos-catalina    (parallels, 10.15.7)
+microsoft/macos-high-sierra (parallels, 10.13.6)
+microsoft/macos-mojave      (parallels, 10.14.6)
+microsoft/macos-monterey    (parallels, 12.2)
 ```
 
 Next, make sure you're in the macOS cookbook root and run `kitchen list` to view
@@ -99,15 +101,32 @@ the available instances. It should look something like this:
 
 ```shell
 $ kitchen list
-Instance                      Driver   Provisioner  Verifier  Transport  Last Action    Last Error
-default-apex-macos-10136      Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
-default-apex-macos-10126      Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
-xcode-apex-macos-10136        Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
-xcode-apex-macos-10126        Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
-spotlight-apex-macos-10136    Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
-spotlight-apex-macos-10126    Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
-certificate-apex-macos-10136  Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
-certificate-apex-macos-10126  Vagrant  ChefZero     Inspec    Ssh        <Not Created>  <None>
+Instance                            Driver   Provisioner  Verifier  Transport  Last Action    Last Error
+default-mojave-chef17               Vagrant  ChefInfra    Inspec    Ssh        <Not Created>  <None>
+default-catalina-chef17             Vagrant  ChefInfra    Inspec    Ssh        <Not Created>  <None>
+default-big-sur-chef17              Vagrant  ChefInfra    Inspec    Ssh        <Not Created>  <None>
+default-monterey-chef17             Vagrant  ChefInfra    Inspec    Ssh        <Not Created>  <None>
+software-updates-mojave-chef17      Vagrant  ChefInfra    Inspec    Ssh        <Not Created>  <None>
+software-updates-catalina-chef17    Vagrant  ChefInfra    Inspec    Ssh        <Not Created>  <None>
+software-updates-big-sur-chef17     Vagrant  ChefInfra    Inspec    Ssh        <Not Created>  <None>
+software-updates-monterey-chef17    Vagrant  ChefInfra    Inspec    Ssh        <Not Created>  <None>
+spotlight-mojave-chef17             Vagrant  ChefInfra    Inspec    Ssh        <Not Created>  <None>
+spotlight-catalina-chef17           Vagrant  ChefInfra    Inspec    Ssh        <Not Created>  <None>
+spotlight-big-sur-chef17            Vagrant  ChefInfra    Inspec    Ssh        <Not Created>  <None>
+spotlight-monterey-chef17           Vagrant  ChefInfra    Inspec    Ssh        <Not Created>  <None>
+xcode-from-apple-mojave-chef17      Vagrant  ChefInfra    Inspec    Ssh        <Not Created>  <None>
+xcode-from-apple-catalina-chef17    Vagrant  ChefInfra    Inspec    Ssh        <Not Created>  <None>
+xcode-from-apple-big-sur-chef17     Vagrant  ChefInfra    Inspec    Ssh        <Not Created>  <None>
+xcode-from-apple-monterey-chef17    Vagrant  ChefInfra    Inspec    Ssh        <Not Created>  <None>
+xcode-from-url-mojave-chef17        Vagrant  ChefInfra    Inspec    Ssh        <Not Created>  <None>
+xcode-from-url-catalina-chef17      Vagrant  ChefInfra    Inspec    Ssh        <Not Created>  <None>
+xcode-from-url-big-sur-chef17       Vagrant  ChefInfra    Inspec    Ssh        <Not Created>  <None>
+xcode-from-url-monterey-chef17      Vagrant  ChefInfra    Inspec    Ssh        <Not Created>  <None>
+command-line-tools-mojave-chef17    Vagrant  ChefInfra    Inspec    Ssh        <Not Created>  <None>
+command-line-tools-catalina-chef17  Vagrant  ChefInfra    Inspec    Ssh        <Not Created>  <None>
+command-line-tools-big-sur-chef17   Vagrant  ChefInfra    Inspec    Ssh        <Not Created>  <None>
+command-line-tools-monterey-chef17  Vagrant  ChefInfra    Inspec    Ssh        <Not Created>  <None>
+certificate-mojave-chef17           Vagrant  ChefInfra    Inspec    Ssh        <Not Created>  <None>
 ```
 
 The `kitchen list` command serves as a nearly-perfect way to validate the

@@ -1,12 +1,13 @@
 unified_mode true
 
 provides :xcode
-default_action %i(install_gem install_xcode install_simulators)
+default_action [:install_gem, :install_xcode, :install_simulators]
 
 property :version, String, name_property: true
 property :path, String, default: '/Applications/Xcode.app'
 property :ios_simulators, Array
 property :download_url, String, default: ''
+property :apple_id, Hash
 
 action :install_gem do
   command_line_tools 'latest'
@@ -24,12 +25,6 @@ action :install_gem do
 end
 
 action :install_xcode do
-  developer = DeveloperAccount.new(
-    -> { data_bag_item(:credentials, :apple_id) },
-    node['macos']['apple_id'],
-    new_resource.download_url
-  )
-
   xcode = Xcode.new(
     new_resource.version,
     new_resource.path,
@@ -38,7 +33,7 @@ action :install_xcode do
 
   unless xcode.compatible_with_platform?(node['platform_version'])
     ruby_block 'exception' do
-      raise("Xcode #{xcode.version} not supported on #{node['platform_version']}")
+      raise("Xcode #{new_resource.version} not supported on #{node['platform_version']}")
     end
   end
 
@@ -49,7 +44,8 @@ action :install_xcode do
     not_if { xcode.installed? }
   end
 
-  execute "install Xcode #{xcode.version}" do
+  execute "install Xcode #{new_resource.version}" do
+    developer = DeveloperAccount.new(new_resource.apple_id, new_resource.download_url)
     command XCVersion.install_xcode(xcode)
     environment developer.credentials
     cwd '/Users/Shared'

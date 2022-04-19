@@ -34,14 +34,14 @@ platforms:
 - name: big-sur-chef17
   driver:
     box: microsoft/macos-big-sur
-    box_version: 11.6
+    box_version: 11.6.5
   provisioner:
     product_version: 17
 
 - name: monterey-chef17
   driver:
     box: microsoft/macos-monterey
-    box_version: 12.0-21A5506j
+    box_version: 12.3.1
   provisioner:
     product_version: 17
 
@@ -79,6 +79,10 @@ suites:
 - name: xcode-from-apple
   run_list:
   - recipe[macos_test::xcode_from_apple]
+  lifecycle:
+    pre_converge:
+    - remote: echo -n '<%= ENV['APPLEID_USERNAME'] %>' > ~/username
+    - remote: echo -n '<%= ENV['APPLEID_PASSWORD'] %>' > ~/password
   verifier:
     controls:
     - xcode-and-simulators
@@ -86,9 +90,9 @@ suites:
 - name: xcode-from-url
   run_list:
   - recipe[macos_test::xcode_from_url]
-  attributes:
-    xcode:
-      download_url: <%= ENV['XCODE_URL'] %>
+  lifecycle:
+    pre_converge:
+    - remote: echo -n '<%= ENV['XCODE_URL'] %>' > ~/xcode
   verifier:
     controls:
     - xcode-and-simulators
@@ -110,19 +114,14 @@ suites:
 
 - name: users
   run_list:
-  - recipe[macos_test::new_users]
+  - recipe[macos_test::users]
   verifier:
     controls:
     - admin-user
     - standard-user
     - hidden-user
-
-- name: delete-users
-  run_list:
-  - recipe[macos_test::delete_users]
-  verifier:
-    controls:
-    - test-user
+    - deleted-user
+    - secure-token-user
 
 - name: keychain
   run_list:

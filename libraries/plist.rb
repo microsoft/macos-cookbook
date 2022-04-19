@@ -24,10 +24,6 @@ module MacOS
       end
     end
 
-    def convert_array_to_string(value)
-     
-    end
-
     def convert_to_string_from_data_type(value)
       case value
       when Array
@@ -39,11 +35,13 @@ module MacOS
       when TrueClass
         "-bool #{value}"
       when Hash
-        "-dict #{value.map { |key,value| Shellwords.shellescape(key) + ' ' + convert_to_string_from_data_type(value)}.join(' ')}"
+        "-dict #{value.map do |k, v|
+                   Shellwords.shellescape(k) + ' ' + convert_to_string_from_data_type(v)
+                 end.join(' ')}"
       when String
         "-string #{Shellwords.shellescape(value)}"
       when Float
-        "-float #{value}" 
+        "-float #{value}"
       else
         raise "Unknown or unsupported data type: #{value} of #{value.class}"
       end
@@ -88,7 +86,7 @@ module MacOS
             when 'add'
               type_to_commandline_string(value)
             when 'set'
-              if value.class == Hash
+              if value.instance_of?(Hash)
                 sep = ':'
                 value.map { |k, v| "#{k} #{v}" }
               else
@@ -106,7 +104,7 @@ module MacOS
       defaults_read_type_output = shell_out(defaults_executable, 'read-type', path, entry).stdout
       data_type = defaults_read_type_output.split.last
 
-      if value.class == Hash
+      if value.instance_of?(Hash)
         plutil_output = shell_out(plutil_executable, '-extract', entry, 'xml1', '-o', '-', path).stdout.chomp
         { key_type: data_type, key_value: Plist.parse_xml(plutil_output) }
       else
@@ -137,5 +135,15 @@ module MacOS
     end
   end
 end
+
+class Chef::Deprecated
+  class Base
+    BASE_URL = 'https://github.com/microsoft/macos-cookbook/blob/master/README.md'.freeze
+  end
+
+  class Plistresource < Base
+  end
+end
+
 Chef::Resource.include MacOS::PlistHelpers
 Chef::DSL::Recipe.include MacOS::PlistHelpers

@@ -1,5 +1,51 @@
 # Changelog
 
+## [5.0.0] - 2022-03-31
+
+### Fixed
+
+- Extracted authentication with Apple via `xcode` resource away `xcode` object instantiation, resolving [Bug #234](https://github.com/microsoft/macos-cookbook/issues/234).
+- Enabled `macos_user` resource to parse `sysadminctl` stderr, resolving [Bug 197](https://github.com/microsoft/macos-cookbook/issues/197).
+- Reversed order of arguments for certificate installation, resolving [Bug 244](https://github.com/microsoft/macos-cookbook/issues/244).
+- Fixed `macos_user` resource `autologin` functionality to dismiss Welcome "buddy" screens after updating to 11.6.5 via `softwareupdate`.
+
+### Added
+
+- Added `apple_id` property to `xcode` resource to remove dependency on attributes or data bags for authentication.
+- New `certificate` resource property: `keychain_password` which allows specification of the keychain password.
+- New `keychain` resource property: `user` which allows specification of an executing user.
+- New test suites and recipe change to account for `.cer` files.
+- Check for certificate existence within the keychain before installing a new one to ensure idempotency.
+- Support for Mac Studio in `FormFactor` class.
+- Secure token support for `macos_user` resource via new properties `secure_token` and `existing_token_auth`.
+- New unit and integration tests for `macos_user` resource.
+- Updated our README to include Monterey support.
+- Added the documentation directory to chefignore as we don't need to upload all our docs to Chef Infra Servers.
+
+### Changed
+
+- Changed `certificate` property names to be more clear within resource scope and consistent with `keychain` resource:
+  - `certfile` is now `path`
+  - `cert_passwd` is now `password`
+  - `keychain` is now `keychain_path`
+- Changed `keychain` property names to be more clear within resource scope and consistent with `certificate` resource:
+  - `kc_file` is now `path`
+  - `kc_passwd` is now `password`
+- Made certificate password properties sensitive.
+- Deprecated `plist` resource in favor of the `plist` resource included with Chef Client >=16.
+- Unified `macos_user` test suites.
+- Updated `macos_user` resource to use not utilize default attributes for authorization.
+- Updated all deprecated tool names, shell outputs, and URLs in `TESTING.md`
+
+### Removed
+
+- Removed the ability to authenticate with Apple for `xcode` downloads via node attributes or data bags.
+- Removed dependency on using the `default['macos']['admin_password']` attribute for setting the keychain password when using the certificate resource.
+- Removed last default cookbook attributes:
+  - `node['macos']['admin_user']`
+  - `node['macos']['admin_password']`
+  - `node['macos']['apple_id']`
+
 ## [4.2.3] - 2022-02-03
 
 ### Fixed

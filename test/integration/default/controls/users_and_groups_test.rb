@@ -101,11 +101,32 @@ control 'hidden-user' do
   end
 end
 
-control 'test-user' do
+control 'deleted-user' do
   title 'Checks that a user does not exist'
   desc 'Given a previously added user, check that its deletion results in user no longer being in existence.'
 
-  describe user('test_user').exists? do
+  describe user('delete_me').exists? do
     it { should eq false }
+  end
+end
+
+control 'secure-token-user' do
+  title 'added with a secure token but then removed'
+  desc 'Verify the user initially added with a secure token does not have one'
+
+  describe user('carl') do
+    it { should exist }
+  end
+
+  describe command('sysadminctl -secureTokenStatus carl') do
+    its('stderr') { should include 'ENABLED' }
+  end
+
+  describe user('ray') do
+    it { should exist }
+  end
+
+  describe command('sysadminctl -secureTokenStatus ray') do
+    its('stderr') { should include 'DISABLED' }
   end
 end
