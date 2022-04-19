@@ -18,7 +18,7 @@ Chef resources and recipes for managing and provisioning macOS.
 - macOS 10.14 Mojave
 - macOS 10.15 Catalina
 - macOS 11 Big Sur
-- macos 12 Monterey
+- macOS 12 Monterey
 
 ## Resources
 **The plist resource is deprecated and will be removed in the next major release of macos-cookbook. Please use the [plist resource included with Chef Client](https://docs.chef.io/resources/plist/).**
