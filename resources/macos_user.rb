@@ -45,6 +45,7 @@ action_class do
       'LastPreLoginTasksPerformedVersion' => node['platform_version'],
       'LastPreLoginTasksPerformedBuild' => node['platform_build'],
       'LastSeenBuddyBuildVersion' => node['platform_build'],
+      'LastSeenSiriProductVersion' => node['platform_version'],
     }
   end
 
