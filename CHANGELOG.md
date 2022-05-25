@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.1] - 2022-05-25
+
+### Fixed
+
+- Updated Setup Assistant keys for the `macos_user` resource to properly enable autologin after updating to 11.6.6
+- Updated required macOS minimums for the `xcode` resource to evaluate compatibility for the most recent Xcodes.
+
 ## [5.0.0] - 2022-03-31
 
 ### Fixed
