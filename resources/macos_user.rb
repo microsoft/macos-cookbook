@@ -39,11 +39,13 @@ action_class do
       'DidSeeSiriSetup' => true,
       'DidSeePrivacy' => true,
       'DidSeeAccessibility' => true,
-      'DidSeeAppearance' => true,
+      'DidSeeAppearanceSetup' => true,
+      'DidSeeScreenTime' => true,
       'LastSeenCloudProductVersion' => node['platform_version'],
       'LastPreLoginTasksPerformedVersion' => node['platform_version'],
       'LastPreLoginTasksPerformedBuild' => node['platform_build'],
       'LastSeenBuddyBuildVersion' => node['platform_build'],
+      'LastSeenSiriProductVersion' => node['platform_version'],
     }
   end
 

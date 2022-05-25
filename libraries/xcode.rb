@@ -63,7 +63,11 @@ module MacOS
       return '>= 10.13.6' if Gem::Dependency.new('Xcode', '>= 10.0', '<= 10.1').match?('Xcode', @semantic_version)
       return '>= 10.14.3' if Gem::Dependency.new('Xcode', '>= 10.2', '<= 10.3').match?('Xcode', @semantic_version)
       return '>= 10.14.4' if Gem::Dependency.new('Xcode', '>= 11.0', '<= 11.3.1').match?('Xcode', @semantic_version)
-      return '>= 10.15.2' if Gem::Dependency.new('Xcode', '>= 11.4').match?('Xcode', @semantic_version)
+      return '>= 10.15.2' if Gem::Dependency.new('Xcode', '>= 11.4', '<= 11.7').match?('Xcode', @semantic_version)
+      return '>= 10.15.4' if Gem::Dependency.new('Xcode', '>= 12.0', '<= 12.4').match?('Xcode', @semantic_version)
+      return '>= 11.0' if Gem::Dependency.new('Xcode', '>= 12.5', '<= 12.5.1').match?('Xcode', @semantic_version)
+      return '>= 11.3' if Gem::Dependency.new('Xcode', '>= 13.0', '<= 13.2.1').match?('Xcode', @semantic_version)
+      return '>= 12.0' if Gem::Dependency.new('Xcode', '>= 13.3').match?('Xcode', @semantic_version)
     end
 
     class Simulator
