@@ -13,11 +13,11 @@ module MacOS
     end
 
     def determine_version
-      @version = if @download_url.empty?
-                   latest_xcode_revision(Xcode::Version.new(@semantic_version))
-                 else
-                   @semantic_version
-                 end
+      if @download_url.empty?
+        latest_xcode_revision(Xcode::Version.new(@semantic_version))
+      else
+        @semantic_version
+      end
     end
 
     def available_xcode_versions
@@ -41,7 +41,7 @@ module MacOS
 
     def current_path
       if installed_path.nil?
-        "/Applications/Xcode-#{@version.tr(' ', '.')}.app"
+        "/Applications/Xcode-#{@version.call.tr(' ', '.')}.app"
       else
         installed_path[@semantic_version]
       end
