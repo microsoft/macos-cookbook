@@ -1,5 +1,10 @@
 # Changelog
 
+## [5.0.3] - 2022-11-16
+
+### Fixed
+- Xcode resource verifies that a `xcodebuild` command can be ran when checking to see if Xcode is installed, in addition to verifying that Xcode.app exists.
+
 ## [5.0.2] - 2022-09-08
 
 ### Added
