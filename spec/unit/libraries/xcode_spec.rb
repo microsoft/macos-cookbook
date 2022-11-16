@@ -90,58 +90,49 @@ describe MacOS::Xcode do
     end
     it 'returns the name of the latest Xcode 12 beta when initialized with the semantic version' do
       xcode = MacOS::Xcode.new('12.0', '/Applications/Xcode.app')
-      xcode.version.call
-      expect(xcode.version).to eq '12 beta 4'
-      expect(xcode.version).to_not eq '12 beta'
-      expect(xcode.version).to_not eq '12 for macOS Universal Apps beta'
+      expect(xcode.version.call).to eq '12 beta 4'
+      expect(xcode.version.call).to_not eq '12 beta'
+      expect(xcode.version.call).to_not eq '12 for macOS Universal Apps beta'
     end
     it 'returns the name of the latest Xcode 11.6 beta when initialized with the semantic version' do
       xcode = MacOS::Xcode.new('11.6', '/Applications/Xcode.app')
-      xcode.version.call
-      expect(xcode.version).to eq '11.6 beta 2'
-      expect(xcode.version).to_not eq '11.6 beta'
-      expect(xcode.version).to_not eq '11.6 beta2'
+      expect(xcode.version.call).to eq '11.6 beta 2'
+      expect(xcode.version.call).to_not eq '11.6 beta'
+      expect(xcode.version.call).to_not eq '11.6 beta2'
     end
     it 'returns the name of Xcode 11.5 official when initialized with the semantic version' do
       xcode = MacOS::Xcode.new('11.5', '/Applications/Xcode.app')
-      xcode.version.call
-      expect(xcode.version).to eq '11.5'
-      expect(xcode.version).to_not eq '11.5 beta'
-      expect(xcode.version).to_not eq '11.5 Release Candidate'
+      expect(xcode.version.call).to eq '11.5'
+      expect(xcode.version.call).to_not eq '11.5 beta'
+      expect(xcode.version.call).to_not eq '11.5 Release Candidate'
     end
     it 'returns the name of Xcode 10 official when initialized with the semantic version' do
       xcode = MacOS::Xcode.new('10.0', '/Applications/Xcode.app')
-      xcode.version.call
-      expect(xcode.version).to eq '10'
-      expect(xcode.version).to_not eq '10 Release Candidate'
-      expect(xcode.version).to_not eq '10 beta 1'
+      expect(xcode.version.call).to eq '10'
+      expect(xcode.version.call).to_not eq '10 Release Candidate'
+      expect(xcode.version.call).to_not eq '10 beta 1'
     end
     it 'returns the name of Xcode 9.4.2 official when initialized with the semantic version' do
       xcode = MacOS::Xcode.new('9.4.2', '/Applications/Xcode.app')
-      xcode.version.call
-      expect(xcode.version).to eq '9.4.2'
-      expect(xcode.version).to_not eq '9.4.2 beta 2'
-      expect(xcode.version).to_not eq '9.4.2 beta 3'
+      expect(xcode.version.call).to eq '9.4.2'
+      expect(xcode.version.call).to_not eq '9.4.2 beta 2'
+      expect(xcode.version.call).to_not eq '9.4.2 beta 3'
     end
     it 'returns the temporary beta path set by xcversion when initialized with the semantic version' do
       xcode = MacOS::Xcode.new('9.4.2', '/Applications/Xcode.app')
-      xcode.version.call
       expect(xcode.current_path).to eq '/Applications/Xcode-9.4.2.app'
     end
     it 'returns the name of Xcode 9.3 when initialized with the semantic version' do
       xcode = MacOS::Xcode.new('9.3', '/Applications/Xcode.app')
-      xcode.version.call
-      expect(xcode.version).to eq '9.3'
+      expect(xcode.version.call).to eq '9.3'
     end
     it 'returns the name of Xcode 9 when initialized with the semantic version' do
       xcode = MacOS::Xcode.new('9.0', '/Applications/Xcode.app')
-      xcode.version.call
-      expect(xcode.version).to eq '9'
+      expect(xcode.version.call).to eq '9'
     end
     it 'returns the name of Xcode 8.3.3 when initialized with the semantic version' do
       xcode = MacOS::Xcode.new('8.3.3', '/Applications/Xcode.app')
-      xcode.version.call
-      expect(xcode.version).to eq '8.3.3'
+      expect(xcode.version.call).to eq '8.3.3'
     end
     it 'correctly determines platform compatibility for Xcode 11' do
       xcode = MacOS::Xcode.new('11.0', '/Applications/Xcode.app')
@@ -212,14 +203,12 @@ describe MacOS::Xcode do
 
     it 'ignores the Apple version list and uses the provided version' do
       xcode = MacOS::Xcode.new('0.0', '/Applications/Xcode.app', 'https://www.apple.com')
-      xcode.version.call
-      expect(xcode.version).to eq '0.0'
+      expect(xcode.version.call).to eq '0.0'
     end
 
     it 'ignores the Apple version list and uses the provided version' do
       xcode = MacOS::Xcode.new('2', '/Applications/Xcode.app', 'https://www.apple.com')
-      xcode.version.call
-      expect(xcode.version).to eq '2'
+      expect(xcode.version.call).to eq '2'
     end
   end
 end

@@ -130,7 +130,6 @@ suites:
     controls:
     - keychain-creation
     - login-keychain-creation
-    - default-keychain-creation
 
 - name: remote-access
   provisioner:

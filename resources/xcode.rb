@@ -9,6 +9,19 @@ property :ios_simulators, Array
 property :download_url, String, default: ''
 property :apple_id, Hash
 
+action_class do
+  def with_appleid_credentials(credentials)
+    begin
+      ENV['XCODE_INSTALL_USER'] = credentials[:XCODE_INSTALL_USER]
+      ENV['XCODE_INSTALL_PASSWORD'] = credentials[:XCODE_INSTALL_PASSWORD]
+      yield
+    ensure
+      ENV['XCODE_INSTALL_USER'] = ''
+      ENV['XCODE_INSTALL_PASSWORD'] = ''
+    end
+  end
+end
+
 action :install_gem do
   command_line_tools 'latest'
 
@@ -25,11 +38,21 @@ action :install_gem do
 end
 
 action :install_xcode do
+  developer = DeveloperAccount.new(new_resource.apple_id, new_resource.download_url)
+
   xcode = Xcode.new(
     new_resource.version,
     new_resource.path,
     new_resource.download_url
   )
+
+  if new_resource.download_url.empty?
+    with_appleid_credentials(developer.credentials) do
+      log 'Log Xcode information' do
+        message "Will install Xcode #{xcode.version.call} computed from #{new_resource.version}"
+      end
+    end
+  end
 
   unless xcode.compatible_with_platform?(node['platform_version'])
     ruby_block 'exception' do
@@ -45,7 +68,6 @@ action :install_xcode do
   end
 
   execute "install Xcode #{new_resource.version}" do
-    developer = DeveloperAccount.new(new_resource.apple_id, new_resource.download_url)
     command XCVersion.install_xcode(xcode)
     environment developer.credentials
     cwd '/Users/Shared'

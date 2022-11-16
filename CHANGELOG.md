@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.0.2] - 2022-09-08
+
+### Added
+- Xcode resource logs the Xcode version to install computed from the provided version.
+- Xcode library supports calling the `version` property more than once by not changing the stored data type.
+
 ## [5.0.1] - 2022-05-25
 
 ### Fixed
