@@ -2,6 +2,8 @@
 driver:
   name: vagrant
   provider: parallels
+  customize:
+    hypervisor-type: apple
 
 provisioner:
   product_name: chef
