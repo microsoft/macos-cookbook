@@ -211,10 +211,13 @@ describe 'xcode' do
   end
 
   context 'with requested Xcode installed at a different path' do
+    let(:shellout) { double(stdout: 'Some output', stderr: '', exitstatus: 0) }
+
     before(:each) do
       allow(MacOS::XCVersion).to receive(:installed_xcodes)
         .and_return([{ '10.0' => '/Applications/Some_Weird_Path.app' }])
       stub_command('test -L /Applications/Xcode.app').and_return(false)
+      allow_any_instance_of(Chef::Mixin::ShellOut).to receive(:shell_out).and_return(shellout)
     end
 
     recipe do

@@ -50,7 +50,7 @@ module MacOS
     def installed?
       return false if installed_path.nil?
 
-      installed_path.any?
+      installed_path.any? && shell_out("DEVELOPER_DIR='#{current_path}' /usr/bin/xcodebuild -showsdks").exitstatus == 0
     end
 
     def compatible_with_platform?(macos_version)
