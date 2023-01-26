@@ -44,6 +44,7 @@ action_class do
       'LastSeenCloudProductVersion' => node['platform_version'],
       'LastPreLoginTasksPerformedVersion' => node['platform_version'],
       'LastPreLoginTasksPerformedBuild' => node['platform_build'],
+      'LastPrivacyBundleVersion' => '2',
       'LastSeenBuddyBuildVersion' => node['platform_build'],
       'LastSeenSiriProductVersion' => node['platform_version'],
     }
