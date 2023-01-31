@@ -1,5 +1,10 @@
 # Changelog
 
+## [5.0.4] - 2023-01-31
+
+### Added
+- Added key `LastPrivacyBundleVersion` to `macos_user` resource to allow for dimissing more Welcome screens in macOS 12.6.3
+
 ## [5.0.3] - 2022-11-16
 
 ### Fixed
