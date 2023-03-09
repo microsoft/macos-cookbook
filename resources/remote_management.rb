@@ -6,7 +6,8 @@ default_action :enable
 property :users,
          [String, Array],
          default: 'all',
-         description: 'The user(s) whoose ARD privileges will be configured.'
+         description: 'The user(s) whoose ARD privileges will be configured.',
+         coerce: ->(p) { [p].flatten }
 
 property :privileges,
          [String, Array, Integer],
@@ -32,12 +33,12 @@ end
 
 action :enable do
   converge_if_changed(:privileges, :computer_info) do
-    raise(RemoteManagement::Exceptions::TCCError) unless RemoteManagement.correct_tcc_db_privileges?
+    raise(RemoteManagement::Exceptions::TCCError) unless RemoteManagement::TCC::correct_privileges?
 
     execute 'restart the TCC daemon' do
       command 'sudo pkill -9 tccd'
       only_if { platform_version >= Chef::Version.new('12.0.0') }
-      not_if { RemoteManagement.correct_tccstate? }
+      not_if { RemoteManagement::TCC::State.enabled? }
     end
 
     converge_if_changed(:privileges) do
@@ -53,8 +54,8 @@ action :enable do
             command [RemoteManagement.kickstart, '-configure', '-allowAccessFor', '-specifiedUsers']
           end
 
-          execute "set privileges for #{[new_resource.users].join(', ')}" do
-            command [RemoteManagement.kickstart, '-configure', '-access', '-on', '-privs', '-mask', new_resource.privileges, '-users', [new_resource.users].join(',')]
+          execute "set privileges for #{new_resource.users.join(', ')}" do
+            command [RemoteManagement.kickstart, '-configure', '-access', '-on', '-privs', '-mask', new_resource.privileges, '-users', new_resource.users.join(',')]
           end
         end
       end
@@ -62,8 +63,8 @@ action :enable do
 
     converge_if_changed(:computer_info) do
       new_resource.computer_info.each_with_index do |info, i|
-        execute "set computer info field #{i+1}" do
-          command [RemoteManagement.kickstart, '-configure', '-computerinfo', "-set#{i+1}", "-#{i+1}", info]
+        execute "set computer info field #{i + 1}" do
+          command [RemoteManagement.kickstart, '-configure', '-computerinfo', "-set#{i + 1}", "-#{i + 1}", info]
         end
       end
     end
