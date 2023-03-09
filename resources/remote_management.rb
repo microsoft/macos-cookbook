@@ -33,7 +33,7 @@ end
 
 action :enable do
   converge_if_changed(:privileges, :computer_info) do
-    raise(RemoteManagement::Exceptions::TCCError) unless RemoteManagement::TCC::correct_privileges?
+    raise(RemoteManagement::Exceptions::TCCError) unless RemoteManagement::TCC::DB.correct_privileges?
 
     execute 'restart the TCC daemon' do
       command 'sudo pkill -9 tccd'
