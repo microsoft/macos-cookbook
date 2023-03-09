@@ -208,8 +208,8 @@ module MacOS
         def message
           String.new.tap do |message|
             message << "TCC does not have the correct authorizations for ARD to work!\n"
-            message << "\t* Screensharing client not authorized for post event service\n" unless RemoteManagement.screensharing_client_authorized_for_post_event_service?
-            message << "\t* Screensharing client not authorized for screencapture service\n" unless RemoteManagement.screensharing_client_authorized_for_screencapture_service?
+            message << "\t* Screensharing client not authorized for post event service\n" unless RemoteManagement::TCC::DB.screensharing_client_authorized_for_post_event_service?
+            message << "\t* Screensharing client not authorized for screencapture service\n" unless RemoteManagement::TCC::DB.screensharing_client_authorized_for_screencapture_service?
           end
         end
       end
