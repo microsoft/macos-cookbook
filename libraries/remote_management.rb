@@ -12,13 +12,12 @@ module MacOS
       end
 
       def current_global_mask(users)
-        global_settings_privilege_value = global_settings&.[]('ARD_AllLocalUsersPrivs')
         global_settings_privilege_value.nil? ? current_user_masks(users) : BitMask.mask_from_value(global_settings_privilege_value)
       end
 
       def current_user_masks(users)
         all_user_masks_hash = individual_settings
-        specified_user_masks = users.include?('all') ? all_user_masks_hash.values : users.flatten.map { |user| all_user_masks_hash.fetch(user) }
+        specified_user_masks = users.include?('all') ? all_user_masks_hash.values : users.map { |user| all_user_masks_hash.fetch(user) }
         specified_user_masks.uniq.one? ? specified_user_masks.first : ''
       rescue KeyError
         ''
@@ -32,54 +31,22 @@ module MacOS
         agent_running? && correct_tccstate?
       end
 
-      def agent_running?
-        ::File.exist?('/Library/Application Support/Apple/Remote Desktop/RemoteManagement.launchd')
-      end
-
-      def correct_tccstate?
-        post_event_service_tccstate_enabled? && screencapture_service_tccstate_enabled?
-      end
-
-      def post_event_service_tccstate_enabled?
-        tccstate&.[]('postEvent')
-      end
-
-      def screencapture_service_tccstate_enabled?
-        tccstate&.[]('screenCapture')
-      end
-
-      def correct_tcc_db_privileges?
-        screensharing_client_authorized_for_post_event_service? && screensharing_client_authorized_for_screencapture_service?
-      end
-
-      def screensharing_client_authorized_for_post_event_service?
-        screensharing_client_auth_value_for_post_event_service == 2
-      end
-
-      def screensharing_client_authorized_for_screencapture_service?
-        screensharing_client_auth_value_for_screencapture_service == 2
-      end
-
       def kickstart
-        ::File.join(ard_agent_app_contents_path, 'Resources', 'kickstart')
+        '/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart'
       end
 
       private
+
+      def agent_running?
+        ::File.exist?('/Library/Application Support/Apple/Remote Desktop/RemoteManagement.launchd')
+      end
 
       def configured_for_all_users?
         global_settings&.[]('ARD_AllLocalUsers')
       end
 
-      def ard_agent_app_contents_path
-        '/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/'
-      end
-
-      def tccstate
-        ::Plist.parse_xml(tccstate_xml)
-      end
-
-      def tccstate_xml
-        shell_out!('sudo', ::File.join(ard_agent_app_contents_path, 'Support', 'tccstate')).stdout
+      def global_settings_privilege_value
+        global_settings&.[]('ARD_AllLocalUsersPrivs')
       end
 
       def global_settings
@@ -100,18 +67,6 @@ module MacOS
         shell_out!('/usr/bin/dscl . -list /Users dsAttrTypeNative:naprivs').stdout
       end
 
-      def tcc_db_path
-        '/Library/Application Support/com.apple.TCC/TCC.db'
-      end
-
-      def screensharing_client_auth_value_for_post_event_service
-        shell_out!('sqlite3', tcc_db_path, "SELECT auth_value FROM access WHERE service='kTCCServicePostEvent' AND client='com.apple.screensharing.agent';").stdout.chomp.to_i
-      end
-
-      def screensharing_client_auth_value_for_screencapture_service
-        shell_out!('sqlite3', tcc_db_path, "SELECT auth_value FROM access WHERE service='kTCCServiceScreenCapture' AND client='com.apple.screensharing.agent';").stdout.chomp.to_i
-      end
-
       def computer_info_xml
         shell_out!('/usr/bin/plutil -convert xml1 /Library/Preferences/com.apple.RemoteDesktop.plist -o -').stdout
       rescue Mixli::ShellOut::ShellCommandFailed => e
@@ -120,6 +75,60 @@ module MacOS
 
       def computer_info_hash
         ::Plist.parse_xml(computer_info_xml)
+      end
+    end
+
+    module TCC
+      module State
+        def enabled?
+          post_event_service_enabled? && screencapture_service_enabled?
+        end
+
+        def post_event_service_enabled?
+          hash&.[]('postEvent')
+        end
+
+        def screencapture_service_enabled?
+          hash&.[]('screenCapture')
+        end
+
+        private
+
+        def hash
+          ::Plist.parse_xml(tccstate_xml)
+        end
+
+        def xml
+          shell_out!('sudo', '/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Support/tccstate').stdout
+        end
+      end
+
+      module DB
+        def correct_privileges?
+          screensharing_client_authorized_for_post_event_service? && screensharing_client_authorized_for_screencapture_service?
+        end
+
+        def screensharing_client_authorized_for_post_event_service?
+          screensharing_client_auth_value_for_post_event_service == 2
+        end
+
+        def screensharing_client_authorized_for_screencapture_service?
+          screensharing_client_auth_value_for_screencapture_service == 2
+        end
+
+        private
+
+        def path
+          '/Library/Application Support/com.apple.TCC/TCC.db'
+        end
+
+        def screensharing_client_auth_value_for_post_event_service
+          shell_out!('/usr/bin/sqlite3', path, "SELECT auth_value FROM access WHERE service='kTCCServicePostEvent' AND client='com.apple.screensharing.agent';").stdout.chomp.to_i
+        end
+
+        def screensharing_client_auth_value_for_screencapture_service
+          shell_out!('/usr/bin/sqlite3', path, "SELECT auth_value FROM access WHERE service='kTCCServiceScreenCapture' AND client='com.apple.screensharing.agent';").stdout.chomp.to_i
+        end
       end
     end
 
