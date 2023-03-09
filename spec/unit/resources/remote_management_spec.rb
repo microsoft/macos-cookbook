@@ -21,24 +21,24 @@ shared_context 'no current computer info' do
 end
 
 shared_context 'correct tccstate' do
-  before { allow(RemoteManagement).to receive(:correct_tccstate?).and_return true }
+  before { allow(RemoteManagement::TCC::State).to receive(:enabled?).and_return true }
 end
 
 shared_context 'incorrect tccstate' do
-  before { allow(RemoteManagement).to receive(:correct_tccstate?).and_return false }
+  before { allow(RemoteManagement::TCC::State).to receive(:enabled?).and_return false }
 end
 
 shared_context 'correct TCC database privileges' do
   before do
-    allow(RemoteManagement).to receive(:correct_tcc_db_privileges?).and_return true
+    allow(RemoteManagement::TCC::DB).to receive(:correct_privileges?).and_return true
   end
 end
 
 shared_context 'incorrect TCC database privileges' do
   before do
-    allow(RemoteManagement).to receive(:correct_tcc_db_privileges?).and_return false
-    allow(RemoteManagement).to receive(:screensharing_client_authorized_for_post_event_service?).and_return false
-    allow(RemoteManagement).to receive(:screensharing_client_authorized_for_screencapture_service?).and_return false
+    allow(RemoteManagement::TCC::DB).to receive(:correct_privileges?).and_return false
+    allow(RemoteManagement::TCC::DB).to receive(:screensharing_client_authorized_for_post_event_service?).and_return false
+    allow(RemoteManagement::TCC::DB).to receive(:screensharing_client_authorized_for_screencapture_service?).and_return false
   end
 end
 
@@ -103,10 +103,10 @@ shared_examples 'not deactivating or stopping the ARD agent' do
 end
 
 shared_examples 'setting the computer info' do
-  it { 
+  it {
     is_expected.to run_execute('set computer info field 1')
       .with(command: ['/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart', '-configure', '-computerinfo', '-set1', '-1', 'Arkenstone'])
-   }
+  }
 end
 
 shared_examples 'not setting the computer info' do
