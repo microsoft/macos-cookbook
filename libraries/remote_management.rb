@@ -44,15 +44,15 @@ module MacOS
       end
 
       def using_global_settings?
-        global_settings&.[]('ARD_AllLocalUsers')
+        global_settings['ARD_AllLocalUsers'] || false
       end
 
       def global_settings_privilege_value
-        global_settings&.[]('ARD_AllLocalUsersPrivs')
+        global_settings['ARD_AllLocalUsersPrivs']
       end
 
       def global_settings
-        ::Plist.parse_xml(global_settings_xml)
+        ::Plist.parse_xml(global_settings_xml) || {}
       end
 
       def global_settings_xml
@@ -76,7 +76,7 @@ module MacOS
       end
 
       def computer_info_hash
-        ::Plist.parse_xml(computer_info_xml)
+        ::Plist.parse_xml(computer_info_xml) || {}
       end
 
       def all_local_users
@@ -97,17 +97,17 @@ module MacOS
           end
 
           def post_event_service_enabled?
-            hash&.[]('postEvent')
+            hash['postEvent'] || false
           end
 
           def screencapture_service_enabled?
-            hash&.[]('screenCapture')
+            hash['screenCapture'] || false
           end
 
           private
 
           def hash
-            ::Plist.parse_xml(xml)
+            ::Plist.parse_xml(xml) || {}
           end
 
           def xml
