@@ -6,7 +6,7 @@ default_action :enable
 property :users,
          [String, Array],
          default: 'all',
-         description: 'The user(s) whose ARD privileges will be configured.',
+         description: 'The user(s) whoose ARD privileges will be configured.',
          coerce: ->(p) { [p].flatten }
 
 property :privileges,
@@ -19,12 +19,12 @@ property :privileges,
 property :computer_info,
          [String, Array],
          default: [],
-         description: 'Info fields; helpful for stratifying computers in ARD client app.',
+         description: 'Info fields; helpful for stratifing computers in ARD client app.',
          coerce: ->(p) { p.compact.map(&:to_s) },
          callbacks: { 'has too many elements; computer info excepts up to four info fields' => ->(p) { (p.is_a?(Array) && p.size < 4) } }
 
 load_current_value do |desired|
-  current_value_does_not_exist! unless RemoteManagement.activated? && RemoteManagement.users_configured?(desired.users)
+  current_value_does_not_exist! unless RemoteManagement.activated?
   privileges RemoteManagement.current_mask(desired.users)
   computer_info RemoteManagement.current_computer_info
 end
