@@ -8,7 +8,7 @@ module MacOS
       # Return empty string if users have different masks. The resource will converge.
       # Return an integer mask if the users share the same mask. The resource will NOT converge if the desired mask matches this mask.
       def current_mask(*users)
-        configured_for_all_users? ? current_global_mask(users) : current_user_masks(users)
+        using_global_settings? ? current_global_mask(users) : current_user_masks(users)
       end
 
       def current_global_mask(users)
@@ -17,10 +17,15 @@ module MacOS
 
       def current_user_masks(users)
         all_user_masks_hash = individual_settings
-        specified_user_masks = users.include?('all') ? all_user_masks_hash.values : users.map { |user| all_user_masks_hash.fetch(user) }
+        users = all_local_users if users.include?('all')
+        specified_user_masks = users.flatten.map { |user| all_user_masks_hash.fetch(user) }
         specified_user_masks.uniq.one? ? specified_user_masks.first : ''
-      rescue KeyError
-        ''
+      end
+
+      def users_configured?(users)
+        return true if using_global_settings? && !global_settings_privilege_value.nil?
+        users = all_local_users if users.include?('all')
+        (individual_settings.keys - users).empty?
       end
 
       def current_computer_info
@@ -28,7 +33,7 @@ module MacOS
       end
 
       def activated?
-        agent_running? && correct_tccstate?
+        agent_running? && TCC::State.enabled?
       end
 
       def kickstart
@@ -41,7 +46,7 @@ module MacOS
         ::File.exist?('/Library/Application Support/Apple/Remote Desktop/RemoteManagement.launchd')
       end
 
-      def configured_for_all_users?
+      def using_global_settings?
         global_settings&.[]('ARD_AllLocalUsers')
       end
 
@@ -76,58 +81,71 @@ module MacOS
       def computer_info_hash
         ::Plist.parse_xml(computer_info_xml)
       end
+
+      def all_local_users
+        system_users = %w(root nobody daemon unknown smmsp www mysql sshd lp sendmail postfix eppc qtss cyrus mailman)
+        (all_users.reject { |user| user.match?(/^_\w+$/) } - system_users)
+      end
+
+      def all_users
+        shell_out!('/usr/bin/dscl . -list /Users').stdout.split
+      end
     end
 
     module TCC
       module State
-        def enabled?
-          post_event_service_enabled? && screencapture_service_enabled?
-        end
+        class << self
+          def enabled?
+            post_event_service_enabled? && screencapture_service_enabled?
+          end
 
-        def post_event_service_enabled?
-          hash&.[]('postEvent')
-        end
+          def post_event_service_enabled?
+            hash&.[]('postEvent')
+          end
 
-        def screencapture_service_enabled?
-          hash&.[]('screenCapture')
-        end
+          def screencapture_service_enabled?
+            hash&.[]('screenCapture')
+          end
 
-        private
+          private
 
-        def hash
-          ::Plist.parse_xml(tccstate_xml)
-        end
+          def hash
+            ::Plist.parse_xml(xml)
+          end
 
-        def xml
-          shell_out!('sudo', '/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Support/tccstate').stdout
+          def xml
+            shell_out!('sudo', '/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Support/tccstate').stdout
+          end
         end
       end
 
       module DB
-        def correct_privileges?
-          screensharing_client_authorized_for_post_event_service? && screensharing_client_authorized_for_screencapture_service?
-        end
+        class << self
+          def correct_privileges?
+            screensharing_client_authorized_for_post_event_service? && screensharing_client_authorized_for_screencapture_service?
+          end
 
-        def screensharing_client_authorized_for_post_event_service?
-          screensharing_client_auth_value_for_post_event_service == 2
-        end
+          def screensharing_client_authorized_for_post_event_service?
+            screensharing_client_auth_value_for_post_event_service == 2
+          end
 
-        def screensharing_client_authorized_for_screencapture_service?
-          screensharing_client_auth_value_for_screencapture_service == 2
-        end
+          def screensharing_client_authorized_for_screencapture_service?
+            screensharing_client_auth_value_for_screencapture_service == 2
+          end
 
-        private
+          private
 
-        def path
-          '/Library/Application Support/com.apple.TCC/TCC.db'
-        end
+          def path
+            '/Library/Application Support/com.apple.TCC/TCC.db'
+          end
 
-        def screensharing_client_auth_value_for_post_event_service
-          shell_out!('/usr/bin/sqlite3', path, "SELECT auth_value FROM access WHERE service='kTCCServicePostEvent' AND client='com.apple.screensharing.agent';").stdout.chomp.to_i
-        end
+          def screensharing_client_auth_value_for_post_event_service
+            shell_out!('/usr/bin/sqlite3', path, "SELECT auth_value FROM access WHERE service='kTCCServicePostEvent' AND client='com.apple.screensharing.agent';").stdout.chomp.to_i
+          end
 
-        def screensharing_client_auth_value_for_screencapture_service
-          shell_out!('/usr/bin/sqlite3', path, "SELECT auth_value FROM access WHERE service='kTCCServiceScreenCapture' AND client='com.apple.screensharing.agent';").stdout.chomp.to_i
+          def screensharing_client_auth_value_for_screencapture_service
+            shell_out!('/usr/bin/sqlite3', path, "SELECT auth_value FROM access WHERE service='kTCCServiceScreenCapture' AND client='com.apple.screensharing.agent';").stdout.chomp.to_i
+          end
         end
       end
     end
