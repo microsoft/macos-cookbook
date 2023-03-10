@@ -9,10 +9,14 @@ shared_context 'remote management disabled' do
 end
 
 shared_context 'users current mask is -2147483648 (no privileges)' do
+  before { allow(RemoteManagement).to receive(:current_users_configured?).and_return true }
+  before { allow(RemoteManagement).to receive(:current_users_have_identical_masks?).and_return true }
   before { allow(RemoteManagement).to receive(:current_mask).and_return(-2147483648) }
 end
 
 shared_context 'users current mask is -1073741569 (all privileges)' do
+  before { allow(RemoteManagement).to receive(:current_users_configured?).and_return true }
+  before { allow(RemoteManagement).to receive(:current_users_have_identical_masks?).and_return true }
   before { allow(RemoteManagement).to receive(:current_mask).and_return(-1073741569) }
 end
 
