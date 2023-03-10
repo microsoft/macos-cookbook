@@ -2,11 +2,7 @@ module MacOS
   class RemoteManagement
     class << self
       def current_mask(users)
-        using_global_settings? ? current_global_mask(users) : current_user_masks(users).first
-      end
-
-      def current_global_mask(users)
-        global_settings_privilege_value.nil? ? current_user_masks(users) : BitMask.mask_from_value(global_settings_privilege_value)
+        using_global_privileges? ? BitMask.mask_from_value(global_settings_privilege_value) : current_user_masks(users).first
       end
 
       def current_user_masks(users)
@@ -14,13 +10,13 @@ module MacOS
         users.flatten.map { |user| individual_settings.fetch(user) }
       end
 
-      def users_have_identical_masks?(users)
-        return true if global_privileges_configured? 
+      def current_users_have_identical_masks?(users)
+        return true if using_global_privileges?
         current_user_masks(users).uniq.one?
       end
-      
-      def users_configured?(users)
-        return true if global_privileges_configured? 
+
+      def current_users_configured?(users)
+        return true if using_global_privileges?
         users = all_local_users if users.include?('all')
         (users - individual_settings.keys).empty?
       end
@@ -43,7 +39,7 @@ module MacOS
         ::File.exist?('/Library/Application Support/Apple/Remote Desktop/RemoteManagement.launchd')
       end
 
-      def global_privileges_configured?
+      def using_global_privileges?
         using_global_settings? && !global_settings_privilege_value.nil?
       end
 
@@ -75,7 +71,7 @@ module MacOS
 
       def computer_info_xml
         shell_out!('/usr/bin/plutil -convert xml1 /Library/Preferences/com.apple.RemoteDesktop.plist -o -').stdout
-      rescue Mixli::ShellOut::ShellCommandFailed => e
+      rescue Mixlib::ShellOut::ShellCommandFailed => e
         e.message.match?(Regexp.new('file does not exist')) ? '' : raise
       end
 
@@ -182,7 +178,7 @@ module MacOS
 
         def validate_privileges!(privileges)
           raise RemoteManagement::Exceptions::BitMask::PrivilegeValidationError unless valid_privileges?(privileges)
-        rescue RemoteManagement::Exceptions::BitMask::PrivilegeValidationError => e# raise property validation error if called from propery coersion block
+        rescue RemoteManagement::Exceptions::BitMask::PrivilegeValidationError => e # raise property validation error if called from propery coersion block
           called_by_chef_property_coerce ? raise(Chef::Exceptions::ValidationFailed, e.message) : raise
         end
 
