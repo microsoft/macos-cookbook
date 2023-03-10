@@ -1,14 +1,8 @@
 module MacOS
   class RemoteManagement
     class << self
-      # macos::remote_management load_current_value helper
-      # the privileges property will be an integer mask
-      # compare this to the current mask of each user specified in the users property.
-      # Return empty string if any user still needs to set up privileges. The resource will converge.
-      # Return empty string if users have different masks. The resource will converge.
-      # Return an integer mask if the users share the same mask. The resource will NOT converge if the desired mask matches this mask.
-      def current_mask(*users)
-        using_global_settings? ? current_global_mask(users) : current_user_masks(users)
+      def current_mask(users)
+        using_global_settings? ? current_global_mask(users) : current_user_masks(users).first
       end
 
       def current_global_mask(users)
@@ -16,15 +10,17 @@ module MacOS
       end
 
       def current_user_masks(users)
-        return '' unless users_configured?(users)
-        all_user_masks_hash = individual_settings
         users = all_local_users if users.include?('all')
-        specified_user_masks = users.flatten.map { |user| all_user_masks_hash.fetch(user) }
-        specified_user_masks.uniq.one? ? specified_user_masks.first : ''
+        users.flatten.map { |user| individual_settings.fetch(user) }
       end
 
+      def users_have_identical_masks?(users)
+        return true if global_privileges_configured? 
+        current_user_masks(users).uniq.one?
+      end
+      
       def users_configured?(users)
-        return true if using_global_settings? && !global_settings_privilege_value.nil?
+        return true if global_privileges_configured? 
         users = all_local_users if users.include?('all')
         (users - individual_settings.keys).empty?
       end
@@ -45,6 +41,10 @@ module MacOS
 
       def agent_running?
         ::File.exist?('/Library/Application Support/Apple/Remote Desktop/RemoteManagement.launchd')
+      end
+
+      def global_privileges_configured?
+        using_global_settings? && !global_settings_privilege_value.nil?
       end
 
       def using_global_settings?
@@ -182,8 +182,8 @@ module MacOS
 
         def validate_privileges!(privileges)
           raise RemoteManagement::Exceptions::BitMask::PrivilegeValidationError unless valid_privileges?(privileges)
-        rescue RemoteManagement::Exceptions::BitMask::PrivilegeValidationError # raise property validation error if called from propery coersion block
-          called_by_chef_property_coerce ? raise(Chef::Exceptions::ValidationFailed, "Option privilege's value is invalid. See https://ss64.com/osx/kickstart.html for valid privileges!") : raise
+        rescue RemoteManagement::Exceptions::BitMask::PrivilegeValidationError => e# raise property validation error if called from propery coersion block
+          called_by_chef_property_coerce ? raise(Chef::Exceptions::ValidationFailed, e.message) : raise
         end
 
         def called_by_chef_property_coerce

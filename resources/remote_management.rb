@@ -24,7 +24,7 @@ property :computer_info,
          callbacks: { 'has too many elements; computer info excepts up to four info fields' => ->(p) { (p.is_a?(Array) && p.size < 4) } }
 
 load_current_value do |desired|
-  current_value_does_not_exist! unless RemoteManagement.activated? && RemoteManagement.users_configured?(desired.users)
+  current_value_does_not_exist! unless RemoteManagement.activated? && RemoteManagement.users_configured?(desired.users) && RemoteManagement.users_have_identical_masks?(desired.users)
   privileges RemoteManagement.current_mask(desired.users)
   computer_info RemoteManagement.current_computer_info
 end
