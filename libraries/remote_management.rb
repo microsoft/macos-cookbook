@@ -16,6 +16,7 @@ module MacOS
       end
 
       def current_user_masks(users)
+        return '' unless users_configured?(users)
         all_user_masks_hash = individual_settings
         users = all_local_users if users.include?('all')
         specified_user_masks = users.flatten.map { |user| all_user_masks_hash.fetch(user) }
@@ -25,7 +26,7 @@ module MacOS
       def users_configured?(users)
         return true if using_global_settings? && !global_settings_privilege_value.nil?
         users = all_local_users if users.include?('all')
-        (individual_settings.keys - users).empty?
+        (users - individual_settings.keys).empty?
       end
 
       def current_computer_info

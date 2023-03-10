@@ -1,6 +1,8 @@
 require_relative '../../spec_helper'
 
 describe MacOS::RemoteManagement do
+  let(:shellout) { double(stdout: nil, stderr: nil) }
+
   describe '.kickstart' do
     it 'should return correct executable path' do
       expect(described_class.kickstart).to eq '/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart'
@@ -8,8 +10,6 @@ describe MacOS::RemoteManagement do
   end
 
   describe '.current_mask' do
-    let(:shellout) { double(stdout: nil, stderr: nil) }
-
     context 'when ARD is currently configured to grant access to all local users' do
       let(:global_settings_xml) do
         <<~XML
@@ -39,8 +39,7 @@ describe MacOS::RemoteManagement do
       context 'when there is only one user' do
         context 'when the specified user currently does not have privileges set' do
           it 'should return an empty string' do
-            allow(shellout).to receive(:stdout).and_return ''
-            allow_any_instance_of(Chef::Mixin::ShellOut).to receive(:shell_out!).and_return shellout
+            allow(described_class).to receive(:users_configured?).and_return false
             expect(described_class.current_mask('bilbo')).to eq ''
           end
         end
@@ -91,8 +90,7 @@ describe MacOS::RemoteManagement do
           end
 
           it 'should return an empty string' do
-            allow(shellout).to receive(:stdout).and_return dscl_naprivs
-            allow_any_instance_of(Chef::Mixin::ShellOut).to receive(:shell_out!).and_return shellout
+            allow(described_class).to receive(:users_configured?).and_return false
             expect(described_class.current_mask('bilbo', 'ganalf')).to eq ''
           end
         end
@@ -101,8 +99,6 @@ describe MacOS::RemoteManagement do
   end
 
   describe '.current_computer_info' do
-    let(:shellout) { double(stdout: nil, stderr: nil) }
-
     context 'when there is no computer info' do
       let(:computer_info_xml) do
         <<~XML
@@ -149,6 +145,82 @@ describe MacOS::RemoteManagement do
         allow(shellout).to receive(:stdout).and_return computer_info_xml
         allow_any_instance_of(Chef::Mixin::ShellOut).to receive(:shell_out!).and_return shellout
         expect(described_class.current_computer_info).to eq ['bilbo', 'baggins']
+      end
+    end
+  end
+
+  describe '.users_configured?' do
+    context 'when using global settings' do
+      let(:global_settings_xml) do
+        <<~XML
+        <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>ARD_AllLocalUsers</key>
+            <true/>
+            <key>ARD_AllLocalUsersPrivs</key>
+            <integer>3</integer>
+            <key>allowInsecureDH</key>
+            <true/>
+          </dict>
+          </plist>
+        XML
+      end
+
+      it 'should return true when global privilege value exists' do
+        allow(shellout).to receive(:stdout).and_return global_settings_xml
+        allow_any_instance_of(Chef::Mixin::ShellOut).to receive(:shell_out!).and_return shellout
+        expect(described_class.users_configured?(['bilbo'])).to be true
+      end
+    end
+    context 'when using individual settings' do
+      context 'when all desired users are configured' do
+        it 'should return true' do
+          allow(described_class).to receive(:using_global_settings?).and_return false
+          allow(described_class).to receive(:individual_settings).and_return({ 'bilbo' => 1 })
+          expect(described_class.users_configured?(['bilbo'])).to be true
+        end
+      end
+
+      context 'when desired users are not configured' do
+        it 'should return false' do
+          allow(described_class).to receive(:using_global_settings?).and_return false
+          allow(described_class).to receive(:individual_settings).and_return({ 'bilbo' => 1 })
+          expect(described_class.users_configured?(['bilbo', 'frodo'])).to be false
+        end
+      end
+    end
+  end
+
+  describe '.activated?' do
+    context 'when the Remote Management launchd file does not exit' do
+      it 'should return false' do
+        allow(File).to receive(:exist?).and_call_original
+        allow(File).to receive(:exist?).and_return false
+        expect(described_class.activated?).to be false
+      end
+    end
+    context 'when the tcc state is not enabled' do
+      let(:tccstate_stdout) do
+        <<~XML
+          <?xml version=\"1.0\" encoding=\"UTF-8\"?>
+          <!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+          <plist version=\"1.0\">
+          <dict>
+            <key>postEvent</key>
+            <false/>
+            <key>screenCapture</key>
+            <false/>
+          </dict>
+          </plist>
+        XML
+      end
+
+      it 'should return false' do
+        allow(shellout).to receive(:stdout).and_return tccstate_stdout
+        allow_any_instance_of(Chef::Mixin::ShellOut).to receive(:shell_out!).and_return shellout
+        expect(described_class.activated?).to be false
       end
     end
   end
