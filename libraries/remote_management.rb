@@ -2,7 +2,7 @@ module MacOS
   class RemoteManagement
     class << self
       def current_mask(users)
-        using_global_privileges? ? BitMask.mask_from_value(global_settings_privilege_value) : current_user_masks(users).first
+        using_global_privileges? ? Privileges.mask_from_value(global_settings_privilege_value) : current_user_masks(users).first
       end
 
       def current_user_masks(users)
@@ -147,6 +147,65 @@ module MacOS
       end
     end
 
+    module Privileges
+      class << self
+        def valid_mask?(mask)
+          value = value_from_mask(mask)
+          return true if value == BitMask::NONE
+          (~(BitMask::ALL | BitMask::OBSERVE_ONLY) & value).zero?
+        end
+
+        def valid_privileges?(privileges)
+          invalid_privileges(privileges).empty?
+        end
+
+        def invalid_privileges(privileges)
+          privileges - BitMask.constants(false)
+        end
+
+        def validate_privileges!(privileges)
+          raise RemoteManagement::Exceptions::Privileges::ValidationError unless valid_privileges?(privileges)
+        rescue RemoteManagement::Exceptions::Privileges::ValidationError => e # raise property validation error if called from propery coersion block
+          called_by_chef_property_coerce? ? raise(Chef::Exceptions::ValidationFailed, e.message) : raise
+        end
+
+        def called_by_chef_property_coerce?
+          caller_locations.any? { |backtrace_location| ::File.basename(backtrace_location.path, '.rb') == 'property' && backtrace_location.label == 'coerce' }
+        end
+
+        def mask_from_privileges(privileges)
+          value = value_from_privileges(privileges)
+          mask_from_value(value)
+        end
+
+        def value_from_privileges(privileges)
+          privileges = format_privileges(privileges)
+          validate_privileges!(privileges)
+
+          return BitMask::ALL if privileges.include?(:ALL)
+          return 0 if privileges.include?(:NONE)
+          privileges.map { |priv| BitMask.const_get(priv.upcase) }.reduce(&:|)
+        end
+
+        def format_privileges(privileges)
+          [privileges].flatten.map do |privilege|
+            privilege.gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
+                     .gsub(/([a-z])([A-Z])/, '\1_\2')
+                     .gsub(/(\s|-|_{2,})/, '_')
+                     .upcase.to_sym
+          end
+        end
+
+        def mask_from_value(value)
+          value - BitMask::NONE
+        end
+
+        def value_from_mask(mask)
+          mask + BitMask::NONE
+        end
+      end
+    end
+
     module BitMask
       TEXT_MESSAGES     = 0b00000000000000000000000000000001
       CONTROL_OBSERVE   = 0b00000000000000000000000000000010
@@ -160,58 +219,6 @@ module MacOS
       SHOW_OBSERVE      = 0b01000000000000000000000000000000
       ALL               = 0b01000000000000000000000011111111
       NONE              = 0b10000000000000000000000000000000
-
-      class << self
-        def valid_mask?(mask)
-          value = value_from_mask(mask)
-          return true if value == NONE
-          (~(ALL | OBSERVE_ONLY) & value).zero?
-        end
-
-        def valid_privileges?(privileges)
-          invalid_privileges(privileges).empty?
-        end
-
-        def invalid_privileges(privileges)
-          privileges - constants(false)
-        end
-
-        def validate_privileges!(privileges)
-          raise RemoteManagement::Exceptions::BitMask::PrivilegeValidationError unless valid_privileges?(privileges)
-        rescue RemoteManagement::Exceptions::BitMask::PrivilegeValidationError => e # raise property validation error if called from propery coersion block
-          called_by_chef_property_coerce ? raise(Chef::Exceptions::ValidationFailed, e.message) : raise
-        end
-
-        def called_by_chef_property_coerce
-          caller_locations.any? { |backtrace_location| ::File.basename(backtrace_location.path, '.rb') == 'property' && backtrace_location.label == 'coerce' }
-        end
-
-        def value_from_privileges(privileges)
-          privileges = format_privileges(privileges)
-          validate_privileges!(privileges)
-
-          return ALL if privileges.include?(:ALL)
-          return 0 if privileges.include?(:NONE)
-          privileges.map { |priv| const_get(priv.upcase) }.reduce(&:|)
-        end
-
-        def format_privileges(privileges)
-          [privileges].flatten.map { |privilege| privilege.gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2').gsub(/([a-z])([A-Z])/, '\1_\2').gsub(/(\s|-|_{2,})/, '_').upcase.to_sym }
-        end
-
-        def mask_from_value(value)
-          value - NONE
-        end
-
-        def value_from_mask(mask)
-          mask + NONE
-        end
-
-        def mask_from_privileges(privileges)
-          value = value_from_privileges(privileges)
-          mask_from_value(value)
-        end
-      end
     end
 
     module Exceptions
@@ -229,8 +236,8 @@ module MacOS
         end
       end
 
-      module BitMask
-        class PrivilegeValidationError < ArgumentError
+      module Privileges
+        class ValidationError < ArgumentError
           def initialize
             super("recieved invalid privilege! Valid privileges include: #{RemoteManagement::BitMask.constants(false).map(&:downcase).map(&:to_s)}")
           end

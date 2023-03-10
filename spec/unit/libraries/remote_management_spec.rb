@@ -204,7 +204,7 @@ describe MacOS::RemoteManagement do
   end
 end
 
-describe MacOS::RemoteManagement::BitMask do
+describe MacOS::RemoteManagement::Privileges do
   describe '.mask_from_privileges' do
     context 'when single privilege' do
       it 'should return the correct mask' do
@@ -235,8 +235,8 @@ describe MacOS::RemoteManagement::BitMask do
     end
     context 'when invalid privilege is passed' do
       it 'should throw argument error' do
-        expect { described_class.mask_from_privileges(['nazgûl']) }.to raise_error(MacOS::RemoteManagement::Exceptions::BitMask::PrivilegeValidationError)
-        expect { described_class.mask_from_privileges(['nazgûl', 'smèagol']) }.to raise_error(MacOS::RemoteManagement::Exceptions::BitMask::PrivilegeValidationError)
+        expect { described_class.mask_from_privileges(['nazgûl']) }.to raise_error(MacOS::RemoteManagement::Exceptions::Privileges::ValidationError)
+        expect { described_class.mask_from_privileges(['nazgûl', 'smèagol']) }.to raise_error(MacOS::RemoteManagement::Exceptions::Privileges::ValidationError)
       end
     end
   end
