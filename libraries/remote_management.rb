@@ -2,7 +2,7 @@ module MacOS
   class RemoteManagement
     class << self
       def current_mask(users)
-        using_global_privileges? ? Privileges.mask_from_value(global_settings_privilege_value) : current_user_masks(users).first
+        using_global_privileges? ? Privileges::Value.new(value: global_settings_privilege_value).to_mask.to_i : current_user_masks(users).first
       end
 
       def current_user_masks(users)
@@ -149,23 +149,17 @@ module MacOS
 
     module Privileges
       class << self
-        def valid_mask?(mask)
-          value = value_from_mask(mask)
-          return true if value == BitMask::NONE
-          (~(BitMask::ALL | BitMask::OBSERVE_ONLY) & value).zero?
+        def valid?(privileges)
+          list_invalid(privileges).empty?
         end
 
-        def valid_privileges?(privileges)
-          invalid_privileges(privileges).empty?
-        end
-
-        def invalid_privileges(privileges)
+        def list_invalid(privileges)
           privileges - BitMask.constants(false)
         end
 
-        def validate_privileges!(privileges)
-          raise RemoteManagement::Exceptions::Privileges::ValidationError unless valid_privileges?(privileges)
-        rescue RemoteManagement::Exceptions::Privileges::ValidationError => e # raise property validation error if called from propery coersion block
+        def validate!(privileges)
+          raise(Exceptions::Privileges::ValidationError, list_invalid(privileges)) unless valid?(privileges)
+        rescue Exceptions::Privileges::ValidationError => e # raise property validation error if called from propery coersion block
           called_by_chef_property_coerce? ? raise(Chef::Exceptions::ValidationFailed, e.message) : raise
         end
 
@@ -173,21 +167,19 @@ module MacOS
           caller_locations.any? { |backtrace_location| ::File.basename(backtrace_location.path, '.rb') == 'property' && backtrace_location.label == 'coerce' }
         end
 
-        def mask_from_privileges(privileges)
-          value = value_from_privileges(privileges)
-          mask_from_value(value)
+        def to_mask(privileges)
+          privileges = format(privileges)
+          validate!(privileges)
+          Mask.new(privileges: privileges).to_i
         end
 
-        def value_from_privileges(privileges)
-          privileges = format_privileges(privileges)
-          validate_privileges!(privileges)
-
-          return BitMask::ALL if privileges.include?(:ALL)
-          return 0 if privileges.include?(:NONE)
-          privileges.map { |priv| BitMask.const_get(priv.upcase) }.reduce(&:|)
+        def to_value(privileges)
+          privileges = format(privileges)
+          validate!(privileges)
+          Value.new(privileges: privileges).to_i
         end
 
-        def format_privileges(privileges)
+        def format(privileges)
           [privileges].flatten.map do |privilege|
             privilege.gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
                      .gsub(/([a-z])([A-Z])/, '\1_\2')
@@ -195,13 +187,72 @@ module MacOS
                      .upcase.to_sym
           end
         end
+      end
 
-        def mask_from_value(value)
-          value - BitMask::NONE
+      class Value
+        extend Forwardable
+        def_delegators :@value, :to_i
+
+        attr_reader :value
+
+        def initialize(value: nil, privileges: nil)
+          raise(Exceptions::Privileges::Value::InvalidArgument, value, privileges) unless [value, privileges].compact.one?
+          @value = value || from_privileges(privileges)
+          raise(Exceptions::Privileges::Value::ValidationError, @value) unless valid?
         end
 
-        def value_from_mask(mask)
-          mask + BitMask::NONE
+        def valid?
+          return true if @value == BitMask::NONE
+          (~(BitMask::ALL | BitMask::OBSERVE_ONLY) & @value).zero?
+        end
+
+        # TODO; how to DRY
+        def self.valid?(value)
+          return true if value == BitMask::NONE
+          (~(BitMask::ALL | BitMask::OBSERVE_ONLY) & value).zero?
+        end
+
+        def from_privileges(privileges)
+          return BitMask::ALL if privileges.include?(:ALL)
+          return 0 if privileges.include?(:NONE)
+          privileges.map { |priv| BitMask.const_get(priv.upcase) }.reduce(&:|)
+        end
+
+        def to_mask
+          Mask.new(mask: (@value - BitMask::NONE))
+        end
+      end
+
+      class Mask
+        extend Forwardable
+        def_delegators :@mask, :to_i
+
+        attr_reader :mask
+
+        def initialize(mask: nil, privileges: nil)
+          raise(Exceptions::Privileges::Mask::InvalidArgument, mask, privileges) unless [mask, privileges].compact.one?
+          @mask = mask || from_privileges(privileges)
+          raise(Exceptions::Privileges::Mask::ValidationError, @mask) unless valid?
+        end
+
+        def valid?
+          return true if @mask.zero?
+          (~(BitMask::ALL | BitMask::OBSERVE_ONLY) & (@mask + BitMask::NONE)).zero?
+        end
+
+        def self.valid?(mask)
+          return true if mask.zero?
+          (~(BitMask::ALL | BitMask::OBSERVE_ONLY) & (mask + BitMask::NONE)).zero?
+        end
+
+        def from_privileges(privileges)
+          return -BitMask::NONE if privileges.include?(:NONE)
+          return (BitMask::ALL - BitMask::NONE) if privileges.include?(:ALL)
+          (privileges.map { |priv| BitMask.const_get(priv.upcase) }.reduce(&:|) - BitMask::NONE)
+        end
+
+        def to_value
+          Value.new(value: (@mask + BitMask::NONE))
         end
       end
     end
@@ -238,8 +289,36 @@ module MacOS
 
       module Privileges
         class ValidationError < ArgumentError
-          def initialize
-            super("recieved invalid privilege! Valid privileges include: #{RemoteManagement::BitMask.constants(false).map(&:downcase).map(&:to_s)}")
+          def initialize(invalid_privileges)
+            super("#{invalid_privileges} are invalid privilege! Valid privileges include: #{RemoteManagement::BitMask.constants(false).map(&:downcase).map(&:to_s)}")
+          end
+        end
+
+        module Value
+          class ValidationError < ArgumentError
+            def initialize(value)
+              super("#{value.inspect} is an invalid value!")
+            end
+          end
+
+          class InvalidArgument < ArgumentError
+            def initialize(*args)
+              super("wrong number of arguments (given #{args.compact.size} expected 1)")
+            end
+          end
+        end
+
+        module Mask
+          class ValidationError < ArgumentError
+            def initialize(mask)
+              super("#{mask.inspect} is an invalid mask!")
+            end
+
+            class InvalidArgument < ArgumentError
+              def initialize(*args)
+                super("wrong number of arguments (given #{args.compact.size} expected 1)")
+              end
+            end
           end
         end
       end

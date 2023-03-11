@@ -13,8 +13,8 @@ property :privileges,
          [String, Array, Integer],
          default: 'all',
          description: 'The desired privileges to bestow upon the given users.',
-         coerce: ->(p) { p.is_a?(Integer) ? p : RemoteManagement::Privileges.mask_from_privileges(p) },
-         callbacks: { 'is invalid. See https://ss64.com/osx/kickstart.html for valid privileges' => ->(p) { RemoteManagement::Privileges.valid_mask?(p) } }
+         coerce: ->(p) { p.is_a?(Integer) ? p : RemoteManagement::Privileges.to_mask(p) },
+         callbacks: { 'is invalid. See https://ss64.com/osx/kickstart.html for valid privileges' => ->(p) { RemoteManagement::Privileges::Mask.valid?(p) } }
 
 property :computer_info,
          [String, Array],
