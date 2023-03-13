@@ -10,11 +10,10 @@ property :users,
          coerce: ->(p) { [p].flatten }
 
 property :privileges,
-         [String, Array, Integer],
+         [String, Array, RemoteManagement::Privileges::Mask],
          default: 'all',
          description: 'The desired privileges to bestow upon the given users.',
-         coerce: ->(p) { p.is_a?(Integer) ? p : RemoteManagement::Privileges.to_mask(p) },
-         callbacks: { 'is invalid. See https://ss64.com/osx/kickstart.html for valid privileges' => ->(p) { RemoteManagement::Privileges::Mask.valid?(p) } }
+         coerce: ->(p) { p.is_a?(RemoteManagement::Privileges::Mask) ? p : RemoteManagement::Privileges::Mask.new(privileges: p) }
 
 property :computer_info,
          [String, Array],
@@ -44,18 +43,22 @@ action :enable do
     converge_if_changed(:privileges) do
       if new_resource.users.include?('all')
         converge_by('setting privileges for all users') do
+          privs_array = new_resource.privileges.to_a.map { |priv| priv.prepend('-') }
+
           execute 'set privileges for all users' do
-            command [RemoteManagement.kickstart, '-configure', '-allowAccessFor', '-allUsers', '-access', '-on', '-privs', '-mask', new_resource.privileges]
+            command [RemoteManagement.kickstart, '-configure', '-allowAccessFor', '-allUsers', '-access', '-on', '-privs', privs_array].flatten
           end
         end
       else
         converge_by('setting privileges for specified users') do
+          privs_array = new_resource.privileges.to_a.map { |priv| priv.prepend('-') }
+
           execute 'set up Remote Management to only grant access to users with privileges' do
             command [RemoteManagement.kickstart, '-configure', '-allowAccessFor', '-specifiedUsers']
           end
 
           execute "set privileges for #{new_resource.users.join(', ')}" do
-            command [RemoteManagement.kickstart, '-configure', '-access', '-on', '-privs', '-mask', new_resource.privileges, '-users', new_resource.users.join(',')]
+            command [RemoteManagement.kickstart, '-configure', '-access', '-on', '-privs', privs_array, '-users', new_resource.users].flatten
           end
         end
       end
