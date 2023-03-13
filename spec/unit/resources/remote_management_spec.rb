@@ -9,15 +9,19 @@ shared_context 'remote management disabled' do
 end
 
 shared_context 'users current mask is -2147483648 (no privileges)' do
+  let(:current_mask) { RemoteManagement::Privileges::Mask.new(mask: -2147483648) }
+
   before { allow(RemoteManagement).to receive(:current_users_configured?).and_return true }
   before { allow(RemoteManagement).to receive(:current_users_have_identical_masks?).and_return true }
-  before { allow(RemoteManagement).to receive(:current_mask).and_return(-2147483648) }
+  before { allow(RemoteManagement).to receive(:current_mask).and_return(current_mask) }
 end
 
 shared_context 'users current mask is -1073741569 (all privileges)' do
+  let(:current_mask) { RemoteManagement::Privileges::Mask.new(mask: -1073741569) }
+
   before { allow(RemoteManagement).to receive(:current_users_configured?).and_return true }
   before { allow(RemoteManagement).to receive(:current_users_have_identical_masks?).and_return true }
-  before { allow(RemoteManagement).to receive(:current_mask).and_return(-1073741569) }
+  before { allow(RemoteManagement).to receive(:current_mask).and_return(current_mask) }
 end
 
 shared_context 'no current computer info' do
@@ -60,7 +64,7 @@ end
 shared_examples 'configuring the ARD agent for all users' do
   it {
     is_expected.to run_execute('set privileges for all users')
-      .with(command: ['/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart', '-configure', '-allowAccessFor', '-allUsers', '-access', '-on', '-privs', '-mask', -1073741569])
+      .with(command: ['/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart', '-configure', '-allowAccessFor', '-allUsers', '-access', '-on', '-privs', '-all'])
   }
 end
 
@@ -75,7 +79,7 @@ shared_examples 'configuring the ARD agent for specified users' do
   }
   it {
     is_expected.to run_execute('set privileges for bilbo')
-      .with(command: ['/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart', '-configure', '-access', '-on', '-privs', '-mask', -1073741569, '-users', 'bilbo'])
+      .with(command: ['/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart', '-configure', '-access', '-on', '-privs', '-all', '-users', 'bilbo'])
   }
 end
 
@@ -267,7 +271,7 @@ describe 'trying to enable when TCC does not have the correct privileges' do
   it { expect { subject }.to raise_error(RemoteManagement::Exceptions::TCCError) }
 end
 
-describe 'trying to enable with invalid mask' do
+describe 'trying to enable with invalid privileges' do
   platform 'mac_os_x', '12'
   step_into :remote_management
 
@@ -279,7 +283,7 @@ describe 'trying to enable with invalid mask' do
   recipe do
     remote_management 'enable the ARD agent' do
       users 'bilbo'
-      privileges(-107372518)
+      privileges 'smaug' 
       computer_info []
       action :enable
     end

@@ -205,69 +205,6 @@ describe MacOS::RemoteManagement do
 end
 
 describe MacOS::RemoteManagement::Privileges do
-  describe '.to_mask' do
-    context 'when single privilege' do
-      it 'should return the correct mask' do
-        expect(described_class.to_mask(['text_messages'])).to eq(-2147483647)
-        expect(described_class.to_mask(['restart_shut_down'])).to eq(-2147483520)
-        expect(described_class.to_mask(['observe_only'])).to eq(-2147483392)
-        expect(described_class.to_mask(['show_observe'])).to eq(-1073741824)
-      end
-    end
-    context 'when subset of privileges privileges' do
-      it 'should return the correct mask' do
-        expect(described_class.to_mask(['text_messages', 'control_observe'])).to eq(-2147483645)
-        expect(described_class.to_mask(['open_quit_apps', 'change_settings'])).to eq(-2147483552)
-        expect(described_class.to_mask(['send_files', 'restart_shut_down', 'delete_files'])).to eq(-2147483508)
-        expect(described_class.to_mask(['all', 'text_messages'])).to eq(-1073741569)
-        expect(described_class.to_mask(['none', 'text_messages'])).to eq(-2147483648)
-      end
-    end
-    context 'when all privileges' do
-      it 'should return correct mask' do
-        expect(described_class.to_mask(['all'])).to eq(-1073741569)
-      end
-    end
-    context 'when no privileges' do
-      it 'should return correct mask' do
-        expect(described_class.to_mask(['none'])).to eq(-2147483648)
-      end
-    end
-    context 'when invalid privilege is passed' do
-      it 'should throw argument error' do
-        expect { described_class.to_mask(['nazgûl']) }.to raise_error(MacOS::RemoteManagement::Exceptions::Privileges::ValidationError)
-        expect { described_class.to_mask(['nazgûl', 'smèagol']) }.to raise_error(MacOS::RemoteManagement::Exceptions::Privileges::ValidationError)
-      end
-    end
-  end
-
-  describe '.to_value' do
-    context 'when single privilege' do
-      it 'should return correct value' do
-        expect(described_class.to_value(['control_observe'])).to eq 2
-      end
-    end
-    context 'when subset of privileges' do
-      it 'should return correct value' do
-        expect(described_class.to_value(['text_messages', 'control_observe'])).to eq 3
-        expect(described_class.to_value(['open_quit_apps', 'change_settings'])).to eq 96
-        expect(described_class.to_value(['send_files', 'restart_shut_down', 'delete_files'])).to eq 140
-        expect(described_class.to_value(['all', 'text_messages'])).to eq 1073742079
-        expect(described_class.to_value(['none', 'text_messages'])).to eq 0
-      end
-    end
-    context 'when all privileges' do
-      it 'should return correct value' do
-        expect(described_class.to_value(['all'])).to eq 1073742079
-      end
-    end
-    context 'when no privileges' do
-      it 'should return correct value' do
-        expect(described_class.to_value(['none'])).to eq 0
-      end
-    end
-  end
-
   describe '.format_privileges' do
     it 'should strings to capitalized snakecase' do
       expect(described_class.format('OneRINGToRuleThemAll')).to eq [:ONE_RING_TO_RULE_THEM_ALL]
@@ -276,36 +213,54 @@ describe MacOS::RemoteManagement::Privileges do
       expect(described_class.format('and-in-the-darkness-bind-them')).to eq [:AND_IN_THE_DARKNESS_BIND_THEM]
     end
   end
+
+  describe '.valid?' do
+    context 'when the privileges are valid' do
+      it 'should return true' do
+        expect(described_class.valid?(:TEXT_MESSAGES)).to be true
+        expect(described_class.valid?([:SEND_FILES, :CHANGE_SETTINGS])).to be true
+      end
+    end
+    context 'when the privileges are invalid' do
+      it 'should return true' do
+        expect(described_class.valid?(:NASGUL)).to be false
+        expect(described_class.valid?([:goblin, :orc])).to be false
+        expect(described_class.valid?([:SMAUG])).to be false
+      end
+    end
+  end
 end
 
 describe MacOS::RemoteManagement::Privileges::Mask do
   describe '.valid?' do
+    subject { described_class.new(mask: -2147483645) }
+
     context 'when the mask is valid' do
       it 'should return true' do
-        expect(described_class.valid?(-2147483645)).to be true
-        expect(described_class.valid?(-2147483552)).to be true
-        expect(described_class.valid?(-2147483508)).to be true
-        expect(described_class.valid?(-1073741569)).to be true
-        expect(described_class.valid?(-2147483648)).to be true
-        expect(described_class.valid?(-2147483392)).to be true
-        expect(described_class.valid?(-2147483391)).to be true
+        expect(subject.valid?(-2147483645)).to be true
+        expect(subject.valid?(-2147483552)).to be true
+        expect(subject.valid?(-2147483508)).to be true
+        expect(subject.valid?(-1073741569)).to be true
+        expect(subject.valid?(-2147483648)).to be true
+        expect(subject.valid?(-2147483392)).to be true
+        expect(subject.valid?(-2147483391)).to be true
       end
     end
     context 'when the mask is invalid' do
       it 'should return false' do
-        expect(described_class.valid?(-1073725185)).to be false
-        expect(described_class.valid?(-2145386496)).to be false
-        expect(described_class.valid?(-2143813632)).to be false
-        expect(described_class.valid?(-2143813629)).to be false
+        expect(subject.valid?(-1073725185)).to be false
+        expect(subject.valid?(-2145386496)).to be false
+        expect(subject.valid?(-2143813632)).to be false
+        expect(subject.valid?(-2143813629)).to be false
       end
     end
   end
 
   describe '.to_a' do
     it 'should return an array of privilege strings coresponding to the privilege mask' do
-      expect(described_class.new(mask: -2147483645).to_a).to contain_exactly('text_messages', 'control_observe')
-      expect(described_class.new(mask: -2147483552).to_a).to contain_exactly('open_quit_apps', 'change_settings')
-      expect(described_class.new(mask: -2147483508).to_a).to contain_exactly('send_files', 'restart_shut_down', 'delete_files')
+      expect(described_class.new(mask: -2147483645).to_a).to contain_exactly('TextMessages', 'ControlObserve')
+      expect(described_class.new(mask: -2147483552).to_a).to contain_exactly('OpenQuitApps', 'ChangeSettings')
+      expect(described_class.new(mask: -2147483508).to_a).to contain_exactly('SendFiles', 'RestartShutDown', 'DeleteFiles')
       expect(described_class.new(mask: -1073741569).to_a).to contain_exactly('all')
       expect(described_class.new(mask: -2147483648).to_a).to contain_exactly('none')
     end
@@ -314,30 +269,32 @@ end
 
 describe MacOS::RemoteManagement::Privileges::Value do
   describe '.valid?' do
+    subject { described_class.new(value: 0) }
+
     context 'when the value is valid' do
       it 'should return true' do
-        expect(described_class.valid?(3)).to be true
-        expect(described_class.valid?(96)).to be true
-        expect(described_class.valid?(140)).to be true
-        expect(described_class.valid?(0)).to be true
-        expect(described_class.valid?(1073742079)).to be true
+        expect(subject.valid?(3)).to be true
+        expect(subject.valid?(96)).to be true
+        expect(subject.valid?(140)).to be true
+        expect(subject.valid?(0)).to be true
+        expect(subject.valid?(1073742079)).to be true
       end
     end
     context 'when the mask is invalid' do
       it 'should return false' do
-        expect(described_class.valid?(512)).to be false
-        expect(described_class.valid?(888)).to be false
-        expect(described_class.valid?(1024)).to be false
-        expect(described_class.valid?(666)).to be false
+        expect(subject.valid?(512)).to be false
+        expect(subject.valid?(888)).to be false
+        expect(subject.valid?(1024)).to be false
+        expect(subject.valid?(666)).to be false
       end
     end
   end
 
   describe '.to_a' do
     it 'should return an array of privilege strings coresponding to the privilege value' do
-      expect(described_class.new(value: 3).to_a).to contain_exactly('text_messages', 'control_observe')
-      expect(described_class.new(value: 96).to_a).to contain_exactly('open_quit_apps', 'change_settings')
-      expect(described_class.new(value: 140).to_a).to contain_exactly('send_files', 'restart_shut_down', 'delete_files')
+      expect(described_class.new(value: 3).to_a).to contain_exactly('TextMessages', 'ControlObserve')
+      expect(described_class.new(value: 96).to_a).to contain_exactly('OpenQuitApps', 'ChangeSettings')
+      expect(described_class.new(value: 140).to_a).to contain_exactly('SendFiles', 'RestartShutDown', 'DeleteFiles')
       expect(described_class.new(value: 1073742079).to_a).to contain_exactly('all')
       expect(described_class.new(value: 0).to_a).to contain_exactly('none')
     end

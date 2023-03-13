@@ -15,8 +15,8 @@ execute 'authorize screensharing client to utilize the kTCCServiceScreenCapture 
 end
 
 remote_management 'activate and configure remote management for all users' do
-  users 'vagrant'
-  privileges %w(none)
+  users 'all'
+  privileges %w(text__messages ControlObserve restart_shut_down)
   computer_info ['Arkenstone', 'Gold']
   only_if { shell_out('/usr/sbin/system_profiler', 'SPSoftwareDataType').stdout.match?(Regexp.new('System Integrity Protection: Disabled')) }
 end
