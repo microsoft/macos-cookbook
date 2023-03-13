@@ -159,7 +159,7 @@ module MacOS
 
         def validate!(privileges)
           raise(Exceptions::Privileges::ValidationError, list_invalid(privileges)) unless valid?(privileges)
-        rescue Exceptions::Privileges::ValidationError => e # raise property validation error if called from propery coersion block
+        rescue Exceptions::Privileges::ValidationError => e # raise property validation error if called from property coercion block
           called_by_chef_property_coerce? ? raise(Chef::Exceptions::ValidationFailed, e.message) : raise
         end
 
@@ -201,15 +201,13 @@ module MacOS
           raise(Exceptions::Privileges::Value::ValidationError, @value) unless valid?
         end
 
-        def valid?
-          return true if @value == BitMask::NONE
-          (~(BitMask::ALL | BitMask::OBSERVE_ONLY) & @value).zero?
-        end
-
-        # TODO; how to DRY
         def self.valid?(value)
           return true if value == BitMask::NONE
           (~(BitMask::ALL | BitMask::OBSERVE_ONLY) & value).zero?
+        end
+
+        def valid?
+          self.class.valid?(@value)
         end
 
         def from_privileges(privileges)
@@ -235,14 +233,13 @@ module MacOS
           raise(Exceptions::Privileges::Mask::ValidationError, @mask) unless valid?
         end
 
-        def valid?
-          return true if @mask.zero?
-          (~(BitMask::ALL | BitMask::OBSERVE_ONLY) & (@mask + BitMask::NONE)).zero?
-        end
-
         def self.valid?(mask)
           return true if mask.zero?
           (~(BitMask::ALL | BitMask::OBSERVE_ONLY) & (mask + BitMask::NONE)).zero?
+        end
+
+        def valid?
+          self.class.valid?(@mask)
         end
 
         def from_privileges(privileges)
@@ -290,7 +287,7 @@ module MacOS
       module Privileges
         class ValidationError < ArgumentError
           def initialize(invalid_privileges)
-            super("#{invalid_privileges} are invalid privilege! Valid privileges include: #{RemoteManagement::BitMask.constants(false).map(&:downcase).map(&:to_s)}")
+            super("#{invalid_privileges.map(&:to_s).map(&:downcase)} are invalid privilege(s)! Valid privileges include: #{RemoteManagement::BitMask.constants(false).map(&:downcase).map(&:to_s)}")
           end
         end
 
