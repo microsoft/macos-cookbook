@@ -219,6 +219,12 @@ module MacOS
         def to_mask
           Mask.new(mask: (@value - BitMask::NONE))
         end
+
+        def to_a
+          return ['none'] if @value.zero?
+          return ['all'] if @value == BitMask::ALL
+          BitMask.constants(false).reject { |const| (BitMask.const_get(const) & @value).zero? || const == :ALL }.map(&:to_s).map(&:downcase)
+        end
       end
 
       class Mask
@@ -250,6 +256,12 @@ module MacOS
 
         def to_value
           Value.new(value: (@mask + BitMask::NONE))
+        end
+
+        def to_a
+          return ['none'] if (@mask + BitMask::NONE).zero?
+          return ['all'] if @mask + BitMask::NONE == BitMask::ALL
+          BitMask.constants(false).reject { |const| (BitMask.const_get(const) & (@mask + BitMask::NONE)).zero? || const == :ALL }.map(&:to_s).map(&:downcase)
         end
       end
     end

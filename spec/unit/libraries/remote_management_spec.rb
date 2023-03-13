@@ -300,6 +300,16 @@ describe MacOS::RemoteManagement::Privileges::Mask do
       end
     end
   end
+
+  describe '.to_a' do
+    it 'should return an array of privilege strings coresponding to the privilege mask' do
+      expect(described_class.new(mask: -2147483645).to_a).to contain_exactly('text_messages', 'control_observe')
+      expect(described_class.new(mask: -2147483552).to_a).to contain_exactly('open_quit_apps', 'change_settings')
+      expect(described_class.new(mask: -2147483508).to_a).to contain_exactly('send_files', 'restart_shut_down', 'delete_files')
+      expect(described_class.new(mask: -1073741569).to_a).to contain_exactly('all')
+      expect(described_class.new(mask: -2147483648).to_a).to contain_exactly('none')
+    end
+  end
 end
 
 describe MacOS::RemoteManagement::Privileges::Value do
@@ -320,6 +330,16 @@ describe MacOS::RemoteManagement::Privileges::Value do
         expect(described_class.valid?(1024)).to be false
         expect(described_class.valid?(666)).to be false
       end
+    end
+  end
+
+  describe '.to_a' do
+    it 'should return an array of privilege strings coresponding to the privilege value' do
+      expect(described_class.new(value: 3).to_a).to contain_exactly('text_messages', 'control_observe')
+      expect(described_class.new(value: 96).to_a).to contain_exactly('open_quit_apps', 'change_settings')
+      expect(described_class.new(value: 140).to_a).to contain_exactly('send_files', 'restart_shut_down', 'delete_files')
+      expect(described_class.new(value: 1073742079).to_a).to contain_exactly('all')
+      expect(described_class.new(value: 0).to_a).to contain_exactly('none')
     end
   end
 end
