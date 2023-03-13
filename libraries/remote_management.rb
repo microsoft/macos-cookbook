@@ -2,12 +2,12 @@ module MacOS
   class RemoteManagement
     class << self
       def current_mask(users)
-        using_global_privileges? ? Privileges::Value.new(value: global_settings_privilege_value).to_mask.to_i : current_user_masks(users).first
+        using_global_privileges? ? Privileges::Value.new(value: global_settings_privilege_value).to_mask : current_user_masks(users).first
       end
 
       def current_user_masks(users)
         users = all_local_users if users.include?('all')
-        users.flatten.map { |user| individual_settings.fetch(user) }
+        users.flatten.map { |user| Privilege::Mask.new(mask: individual_settings.fetch(user)) } 
       end
 
       def current_users_have_identical_masks?(users)
@@ -56,7 +56,7 @@ module MacOS
       end
 
       def global_settings_xml
-        shell_out!('/usr/bin/plutil -convert xml1 /Library/Preferences/nasgul.apple.RemoteManagement.plist -o -').stdout
+        shell_out!('/usr/bin/plutil -convert xml1 /Library/Preferences/com.apple.RemoteManagement.plist -o -').stdout
       rescue Mixlib::ShellOut::ShellCommandFailed => e
         e.message.match?(Regexp.new('file does not exist')) ? '' : raise
       end
@@ -149,37 +149,17 @@ module MacOS
 
     module Privileges
       class << self
-        def valid?(privileges)
-          list_invalid(privileges).empty?
+        def valid?(*privileges)
+          list_invalid([privileges].flatten).empty?
         end
 
-        def list_invalid(privileges)
-          privileges - BitMask.constants(false)
-        end
-
-        def validate!(privileges)
+        def validate!(*privileges)
           raise(Exceptions::Privileges::ValidationError, list_invalid(privileges)) unless valid?(privileges)
         rescue Exceptions::Privileges::ValidationError => e # raise property validation error if called from property coercion block
           called_by_chef_property_coerce? ? raise(Chef::Exceptions::ValidationFailed, e.message) : raise
         end
 
-        def called_by_chef_property_coerce?
-          caller_locations.any? { |backtrace_location| ::File.basename(backtrace_location.path, '.rb') == 'property' && backtrace_location.label == 'coerce' }
-        end
-
-        def to_mask(privileges)
-          privileges = format(privileges)
-          validate!(privileges)
-          Mask.new(privileges: privileges).to_i
-        end
-
-        def to_value(privileges)
-          privileges = format(privileges)
-          validate!(privileges)
-          Value.new(privileges: privileges).to_i
-        end
-
-        def format(privileges)
+        def format(*privileges)
           [privileges].flatten.map do |privilege|
             privilege.gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
                      .gsub(/([a-z])([A-Z])/, '\1_\2')
@@ -187,27 +167,38 @@ module MacOS
                      .upcase.to_sym
           end
         end
+ 
+        private
+
+        def called_by_chef_property_coerce?
+          caller_locations.any? { |backtrace_location| ::File.basename(backtrace_location.path, '.rb') == 'property' && backtrace_location.label == 'coerce' }
+        end
+
+        def list_invalid(privileges)
+          privileges - BitMask.constants(false)
+        end
       end
 
       class Value
         extend Forwardable
-        def_delegators :@value, :to_i
-
-        attr_reader :value
+        def_delegators :@value, :to_i, :zero?, :==, :+, :-, :|, :&, :^
 
         def initialize(value: nil, privileges: nil)
-          raise(Exceptions::Privileges::Value::InvalidArgument, value, privileges) unless [value, privileges].compact.one?
-          @value = value || from_privileges(privileges)
-          raise(Exceptions::Privileges::Value::ValidationError, @value) unless valid?
+          if value
+            raise(Exceptions::Privileges::Value::ValidationError, value) unless valid?(value)
+            @value = value
+          elsif privileges
+            privileges = Privileges.format(privileges)
+            Privileges.validate!(privileges)
+            @value = from_privileges(privileges)
+          else
+            raise(Exceptions::Privileges::Value::InvalidArgument, value, privileges)
+          end
         end
 
-        def self.valid?(value)
+        def valid?(value)
           return true if value == BitMask::NONE
           (~(BitMask::ALL | BitMask::OBSERVE_ONLY) & value).zero?
-        end
-
-        def valid?
-          self.class.valid?(@value)
         end
 
         def from_privileges(privileges)
@@ -223,29 +214,31 @@ module MacOS
         def to_a
           return ['none'] if @value.zero?
           return ['all'] if @value == BitMask::ALL
-          BitMask.constants(false).reject { |const| (BitMask.const_get(const) & @value).zero? || const == :ALL }.map(&:to_s).map(&:downcase)
+          unformated_priv_strings = BitMask.constants(false).reject { |const| (BitMask.const_get(const) & @value).zero? || const == :ALL }.map(&:to_s).map(&:downcase)
+          unformated_priv_strings.map { |priv| priv.to_s.split('_').map(&:capitalize).join }
         end
       end
 
       class Mask
         extend Forwardable
-        def_delegators :@mask, :to_i
-
-        attr_reader :mask
+        def_delegators :@mask, :zero?, :to_i, :==, :+, :-, :|, :&, :^
 
         def initialize(mask: nil, privileges: nil)
-          raise(Exceptions::Privileges::Mask::InvalidArgument, mask, privileges) unless [mask, privileges].compact.one?
-          @mask = mask || from_privileges(privileges)
-          raise(Exceptions::Privileges::Mask::ValidationError, @mask) unless valid?
+          if mask
+            raise(Exceptions::Privileges::Value::ValidationError, mask) unless valid?(mask)
+            @mask = mask
+          elsif privileges
+            privileges = Privileges.format(privileges)
+            Privileges.validate!(privileges)
+            @mask = from_privileges(privileges)
+          else
+            raise(Exceptions::Privileges::Value::InvalidArgument, mask, privileges)
+          end
         end
 
-        def self.valid?(mask)
+        def valid?(mask)
           return true if mask.zero?
           (~(BitMask::ALL | BitMask::OBSERVE_ONLY) & (mask + BitMask::NONE)).zero?
-        end
-
-        def valid?
-          self.class.valid?(@mask)
         end
 
         def from_privileges(privileges)
@@ -261,7 +254,8 @@ module MacOS
         def to_a
           return ['none'] if (@mask + BitMask::NONE).zero?
           return ['all'] if @mask + BitMask::NONE == BitMask::ALL
-          BitMask.constants(false).reject { |const| (BitMask.const_get(const) & (@mask + BitMask::NONE)).zero? || const == :ALL }.map(&:to_s).map(&:downcase)
+          unformated_priv_strings = BitMask.constants(false).reject { |const| (BitMask.const_get(const) & (@mask + BitMask::NONE)).zero? || const == :ALL }
+          unformated_priv_strings.map { |priv| priv.to_s.split('_').map(&:capitalize).join }
         end
       end
     end
