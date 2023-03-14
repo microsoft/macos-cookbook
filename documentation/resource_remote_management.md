@@ -9,7 +9,7 @@ Syntax
 ```ruby
 remote_management 'configure remote management' do
   users         [String, Array]           
-  privileges    [String, Array, Integer] 
+  privileges    [String, Array] 
   computer_info [String, Array]          
 end
 ```
@@ -27,7 +27,7 @@ Properties
 
 * `privileges`
   * **Description:** the desired privileges to bestow upon the given user(s).
-  **Usage:** a single privilege can be specified in the form of a string, or multiple privileges can be specified as an array of strings. Additionally, the privileges can be specified by providing the integer value of the mask that represents a set of privileges (this is advanced and not recommended).
+  **Usage:** a single privilege can be specified in the form of a string, or multiple privileges can be specified as an array of strings.
   * **Default:** `'all'`
   * **Constraints:** the list of optional privileges bellow
     * `all` → grant all privileges (default)
