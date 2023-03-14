@@ -1,10 +1,15 @@
 # Changelog
 
-## [5.1.0] - 2023-03-8
+## [5.1.0] - 2023-03-14
 
 ### Fixed
+- Fixed issues with ARD not working on macOS Monterey.
 
 ### Added
+- Added additional functionality to the [remote_management](resources/remote_management.rb) resource.
+  - You can now specify the users to whose privileges will be configured.
+  - You can now specify the privileges to bestow upon the given users.
+  - You can now set the computer info fields; this is helpful for stratifying computers within ARD.
 
 ## [5.0.4] - 2023-01-31
 
