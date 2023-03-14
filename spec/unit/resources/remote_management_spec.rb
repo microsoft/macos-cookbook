@@ -28,6 +28,10 @@ shared_context 'no current computer info' do
   before { allow(RemoteManagement).to receive(:current_computer_info).and_return [] }
 end
 
+shared_context 'SIP is disabled' do
+  before { allow(RemoteManagement::TCC::SIP).to receive(:disabled?).and_return true }
+end
+
 shared_context 'correct tccstate' do
   before { allow(RemoteManagement::TCC::State).to receive(:enabled?).and_return true }
 end
@@ -130,6 +134,7 @@ describe 'enabling for all users when currently disabled' do
   include_context 'no current computer info'
   include_context 'correct TCC database privileges'
   include_context 'incorrect tccstate'
+  include_context 'SIP is disabled'
 
   recipe do
     remote_management 'enable the ARD agent, giving all users all privileges' do
@@ -157,6 +162,7 @@ describe 'enabling for specified users when currently disabled' do
   include_context 'no current computer info'
   include_context 'correct TCC database privileges'
   include_context 'correct tccstate'
+  include_context 'SIP is disabled'
 
   recipe do
     remote_management 'enable the ARD agent' do
@@ -184,6 +190,7 @@ describe 'enabling for specified users when currently enabled and current privil
   include_context 'no current computer info'
   include_context 'correct TCC database privileges'
   include_context 'incorrect tccstate'
+  include_context 'SIP is disabled'
 
   recipe do
     remote_management 'enable the ARD agent' do
@@ -211,6 +218,7 @@ describe 'enabling when the current computer info differs from the desired compu
   include_context 'no current computer info'
   include_context 'correct TCC database privileges'
   include_context 'incorrect tccstate'
+  include_context 'SIP is disabled'
 
   recipe do
     remote_management 'enable the ARD agent' do
@@ -233,6 +241,7 @@ describe 'enabling for specified users when currently enabled and current privil
   include_context 'no current computer info'
   include_context 'correct TCC database privileges'
   include_context 'incorrect tccstate'
+  include_context 'SIP is disabled'
 
   recipe do
     remote_management 'enable the ARD agent' do
@@ -258,6 +267,7 @@ describe 'trying to enable when TCC does not have the correct privileges' do
   include_context 'users current mask is -2147483648 (no privileges)'
   include_context 'no current computer info'
   include_context 'incorrect TCC database privileges'
+  include_context 'SIP is disabled'
 
   recipe do
     remote_management 'enable the ARD agent' do
@@ -279,6 +289,7 @@ describe 'trying to enable with invalid privileges' do
   include_context 'users current mask is -2147483648 (no privileges)'
   include_context 'no current computer info'
   include_context 'incorrect TCC database privileges'
+  include_context 'SIP is disabled'
 
   recipe do
     remote_management 'enable the ARD agent' do
@@ -300,6 +311,7 @@ describe 'trying to enable with invalid privileges' do
   include_context 'users current mask is -2147483648 (no privileges)'
   include_context 'no current computer info'
   include_context 'incorrect TCC database privileges'
+  include_context 'SIP is disabled'
 
   recipe do
     remote_management 'enable the ARD agent' do
@@ -322,6 +334,7 @@ describe 'enable with abnormally formatted privileges' do
   include_context 'no current computer info'
   include_context 'correct TCC database privileges'
   include_context 'incorrect tccstate'
+  include_context 'SIP is disabled'
 
   recipe do
     remote_management 'enable the ARD agent' do
@@ -341,6 +354,7 @@ describe 'disabling when currently disabled' do
 
   include_context 'remote management disabled'
   include_context 'users current mask is -2147483648 (no privileges)'
+  include_context 'SIP is disabled'
 
   recipe do
     remote_management 'disable the ARD agent' do
@@ -357,6 +371,7 @@ describe 'disabling when currently enabled' do
 
   include_context 'remote management enabled'
   include_context 'users current mask is -2147483648 (no privileges)'
+  include_context 'SIP is disabled'
 
   recipe do
     remote_management 'disable the ARD agent' do

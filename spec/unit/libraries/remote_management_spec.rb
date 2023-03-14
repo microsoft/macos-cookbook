@@ -174,6 +174,8 @@ describe MacOS::RemoteManagement do
   describe '.activated?' do
     context 'when the Remote Management launchd file does not exit' do
       it 'should return false' do
+        allow(Chef).to receive(:node).and_return({'platform_version' => '12.6.3' })
+        allow(RemoteManagement::TCC::State).to receive(:enabled?).and_return true
         allow(File).to receive(:exist?).and_call_original
         allow(File).to receive(:exist?).and_return false
         expect(described_class.activated?).to be false
@@ -196,6 +198,9 @@ describe MacOS::RemoteManagement do
       end
 
       it 'should return false' do
+        allow(Chef).to receive(:node).and_return({'platform_version' => '12.6.3' })
+        allow(File).to receive(:exist?).and_call_original
+        allow(File).to receive(:exist?).and_return false
         allow(shellout).to receive(:stdout).and_return tccstate_stdout
         allow_any_instance_of(Chef::Mixin::ShellOut).to receive(:shell_out!).and_return shellout
         expect(described_class.activated?).to be false

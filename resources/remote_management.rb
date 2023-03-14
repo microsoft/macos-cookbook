@@ -32,6 +32,7 @@ end
 
 action :enable do
   converge_if_changed(:privileges, :computer_info) do
+    raise(RemoteManagement::Exceptions::SIPEnabled) unless RemoteManagement::TCC::SIP.disabled?
     raise(RemoteManagement::Exceptions::TCCError) unless RemoteManagement::TCC::DB.correct_privileges?
 
     execute 'restart the TCC daemon' do
@@ -50,7 +51,7 @@ action :enable do
           end
         end
       else
-        converge_by('setting privileges for specified users') do
+        converge_by("setting privileges for #{new_resource.users.join(', ')}") do
           privs_array = new_resource.privileges.to_a.map { |priv| priv.prepend('-') }
 
           execute 'set up Remote Management to only grant access to users with privileges' do

@@ -26,7 +26,11 @@ module MacOS
       end
 
       def activated?
-        agent_running? && TCC::State.enabled?
+        if Chef::Version.new(Chef.node['platform_version']) >= Chef::Version.new('12.0.0')
+          agent_running? && TCC::State.enabled?
+        else
+          agent_running?
+        end
       end
 
       def kickstart
@@ -142,6 +146,20 @@ module MacOS
 
           def screensharing_client_auth_value_for_screencapture_service
             shell_out!('/usr/bin/sqlite3', path, "SELECT auth_value FROM access WHERE service='kTCCServiceScreenCapture' AND client='com.apple.screensharing.agent';").stdout.chomp.to_i
+          end
+        end
+      end
+
+      module SIP
+        class << self
+          def disabled?
+            system_profiler_software_info.match?(Regexp.new('System Integrity Protection: Disabled'))
+          end
+
+          private
+
+          def system_profiler_software_info
+            shell_out!('/usr/sbin/system_profiler', 'SPSoftwareDataType').stdout
           end
         end
       end
@@ -295,6 +313,12 @@ module MacOS
             message << "\t* Screensharing client not authorized for post event service\n" unless RemoteManagement::TCC::DB.screensharing_client_authorized_for_post_event_service?
             message << "\t* Screensharing client not authorized for screencapture service\n" unless RemoteManagement::TCC::DB.screensharing_client_authorized_for_screencapture_service?
           end
+        end
+      end
+
+      class SIPEnabled < RuntimeError
+        def initialize
+          super('SIP is enabled! Please disable before using this resource')
         end
       end
 

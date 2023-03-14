@@ -13,7 +13,7 @@ control 'remote-control' do
     its('stdout') { should match /Text4 = ""/ }
   end
 
-  if Chef::Version.new(os.release) >= Chef::Version.new('12.0.0')
+  if Chef::Version.new(os.release) >= Chef::Version.new('21.0.0')
     describe command('sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Support/tccstate') do
       its('stdout') { should match Regexp.new('<key>postEvent<\/key>.\s+<true\/>', Regexp::MULTILINE) }
       its('stdout') { should match Regexp.new('<key>screenCapture<\/key>.\s+<true\/>', Regexp::MULTILINE) }
