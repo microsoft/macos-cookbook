@@ -283,7 +283,7 @@ describe 'trying to enable with invalid privileges' do
   recipe do
     remote_management 'enable the ARD agent' do
       users 'bilbo'
-      privileges 'smaug' 
+      privileges 'smaug'
       computer_info []
       action :enable
     end
