@@ -7,12 +7,12 @@ module MacOS
 
       def current_user_masks(users)
         users = all_local_users if users.include?('all')
-        users.flatten.map { |user| Privilege::Mask.new(mask: individual_settings.fetch(user)) } 
+        users.flatten.map { |user| Privileges::Mask.new(mask: individual_settings.fetch(user)) }
       end
 
       def current_users_have_identical_masks?(users)
         return true if using_global_privileges?
-        current_user_masks(users).uniq.one?
+        current_user_masks(users).map(&:to_i).uniq.one?
       end
 
       def current_users_configured?(users)
@@ -217,11 +217,12 @@ module MacOS
           unformated_priv_strings = BitMask.constants(false).reject { |const| (BitMask.const_get(const) & @value).zero? || const == :ALL }.map(&:to_s).map(&:downcase)
           unformated_priv_strings.map { |priv| priv.to_s.split('_').map(&:capitalize).join }
         end
+
       end
 
       class Mask
         extend Forwardable
-        def_delegators :@mask, :zero?, :to_i, :==, :+, :-, :|, :&, :^
+        def_delegators :@mask, :to_i, :zero?, :==, :+, :-, :|, :&, :^
 
         def initialize(mask: nil, privileges: nil)
           if mask
@@ -256,6 +257,13 @@ module MacOS
           return ['all'] if @mask + BitMask::NONE == BitMask::ALL
           unformated_priv_strings = BitMask.constants(false).reject { |const| (BitMask.const_get(const) & (@mask + BitMask::NONE)).zero? || const == :ALL }
           unformated_priv_strings.map { |priv| priv.to_s.split('_').map(&:capitalize).join }
+        end
+
+        # For Chef logging
+        # Chef logs without this overide -> 'set privileges to MacOS::RemoteManagement::Privileges::Mask:0x00007fe032914c08 @mask=-2147483641> (was #<MacOS::RemoteManagement::Privileges::Mask:0x00007fe0329d7f78 @mask=-2147483645>)'
+        # Chef logs with this override -> 'set privileges to ["TextMessages", "ControlObserve"] (was ["TextMessages", "ControlObserve", "SendFiles"])'
+        def inspect
+          to_a.to_s
         end
       end
     end
