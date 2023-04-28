@@ -19,7 +19,7 @@ property :computer_info,
          [String, Array],
          default: [],
          description: 'Info fields; helpful for stratifying computers in ARD client app.',
-         coerce: ->(p) { p.compact.map(&:to_s) },
+         coerce: ->(p) { p.is_a?(Array) ? p.compact.map(&:to_s) : [p] },
          callbacks: { 'has too many elements; computer info excepts up to four info fields' => ->(p) { (p.is_a?(Array) && p.size < 4) } }
 
 load_current_value do |desired|

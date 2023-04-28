@@ -224,7 +224,7 @@ describe 'enabling when the current computer info differs from the desired compu
     remote_management 'enable the ARD agent' do
       users 'bilbo'
       privileges 'all'
-      computer_info ['Arkenstone']
+      computer_info 'Arkenstone'
       action :enable
     end
   end
