@@ -9,6 +9,8 @@ property :compile_time, [true, false],
 action :install do
   command_line_tools = CommandLineTools.new
 
+  command_line_tools.enable_install_on_demand
+
   execute "install #{command_line_tools.version}" do
     command ['softwareupdate', '--install', command_line_tools.version]
     not_if { ::File.exist?('/Library/Developer/CommandLineTools/usr/lib/libxcrun.dylib') }
@@ -23,6 +25,8 @@ end
 
 action :upgrade do
   command_line_tools = CommandLineTools.new
+
+  command_line_tools.enable_install_on_demand
 
   execute "upgrade #{command_line_tools.version}" do
     command ['softwareupdate', '--install', command_line_tools.latest_from_catalog]

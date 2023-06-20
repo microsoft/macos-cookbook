@@ -68,7 +68,6 @@ module MacOS
     end
 
     def softwareupdate_list
-      enable_install_on_demand
       shell_out(['softwareupdate', '--list']).stdout.lines
     end
 
