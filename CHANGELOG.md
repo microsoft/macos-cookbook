@@ -10,6 +10,15 @@
 ### Fixed
 - Updated `command_line_tools` so that machines are able to install previously installed command line tools if they were wiped from a major macOS upgrade.
 
+### Fixed
+- Fixed issues with ARD not working on macOS Monterey.
+
+### Added
+- Added additional functionality to the [remote_management](resources/remote_management.rb) resource.
+  - You can now specify the users to whose privileges will be configured.
+  - You can now specify the privileges to bestow upon the given users.
+  - You can now set the computer info fields; this is helpful for stratifying computers within ARD.
+
 ## [5.0.4] - 2023-01-31
 
 ### Added
