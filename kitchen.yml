@@ -58,7 +58,6 @@ suites:
     controls:
     - dock-appearance
     - show-all-files
-    - plist-creation
 
 - name: software-updates
   provisioner:
