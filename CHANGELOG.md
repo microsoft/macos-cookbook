@@ -1,5 +1,10 @@
 # Changelog
 
+## [6.0.0] - 2023-06-20
+
+### Removed
+- Removed the `plist` resource
+
 ## [5.0.4] - 2023-01-31
 
 ### Added
