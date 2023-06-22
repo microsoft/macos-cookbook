@@ -14,6 +14,11 @@
   - You can now specify the privileges to bestow upon the given users.
   - You can now set the computer info fields; this is helpful for stratifying computers within ARD.
 
+## [5.0.5] - 2023-06-20
+
+### Fixed
+- Updated `command_line_tools` so that machines are able to install previously installed command line tools if they were wiped from a major macOS upgrade.
+
 ## [5.0.4] - 2023-01-31
 
 ### Added
