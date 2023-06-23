@@ -21,7 +21,9 @@ describe 'command_line_tools' do
       end
     end
 
+    it { is_expected.to create_file('create sentinel file') }
     it { is_expected.to run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.0') }
+    it { is_expected.to delete_file('delete sentinel file') }
   end
 
   context 'with libxcrun present' do
@@ -35,7 +37,9 @@ describe 'command_line_tools' do
       end
     end
 
+    it { is_expected.to create_file('create sentinel file') }
     it { is_expected.to_not run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.0') }
+    it { is_expected.to delete_file('delete sentinel file') }
   end
 end
 
@@ -61,9 +65,11 @@ describe 'command_line_tools' do
       end
     end
 
+    it { is_expected.to create_file('create sentinel file') }
     it {
       is_expected.to run_execute('upgrade Command Line Tools for Xcode-11.0')
         .with(command: ['softwareupdate', '--install', 'Command Line Tools for Xcode-22.0'])
     }
+    it { is_expected.to delete_file('delete sentinel file') }
   end
 end

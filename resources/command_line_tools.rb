@@ -20,7 +20,7 @@ action :install do
     live_stream true
   end
 
-  file 'sentinel to request on-demand install' do
+  file 'delete sentinel file' do
     path '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
     action :delete
   end
@@ -40,7 +40,7 @@ action :upgrade do
     live_stream true
   end
 
-  file 'sentinel to request on-demand install' do
+  file 'delete sentinel file' do
     path '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
     action :delete
   end
