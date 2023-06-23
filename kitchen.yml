@@ -43,7 +43,7 @@ platforms:
 - name: monterey-chef17
   driver:
     box: microsoft/macos-monterey
-    box_version: 12.3.1
+    box_version: 12.6.3
   provisioner:
     product_version: 17
 
