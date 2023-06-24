@@ -1,6 +1,6 @@
 # Changelog
 
-## [6.0.0] - 2023-06-20
+## [6.0.0] - 2023-06-30
 
 ### Removed
 - Removed the `plist` resource
@@ -13,6 +13,11 @@
   - You can now specify the users to whose privileges will be configured.
   - You can now specify the privileges to bestow upon the given users.
   - You can now set the computer info fields; this is helpful for stratifying computers within ARD.
+
+## [5.0.6] - 2023-06-23
+
+### Fixed
+- Fixed permissions issue with the `macos::command_line_tools` resource. 
 
 ## [5.0.5] - 2023-06-20
 

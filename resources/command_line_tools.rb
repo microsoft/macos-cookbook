@@ -9,7 +9,10 @@ property :compile_time, [true, false],
 action :install do
   command_line_tools = CommandLineTools.new
 
-  command_line_tools.enable_install_on_demand
+  file 'create sentinel file' do
+    path '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
+    group 'wheel'
+  end
 
   execute "install #{command_line_tools.version}" do
     command ['softwareupdate', '--install', command_line_tools.version]
@@ -17,7 +20,7 @@ action :install do
     live_stream true
   end
 
-  file 'sentinel to request on-demand install' do
+  file 'delete sentinel file' do
     path '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
     action :delete
   end
@@ -26,7 +29,10 @@ end
 action :upgrade do
   command_line_tools = CommandLineTools.new
 
-  command_line_tools.enable_install_on_demand
+  file 'create sentinel file' do
+    path '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
+    group 'wheel'
+  end
 
   execute "upgrade #{command_line_tools.version}" do
     command ['softwareupdate', '--install', command_line_tools.latest_from_catalog]
@@ -34,7 +40,7 @@ action :upgrade do
     live_stream true
   end
 
-  file 'sentinel to request on-demand install' do
+  file 'delete sentinel file' do
     path '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
     action :delete
   end
