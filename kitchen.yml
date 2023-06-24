@@ -7,6 +7,7 @@ driver:
 
 provisioner:
   product_name: chef
+  product_version: 18
   multiple_converge: 2
 
 verifier:
@@ -19,19 +20,15 @@ verifier:
   - test/integration/default
 
 platforms:
-- name: big-sur-chef17
+- name: big-sur
   driver:
     box: microsoft/macos-big-sur
     box_version: 11.7.8
-  provisioner:
-    product_version: 18
 
-- name: monterey-chef17
+- name: monterey
   driver:
     box: microsoft/macos-monterey
     box_version: 12.6.7
-  provisioner:
-    product_version: 18
 
 suites:
 - name: default
