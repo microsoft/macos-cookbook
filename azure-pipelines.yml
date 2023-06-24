@@ -55,8 +55,8 @@ jobs:
     - default
     - software-updates
     - spotlight
-    - xcode-from-apple
-    - xcode-from-url
+    # - xcode-from-apple
+    # - xcode-from-url
     - command-line-tools
     - certificate
     - users
