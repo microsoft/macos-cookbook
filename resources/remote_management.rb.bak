@@ -6,24 +6,25 @@ default_action :enable
 property :users,
          [String, Array],
          default: 'all',
-         description: 'The user(s) whose ARD privileges will be configured.',
+         description: 'The user(s) whoose ARD privileges will be configured.',
          coerce: ->(p) { [p].flatten }
 
 property :privileges,
-         [String, Array, RemoteManagement::Privileges::Mask],
+         [String, Array, Integer],
          default: 'all',
          description: 'The desired privileges to bestow upon the given users.',
-         coerce: ->(p) { p.is_a?(RemoteManagement::Privileges::Mask) ? p : RemoteManagement::Privileges::Mask.new(privileges: p) }
+         coerce: ->(p) { p.is_a?(Integer) ? p : RemoteManagement::BitMask.mask_from_privileges(p) },
+         callbacks: { 'is invalid. See https://ss64.com/osx/kickstart.html for valid privileges' => ->(p) { RemoteManagement::BitMask.valid_mask?(p) } }
 
 property :computer_info,
          [String, Array],
          default: [],
-         description: 'Info fields; helpful for stratifying computers in ARD client app.',
-         coerce: ->(p) { p.is_a?(Array) ? p.compact.map(&:to_s) : [p] },
+         description: 'Info fields; helpful for stratifing computers in ARD client app.',
+         coerce: ->(p) { p.compact.map(&:to_s) },
          callbacks: { 'has too many elements; computer info excepts up to four info fields' => ->(p) { (p.is_a?(Array) && p.size < 4) } }
 
 load_current_value do |desired|
-  current_value_does_not_exist! unless RemoteManagement.activated? && RemoteManagement.current_users_configured?(desired.users) && RemoteManagement.current_users_have_identical_masks?(desired.users)
+  current_value_does_not_exist! unless RemoteManagement.activated?
   privileges RemoteManagement.current_mask(desired.users)
   computer_info RemoteManagement.current_computer_info
 end
@@ -32,7 +33,6 @@ end
 
 action :enable do
   converge_if_changed(:privileges, :computer_info) do
-    raise(RemoteManagement::Exceptions::SIPEnabled) unless RemoteManagement::TCC::SIP.disabled?
     raise(RemoteManagement::Exceptions::TCCError) unless RemoteManagement::TCC::DB.correct_privileges?
 
     execute 'restart the TCC daemon' do
@@ -44,22 +44,18 @@ action :enable do
     converge_if_changed(:privileges) do
       if new_resource.users.include?('all')
         converge_by('setting privileges for all users') do
-          privs_array = new_resource.privileges.to_a.map { |priv| priv.prepend('-') }
-
           execute 'set privileges for all users' do
-            command [RemoteManagement.kickstart, '-configure', '-allowAccessFor', '-allUsers', '-access', '-on', '-privs', privs_array].flatten
+            command [RemoteManagement.kickstart, '-configure', '-allowAccessFor', '-allUsers', '-access', '-on', '-privs', '-mask', new_resource.privileges]
           end
         end
       else
-        converge_by("setting privileges for #{new_resource.users.join(', ')}") do
-          privs_array = new_resource.privileges.to_a.map { |priv| priv.prepend('-') }
-
+        converge_by('setting privileges for specified users') do
           execute 'set up Remote Management to only grant access to users with privileges' do
             command [RemoteManagement.kickstart, '-configure', '-allowAccessFor', '-specifiedUsers']
           end
 
           execute "set privileges for #{new_resource.users.join(', ')}" do
-            command [RemoteManagement.kickstart, '-configure', '-access', '-on', '-privs', privs_array, '-users', new_resource.users].flatten
+            command [RemoteManagement.kickstart, '-configure', '-access', '-on', '-privs', '-mask', new_resource.privileges, '-users', new_resource.users.join(',')]
           end
         end
       end
