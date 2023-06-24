@@ -47,10 +47,8 @@ jobs:
 - template: test-kitchen.yml@templates
   parameters:
     platforms:
-    - mojave-chef17
-    - catalina-chef17
-    - big-sur-chef17
-    - monterey-chef17
+    - big-sur
+    - monterey
     suites:
     - default
     - software-updates
