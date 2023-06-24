@@ -19,33 +19,19 @@ verifier:
   - test/integration/default
 
 platforms:
-- name: mojave-chef17
-  driver:
-    box: microsoft/macos-mojave
-    box_version: 10.14.6
-  provisioner:
-    product_version: 17
-
-- name: catalina-chef17
-  driver:
-    box: microsoft/macos-catalina
-    box_version: 10.15.7
-  provisioner:
-    product_version: 17
-
 - name: big-sur-chef17
   driver:
     box: microsoft/macos-big-sur
-    box_version: 11.6.5
+    box_version: 11.7.8
   provisioner:
-    product_version: 17
+    product_version: 18
 
 - name: monterey-chef17
   driver:
     box: microsoft/macos-monterey
-    box_version: 12.6.3
+    box_version: 12.6.7
   provisioner:
-    product_version: 17
+    product_version: 18
 
 suites:
 - name: default
