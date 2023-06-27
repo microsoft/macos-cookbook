@@ -19,7 +19,6 @@ action :install do
 
   execute 'install command line tools' do
     command ['softwareupdate', '--install', command_line_tools.version]
-    not_if { ::File.exist?('/Library/Developer/CommandLineTools/usr/lib/libxcrun.dylib') }
     live_stream true
     action :nothing
   end

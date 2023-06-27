@@ -22,9 +22,10 @@ describe 'command_line_tools' do
     end
 
     it { is_expected.to create_file('create demand file') }
-    it { is_expected.to run_execute('install command line tools') }
+    it { expect(chef_run.file('create demand file')).to notify('execute[install command line tools]').to(:run).immediately }
     it { is_expected.to delete_file('delete demand file') }
   end
+
 
   context 'with libxcrun present' do
     before do
@@ -37,9 +38,8 @@ describe 'command_line_tools' do
       end
     end
 
-    it { is_expected.to create_file('create demand file') }
+    it { is_expected.to_not create_file('create demand file') }
     it { is_expected.to_not run_execute('install command line tools') }
-    it { is_expected.to delete_file('delete demand file') }
   end
 end
 
