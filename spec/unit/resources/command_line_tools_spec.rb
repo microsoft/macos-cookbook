@@ -22,7 +22,7 @@ describe 'command_line_tools' do
     end
 
     it { is_expected.to create_file('create demand file') }
-    it { is_expected.to run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.0') }
+    it { is_expected.to run_execute('install command line tools') }
     it { is_expected.to delete_file('delete demand file') }
   end
 
@@ -38,7 +38,7 @@ describe 'command_line_tools' do
     end
 
     it { is_expected.to create_file('create demand file') }
-    it { is_expected.to_not run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.0') }
+    it { is_expected.to_not run_execute('install command line tools') }
     it { is_expected.to delete_file('delete demand file') }
   end
 end
