@@ -30,6 +30,11 @@ platforms:
     box: microsoft/macos-monterey
     box_version: 12.6.7
 
+- name: ventura-x86
+  driver:
+    box: microsoft/macos-ventura
+    box_version: 13.4
+
 - name: ventura-arm
   driver:
     box: microsoft/macos-ventura-arm
