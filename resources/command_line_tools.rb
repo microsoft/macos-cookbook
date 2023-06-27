@@ -11,14 +11,17 @@ action :install do
   file 'create demand file' do
     path '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
     group 'wheel'
+    not_if { ::File.exist?('/Library/Developer/CommandLineTools/usr/lib/libxcrun.dylib') }
+    notifies :run, 'execute[install command line tools]', :immediately
   end
 
   command_line_tools = CommandLineTools.new
 
-  execute "install #{command_line_tools.version}" do
+  execute 'install command line tools' do
     command ['softwareupdate', '--install', command_line_tools.version]
     not_if { ::File.exist?('/Library/Developer/CommandLineTools/usr/lib/libxcrun.dylib') }
     live_stream true
+    action :nothing
   end
 
   file 'delete demand file' do
