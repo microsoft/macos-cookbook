@@ -1,28 +1,47 @@
 # Changelog
 
+## [5.1.0] - 2023-06-27
+
+### Fixed
+
+- Fixed issues with ARD not working on macOS Monterey.
+- Ensured that CLT demand file always exists before we query the SWU catalog.
+
+### Added
+
+- Added additional functionality to the [remote_management](resources/remote_management.rb) resource.
+  - You can now specify the users to whose privileges will be configured.
+  - You can now specify the privileges to bestow upon the given users.
+  - You can now set the computer info fields; this is helpful for stratifying computers within ARD.
+
 ## [5.0.6] - 2023-06-23
 
 ### Fixed
-- Fixed permissions issue with the `macos::command_line_tools` resource. 
+
+- Fixed permissions issue with the `macos::command_line_tools` resource.
 
 ## [5.0.5] - 2023-06-20
 
 ### Fixed
+
 - Updated `command_line_tools` so that machines are able to install previously installed command line tools if they were wiped from a major macOS upgrade.
 
 ## [5.0.4] - 2023-01-31
 
 ### Added
+
 - Added key `LastPrivacyBundleVersion` to `macos_user` resource to allow for dimissing more Welcome screens in macOS 12.6.3
 
 ## [5.0.3] - 2022-11-16
 
 ### Fixed
+
 - Xcode resource verifies that a `xcodebuild` command can be ran when checking to see if Xcode is installed, in addition to verifying that Xcode.app exists.
 
 ## [5.0.2] - 2022-09-08
 
 ### Added
+
 - Xcode resource logs the Xcode version to install computed from the provided version.
 - Xcode library supports calling the `version` property more than once by not changing the stored data type.
 

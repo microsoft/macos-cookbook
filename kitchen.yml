@@ -7,6 +7,7 @@ driver:
 
 provisioner:
   product_name: chef
+  product_version: 18
   multiple_converge: 2
 
 verifier:
@@ -19,33 +20,25 @@ verifier:
   - test/integration/default
 
 platforms:
-- name: mojave-chef17
-  driver:
-    box: microsoft/macos-mojave
-    box_version: 10.14.6
-  provisioner:
-    product_version: 17
-
-- name: catalina-chef17
-  driver:
-    box: microsoft/macos-catalina
-    box_version: 10.15.7
-  provisioner:
-    product_version: 17
-
-- name: big-sur-chef17
+- name: big-sur-x86
   driver:
     box: microsoft/macos-big-sur
-    box_version: 11.6.5
-  provisioner:
-    product_version: 17
+    box_version: 11.7.8
 
-- name: monterey-chef17
+- name: monterey-x86
   driver:
     box: microsoft/macos-monterey
-    box_version: 12.6.3
-  provisioner:
-    product_version: 17
+    box_version: 12.6.7
+
+- name: ventura-x86
+  driver:
+    box: microsoft/macos-ventura
+    box_version: 13.4
+
+- name: ventura-arm
+  driver:
+    box: microsoft/macos-ventura-arm
+    box_version: 13.4.1
 
 suites:
 - name: default
@@ -104,7 +97,7 @@ suites:
   - recipe[macos_test::command_line_tools]
   verifier:
     controls:
-    - command-line-tool-sentinel
+    - command-line-tool-demand
     - xcrun
 
 - name: certificate

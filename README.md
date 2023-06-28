@@ -10,13 +10,11 @@ Chef resources and recipes for managing and provisioning macOS.
 
 ## Officially Supported Chef Versions
 
-- Chef 16
 - Chef 17
+- Chef 18
 
 ## Officially Supported OS Versions
 
-- macOS 10.14 Mojave
-- macOS 10.15 Catalina
 - macOS 11 Big Sur
 - macOS 12 Monterey
 
