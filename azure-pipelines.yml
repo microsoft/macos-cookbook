@@ -42,23 +42,38 @@ resources:
     type: git
     name: chef-pipelines-templates
 
+parameters:
+  - name: kitchenSuites
+    displayName: Kitchen Suites
+    type: object
+    default:
+      - default
+      - software-updates
+      - spotlight
+      # - xcode-from-apple
+      # - xcode-from-url
+      - command-line-tools
+      - certificate
+      - users
+      - keychain
+      - remote-access
+
 jobs:
 - template: chefspec-cookstyle.yml@templates
 - template: test-kitchen.yml@templates
   parameters:
+    jobName: "haswell"
+    kitchenFile: kitchen.yml
+    venturaPlus: true
+    platforms:
+      - ventura-x86
+    # - ventura-arm
+    suites: ${{ parameters.kitchenSuites }}
+- template: test-kitchen.yml@templates
+  parameters:
+    jobName: "vintage"
     platforms:
     - big-sur-x86
     - monterey-x86
-    # - ventura-arm
-    suites:
-    - default
-    - software-updates
-    - spotlight
-    # - xcode-from-apple
-    # - xcode-from-url
-    - command-line-tools
-    - certificate
-    - users
-    - keychain
-    - remote-access
+    suites: ${{ parameters.kitchenSuites }}
     kitchenFile: kitchen.yml
