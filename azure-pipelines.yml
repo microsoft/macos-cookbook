@@ -62,7 +62,7 @@ jobs:
 - template: chefspec-cookstyle.yml@templates
 - template: test-kitchen.yml@templates
   parameters:
-    jobName: "macos>=13"
+    jobName: "haswell"
     kitchenFile: kitchen.yml
     venturaPlus: true
     platforms:
@@ -71,7 +71,7 @@ jobs:
     suites: ${{ parameters.kitchenSuites }}
 - template: test-kitchen.yml@templates
   parameters:
-    jobName: "macos<=12"
+    jobName: "vintage"
     platforms:
     - big-sur-x86
     - monterey-x86
