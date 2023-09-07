@@ -3,11 +3,23 @@ unified_mode true
 provides :command_line_tools
 
 property :name, String, default: ''
+property :beta, [true, false], default: false
 property :compile_time, [true, false],
   description: 'Install the Xcode Command Line Tools at compile time.',
   default: false, desired_state: false
 
 action :install do
+  if new_resource.beta
+    file 'create CLT folder' do
+      path '/Library/Developer/CommandLineTools'
+      recursive true
+    end
+
+    file 'create beta demand file' do
+      path '/Library/Developer/CommandLineTools/.beta'
+    end
+  end
+
   file 'create demand file' do
     path '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
     group 'wheel'
@@ -30,6 +42,17 @@ action :install do
 end
 
 action :upgrade do
+  if new_resource.beta
+    file 'create CLT folder' do
+      path '/Library/Developer/CommandLineTools'
+      recursive true
+    end
+
+    file 'create beta demand file' do
+      path '/Library/Developer/CommandLineTools/.beta'
+    end
+  end
+
   file 'create demand file' do
     path '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
     group 'wheel'
