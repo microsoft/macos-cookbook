@@ -10,7 +10,7 @@ property :compile_time, [true, false],
 
 action :install do
   if new_resource.beta
-    file 'create CLT folder' do
+    directory 'create CLT folder' do
       path '/Library/Developer/CommandLineTools'
       recursive true
     end
