@@ -3,13 +3,12 @@ unified_mode true
 provides :command_line_tools
 
 property :name, String, default: ''
-property :beta, [true, false], default: false
 property :compile_time, [true, false],
   description: 'Install the Xcode Command Line Tools at compile time.',
   default: false, desired_state: false
 
 action :install do
-  if new_resource.beta
+  if MacOS.beta?
     directory 'create CLT folder' do
       path '/Library/Developer/CommandLineTools'
       recursive true
@@ -42,7 +41,7 @@ action :install do
 end
 
 action :upgrade do
-  if new_resource.beta
+  if MacOS.beta?
     file 'create CLT folder' do
       path '/Library/Developer/CommandLineTools'
       recursive true
