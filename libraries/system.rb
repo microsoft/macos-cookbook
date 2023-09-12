@@ -42,10 +42,10 @@ module MacOS
           shell_out('defaults -currentHost read-type com.apple.screensaver idleTime', user: @user).stdout.chomp == 'Type is integer'
       end
     end
+  end
 
-    def beta?
-      node['platform_version'].chars.last.match?(/0/) && node['platform_build'].chars.last.match?(/[[:alpha:]]/)
-    end
+  def beta?
+    node['platform_version'].chars.last.match?(/0/) && node['platform_build'].chars.last.match?(/[[:alpha:]]/)
   end
 end
 Chef::Resource.include(MacOS::System)
