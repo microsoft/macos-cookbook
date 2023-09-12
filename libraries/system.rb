@@ -44,9 +44,20 @@ module MacOS
     end
   end
 
-  def beta?
-    node['platform_version'].chars.last.match?(/0/) && node['platform_build'].chars.last.match?(/[[:alpha:]]/)
+  class Platform
+    attr_reader :version
+    attr_reader :build
+
+    def initialize(hardware)
+      @version = hardware.nil? ? nil : hardware['operating_system_version']
+      @build = hardware.nil? ? nil : hardware['build_version']
+    end
+
+    def beta?
+      @version.chars.last.match?(/0/) && @build.chars.last.match?(/[[:alpha:]]/)
+    end
   end
 end
+
 Chef::Resource.include(MacOS::System)
 Chef::DSL::Recipe.include(MacOS::System)
