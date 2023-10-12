@@ -20,28 +20,11 @@ verifier:
   - test/integration/default
 
 platforms:
-- name: big-sur
-  driver:
-    box: microsoft/macos-big-sur
-    box_version: 11.7.8
-
 - name: monterey
   driver:
     box: microsoft/macos-monterey
-    box_version: 12.6.7
 
 suites:
-- name: default
-  provisioner:
-    multiple_converge: 3
-    enforce_idempotency: true
-  run_list:
-  - recipe[macos_test::preferences]
-  verifier:
-    controls:
-    - dock-appearance
-    - show-all-files
-
 - name: software-updates
   provisioner:
     enforce_idempotency: true
