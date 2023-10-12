@@ -47,10 +47,8 @@ jobs:
 - template: test-kitchen.yml@templates
   parameters:
     platforms:
-    - big-sur
     - monterey
     suites:
-    - default
     - software-updates
     - spotlight
     # - xcode-from-apple
