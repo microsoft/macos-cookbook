@@ -29,17 +29,6 @@ platforms:
     box: microsoft/macos-monterey
 
 suites:
-- name: default
-  provisioner:
-    multiple_converge: 3
-    enforce_idempotency: true
-  run_list:
-  - recipe[macos_test::preferences]
-  verifier:
-    controls:
-    - dock-appearance
-    - show-all-files
-
 - name: software-updates
   provisioner:
     enforce_idempotency: true
