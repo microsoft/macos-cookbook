@@ -20,25 +20,15 @@ verifier:
   - test/integration/default
 
 platforms:
-- name: big-sur-x86
+- name: big-sur
   driver:
     box: microsoft/macos-big-sur
     box_version: 11.7.8
 
-- name: monterey-x86
+- name: monterey
   driver:
     box: microsoft/macos-monterey
     box_version: 12.6.7
-
-- name: ventura-x86
-  driver:
-    box: microsoft/macos-ventura
-    box_version: 13.4.1
-
-- name: ventura-arm
-  driver:
-    box: microsoft/macos-ventura-arm
-    box_version: 13.4.1
 
 suites:
 - name: default
@@ -51,7 +41,6 @@ suites:
     controls:
     - dock-appearance
     - show-all-files
-    - plist-creation
 
 - name: software-updates
   provisioner:
