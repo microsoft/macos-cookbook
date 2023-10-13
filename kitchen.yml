@@ -23,6 +23,12 @@ platforms:
 - name: monterey
   driver:
     box: microsoft/macos-monterey
+- name: ventura
+  driver:
+    box: microsoft/macos-ventura
+- name: sonoma
+  driver:
+    box: microsoft/macos-sonoma
 
 suites:
 - name: software-updates

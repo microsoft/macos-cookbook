@@ -48,6 +48,8 @@ jobs:
   parameters:
     platforms:
     - monterey
+    - ventura
+    - sonoma
     suites:
     - software-updates
     - spotlight
