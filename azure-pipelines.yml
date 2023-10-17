@@ -48,8 +48,23 @@ jobs:
   parameters:
     platforms:
     - monterey
+    suites:
+    - software-updates
+    - spotlight
+    # - xcode-from-apple
+    # - xcode-from-url
+    - command-line-tools
+    - certificate
+    - users
+    - keychain
+    - remote-access
+    kitchenFile: kitchen.yml
+- template: test-kitchen.yml@templates
+  parameters:
+    platforms:
     - ventura
     - sonoma
+    venturaPlus: true
     suites:
     - software-updates
     - spotlight

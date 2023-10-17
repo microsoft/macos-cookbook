@@ -29,6 +29,7 @@ platforms:
   driver:
     box: microsoft/macos-ventura
 - name: sonoma
+  venturaPlus: true
   driver:
     box: microsoft/macos-sonoma
 
