@@ -2,6 +2,7 @@
 driver:
   name: vagrant
   provider: parallels
+  linked_clone: false
   customize:
     hypervisor-type: apple
 
@@ -24,6 +25,7 @@ platforms:
   driver:
     box: microsoft/macos-monterey
 - name: ventura
+  venturaPlus: true
   driver:
     box: microsoft/macos-ventura
 - name: sonoma
