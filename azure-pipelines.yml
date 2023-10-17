@@ -60,8 +60,8 @@ jobs:
     - remote-access
     kitchenFile: kitchen.yml
 - template: test-kitchen.yml@templates
-  jobName: VenturaPlusTest_Kitchen
   parameters:
+    jobName: VenturaPlusTest_Kitchen
     platforms:
     - ventura
     - sonoma
