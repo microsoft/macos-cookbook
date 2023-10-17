@@ -61,7 +61,7 @@ jobs:
     kitchenFile: kitchen.yml
 - template: test-kitchen.yml@templates
   parameters:
-    jobName: VenturaPlusTest_Kitchen
+    jobName: "VenturaPlusTest_Kitchen"
     platforms:
     - ventura
     - sonoma
