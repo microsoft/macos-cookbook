@@ -18,16 +18,16 @@ Properties
 -------
 
 * `users`
-  * **Description:** the user(s) whoose ARD privileges will be configured.
-  * **Usage:** a single user can be specified in the form of a string, or multiple users can be specified as an array of strings. Specifying 'all' is a special case; all local users will be configured.
+  * **Description:** the user(s) whose ARD privileges will be configured.
+  * **Usage:** a single user can be specified as a string, or multiple users can be specified as an array of strings. Specifying 'all' is a particular case; all local users will be configured.
   * **Default:** `'all'`
     * Privileges will be configured for all local users.
   * **Constraints:** specified users must exist on the system.
   <br></br>
 
 * `privileges`
-  * **Description:** the desired privileges to bestow upon the given user(s).
-  **Usage:** a single privilege can be specified in the form of a string, or multiple privileges can be specified as an array of strings.
+  * **Description:** the desired privileges for the given user(s).
+  * **Usage:** a single privilege can be specified in the form of a string, or multiple privileges can be specified as an array of strings.
   * **Default:** `'all'`
   * **Constraints:** the list of optional privileges bellow
     * `all` → grant all privileges (default)
@@ -45,8 +45,8 @@ Properties
   <br></br>
   
 * `computer_info`
-  * **Description:** Info fields; helpful for stratifying computers in the ARD client app.
-  * **Usage** a single info field can be added as a string, or multiple info fields can be added as an array of strings. 
+  * **Description:** Info fields are helpful for stratifying computers in the ARD client app.
+  * **Usage** a single info field can be added as a string, or multiple fields can be added as an array of strings. 
   * **Default:** `[]`
     * No info fields will be added.
   * **Constraints:** there is a maximum of four info fields allowed.

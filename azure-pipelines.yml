@@ -72,8 +72,8 @@ jobs:
 - template: test-kitchen.yml@templates
   parameters:
     jobName: "vintage"
-    platforms:
-    - big-sur-x86
-    - monterey-x86
-    suites: ${{ parameters.kitchenSuites }}
     kitchenFile: kitchen.yml
+    platforms:
+      - big-sur-x86
+      - monterey-x86
+    suites: ${{ parameters.kitchenSuites }}
