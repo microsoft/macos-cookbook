@@ -47,7 +47,6 @@ parameters:
     displayName: Kitchen Suites
     type: object
     default:
-      - default
       - software-updates
       - spotlight
       # - xcode-from-apple
@@ -62,7 +61,7 @@ jobs:
 - template: chefspec-cookstyle.yml@templates
 - template: test-kitchen.yml@templates
   parameters:
-    jobName: "haswell"
+    jobName: "haswell_agent"
     kitchenFile: kitchen.yml
     venturaPlus: true
     platforms:
@@ -71,7 +70,7 @@ jobs:
     suites: ${{ parameters.kitchenSuites }}
 - template: test-kitchen.yml@templates
   parameters:
-    jobName: "vintage"
+    jobName: "vintage_agent"
     kitchenFile: kitchen.yml
     platforms:
       - big-sur-x86
