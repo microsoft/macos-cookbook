@@ -2,7 +2,6 @@
 driver:
   name: vagrant
   provider: parallels
-  linked_clone: false
   customize:
     hypervisor-type: apple
 
@@ -28,14 +27,6 @@ platforms:
 - name: monterey-x86
   driver:
     box: microsoft/macos-monterey
-- name: ventura
-  venturaPlus: true
-  driver:
-    box: microsoft/macos-ventura
-- name: sonoma
-  venturaPlus: true
-  driver:
-    box: microsoft/macos-sonoma
 
 - name: ventura-x86
   driver:
@@ -44,6 +35,14 @@ platforms:
 - name: ventura-arm
   driver:
     box: microsoft/macos-ventura-arm
+
+- name: sonoma-x86
+  driver:
+    box: microsoft/macos-sonoma
+
+- name: sonoma-arm
+  driver:
+    box: microsoft/macos-sonoma-arm
 
 suites:
 - name: software-updates
