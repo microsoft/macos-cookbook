@@ -20,9 +20,21 @@ verifier:
   - test/integration/default
 
 platforms:
-- name: monterey
+- name: big-sur-x86
+  driver:
+    box: microsoft/macos-big-sur
+
+- name: monterey-x86
   driver:
     box: microsoft/macos-monterey
+
+- name: ventura-x86
+  driver:
+    box: microsoft/macos-ventura
+
+- name: ventura-arm
+  driver:
+    box: microsoft/macos-ventura-arm
 
 suites:
 - name: software-updates
@@ -69,7 +81,7 @@ suites:
   - recipe[macos_test::command_line_tools]
   verifier:
     controls:
-    - command-line-tool-sentinel
+    - command-line-tool-demand
     - xcrun
 
 - name: certificate

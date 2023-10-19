@@ -1,9 +1,9 @@
 title 'xcode command line tools'
 
-control 'command-line-tool-sentinel' do
-  title 'Command Line Tools sentinel has been deleted'
+control 'command-line-tool-demand' do
+  title 'Command Line Tools demand has been deleted'
   desc '
-    Verify that the Command Line Tools sentinel has been deleted, and that
+    Verify that the Command Line Tools demand has been deleted, and that
     there are no lingering CLT updates since we should have installed the latest
   '
   describe file('/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress') do

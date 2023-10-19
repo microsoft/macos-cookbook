@@ -5,6 +5,7 @@ describe 'command_line_tools' do
   platform 'mac_os_x'
 
   before do
+    allow_any_instance_of(MacOS::Platform).to receive(:beta?).and_return(false)
     allow_any_instance_of(MacOS::CommandLineTools).to receive(:version)
       .and_return('Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.0')
     allow(File).to receive(:exist?).and_call_original
@@ -16,14 +17,14 @@ describe 'command_line_tools' do
     end
 
     recipe do
-      command_line_tools 'horse' do
+      command_line_tools do
         action :install
       end
     end
 
-    it { is_expected.to create_file('create sentinel file') }
-    it { is_expected.to run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.0') }
-    it { is_expected.to delete_file('delete sentinel file') }
+    it { is_expected.to create_file('create demand file') }
+    it { expect(chef_run.file('create demand file')).to notify('execute[install command line tools]').to(:run).immediately }
+    it { is_expected.to delete_file('delete demand file') }
   end
 
   context 'with libxcrun present' do
@@ -32,14 +33,13 @@ describe 'command_line_tools' do
     end
 
     recipe do
-      command_line_tools 'horse' do
+      command_line_tools do
         action :install
       end
     end
 
-    it { is_expected.to create_file('create sentinel file') }
-    it { is_expected.to_not run_execute('install Command Line Tools (macOS High Sierra version 10.13) for Xcode-10.0') }
-    it { is_expected.to delete_file('delete sentinel file') }
+    it { is_expected.to_not create_file('create demand file') }
+    it { is_expected.to_not run_execute('install command line tools') }
   end
 end
 
@@ -49,6 +49,7 @@ describe 'command_line_tools' do
 
   context 'with a different version of command line tools than currently installed available' do
     before do
+      allow_any_instance_of(MacOS::Platform).to receive(:beta?).and_return(false)
       allow_any_instance_of(MacOS::CommandLineTools).to receive(:softwareupdate_list)
         .and_return(["Software Update Tool\n",
                      "\n", "Finding available software\n",
@@ -65,11 +66,11 @@ describe 'command_line_tools' do
       end
     end
 
-    it { is_expected.to create_file('create sentinel file') }
+    it { is_expected.to create_file('create demand file') }
     it {
       is_expected.to run_execute('upgrade Command Line Tools for Xcode-11.0')
         .with(command: ['softwareupdate', '--install', 'Command Line Tools for Xcode-22.0'])
     }
-    it { is_expected.to delete_file('delete sentinel file') }
+    it { is_expected.to delete_file('delete demand file') }
   end
 end

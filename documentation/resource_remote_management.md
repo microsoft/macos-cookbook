@@ -27,7 +27,7 @@ Properties
 
 * `privileges`
   * **Description:** the desired privileges for the given user(s).
-  **Usage:** a single privilege can be specified in the form of a string, or multiple privileges can be specified as an array of strings.
+  * **Usage:** a single privilege can be specified in the form of a string, or multiple privileges can be specified as an array of strings.
   * **Default:** `'all'`
   * **Constraints:** the list of optional privileges bellow
     * `all` → grant all privileges (default)
@@ -45,7 +45,7 @@ Properties
   <br></br>
   
 * `computer_info`
-  * **Description:** Info fields; are helpful for stratifying computers in the ARD client app.
+  * **Description:** Info fields are helpful for stratifying computers in the ARD client app.
   * **Usage** a single info field can be added as a string, or multiple fields can be added as an array of strings. 
   * **Default:** `[]`
     * No info fields will be added.
