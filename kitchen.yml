@@ -36,6 +36,14 @@ platforms:
   driver:
     box: microsoft/macos-ventura-arm
 
+- name: sonoma-x86
+  driver:
+    box: microsoft/macos-sonoma
+
+- name: sonoma-arm
+  driver:
+    box: microsoft/macos-sonoma-arm
+
 suites:
 - name: software-updates
   provisioner:
