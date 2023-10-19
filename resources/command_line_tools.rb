@@ -2,37 +2,62 @@ unified_mode true
 
 provides :command_line_tools
 
+property :name, String, default: ''
 property :compile_time, [true, false],
   description: 'Install the Xcode Command Line Tools at compile time.',
   default: false, desired_state: false
 
 action :install do
-  command_line_tools = CommandLineTools.new
+  if macos.beta?
+    directory 'create CLT folder' do
+      path '/Library/Developer/CommandLineTools'
+      recursive true
+    end
 
-  file 'create sentinel file' do
+    file 'create beta demand file' do
+      path '/Library/Developer/CommandLineTools/.beta'
+    end
+  end
+
+  file 'create demand file' do
     path '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
     group 'wheel'
-  end
-
-  execute "install #{command_line_tools.version}" do
-    command ['softwareupdate', '--install', command_line_tools.version]
     not_if { ::File.exist?('/Library/Developer/CommandLineTools/usr/lib/libxcrun.dylib') }
-    live_stream true
+    notifies :run, 'execute[install command line tools]', :immediately
   end
 
-  file 'delete sentinel file' do
+  command_line_tools = CommandLineTools.new
+
+  execute 'install command line tools' do
+    command ['softwareupdate', '--install', command_line_tools.version]
+    live_stream true
+    action :nothing
+  end
+
+  file 'delete demand file' do
     path '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
     action :delete
   end
 end
 
 action :upgrade do
-  command_line_tools = CommandLineTools.new
+  if macos.beta?
+    file 'create CLT folder' do
+      path '/Library/Developer/CommandLineTools'
+      recursive true
+    end
 
-  file 'create sentinel file' do
+    file 'create beta demand file' do
+      path '/Library/Developer/CommandLineTools/.beta'
+    end
+  end
+
+  file 'create demand file' do
     path '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
     group 'wheel'
   end
+
+  command_line_tools = CommandLineTools.new
 
   execute "upgrade #{command_line_tools.version}" do
     command ['softwareupdate', '--install', command_line_tools.latest_from_catalog]
@@ -40,9 +65,15 @@ action :upgrade do
     live_stream true
   end
 
-  file 'delete sentinel file' do
+  file 'delete demand file' do
     path '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
     action :delete
+  end
+end
+
+action_class do
+  def macos
+    MacOS::Platform.new(node['hardware'])
   end
 end
 

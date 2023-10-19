@@ -1,7 +1,7 @@
 require 'spec_helper'
 include MacOS
 
-shared_context 'able to create on-demand installation sentinel' do
+shared_context 'able to create on-demand installation demand' do
   before do
     allow(FileUtils).to receive(:touch).and_return(true)
     allow(FileUtils).to receive(:chown).and_return(true)
@@ -38,7 +38,7 @@ end
 
 describe MacOS::CommandLineTools do
   context 'when there are several products for one Xcode version but several macOS versions' do
-    include_context 'able to create on-demand installation sentinel'
+    include_context 'able to create on-demand installation demand'
     include_context 'on macOS Mojave'
     include_context 'with no CLT previously installed'
     before do
@@ -59,7 +59,7 @@ describe MacOS::CommandLineTools do
   end
 
   context 'when there are no products for the current macOS version' do
-    include_context 'able to create on-demand installation sentinel'
+    include_context 'able to create on-demand installation demand'
     include_context 'on macOS Mojave'
     include_context 'with no CLT previously installed'
     before do
@@ -79,7 +79,7 @@ describe MacOS::CommandLineTools do
   end
 
   context 'when provided an available list of software update products in Catalina' do
-    include_context 'able to create on-demand installation sentinel'
+    include_context 'able to create on-demand installation demand'
     include_context 'on macOS Catalina'
     include_context 'with no CLT previously installed'
     before do
@@ -97,7 +97,7 @@ describe MacOS::CommandLineTools do
   end
 
   context 'when provided an available list of software update products in Catalina' do
-    include_context 'able to create on-demand installation sentinel'
+    include_context 'able to create on-demand installation demand'
     include_context 'on macOS Catalina'
     include_context 'with CLT previously installed'
     before do

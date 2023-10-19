@@ -6,20 +6,20 @@ module MacOS
     attr_reader :version
 
     def initialize
-      @version = if installed.empty?
+      @version = if install_receipts.empty?
                    latest_from_catalog
                  else
-                   latest_installed
+                   latest_receipt
                  end
     end
 
-    def installed
+    def install_receipts
       packages = Plist.parse_xml(install_history_plist)
       packages.select { |package| package['displayName'].match? 'Command Line Tools' }
     end
 
-    def latest_installed
-      [installed.last['displayName'], installed.last['displayVersion']].join '-'
+    def latest_receipt
+      [install_receipts.last['displayName'], install_receipts.last['displayVersion']].join '-'
     end
 
     def latest_from_catalog
@@ -46,7 +46,7 @@ module MacOS
     end
 
     def all_available
-      softwareupdate_list.select { |product_name| product_name.match /\*.{1,8}Command Line Tools/ }
+      softwareupdate_list.select { |product_name| product_name.match(/\*.{1,8}Command Line Tools/) }
     end
 
     def platform_specific
@@ -54,9 +54,9 @@ module MacOS
     end
 
     def enable_install_on_demand
-      install_sentinel = '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
-      FileUtils.touch install_sentinel
-      FileUtils.chown 'root', 'wheel', install_sentinel
+      install_demand = '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
+      FileUtils.touch install_demand
+      FileUtils.chown 'root', 'wheel', install_demand
     end
 
     def xcode_version(product)
