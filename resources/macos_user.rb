@@ -116,7 +116,7 @@ end
 
 action :create do
   if new_resource.secure_token && !property_is_set?(:existing_token_auth)
-    raise "An existing_token_auth hash must be provided if you want a secure token for #{new_resource.username}!"
+    raise "An existing_token_auth hash must be provided if you want a secure token for #{new_resource.username}!" unless logged_in? '_mbsetupuser'
   end
 
   unless ::File.exist?(user_home) && user_already_exists?
