@@ -77,9 +77,14 @@ action_class do
     shell_out!(sysadminctl, args).stderr
   end
 
+  def logged_in?(user)
+    logged_in_user = shell_out('stat', '-f', '%Su', '/dev/console').stdout.chomp
+    logged_in_user == user
+  end
+
   def validate_secure_token_modification
     if !new_resource.property_is_set?(:existing_token_auth) || !new_resource.property_is_set?(:password)
-      raise "Both an existing_token_auth hash and the user password for #{new_resource.username} must be provided to modify secure token!"
+      raise "Both an existing_token_auth hash and the user password for #{new_resource.username} must be provided to modify secure token!" unless logged_in? '_mbsetupuser'
     end
   end
 
