@@ -84,7 +84,7 @@ action_class do
 
   def validate_secure_token_modification
     if !new_resource.property_is_set?(:existing_token_auth) || !new_resource.property_is_set?(:password)
-      raise "Both an existing_token_auth hash and the user password for #{new_resource.username} must be provided to modify secure token!" unless logged_in? '_mbsetupuser'
+      raise "Both an existing_token_auth hash and the user password for #{new_resource.username} must be provided to modify secure token!" unless logged_in?('_mbsetupuser') || logged_in?('vagrant')
     end
   end
 
@@ -116,7 +116,7 @@ end
 
 action :create do
   if new_resource.secure_token && !property_is_set?(:existing_token_auth)
-    raise "An existing_token_auth hash must be provided if you want a secure token for #{new_resource.username}!" unless logged_in? '_mbsetupuser'
+    raise "An existing_token_auth hash must be provided if you want a secure token for #{new_resource.username}!" unless logged_in?('_mbsetupuser') || logged_in?('vagrant')
   end
 
   unless ::File.exist?(user_home) && user_already_exists?
