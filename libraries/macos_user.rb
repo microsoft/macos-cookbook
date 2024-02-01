@@ -3,7 +3,7 @@ module MacOS
     def kcpassword_hash(password)
       bits = magic_bits
       obfuscated = []
-      padded(password).each do |char|
+      padded(password.to_s).each do |char|
         obfuscated.push(bits[0] ^ char)
         bits.rotate!
       end
