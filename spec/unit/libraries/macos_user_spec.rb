@@ -17,7 +17,7 @@ describe MacOS::MacOSUserHelpers, '#kcpassword_hash' do
 
   context 'When calling the obfuscate method on a password that is nil' do
     it 'the password hash value is that of an empty string' do
-      expect(kcpassword_hash(nil)).to eq "}\x89R#\xD2\xBC\xDD\xEA\xA3\xB9\x1F".force_encoding('ASCII-8BIT')
+      expect(kcpassword_hash(nil)).to eq "}\xEE\x94J\xA1\xED\"\xA0O\x90\xD2".force_encoding('ASCII-8BIT')
     end
   end
 end
