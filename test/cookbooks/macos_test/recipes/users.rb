@@ -53,3 +53,7 @@ macos_user "remove existing user's secure token" do
   secure_token false
   existing_token_auth({ username: 'vagrant', password: 'vagrant' })
 end
+
+macos_user 'create user with no password' do
+  username 'hunter2'
+end
