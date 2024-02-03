@@ -132,7 +132,7 @@ action :create do
       command 'pwpolicy clearaccountpolicies'
       not_if do
         Plist.parse_xml(shell_out('pwpolicy getaccountpolicies').stdout)['policyCategoryPasswordContent']
-             .map { |policy| policy['policyContent'] }.include?("policyAttributePassword matches '.{0,}'")
+             .map { |policy| policy['policyContent'] }.include?("policyAttributePassword matches '.{0,}?'")
       end
       notifies :run, 'execute[enable passwords with zero length]', :immediately
     end
