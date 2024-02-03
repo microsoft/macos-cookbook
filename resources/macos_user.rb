@@ -73,6 +73,14 @@ action_class do
     end
   end
 
+  def user_password
+    if new_resource.property_is_set?(:password)
+      ['-password', new_resource.password]
+    else
+      ''
+    end
+  end
+
   def exec_sysadminctl(args)
     shell_out!(sysadminctl, args).stderr
   end
@@ -119,8 +127,24 @@ action :create do
     raise "An existing_token_auth hash must be provided if you want a secure token for #{new_resource.username}!" unless logged_in?('_mbsetupuser') || logged_in?('vagrant')
   end
 
+  unless property_is_set?(:password)
+    execute 'clear any existing password policies' do
+      command 'pwpolicy clearaccountpolicies'
+      not_if do
+        Plist.parse_xml(shell_out('pwpolicy getaccountpolicies').stdout)['policyCategoryPasswordContent']
+             .map { |policy| policy['policyContent'] }.include?("policyAttributePassword matches '.{0,}?'")
+      end
+      notifies :run, 'execute[enable passwords with zero length]', :immediately
+    end
+
+    execute 'enable passwords with zero length' do
+      command "pwpolicy setglobalpolicy 'minChars=0'"
+      action :nothing
+    end
+  end
+
   unless ::File.exist?(user_home) && user_already_exists?
-    cmd = [*token_credentials, '-addUser', new_resource.username, *user_fullname, '-password', new_resource.password, admin_user]
+    cmd = [*token_credentials, '-addUser', new_resource.username, *user_fullname, *user_password, admin_user]
     output = exec_sysadminctl(cmd)
     unless /creating user/.match?(output.downcase)
       raise "error while creating user: #{output}"
@@ -129,7 +153,7 @@ action :create do
 
   if new_resource.secure_token && !secure_token_enabled?
     validate_secure_token_modification
-    cmd = [*token_credentials, '-secureTokenOn', new_resource.username, '-password', new_resource.password]
+    cmd = [*token_credentials, '-secureTokenOn', new_resource.username, *user_password]
     output = exec_sysadminctl(cmd)
     unless /done/.match?(output.downcase)
       raise "error while modifying SecureToken: #{output}"
@@ -138,7 +162,7 @@ action :create do
 
   if !new_resource.secure_token && secure_token_enabled?
     validate_secure_token_modification
-    cmd = [*token_credentials, '-secureTokenOff', new_resource.username, '-password', new_resource.password]
+    cmd = [*token_credentials, '-secureTokenOff', new_resource.username, *user_password]
     output = exec_sysadminctl(cmd)
     unless /done/.match?(output.downcase)
       raise "error while modifying SecureToken: #{output}"
