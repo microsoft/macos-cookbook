@@ -68,6 +68,25 @@ describe 'macos_user with no password on machine without a password policy' do
       allow(provider).to receive_shell_out('/usr/sbin/sysadminctl', '-secureTokenStatus', 'cloudtest',
                                            stderr: 'Secure token is DISABLED for user cloudtest', exitstatus: 0)
     end
+    stubs_for_resource('execute[clear any existing password policies]') do |resource|
+      allow(resource).to receive_shell_out('pwpolicy getaccountpolicies', stdout: <<~PLIST
+                                                                                    <?xml version="1.0" encoding="UTF-8"?>
+                                                                                    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+                                                                                    <plist version="1.0">
+                                                                                      <dict>
+                                                                                        <key>policyCategoryPasswordContent</key>
+                                                                                        <array>
+                                                                                          <dict>
+                                                                                            <key>policyContent</key>
+                                                                                            <string>policyAttributePassword matches '.{8,}'</string>
+                                                                                            <key>policyContentDescription</key>
+                                                                                          </dict>
+                                                                                        </array>
+                                                                                      </dict>
+                                                                                    </plist>
+                                                                                  PLIST
+      )
+    end
   end
 
   recipe do
