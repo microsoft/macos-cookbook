@@ -41,6 +41,10 @@ resources:
   - repository: templates
     type: git
     name: chef-pipelines-templates
+  - repository: OfficePT
+    type: git
+    name: OE/OfficePipelineTemplates
+    ref: refs/heads/main
 
 parameters:
   - name: kitchenSuites
@@ -57,21 +61,30 @@ parameters:
       - keychain
       - remote-access
 
-jobs:
-- template: chefspec-cookstyle.yml@templates
-- template: test-kitchen.yml@templates
+extends:
+  template: v1/Office.Official.PipelineTemplate.yml@OfficePT
   parameters:
-    jobName: "haswell_agent"
-    kitchenFile: kitchen.yml
-    venturaPlus: true
-    platforms:
-      - ventura-x86
-      - sonoma-x86
-    suites: ${{ parameters.kitchenSuites }}
-- template: test-kitchen.yml@templates
-  parameters:
-    jobName: "vintage_agent"
-    kitchenFile: kitchen.yml
-    platforms:
-      - monterey-x86
-    suites: ${{ parameters.kitchenSuites }}
+    pool:
+      name: Azure-Pipelines-1ESPT-ExDShared
+      image: windows-latest
+      os: windows
+    stages:
+    - stage: cookbook
+      jobs:
+      - template: chefspec-cookstyle.yml@templates
+      - template: test-kitchen.yml@templates
+        parameters:
+          jobName: "haswell_agent"
+          kitchenFile: kitchen.yml
+          venturaPlus: true
+          platforms:
+            - ventura-x86
+            - sonoma-x86
+          suites: ${{ parameters.kitchenSuites }}
+      - template: test-kitchen.yml@templates
+        parameters:
+          jobName: "vintage_agent"
+          kitchenFile: kitchen.yml
+          platforms:
+            - monterey-x86
+          suites: ${{ parameters.kitchenSuites }}
