@@ -64,10 +64,14 @@ parameters:
 extends:
   template: v1/Office.Official.PipelineTemplate.yml@OfficePT
   parameters:
+    sdl:
+      sourceAnalysisPool:
+        name: Azure-Pipelines-1ESPT-ExDShared
+        image: windows-latest
+        os: windows
     pool:
-      name: Azure-Pipelines-1ESPT-ExDShared
-      image: windows-latest
-      os: windows
+      name: 'ApexInfra macOS'
+      os: macOS
     stages:
     - stage: cookbook
       jobs:
