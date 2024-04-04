@@ -20,10 +20,6 @@ verifier:
   - test/integration/default
 
 platforms:
-- name: big-sur-x86
-  driver:
-    box: microsoft/macos-big-sur
-
 - name: monterey-x86
   driver:
     box: microsoft/macos-monterey

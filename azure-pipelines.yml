@@ -73,6 +73,5 @@ jobs:
     jobName: "vintage_agent"
     kitchenFile: kitchen.yml
     platforms:
-      - big-sur-x86
       - monterey-x86
     suites: ${{ parameters.kitchenSuites }}
