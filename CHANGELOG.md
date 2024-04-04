@@ -1,11 +1,17 @@
 # Changelog
 
-## [5.1.0] - 2023-06-27
+=======
+
+## [6.0.0] - 2024-04-04
+
+### Removed
+
+- Removed the `plist` resource
 
 ### Fixed
 
 - Fixed issues with ARD not working on macOS Monterey.
-- Ensured that CLT demand file always exists before we query the SWU catalog.
+- Fixed an xcode-install gem issue.
 
 ### Added
 
@@ -13,6 +19,16 @@
   - You can now specify the users to whose privileges will be configured.
   - You can now specify the privileges to bestow upon the given users.
   - You can now set the computer info fields; this is helpful for stratifying computers within ARD.
+
+- Added support for `macos_user` to create an account with no password.
+- Added support for `command_line_tools` to install beta versions.
+
+## [5.1.0] - 2023-06-27
+
+### Fixed
+
+- Fixed issues with ARD not working on macOS Monterey.
+- Ensured that CLT demand file always exists before we query the SWU catalog.
 
 ## [5.0.6] - 2023-06-23
 
@@ -252,7 +268,7 @@
 
 ### Fixed
 
-- Fixed an issue where the Xcode resource cannot find the Xcode 11 GM bundle path to move it to the declared path in the resource. It removes a logic tree in favor of matching the behavior of the xcode-install gem: https://github.com/xcpretty/xcode-install/blob/74b89805462d6795d964935239f78e6d2790a52d/lib/xcode/install.rb#L282, which is to replace spaces in the version listed by Apple with a period.
+- Fixed an issue where the Xcode resource cannot find the Xcode 11 GM bundle path to move it to the declared path in the resource. It removes a logic tree in favor of matching the behavior of the xcode-install gem: <https://github.com/xcpretty/xcode-install/blob/74b89805462d6795d964935239f78e6d2790a52d/lib/xcode/install.rb#L282>, which is to replace spaces in the version listed by Apple with a period.
 
 - Fixed an issue where installing the xcode-install gem fails on Chef 15
 

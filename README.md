@@ -10,18 +10,15 @@ Chef resources and recipes for managing and provisioning macOS.
 
 ## Officially Supported Chef Versions
 
-- Chef 17
 - Chef 18
 
 ## Officially Supported OS Versions
 
-- macOS 11 Big Sur
 - macOS 12 Monterey
+- macOS 13 Ventura
+- macOS 14 Sonoma
 
 ## Resources
-**The plist resource is deprecated and will be removed in the next major release of macos-cookbook. Please use the [plist resource included with Chef Client](https://docs.chef.io/resources/plist/).**
-
-- [`plist`](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_plist.md) :warning: **DEPRECATED** :warning:
 - [`automatic_software_updates`](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_automatic_software_updates.md)
 - [`certificate`](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_certificate.md)
 - [`command_line_tools`](https://github.com/Microsoft/macos-cookbook/blob/master/documentation/resource_command_line_tools.md)

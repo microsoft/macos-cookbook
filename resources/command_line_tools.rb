@@ -8,6 +8,17 @@ property :compile_time, [true, false],
   default: false, desired_state: false
 
 action :install do
+  if macos.beta?
+    directory 'create CLT folder' do
+      path '/Library/Developer/CommandLineTools'
+      recursive true
+    end
+
+    file 'create beta demand file' do
+      path '/Library/Developer/CommandLineTools/.beta'
+    end
+  end
+
   file 'create demand file' do
     path '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
     group 'wheel'
@@ -30,6 +41,17 @@ action :install do
 end
 
 action :upgrade do
+  if macos.beta?
+    file 'create CLT folder' do
+      path '/Library/Developer/CommandLineTools'
+      recursive true
+    end
+
+    file 'create beta demand file' do
+      path '/Library/Developer/CommandLineTools/.beta'
+    end
+  end
+
   file 'create demand file' do
     path '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
     group 'wheel'
@@ -46,6 +68,12 @@ action :upgrade do
   file 'delete demand file' do
     path '/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress'
     action :delete
+  end
+end
+
+action_class do
+  def macos
+    MacOS::Platform.new(node['hardware'])
   end
 end
 
