@@ -47,6 +47,7 @@ action_class do
       'LastPrivacyBundleVersion' => '2',
       'LastSeenBuddyBuildVersion' => node['platform_build'],
       'LastSeenSiriProductVersion' => node['platform_version'],
+      'MiniBuddyLaunchReason' => '0',
     }
   end
 
