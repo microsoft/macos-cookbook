@@ -123,7 +123,7 @@ action_class do
 end
 
 action :create do
-  if new_resource.secure_token && !property_is_set?(:existing_token_auth)
+  if new_resource.secure_token && !secure_token_enabled? && !property_is_set?(:existing_token_auth)
     raise "An existing_token_auth hash must be provided if you want a secure token for #{new_resource.username}!" unless logged_in?('_mbsetupuser') || logged_in?('vagrant')
   end
 
