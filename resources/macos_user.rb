@@ -49,7 +49,7 @@ action_class do
       'LastSeenBuddyBuildVersion' => node['platform_build'],
       'LastSeenDiagnosticsProductVersion' => node['platform_version'],
       'LastSeenSiriProductVersion' => node['platform_version'],
-      'MiniBuddyLaunchReason' => '0',
+      'MiniBuddyLaunchReason' => 0,
     }
   end
 
