@@ -10,6 +10,7 @@ control 'updates-disabled' do
   download = 'AutomaticDownload'
   install_os = 'AutomaticallyInstallMacOSUpdates'
   install_critical = 'CriticalUpdateInstall'
+  install_config_data = 'ConfigDataInstall'
   install_app_store = 'AutoUpdate'
 
   describe command("/usr/libexec/PlistBuddy -c 'Print :#{check}' #{software_update_plist}") do
@@ -25,6 +26,10 @@ control 'updates-disabled' do
   end
 
   describe command("/usr/libexec/PlistBuddy -c 'Print :#{install_critical}' #{software_update_plist}") do
+    its('stdout') { should match('false') }
+  end
+
+  describe command("/usr/libexec/PlistBuddy -c 'Print :#{install_config_data}' #{software_update_plist}") do
     its('stdout') { should match('false') }
   end
 
@@ -48,6 +53,10 @@ control 'updates-disabled' do
     its('stdout') { should match('boolean') }
   end
 
+  describe command("/usr/bin/defaults read-type #{software_update_plist} #{install_config_data}") do
+  its('stdout') { should match('boolean') }
+end
+
   describe command("/usr/bin/defaults read-type #{app_store_plist} #{install_app_store}") do
     its('stdout') { should match('boolean') }
   end
@@ -67,6 +76,10 @@ control 'updates-disabled' do
   describe command("/usr/bin/defaults read #{software_update_plist} #{install_critical}") do
     its('stdout') { should match('0') }
   end
+
+  describe command("/usr/bin/defaults read #{software_update_plist} #{install_config_data}") do
+  its('stdout') { should match('0') }
+end
 
   describe command("/usr/bin/defaults read #{app_store_plist} #{install_app_store}") do
     its('stdout') { should match('0') }
