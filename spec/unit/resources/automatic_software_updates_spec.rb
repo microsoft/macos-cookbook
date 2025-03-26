@@ -12,6 +12,7 @@ describe 'automatic software updates entirely disabled' do
       install_os false
       install_app_store false
       install_critical false
+      install_config_data false
     end
   end
 
@@ -39,6 +40,13 @@ describe 'automatic software updates entirely disabled' do
   it {
     is_expected.to set_plist('entry for CriticalUpdateInstall')
       .with(entry: 'CriticalUpdateInstall',
+            value: false,
+            path: software_update_plist)
+  }
+
+  it {
+    is_expected.to set_plist('entry for ConfigDataInstall')
+      .with(entry: 'ConfigDataInstall',
             value: false,
             path: software_update_plist)
   }
@@ -62,6 +70,7 @@ describe 'automatic software updates entirely enabled' do
       install_os true
       install_app_store true
       install_critical true
+      install_config_data true
     end
   end
 
@@ -94,6 +103,13 @@ describe 'automatic software updates entirely enabled' do
   }
 
   it {
+    is_expected.to set_plist('entry for ConfigDataInstall')
+      .with(entry: 'ConfigDataInstall',
+            value: true,
+            path: software_update_plist)
+  }
+
+  it {
     is_expected.to set_plist('entry for AutoUpdate')
       .with(entry: 'AutoUpdate',
             value: true,
@@ -112,6 +128,7 @@ describe 'automatic software update checking disabled but other properties are e
       install_os true
       install_app_store true
       install_critical true
+      install_config_data true
     end
   end
 
@@ -163,6 +180,7 @@ describe 'automatic software update downloading is disabled but installing criti
       check true
       download false
       install_critical true
+      install_config_data true
     end
   end
 
@@ -176,6 +194,13 @@ describe 'automatic software update downloading is disabled but installing criti
   it {
     is_expected.to set_plist('entry for CriticalUpdateInstall')
       .with(entry: 'CriticalUpdateInstall',
+            value: true,
+            path: software_update_plist)
+  }
+
+  it {
+    is_expected.to set_plist('entry for ConfigDataInstall')
+      .with(entry: 'ConfigDataInstall',
             value: true,
             path: software_update_plist)
   }
