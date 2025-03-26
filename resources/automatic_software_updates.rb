@@ -7,6 +7,7 @@ property :download, [true, false]
 property :install_os, [true, false]
 property :install_app_store, [true, false]
 property :install_critical, [true, false]
+property :install_config_data, [true. false]
 
 software_update_plist = '/Library/Preferences/com.apple.SoftwareUpdate.plist'
 app_store_plist = '/Library/Preferences/com.apple.commerce.plist'
@@ -39,6 +40,12 @@ action :set do
   plist 'entry for CriticalUpdateInstall' do
     entry 'CriticalUpdateInstall'
     value new_resource.install_critical
+    path software_update_plist
+  end
+
+  plist 'entry for ConfigDataInstall' do
+    entry 'ConfigDataInstall'
+    value new_resource.install_config_data
     path software_update_plist
   end
 
