@@ -7,7 +7,7 @@ property :download, [true, false]
 property :install_os, [true, false]
 property :install_app_store, [true, false]
 property :install_critical, [true, false]
-property :install_config_data, [true. false]
+property :install_config_data, [true, false]
 
 software_update_plist = '/Library/Preferences/com.apple.SoftwareUpdate.plist'
 app_store_plist = '/Library/Preferences/com.apple.commerce.plist'
