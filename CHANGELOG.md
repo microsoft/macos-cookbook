@@ -6,7 +6,7 @@
 
 ### Added
 
-- Added keys to `macos_user` resource to allow for dimissing more Welcome screens in macOS 15.4.1.
+- Added keys to `macos_user` resource to allow for dismissing more Welcome screens in macOS 15.4.1.
   - `InitialAccountSetupDate`
   - `InitialSetupBuildVersion`
   - `InitialSetupProductVersion`
