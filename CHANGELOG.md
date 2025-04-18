@@ -2,6 +2,17 @@
 
 =======
 
+## [6.0.6] - 2025-04-18
+
+### Added
+
+- Added keys to `macos_user` resource to allow for dimissing more Welcome screens in macOS 15.4.1.
+  - `InitialAccountSetupDate`
+  - `InitialSetupBuildVersion`
+  - `InitialSetupProductVersion`
+  - `LastSeenIntelligenceProductVersion`
+  - `selectedFDEEscrowType`
+
 ## [6.0.0] - 2024-04-04
 
 ### Removed
