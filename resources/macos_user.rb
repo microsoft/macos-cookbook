@@ -42,9 +42,6 @@ action_class do
       'DidSeeAppearanceSetup' => true,
       'DidSeeScreenTime' => true,
       'DidSeeiCloudLoginForStorageServices' => true,
-      'InitialAccountSetupDate' => ::Time.now.utc.strftime('%Y-%m-%dT%H:%M:%SZ'),
-      'InitialSetupBuildVersion' => node['platform_build'],
-      'InitialSetupProductVersion' => node['platform_version'],
       'LastSeenCloudProductVersion' => node['platform_version'],
       'LastPreLoginTasksPerformedVersion' => node['platform_version'],
       'LastPreLoginTasksPerformedBuild' => node['platform_build'],
@@ -54,7 +51,6 @@ action_class do
       'LastSeenDiagnosticsProductVersion' => node['platform_version'],
       'LastSeenSiriProductVersion' => node['platform_version'],
       'MiniBuddyLaunchReason' => 0,
-      'selectedFDEEscrowType' => 'DeclinedFDE',
     }
   end
 
