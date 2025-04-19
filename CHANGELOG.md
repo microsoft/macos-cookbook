@@ -2,6 +2,12 @@
 
 =======
 
+## [6.0.7] - 2025-04-18
+
+### Added
+
+- Added key `LastSeenIntelligenceProductVersion` to `macos_user` resource to allow for dismissing more Welcome screens in macOS 15.4.1.
+
 ## [6.0.0] - 2024-04-04
 
 ### Removed
