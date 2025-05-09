@@ -41,7 +41,7 @@ action :run do
     execute "#{setting} to #{value}" do
       command "/usr/bin/defaults #{new_resource.option} #{Shellwords.shellescape(new_resource.domain)} #{Shellwords.shellescape(setting)} #{value}"
       user new_resource.user
-      environment ({ 'HOME' => Etc.getpwnam(new_resource.user).dir })
+      environment({ 'HOME' => MacOS::UserPath.home(new_resource.user) })
     end
   end
 end
