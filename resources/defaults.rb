@@ -7,7 +7,7 @@ property :option, String, default: 'write'
 property :read_only, [true, false], default: false
 property :settings, Hash
 property :system, [true, false]
-property :user, String
+property :user, String, required: true
 
 action_class do
   def convert_to_string_from_data_type(value)
