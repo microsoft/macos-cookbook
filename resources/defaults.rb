@@ -7,7 +7,7 @@ property :option, String, default: 'write'
 property :read_only, [true, false], default: false
 property :settings, Hash
 property :system, [true, false]
-property :user, String
+property :user, String, required: true
 
 action_class do
   def convert_to_string_from_data_type(value)
@@ -41,6 +41,7 @@ action :run do
     execute "#{setting} to #{value}" do
       command "/usr/bin/defaults #{new_resource.option} #{Shellwords.shellescape(new_resource.domain)} #{Shellwords.shellescape(setting)} #{value}"
       user new_resource.user
+      environment({ 'HOME' => MacOS::UserPath.home(new_resource.user) })
     end
   end
 end
