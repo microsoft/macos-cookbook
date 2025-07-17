@@ -18,7 +18,7 @@ action_class do
   end
 
   def volume_path(volume)
-    if vm then
+    if new_resource.vm then
       volume == '/' ? volume : ::File.join('/System/Volumes', volume)
     else
       volume == '/' ? volume : ::File.join('/Volumes', volume)
