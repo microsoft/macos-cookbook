@@ -6,6 +6,7 @@ default_action :set
 property :volume, String, name_property: true
 property :indexed, [true, false], default: true
 property :searchable, [true, false], default: true
+property :vm, [true, false], default: false
 
 action_class do
   def state
@@ -17,7 +18,10 @@ action_class do
   end
 
   def volume_path(volume)
-    volume == '/' ? volume : ::File.join('/Volumes', volume)
+    if vm then
+      volume == '/' ? volume : ::File.join('/System/Volumes', volume)
+    else
+      volume == '/' ? volume : ::File.join('/Volumes', volume)
   end
 
   def target_volume
