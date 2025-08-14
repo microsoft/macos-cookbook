@@ -6,10 +6,15 @@ module MacOS
     attr_reader :version, :intended_path, :download_url
 
     def initialize(semantic_version, intended_path, download_url = '')
-      @semantic_version = semantic_version
+      @semantic_version = normalize_version(semantic_version)
       @intended_path = intended_path
       @download_url = download_url
       @version = -> { determine_version }
+    end
+
+    def normalize_version(version)
+      # Convert underscores to dots for Gem::Dependency compatibility
+      version.to_s.gsub('_', '.')
     end
 
     def determine_version
@@ -67,7 +72,15 @@ module MacOS
       return '>= 10.15.4' if Gem::Dependency.new('Xcode', '>= 12.0', '<= 12.4').match?('Xcode', @semantic_version)
       return '>= 11.0' if Gem::Dependency.new('Xcode', '>= 12.5', '<= 12.5.1').match?('Xcode', @semantic_version)
       return '>= 11.3' if Gem::Dependency.new('Xcode', '>= 13.0', '<= 13.2.1').match?('Xcode', @semantic_version)
-      return '>= 12.0' if Gem::Dependency.new('Xcode', '>= 13.3').match?('Xcode', @semantic_version)
+      return '>= 12.0' if Gem::Dependency.new('Xcode', '>= 13.3', '<= 13.4.1').match?('Xcode', @semantic_version)
+      return '>= 12.5' if Gem::Dependency.new('Xcode', '>= 14.0', '<= 14.2').match?('Xcode', @semantic_version)
+      return '>= 13.0' if Gem::Dependency.new('Xcode', '>= 14.3', '<= 14.3.1').match?('Xcode', @semantic_version)
+      return '>= 13.5' if Gem::Dependency.new('Xcode', '>= 15.0', '<= 15.2').match?('Xcode', @semantic_version)
+      return '>= 14.0' if Gem::Dependency.new('Xcode', '>= 15.3', '<= 15.4').match?('Xcode', @semantic_version)
+      return '>= 14.5' if Gem::Dependency.new('Xcode', '>= 16.0', '<= 16.2').match?('Xcode', @semantic_version)
+      return '>= 15.2' if Gem::Dependency.new('Xcode', '== 16.3').match?('Xcode', @semantic_version)
+      return '>= 15.3' if Gem::Dependency.new('Xcode', '== 16.4').match?('Xcode', @semantic_version)
+      return '>= 15.5' if Gem::Dependency.new('Xcode', '~> 26.beta').match?('Xcode', @semantic_version)
     end
 
     class Simulator
