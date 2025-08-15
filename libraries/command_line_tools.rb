@@ -60,7 +60,7 @@ module MacOS
     end
 
     def xcode_version(product)
-      product.match(/Xcode-(?<version>\d+\.\d+)/)['version']
+      product.match(/Xcode.{0,20}-(?<version>\d+\.\d+)/)['version']
     end
 
     def macos_version

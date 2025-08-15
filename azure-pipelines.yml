@@ -92,3 +92,10 @@ extends:
           platforms:
             - monterey-x86
           suites: ${{ parameters.kitchenSuites }}
+    - stage: supermarket
+      dependsOn: cookbook
+      condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+      jobs:
+        - template: supermarket.yml@templates
+          parameters:
+            cookbookName: 'macos'
