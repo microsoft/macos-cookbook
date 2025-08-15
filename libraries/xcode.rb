@@ -78,8 +78,8 @@ module MacOS
       return '>= 13.5' if Gem::Dependency.new('Xcode', '>= 15.0', '<= 15.2').match?('Xcode', @semantic_version)
       return '>= 14.0' if Gem::Dependency.new('Xcode', '>= 15.3', '<= 15.4').match?('Xcode', @semantic_version)
       return '>= 14.5' if Gem::Dependency.new('Xcode', '>= 16.0', '<= 16.2').match?('Xcode', @semantic_version)
-      return '>= 15.2' if Gem::Dependency.new('Xcode', '== 16.3').match?('Xcode', @semantic_version)
-      return '>= 15.3' if Gem::Dependency.new('Xcode', '== 16.4').match?('Xcode', @semantic_version)
+      return '>= 15.2' if Gem::Dependency.new('Xcode', '= 16.3').match?('Xcode', @semantic_version)
+      return '>= 15.3' if Gem::Dependency.new('Xcode', '= 16.4').match?('Xcode', @semantic_version)
       return '>= 15.5' if Gem::Dependency.new('Xcode', '~> 26.beta').match?('Xcode', @semantic_version)
     end
 
