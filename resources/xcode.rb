@@ -30,7 +30,7 @@ action :install_gem do
     command <<~BASH
           curl -sL -O https://github.com/neonichu/ruby-domain_name/releases/download/v0.5.99999999/domain_name-0.5.99999999.gem && \
           /opt/chef/embedded/bin/gem install --no-document domain_name-0.5.99999999.gem && \
-          /opt/chef/embedded/bin/gem install --no-document fastlane --version 2.229.0 && \
+          /opt/chef/embedded/bin/gem install --no-document fastlane --force --version 2.229.0 && \
           /opt/chef/embedded/bin/gem install --no-document --conservative --force xcode-install && \
           rm -f domain_name-0.5.99999999.gem
           BASH
