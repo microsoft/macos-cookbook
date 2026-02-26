@@ -16,4 +16,16 @@ describe 'macos::spotlight' do
 
     it { is_expected.to run_execute('turn Spotlight indexing off for /') }
   end
+
+  context 'Spotlight resource supports absolute volume paths' do
+    platform 'mac_os_x', 10.15
+
+    recipe do
+      spotlight '/System/Volumes/Data' do
+        indexed true
+      end
+    end
+
+    it { is_expected.to run_execute('turn Spotlight indexing on for /System/Volumes/Data') }
+  end
 end

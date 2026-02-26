@@ -44,7 +44,9 @@ Properties
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Ruby Type:** `String`
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the disk volume to manage.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name or absolute path of the disk volume to manage. Use `/` for the
+boot volume, an absolute path such as `/System/Volumes/Data` for APFS data
+volumes, or just a volume name (e.g. `TDD2`) for volumes under `/Volumes`.
 
 `indexed`
 
@@ -63,6 +65,12 @@ set to `false`.
 
 Examples
 ----------
+
+**Enable indexing on the data volume**
+
+```ruby
+spotlight '/System/Volumes/Data'
+```
 
 **Enable indexing on the boot volume**
 

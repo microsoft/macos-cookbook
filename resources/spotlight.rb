@@ -17,7 +17,7 @@ action_class do
   end
 
   def volume_path(volume)
-    volume == '/' ? volume : ::File.join('/Volumes', volume)
+    volume.start_with?('/') ? volume : ::File.join('/Volumes', volume)
   end
 
   def target_volume
