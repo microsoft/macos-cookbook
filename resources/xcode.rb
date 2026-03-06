@@ -20,18 +20,25 @@ action_class do
       ENV['XCODE_INSTALL_PASSWORD'] = ''
     end
   end
+
+  def bin_path(name)
+       ::File.join(::Gem.bindir, name)
+  end
 end
 
 action :install_gem do
   command_line_tools 'latest'
 
+  gem_bin = bin_path('gem')
+  xcversion_bin = bin_path('xcversion')
+
   execute 'install xcode gem' do
     cwd '/tmp'
     command <<~BASH
-          /opt/chef/embedded/bin/gem install --no-document fastlane --force --version 2.229.0 && \
-          /opt/chef/embedded/bin/gem install --no-document xcode-install --force
-          BASH
-    not_if { ::File.exist? '/opt/chef/embedded/bin/xcversion' }
+      #{gem_bin} install --no-document fastlane --force --version 2.229.0 && \
+      #{gem_bin} install --no-document xcode-install --force
+    BASH
+    not_if { ::File.exist?(xcversion_bin) }
   end
 end
 
