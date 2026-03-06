@@ -35,9 +35,9 @@ action :install_gem do
   execute 'install xcode gem' do
     cwd '/tmp'
     command <<~BASH
-        #{gem_bin} install --no-document fastlane --force --version 2.229.0 && \
-        #{gem_bin} install --no-document xcode-install --force
-        BASH
+          #{gem_bin} install --no-document fastlane --force --version 2.229.0 && \
+          #{gem_bin} install --no-document xcode-install --force
+          BASH
     not_if { ::File.exist?(xcversion_bin) }
   end
 end
