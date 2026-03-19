@@ -1,10 +1,4 @@
 require 'chefspec'
-begin
-  require 'chefspec/berkshelf'
-rescue LoadError, Gem::LoadError
-  # berkshelf may fail if not available or if trying to connect to online resources
-  # This is okay for offline testing
-end
 
 require_relative '../libraries/macos_user'
 require_relative '../libraries/metadata_util'
