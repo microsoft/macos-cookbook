@@ -1,4 +1,5 @@
 require 'chefspec'
+require 'chefspec/berkshelf'
 
 require_relative '../libraries/macos_user'
 require_relative '../libraries/metadata_util'
