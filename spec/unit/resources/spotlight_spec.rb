@@ -6,6 +6,11 @@ describe 'macos::spotlight' do
   context 'Spotlight resource converges successfully' do
     platform 'mac_os_x', 10.15
 
+    before do
+      mdutil_result = double('shellout', stdout: "/:\n\tIndexing enabled.")
+      allow_any_instance_of(MacOS::MetadataUtil).to receive(:shell_out).and_return(mdutil_result)
+    end
+
     recipe do
       spotlight 'test' do
         indexed false
@@ -15,5 +20,22 @@ describe 'macos::spotlight' do
     end
 
     it { is_expected.to run_execute('turn Spotlight indexing off for /') }
+  end
+
+  context 'Spotlight resource supports absolute volume paths' do
+    platform 'mac_os_x', 10.15
+
+    before do
+      mdutil_result = double('shellout', stdout: "/System/Volumes/Data:\n\tIndexing disabled.")
+      allow_any_instance_of(MacOS::MetadataUtil).to receive(:shell_out).and_return(mdutil_result)
+    end
+
+    recipe do
+      spotlight '/System/Volumes/Data' do
+        indexed true
+      end
+    end
+
+    it { is_expected.to run_execute('turn Spotlight indexing on for /System/Volumes/Data') }
   end
 end
