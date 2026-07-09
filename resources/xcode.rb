@@ -35,6 +35,7 @@ action :install_gem do
   execute 'install xcode gem' do
     cwd '/tmp'
     command <<~BASH
+          #{gem_bin} install --no-document google-cloud-errors --force --version 1.6.0 && \
           #{gem_bin} install --no-document signet --force --version 0.21.0 && \
           #{gem_bin} install --no-document google-cloud-core --force --version 1.8.0 && \
           #{gem_bin} install --no-document fastlane --force --version 2.229.0 && \

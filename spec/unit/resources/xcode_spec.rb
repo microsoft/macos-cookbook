@@ -253,3 +253,28 @@ describe 'xcode' do
     it { is_expected.to run_execute('switch active Xcode to /Applications/Xcode.app') }
   end
 end
+
+describe 'xcode install_gem' do
+  step_into :xcode
+  platform 'mac_os_x'
+
+  # Fresh host (no xcversion yet): the install chain runs and pins google-cloud-errors 1.6.0
+  # first -- before google-cloud-core 1.8.0 -- so the incompatible 1.7.0 is never resolved.
+  context 'on a fresh host with no xcversion installed' do
+    before(:each) do
+      allow(File).to receive(:exist?).and_call_original
+      allow(File).to receive(:exist?).with(end_with('xcversion')).and_return(false)
+    end
+
+    recipe do
+      xcode '26' do
+        action :install_gem
+      end
+    end
+
+    it {
+      is_expected.to run_execute('install xcode gem')
+        .with(command: /google-cloud-errors --force --version 1\.6\.0[\s\S]*google-cloud-core --force --version 1\.8\.0/)
+    }
+  end
+end
